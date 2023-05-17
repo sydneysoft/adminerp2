@@ -1,0 +1,60 @@
+script.
+  const select2PersonalFiltroDocumento = $("#lista-personal-filtro-documento").select2({
+    ajax: {
+      url: function () {
+        return urlSelect2Personal ()
+      },
+      dataType: 'json',
+      delay: 500,
+      data: function (params) {
+        return {
+          term: params.term,
+          select: ['id', 'nro_documento'],
+          page: params.page
+        }
+      },
+      processResults: function (data, params) {
+        return {
+          results: $.map(data.data, (item) => {
+            return {
+              id: item.nro_documento,
+              text: item.nro_documento,
+            }
+          })
+        }
+      },
+      cache: true
+    },
+    placeholder: 'Search',
+    templateResult: personalState,
+    allowClear: true
+  })
+  .on("select2:open", () => {
+    $(".select2-results:not(:has(a))").append(
+      '<a href="#" style="padding: 6px;height: 20px;display: inline-table;" data-toggle="modal" data-target="#nuevoPersonalModal" onclick="closePersonalFiltroDocumentosSelect2()">Agregar personal</a>'
+    );
+  }); //- No se debe crear
+
+  function personalState (state) {
+    if (!state.id) {
+      return state.text;
+    }
+    let $container = $(`
+      <span><strong>${state.text}</span>
+    `);
+
+    return $container;
+  }
+
+  function closePersonalFiltroDocumentosSelect2 () {
+    $("#lista-personal-filtro-documento").select2('close');
+  }
+
+  function urlSelect2Personal () {
+    
+    if (typeof empresa_id !== 'undefined' && empresa_id && !isNaN(empresa_id.value)) {
+      return `/admin-personal/select2/${empresa_id.value}`
+    } else {
+      return "/admin-personal/select2"
+    }
+  }

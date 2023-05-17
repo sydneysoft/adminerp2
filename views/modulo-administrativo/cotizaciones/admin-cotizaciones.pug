@@ -1,0 +1,197 @@
+extends ../../extends/menu-superior-admin
+block contenido
+    .row
+        .col-md-6.col-6.text-grey(style="margin-bottom:10px;")
+            h1.display-1
+                strong #{translation.QUOTES} 
+                   span.light= `${cotizaciones.length} `
+            p.light #{translation.HEADLINE_QUOTES_MODULE} 
+
+        .col-md-6.col-6.text-right 
+
+
+            a.gestionarBtn#dropdownMenuLink4.btn(href='#' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')
+                 span #{translation.MANAGE}
+            div.dropdown-menu(aria-labelledby='dropdownMenuButton2')
+                a.dropdown-item(href='#' onclick=`openModalServicios()`) #{translation.MANAGE_SERVICES}
+                a.dropdown-item(href='#' onclick=`openModalImpuestos()`) #{translation.MANAGE_TAXES}
+            span  
+            button.btn.btn-success(type="button" onclick="location.href='/cotizaciones/nuevo'" )
+                i.fas.fa-plus
+                    span   #{translation.FORM.NEW_QUOTE} 
+        .col-12
+          div.dashboard
+            .col-12 
+              .row
+                .col-md-9.col-12 
+                    h4(style="font-weight:600") #{translation.FORM.GENERAL_VISION}
+
+                .col-md-3.col-12.filtros 
+                    .form-group
+                            select#filtroDias.form-control 
+                                option(value=30) #{translation.FORM.LAST_30_DAYS}
+                                option(value=90) #{translation.FORM.LAST_TRIMESTER}
+                                option(value=360) #{translation.FORM.LAST_YEAR}
+            hr       
+            .col-12
+              .row#resumen
+                .col-md-3.col-6.text-center
+                    h2.mes.cantidades= filtro_30dias.reduce((sum, value) => (typeof value.enviado == "number" ? sum + value.enviado : sum), 0)
+                    h2.trimestre.cantidades= filtro_90dias.reduce((sum, value) => (typeof value.enviado == "number" ? sum + value.enviado : sum), 0)
+                    h2.anual.cantidades=  filtro_360dias.reduce((sum, value) => (typeof value.enviado == "number" ? sum + value.enviado : sum), 0)
+                    span.mayus #{translation.FORM.SENT}
+                .col-md-3.col-6.text-center
+                    h2.mes.cantidades= filtro_30dias.reduce((sum, value) => (typeof value.aceptado == "number" ? sum + value.aceptado : sum), 0)
+                    h2.trimestre.cantidades= filtro_90dias.reduce((sum, value) => (typeof value.aceptado == "number" ? sum + value.aceptado : sum), 0)
+                    h2.anual.cantidades=  filtro_360dias.reduce((sum, value) => (typeof value.aceptado == "number" ? sum + value.aceptado : sum), 0)
+                    span.mayus #{translation.FORM.ACCEPTED}
+                .col-md-3.col-6.text-center
+                    h2.mes.cantidades= filtro_30dias.reduce((sum, value) => (typeof value.facturado == "number" ? sum + value.facturado : sum), 0)
+                    h2.trimestre.cantidades= filtro_90dias.reduce((sum, value) => (typeof value.facturado == "number" ? sum + value.facturado : sum), 0)
+                    h2.anual.cantidades=  filtro_360dias.reduce((sum, value) => (typeof value.facturado == "number" ? sum + value.facturado : sum), 0)
+                    span.mayus #{translation.FORM.BILLED}
+                .col-md-3.col-6.text-center
+                    h2.mes.cantidades= filtro_30dias.filter(value => value.vencido === true).length
+                    h2.trimestre.cantidades= filtro_90dias.filter(value => value.vencido === true).length
+                    h2.anual.cantidades=  filtro_360dias.filter(value => value.vencido === true).length
+                    span.mayus #{translation.FORM.EXPIRED}
+                    
+        .col-12 
+          .row
+            .col-md-4.col-6.filtros
+                .form-group
+                    label.font-weight-bold.datev-label #{translation.FORM.STATE}
+                        select#filtroEstado.form-control 
+                            option(value=0) #{translation.FORM.SELECT}
+                            option(value="Borrador") #{translation.FORM.DRAFT}
+                            option(value="Enviado") #{translation.FORM.SENT}
+                            option(value="Aceptado") #{translation.FORM.ACCEPTED}
+                            option(value="Facturado") #{translation.FORM.BILLED}
+                            option(value="Vencido") #{translation.FORM.EXPIRED}
+
+
+        .col-12 
+            div.table-responsive
+            table#tabla-cotizaciones.table.table-bordered
+                thead.thead-dark
+                    tr.table-head
+
+                        th.text-center #{translation.FORM.NUMBER}
+                        th.text-left #{translation.FORM.TITLE}
+                        th.text-center #{translation.FORM.CLIENT}
+                        th.text-center #{translation.FORM.CREATED_AT}
+                        th.text-center #{translation.FORM.TOTAL_PRICE}
+                        th.text-center #{translation.FORM.STATE} 
+                        th.text-center #{translation.FORM.ACTION}
+                tbody
+
+                    each data in  cotizaciones
+
+                        tr(id= data.id)
+                            td.text-center=data.id
+                            td.text-left=data.titulo_cotizacion
+                            td.text-center=data.cliente_nombre
+                            td.text-center=new Date(data.created_at).toJSON().slice(0,10)
+                            td.text-center=data.total_general + " PEN"
+                            td.text-center.estado
+                                  span(class="est" data=estadosGenerales.filter(item => item.id == data.id)[0].estado).estadoGeneral=  estadosGenerales.filter(item => item.id == data.id)[0].estado
+                                     
+                            td(align='center').dropdown
+                                a#dropdownMenuLink4.btn(href='#' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')
+                                    i.fas.fa-ellipsis-v
+                                div.dropdown-menu(aria-labelledby='dropdownMenuButton')
+                                    a.dropdown-item(href='#' onclick=`location.href='/cotizaciones/detalle/${data.id}'`) #{translation.FORM.EDIT}
+                                    a.dropdown-item(href='#' onclick="openModalEmail('"+data.id+"','"+data.cliente_email+"')") #{translation.FORM.SENT_EMAIL}
+                                    a.dropdown-item(href='#' onclick="printPage('"+data.id+"')") #{translation.FORM.PRINT}
+                                    a.dropdown-item(href=`/cotizaciones/pdf/${data.id}`) #{translation.FORM.DOWNLOAD_PDF}
+                                    a.dropdown-item(href='#' onclick="clonar('"+data.id+"')") #{translation.FORM.DUPLICATE}
+                                    a.dropdown-item(href='#' onclick="aceptada('"+data.id+"')") #{translation.FORM.MARK_AGREED}
+                                    a.dropdown-item(href='#' onclick="facturada('"+data.id+"')") #{translation.FORM.MARK_BILLED}
+                                    a.dropdown-item(href='#' onclick="confirmarBorrar('"+data.id+"')") #{translation.FORM.DELETE}
+
+                tfoot
+                    tr.table-head
+                        th.text-center #{translation.FORM.NUMBER}
+                        th.text-left #{translation.FORM.TITLE}]
+                        th.text-center #{translation.FORM.CLIENT}]
+                        th.text-center #{translation.FORM.CREATED_AT}
+                        th.text-center #{translation.FORM.TOTAL_PRICE}
+                        th.text-center #{translation.FORM.STATE} 
+                        th.text-center #{translation.FORM.ACTION}
+    
+    include ./modals/enviar-email.pug
+    include ./modals/revision-servicios.pug   
+    include ./modals/revision-impuestos.pug
+
+ 
+    style.
+        .dropdown-menu{
+            left:-60px!important
+        }    
+        .row {
+         align-items: center;}
+        .est {
+            display: inline-block;
+            width: -webkit-fill-available;
+             padding: 8px 20px;
+            font-weight: 600;
+              }  
+        span.estadoGeneral[data="Facturado"] {
+            background-color: #e4fce9;
+            }
+       
+        span.estadoGeneral[data="Aceptado"] {
+            background-color: #bffacc;
+            }    
+        span.estadoGeneral[data="Vencido"] {
+            background-color: #ead2d4;
+             }   
+        span.estadoGeneral[data="Enviado"] {
+            background-color: #f7edcf;
+             }        
+         span.estadoGeneral[data="Borrador"] {
+            background-color: #efefef;
+            
+        }
+       
+        #resumen{
+            padding: 30px 0px
+        }
+        .cantidades{
+            font-weight:700
+        }
+        .mayus{
+            text-transform:uppercase
+        }
+        .gestionarBtn{
+            background: #e2e2e2;
+        }
+        .filtros{
+            float: right;
+        }
+        .dashboard{
+ 
+                padding: 20px;
+        }
+  
+
+
+    script.
+        const openNew=()=>{
+            typeOperation="1";
+            window.location("/nuevo");
+        }
+        $(".mes").show();
+        $(".trimestre").hide();
+        $(".anual").hide();
+        
+    script
+        include ./script-delete.js
+        include ./script-email.js
+        include ./script-print.js
+        include ./script-duplicate.js
+        include ./script-estado.js
+        include ./script-table.js
+        
+   
+    

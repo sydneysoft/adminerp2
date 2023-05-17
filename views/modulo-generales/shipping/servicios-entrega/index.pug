@@ -1,0 +1,112 @@
+extends ../layout.pug
+append contenido
+  .row.justify-content-end
+    if empresa_id
+      include /mixins/btn/back.pug
+      input#empresa_id(type="hidden" value=empresa_id)
+      .col-6
+        +btn-back()
+    .col-6.text-right
+      button.btn.btn-success(style="margin-bottom:25px;" type="button" data-toggle="modal" data-target="#nuevoServicioAdministrador")
+        i.fas-fa-plus
+        span #{translation.ADD_DELIVERY_SERVICE}
+  .row.mt-3
+    .col-12.text-grey(style="margin-bottom:10px;")
+      h2.display-1
+        strong #{translation.SERVICES_LIST}
+    .col-12
+      div.table-responsive
+        table.table.table-bordered#tabla-servicios-entrega
+          thead.thead-dark
+            //- tr
+              th.text-center Id
+              th.text-center #{translation.FORM.NAME}
+              th.text-center #{translation.FORM.PHONE} 
+              th.text-center #{translation.FORM.OPERATION}
+          tbody
+            //- each book in items.servicios_entrega
+              tr
+                td.text-center=book.id
+                td.text-center=book.nombre
+                td.text-center=book.telefono
+                td.text-center.col-right
+                  button.btn.btn-warning(style="margin-right:7px;" type="button" onclick="handleEditServicio('"+book.id+"')")
+                    i.fas.fa-edit
+                  button.delete.btn.btn-danger(onClick="handleDeleteServicio('"+book.id+"')")
+                    i.fas.fa-trash
+
+  include ./modals/crear-servicio-entrega.pug
+  include ./modals/editar-servicio-entrega.pug
+
+  include ./save/servicio-entrega.pug
+  include ./update/servicio-entrega.pug
+  include ./delete/servicio-entrega.pug
+
+  script.
+    let dataOldArray=[];
+    $(document).ready( function () {
+      $('#tabla-servicios').DataTable({
+        "language": {"url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"}
+      });
+    });
+
+    let urlMetodosEnviosSelectPure = "/admin-shipping/metodos-envio/select-pure";
+
+    if (typeof empresa_id != 'undefined' && !isNaN(empresa_id.value)) {
+      urlMetodosEnviosSelectPure += `/${empresa_id.value}`;
+    }
+
+    let autocompleteTiposEnvioNuevo;
+    let dataFunctional = []
+    let selectPureMetodoEnvioEditar;
+    $.ajax({
+      url: urlMetodosEnviosSelectPure,
+      type: 'GET',
+      dataType: 'json',
+      data: {
+        select: {
+          label: 'nombre',
+          value: 'id'
+        }
+      },
+      success: function (data) {
+        dataFunctional = data;
+        autocompleteTiposEnvioNuevo = new SelectPure("#metodosNuevo-servicio-modulos", {
+          options: data,
+          multiple: true,
+          value:[],
+          autocomplete: true,
+          icon: "fa fa-times",
+          onChange: value => { console.log(value)},
+        });
+      },
+      error: function (error) {
+        console.log(error);
+      }
+    })
+
+
+    //- var autocompleteTiposEnvioNuevo = new SelectPure("#metodosNuevo-servicio-modulos", {
+    //-   options:dataFunctional,
+    //-   multiple: true,
+    //-   value:[],
+    //-   autocomplete: true,
+    //-   icon: "fa fa-times",
+    //-   onChange: value => { console.log(value)},
+    //-   classNames: {
+    //-   select: "select-pure__select",
+    //-   dropdownShown: "select-pure__select--opened",
+    //-   multiselect: "select-pure__select--multiple",
+    //-   label: "select-pure__label",
+    //-   placeholder: "select-pure__placeholder",
+    //-   dropdown: "select-pure__options",
+    //-   option: "select-pure__option",
+    //-   autocompleteInput: "select-pure__autocomplete",
+    //-   selectedLabel: "select-pure__selected-label",
+    //-   selectedOption: "select-pure__option--selected",
+    //-   placeholderHidden: "select-pure__placeholder--hidden",
+    //-   optionHidden: "select-pure__option--hidden",
+    //-   }
+    //- }); 
+
+  include ./datatable/servicios-entregas.pug

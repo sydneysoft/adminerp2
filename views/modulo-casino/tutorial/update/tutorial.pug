@@ -1,0 +1,69 @@
+script.
+  //Manejar Datos en el Modal Para editar Marcas
+  const handleEditTutorial = (data) => {
+    $("#id-editar").val(data.id)
+    $("#nombre-editar").val(data.titulo);
+    $("#lista-categorias-editar").select2("val", data.id_categoria);
+    $("#lista-categorias-editar ~ .select2 .select2-selection__placeholder").html(data.id_categoria);
+    $("#lista-subcategorias-editar").select2("val", data.id_subcategoria);
+    $("#lista-subcategorias-editar ~ .select2 .select2-selection__placeholder").html(data.id_subcategoria);
+    $("#videoUpload").val(data.videoUpload);
+    $("#urlVideo").val(data.urlVideo);
+  };
+
+  //Actualizar todo los Datos
+  const updateTutorialAdmin = () => {
+    let id=$("#id-editar").val()
+    let nombre = $("#nombre-editar").val();
+    let categoria = $("#lista-categorias-editar").val();
+    let subcategoria = $("#lista-subcategorias-editar").val();
+    let videoUpload = $("#videoUpload-editar").val();
+    let urlVideo = $("#urlVideo-editar").val();
+
+    const auxData = {
+      titulo: nombre,
+      id_categoria: categoria,
+      id_subcategoria: subcategoria,
+      video_media: videoUpload,
+      url: urlVideo
+    }
+    //- console.log(auxData);
+    if (categoria) {
+      auxData.categoria = categoria;
+    }
+
+    if (name && categoria && subcategoria && (videoUpload  ||  urlVideo) {
+      if (typeof empresa_id != 'undefined' && empresa_id && !isNaN(empresa_id.value)) {
+        auxData.empresa_id = empresa_id.value;
+      } 
+
+    if (id && nombre && id_categoria && id_subcategoria && (videoUpload  ||  urlVideo)) {
+      Swal.showLoading();
+      $.ajax({
+        method: "PUT",
+        url: "/admin-casino/" + id,
+        dataType: "json",
+        data: auxData,
+        success: function (data) {
+          Swal.close();
+          if (data.ok) {
+            $("#editarBannerAdministrador").modal("hide");
+            toastSweet('Success', '#{translation.ALERTS.UPDATED}', 'success');
+            if(typeof tablaMarcas != 'undefined') {
+              tablaMarcas.ajax.reload();
+              $("#empresa_id").val("");
+            }
+            $("#editarBannerAdministrador").modal("hide");
+          } else {
+            toastSweet('Error', '#{translation.ALERTS.REGISTER_CANNOT_UPDATE}', 'error');
+          }
+        },
+        error: function () {
+          Swal.close();
+          toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+        },
+      });
+    } else {
+      toastSweet('Error', '#{translation.ALERTS.FORM_EMPTY}', 'error');
+    }
+  };

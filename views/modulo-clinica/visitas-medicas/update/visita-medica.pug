@@ -1,0 +1,59 @@
+script.
+  function editarVisitaMedica(data) {
+    $("#nombre-editar").val(data.nombre);
+    $("#lista-pacientes-editar").val(data.paciente_id).trigger("change");
+    $("#lista-medicos-editar").val(data.medico_id).trigger("change");
+    $("#lista-sedes-editar").val(data.clinica_id).trigger("change");
+    $("#fecha-editar").val(data.fecha);
+    $("#hora-editar").val(data.hora);
+    $("#motivo-editar").val(data.motivo);
+    $("#anotaciones-editar").val(data.anotaciones);
+    $("#resultado-editar").val(data.resultado);
+    $("#diagnostico-editar").val(data.diagnostico);
+    $("#recetas-editar").val(data.recetas);
+    $("#estado-editar").val(data.estado).trigger("change");
+    $("#costo-editar").val(data.costo);
+    $("#referencias-editar").val(data.referencias);
+    $("#itemId").val(data.id);
+    $("#editarVisitaMedicaModal").modal('show');
+  }
+
+  editVisitaMedica.addEventListener('click', () => {
+    const data = {
+      nombre: $("#nombre-editar").val(),
+      paciente_id: $("#lista-pacientes-editar").val(),
+      medico_id: $("#lista-medicos-editar").val(),
+      clinica_id: $("#lista-sedes-editar").val(),
+      fecha: $("#fecha-editar").val(),
+      hora: $("#hora-editar").val(),
+      motivo: $("#motivo-editar").val(),
+      anotaciones: $("#anotaciones-editar").val(),
+      resultado: $("#resultado-editar").val(),
+      diagnostico: $("#diagnostico-editar").val(),
+      recetas: $("#recetas-editar").val(),
+      estado: $("#estado-editar").val(),
+      costo: $("#costo-editar").val(),
+      referencias: $("#referencias-editar").val(),
+      
+    }
+    const id = $("#itemId").val();
+    if (data.nombre != '' && data.paciente_id != '' && data.medico_id != '' && data.clinica_id != '') {
+      if (typeof empresa_id != 'undefined' && !isNaN(empresa_id.value)) {
+        data.empresa_id = empresa_id.value;
+      }
+      const url = `/admin-visitas-medicas/items/${id}`;
+      updateItem(url, data, updateItemSuccess);
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Debe llenar todos los campos con *',
+        timer: 2000
+      })
+    }
+  });
+  function updateItemSuccess (data) {
+    if (typeof tablaVisitasMedicas != "undefined") {
+      tablaVisitasMedicas.ajax.reload();
+    }
+  }

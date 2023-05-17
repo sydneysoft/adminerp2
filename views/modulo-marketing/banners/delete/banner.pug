@@ -1,0 +1,53 @@
+
+script.
+  //Eliminar Banners
+  const deleteBannersAdminPanel = (val) => {
+    Swal.fire({
+      title: "Estás Seguro?",
+      text: "#{translation.ALERTS.YOU_COULD_NOT_REVERT}",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "#{translation.ALERTS.YES_DELETE}",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        handleDeleteBannersAdmin(val);
+      }
+    });
+  };
+
+  const handleDeleteBannersAdmin = (val) => {
+    Swal.showLoading();
+    $.ajax({
+      method: "DELETE",
+      url: "/admin-banners",
+      dataType: "json",
+      data: { id: val },
+      success: function (data) {
+        if (data.status === "success") {
+          Swal.close();
+          window.location.reload(true);
+        } else {
+          Swal.close();
+          Swal.fire({
+            position: "center",
+            icon: "error",
+            title: "#{translation.WRONG}",
+            showConfirmButton: false,
+            timer: 2500,
+          });
+        }
+      },
+      error: function () {
+        Swal.close();
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "#{translation.WRONG}",
+          showConfirmButton: false,
+          timer: 2500,
+        });
+      },
+    });
+  };

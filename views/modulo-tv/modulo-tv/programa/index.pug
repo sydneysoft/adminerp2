@@ -1,0 +1,148 @@
+extends ../layout.pug
+
+
+append contenido 
+  .border-left.border-right.border-bottom.rounded-bottom.p-3
+    
+    if empresa_id
+      input#empresa_id(type="text" value=empresa_id hidden)
+    else
+      input#empresa_id(type="text" value="" hidden)
+    .container-fluid
+      .row
+        .col-6.text-left
+          if empresa_id
+            include ../../../mixins/btn/back.pug
+            +btn-back()
+        .col-6.text-right
+          if empresa_id
+            a#btnCrear.btn.btn-primary(type='button' href=`/admin-tv/programas/empresa/${empresa_id}/crear`) #{translation.FORM.CREATE_NEW_TV_SHOW} 
+              span#spanCrear #{translation.FORM.TV_SHOW} 
+          else
+            a#aCrear.btn.btn-primary(type='button' href="/admin-tv/programas/crear") #{translation.FORM.CREATE_NEW_TV_SHOW} 
+              span#spanCrear #{translation.FORM.TV_SHOW}
+      .row.mt-3
+        .col-12
+          .table-responsive
+            table#dataTable.table
+              thead.thead-dark
+              
+        
+  script.
+    let tabla;
+    addEventListener('DOMContentLoaded', () => {
+      let urlAjaxTable = '/admin-tv/programas/datatable'
+      if (empresa_id.value != '') {
+        urlAjaxTable = `/admin-tv/programas/datatable/${empresa_id.value}`
+      }
+      tabla = $('#dataTable').DataTable({
+        fnCreatedRow: function (nRow, aData, iDataIndex) {
+          $(nRow).attr('data-id', `delete${aData.id}`);
+        },
+        searchDelay: 500,
+        processing: true,
+        serverSide: true,
+        ajax: urlAjaxTable,
+        //- nombre	estracto	foto_portada	num_temporadas	genero fecha_lanzamiento	fecha	
+        columns: [
+          { data: 'id', name: 'id', title: "ID", orderable: false, searchable: false, visible: false },
+          { data: 'nombre', name: 'nombre' },
+          { 
+            data: 'estracto', name: 'estracto', title: '#{translation.FORM.EXCERPT}',
+            render: function (data, type, row) {
+              if (data.length < 50) {
+                return data;
+              }
+              return data.substring(0, 50) + '...';
+            }
+          },
+          {
+            data: 'foto_portada', name: 'foto_portada', title: '#{translation.FORM.COVER}',
+            render: function (data, type, row) {
+              try {
+                new URL(data);
+                return `<img src="${data}" alt="Foto de portada" width="60px" height="60px">`;
+              } catch(e) {
+                return `<img src="/images/image-default.jpg" alt="Foto de portada" width="60px" height="60px">`;
+              }
+            }
+          },
+          { data: 'num_temporadas', name: 'num_temporadas'},
+          {
+            data: 'genero',
+            name: 'genero',
+            title: '#{translation.FORM.GENRE}',
+            render: function (data, type, row) {
+              if (typeof data == 'string') {
+                data = JSON.parse(data);
+              }
+              if (Array.isArray(data) && data.length > 0) {
+                let generos = [];
+                data.forEach(item => {
+                  generos.push(item.nombre);
+                });
+                return generos.join(', ');
+              } else if (Array.isArray(data) && data.length == 0) {
+                return '#{translation.FORM.NO_GENRES}';
+              }
+              return data;
+            },
+            orderable: false,
+            searchable: false,
+          },
+          {
+            data: 'fecha_lanzamiento',
+            name: 'fecha_lanzamiento',
+            title: '#{translation.FORM.LAUNCH_DATE}',
+            render: function (data, type, row) {
+              return moment(data).format('DD/MM/YYYY');
+            },
+            orderable: false,
+            searchable: false,
+          },
+          {
+            data: 'fecha',
+            name: 'fecha',
+            title: '#{translation.FORM.DATE}',
+            render: function (data, type, row) {
+              return moment(data).format('DD/MM/YYYY');
+            },
+            orderable: false,
+            searchable: false,
+          },
+          { 
+            data: 'Acciones',
+            render: function (data, type, row) {
+              //- .btn-group
+              //-   a.btn.btn-primary(href=`/admin-tv/programas/edite/${item.id}`)
+              //-     i.fas.fa-pen
+              //-   a.btn.btn-info(href=`/admin-tv/programas/show/${item.id}`)
+              //-     i.fas.fa-eye
+              //-   button.btn.btn-danger(onclick=`beforeEliminarPrograma(${item.id})`)
+              //-     i.fas.fa-trash
+              return `
+                <div class="btn-group">
+                  <a class="btn btn-primary" href="/admin-tv/programas/editar/${row.id}">
+                    <i class="fas fa-pen"></i>
+                  </a>
+                  <button class="btn btn-info" >
+                    <i class="fas fa-eye"></i>
+                  </button>
+                  <button class="btn btn-danger" onclick="beforeDeleteItem('/admin-tv/programas/items/${row.id}', deleteItemSuccess)">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              `;
+            }
+          }
+        ]
+      });
+    });
+
+    function deleteItemSuccess (data) {
+      tabla.row($(`#${data.target}`)).remove().draw();
+    }
+
+  script 
+    include ../../../js/modulo-tv/delete.js
+  

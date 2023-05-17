@@ -1,0 +1,43 @@
+.modal.fade(tabindex="-1" role="dialog" id="editarCita")
+  .modal-dialog.modal-lg
+    .modal-content.modalContent
+      .modal-header 
+        .row(style="margin:0;")
+          .col-md-12
+            h3(style="margin:0px 0;") #{translation.ADD}
+
+      .modal-body.borderBottom
+        .row 
+          .col-12.col-md-6 
+            .form-group
+              label(for="nombre_editar") #{translation.FORM.FULLNAME}
+              input#nombre_editar.form-control(type="text" name="nombre" placeholder=`${translation.FORM.FULLNAME}`) 
+          .col-12.col-md-6 
+            .form-group 
+              label(for="email_editar") #{translation.FORM.EMAIL}
+              input#email_editar.form-control(type="email" name="email" placeholder=`${translation.FORM.EMAIL}`)
+          .col-12.col-md-6 
+            .form-group 
+              label(for="telefono_editar") #{translation.FORM.CELULAR}
+              input#telefono_editar.form-control(type="text" name="telefono" placeholder=`${translation.FORM.CELULAR}`)
+          .col-12.col-md-6
+            .form-group 
+              //- Crear checkbox para escoger color
+              label(for="color_editar") #{translation.FORM.COLOR}
+              input#color_editar.form-control(type="color" name="color" placeholder=`${translation.FORM.COLOR}`)
+        .row 
+          .col-12.col-md-6
+            .form-group 
+              label(form="start_editar") #{translation.MODULOTV.STARTDATE}
+              input#start_editar.form-control(type="datetime-local" name="start")
+          .col-12.col-md-6
+            .form-group 
+              label(form="end_editar") #{translation.MODULOTV.ENDDATE}
+              input#end_editar.form-control(type="datetime-local" name="end")
+              input#itemId(type="text" value="" hidden)
+      .modal-footer(style="padding:8px;")
+        .row(style="margin:0;")
+          .col-md-12.text-right
+            button#updateCita.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;") #{translation.ADD}
+            button.btn.btn-warning(type="buton" data-dismiss="modal") #{translation.CLOSE} 
+            button#deleteCita.btn.btn-danger.ml-3(type="button") #{translation.DELETE}

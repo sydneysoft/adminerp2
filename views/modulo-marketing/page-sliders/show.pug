@@ -1,0 +1,36 @@
+extends ./layout.pug
+
+append contenido 
+  .border-bottom.border-left.border-right.rounded-bottom.p-3
+    if data
+      .row.justify-content-between
+        .col
+          button.btn.btn-info(role="button" onclick="window.history.back()") #{translation.BACK}
+        .col.text-right 
+          a.btn.btn-primary(role="button" href=`/admin-sliders/slider/editar/${data.id}`) #{translation.EDIT}
+        .col-12
+          .input-group.mb-3
+            .input-group-prepend
+              span.input-group-text #{translation.FORM.NAME}
+            input.form-control(type='text' aria-describedby='basic-addon1' placeholder=translation.FORM.NAME value=data.nombre readonly)
+        .col-12
+          .input-group.mb-3
+            .input-group-prepend
+              span.input-group-text #{translation.FORM.THUMBNAIL}
+            input.form-control(type='text' aria-describedby='basic-addon1' placeholder=translation.FORM.THUMBNAIL value=data.url readonly)
+        .col-12
+          .input-group.mb-3
+            .input-group-prepend
+              span.input-group-text #{translation.FORM.ALTERNATIVE_TEXT}
+            input.form-control(type='text' aria-describedby='basic-addon1' placeholder=translation.FORM.ALTERNATIVE_TEXT value=data.alt readonly)
+        .col-12 
+          .form-group   
+            label() #{translation.FORM.DESCRIPTION}
+            .card 
+              .card-body 
+                  div
+                    | #{data.descripcion}
+    else 
+      .alert.alert-info.mt-3(role="alert")
+        | #{translation.ALERTS.NO_DATA}
+

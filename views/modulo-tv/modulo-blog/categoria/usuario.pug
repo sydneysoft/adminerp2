@@ -1,0 +1,48 @@
+extends ../layout.pug
+
+append contenido 
+  .border-bottom.border-left.border-right.rounded-bottom.p-3
+    .my-3 
+      button.btn.btn-info.mr-3(type="button" onclick="window.history.back()") #{translation.BACK}
+      button#nuevoitem.btn.btn-primary(type="button") #{translation.CREATE} 
+        i.fas.fa-plus
+    if data  && data.length > 0
+      .my-3.table-responsive   
+        table#dataTable.table.rounded-lg.overflow-hidden
+          thead.thead-dark
+            tr
+              th(scope='col') ID
+              th(scope='col') #{translation.FORM.NAME}
+              th(scope='col') #{translation.FORM.DESCRIPTION}
+              th(scope='col') #{translation.FORM.ACTIONS}
+          tbody
+            each item in data 
+              tr(id=`delete${item.id}`)
+                th(scope='row') #{item.id}
+                td #{item.nombre}
+                td #{item.descripcion}
+                td 
+                  .btn-group(role='group' aria-label='Basic example')
+                    button.btn.btn-primary(type='button' onclick=`beforeUpdate(${JSON.stringify(item)})`)
+                      i.fas.fa-pen(aria-hidden='true')
+                    button.btn.btn-info(type='button' onclick=`beforeShow(${JSON.stringify(item)})`)
+                      i.fas.fa-eye(aria-hidden='true')
+                    a.btn.btn-danger(type='button' onClick=`beforeDeleteItem('/admin-blog/categorias/${item.id}', ${item.id})`)
+                      i.fas.fa-trash(aria-hidden='true')
+    else 
+      .alert.alert-info(role="alert")
+        | #{translation.ALERT.NO_DATA}
+
+  script.
+    $(document).ready( function () {
+      $('#dataTable').DataTable();
+    });
+    document.getElementById('nuevoitem').addEventListener('click', (event) => {
+      beforeCreate();
+    });
+  script 
+    include ./usuario.js
+    include ../../../js/modulo-tv/update.js
+    include ../../../js/modulo-tv/save.js
+    include ../../../js/modulo-tv/delete.js
+  //- script

@@ -1,0 +1,54 @@
+script.
+  //FUNCTION TRATAMIENTO
+  const agregarTratamientoAdmin = (token) => {
+    let nombre = $("#nombreNuevo-tratamiento").val();
+    let descripcionCorta = $("#descripcionNuevo-tratamiento").val();
+    let descripcionLarga = descripcion_larga.getData();
+    let activado = $("#activadoNuevo-tratamiento").val();
+    let estado = $("#statusNuevo-tratamiento").val();
+    //- let tienda = $("#tiendaNuevo-tratamiento").val();
+    let tienda = $("#lista-sedes").val();
+    let imagen = $("#imagen-data-banner").attr('src');
+
+    if (nombre && tienda) {
+      const auxData = {
+        nombre: nombre,
+        descripcion_corta: descripcionCorta,
+        descripcion_larga: descripcionLarga,
+        activado: activado,
+        estado: estado,
+        sede_id: tienda,
+        imagen: imagen,
+      };
+
+      if (typeof empresa_id != 'undefined' && empresa_id && !isNaN(empresa_id.value)) {
+        auxData.empresa_id = empresa_id.value
+      }
+      
+      Swal.showLoading();
+      $.ajax({
+        method: "POST",
+        url: "/admin-tratamientos",
+        dataType: "json",
+        data: auxData,
+        success: function (data) {
+          Swal.close();
+            if (data.ok) {
+              $("#nuevoBannerAdministrador").modal("hide");
+                toastSweet('Success', '#{translation.ALERTS.ADD_TREATMENT}', 'success');
+                if (typeof tablaTratamientos !== "undefined") {
+                  tablaTratamientos.ajax.reload();
+                }
+            } else {
+              toastSweet('Error', '#{translation.ALERTS.CANNOT_ADD_TREATMENT}', 'error');
+            }
+        },
+        error: function () {
+          Swal.close();
+            toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+        },
+      });
+    } else {
+      toastSweet('Error', '#{translation.ALERTS.FORM_EMPTY}', 'error');
+    }
+  };

@@ -1,0 +1,133 @@
+extends ../../extends/menu-superior-admin
+
+block contenido
+    
+    .row
+        .col-md-6.col-6.text-grey(style="margin-bottom:10px;")
+            h1.display-1
+                strong #{translation.WAREHOUSES}
+                    //-   span.light= stores.length
+                 
+        .col-md-6.col-6.text-right 
+            button.btn.btn-success(type="button" onClick="openNewStore()")
+                i.fas.fa-plus
+                   span  #{translation.WAREHOUSES}
+        if activo_marketplace===1             
+            .col-md-4.col-6
+                div(style="display: inline-flex")
+                    .form-group
+                        label.font-weight-bold.datev-label #{translation.FORM.COMPANY}
+                        select#empresas
+                            option(value=0) #{translation.SELECT_BUSINESS}
+                    //- +empresas-select2('empresas')
+                            //- select#filtroNombre.form-control.seleccionar
+                                option(value=0) Seleccione
+                                    option(value="-") Sin asignar
+                                    //- each i in empresas
+                                        option(value=i.nombre)= i.nombre
+      
+
+        .col-md-4.col-sm-6
+           div(style="display: inline-flex")
+                .form-group
+                      label.font-weight-bold.datev-label(for='dateFrom') #{translation.FORM.CREATED_AT}
+                         input#dateFrom.form-control(type='date' name='dateFrom' min='2010-01-01')
+        .col-md-4.col-6(style="max-width: 400px")
+     
+            label.font-weight-bold.datev-label #{translation.MASSIVE_ACTIONS}
+                     .row
+                        .col-md-8.col-12
+                            select#acciones.form-control
+                                    option(value=null)  #{translation.SELECT}
+                                    option(value="0") #{translation.DELETE}
+                        .col-md-4.col-12
+                            button#accionesBoton(class="btn btn-success-2") #{translation.CONFIRM}
+
+
+        .col-12(style="margin-top: 20px;")
+            div.table-responsive
+                table#tabla-almacenes.table.table-bordered
+                    thead.thead-dark
+                        tr.table-head
+                            th.text-center 
+                            if  activo_marketplace===1       
+                                 th.text-left #{translation.FORM.COMPANY}
+                            th.text-left #{translation.FORM.WAREHOUSE_NAME}
+                            th.text-center #{translation.FORM.ADDRESS}
+                            th.text-center #{translation.FORM.COUNTRY}
+                            th.text-center #{translation.FORM.DISTRICT}
+                            th.text-center #{translation.FORM.UPDATED_AT}
+                            th.text-center #{translation.FORM.ACTIONS}
+                    tbody
+                        each store in stores
+                            tr(id= store.id)
+                                td.text-center 
+                                if  activo_marketplace===1    
+                                    td #{store.empresa_id}
+                                       
+                                //-    td.text-center= store.empresa_id?((empresas.filter((i) => i.empresa_id == store.empresa_id)).length?(empresas.filter((i) => i.empresa_id == store.empresa_id))[0].nombre:store.empresa_id==0?"-" : store.empresa_id):"-"
+                                td.text-left= store.nombre
+                                td.text-center= store.direccion
+                                td.text-center= store.provincia
+                                td.text-center= store.pais
+                                td.text-center= new Date(store.updated_at).toJSON().slice(0,10)
+                                td.text-center(style="display:inline-flex")
+                                    button.btn.btn-warning( onclick='openNewHandleModalStore(' + JSON.stringify(store) + ')')  
+                                        i.fa.fa-edit
+                                    button.btn.btn-danger( onclick="deleteAdminPanel('"+store.id+"')" style="margin-left:8px")
+                                        i.fa.fa-trash  
+                
+
+    include ./modals/crear-almacen.pug
+    include ./modals/editar-almacen.pug
+    include ./styles/almacenes.pug
+
+    script
+        include /js/toast.sweet.js
+
+    include ./datatable/almacen.pug
+    include ./update/almacen.pug
+    include ./save/almacen.pug
+    include ./delete/almacen.pug
+
+    script.
+        function State(campo, select) {
+            $(campo).on("change", function () {
+                let country_id = $(this).val();
+                if (country_id) {
+                $.ajax({
+                    url: "/admin-almacenes/state/" + country_id,
+                    type: "GET",
+                    dataType: "json",
+                    success: function (data) {
+                    $(select).empty();
+                    $("#seleccionarProvincia").show();
+                    $.each(data, function (key, value) {
+                        $(select).append(
+                        '<option value="' + value.name + '">' + value.name + "</option>"
+                        );
+                    });
+                    },
+                });
+                }
+            });
+        }
+
+        $("#empresas").change(function () {
+            let filtro_empresa_id = this.value;
+            if (this.value != 0) {
+                tablaAlmacenes.columns([1]).search(this.value).draw();
+            } else {
+                //- tablaAlmacenes
+            }
+        });
+
+        $("#empresas").on("select2:unselecting", function (e) {
+            tablaAlmacenes.columns().search('').draw();
+        });
+
+    if activo_marketplace === 1
+        include /modulo-administrativo/cotizaciones/select2/empresas.pug
+    //- include /pugjs/paises.pug
+
+

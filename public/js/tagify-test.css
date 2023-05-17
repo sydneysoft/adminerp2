@@ -1,0 +1,13 @@
+section{ margin-bottom: 2em; }
+
+.tagify  {
+    position: initial !important;
+    left: 0 !important;
+    transform: none !important;
+    margin-top: .2em;
+    min-height: 11ch !important;
+}
+
+.tagify{
+    margin: .2em;
+}

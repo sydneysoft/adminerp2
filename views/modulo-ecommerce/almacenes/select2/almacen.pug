@@ -1,0 +1,49 @@
+script.
+  const select2Almacenes = $("#lista-almacenes, #lista-almacenes-editar, #lista-almacenes-filtro").select2({
+    ajax: {
+      url: "/admin-almacenes/select2",
+      dataType: 'json',
+      delay: 500,
+      data: function (params) {
+        return {
+          term: params.term,
+          select: ['id', 'nombre'],
+          page: params.page
+        }
+      },
+      processResults: function (data, params) {
+        return {
+          results: $.map(data.data, (item) => {
+            return {
+              id: item.id,
+              text: item.nombre,
+            }
+          })
+        }
+      },
+      cache: true
+    },
+    placeholder: 'Search',
+    templateResult: almacenesState,
+    allowClear: true
+  })
+  //- .on("select2:open", () => {
+  //-   $(".select2-results:not(:has(a))").append(
+  //-     '<a href="#" style="padding: 6px;height: 20px;display: inline-table;" data-toggle="modal" data-target="#nuevoBannerAdministrador" onclick="closeAlmacenesSelect2()">Agregar almacenes</a>'
+  //-   );
+  //- }); //- No se debe crear
+
+  function almacenesState (state) {
+    if (!state.id) {
+      return state.text;
+    }
+    let $container = $(`
+      <span><strong>${state.id}</strong> | ${state.text}</span>
+    `);
+
+    return $container;
+  }
+
+  function closeAlmacenesSelect2 () {
+    $("#lista-almacenes, #lista-almacenes-editar").select2('close');
+  }

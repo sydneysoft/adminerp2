@@ -1,0 +1,120 @@
+script.
+  const nuevaEmpresa = () => {
+    $("#guardarEmpresa form").trigger("reset");
+    // $("#guardarEmpresa form step-one").classList('step-active');
+    $("#guardarEmpresa").modal("show");
+  };
+
+  const guardarEmpresa = (() => {
+
+    const id = $("#guardarEmpresa").attr("data-id");
+
+    let nombre = $("#nombreEmpresaNuevo").val();
+    let razon_social = $("#razonSocialNuevo").val();
+    let whatsapp_corporativo = whatsapp_corporativo_obt.getNumber();
+    let facebook_corporativo = $("#facebookNuevo").val();
+    let youtube_corporativo = $("#youtubeNuevo").val();
+    let twitter_corporativo = $("#twitterNuevo").val();
+    let instagram_corporativo = $("#instagramNuevo").val();
+    let email_corporativo = $("#correoCorporativoNuevo").val();
+    let direccion = $("#direccionNueva").val();
+    let nombre_contacto = $("#nombreContactoNuevo").val();
+    let celular_contacto = celular_contacto_obt.getNumber();
+    let email_contacto = $("#emailContactoNuevo").val();
+    let contrasena = $("#contrasenaNueva").val();
+
+    if (!id) {
+
+      $.ajax({
+        url: "/admin-empresas/",
+        type: "POST",
+        dataType: "json",
+        data: {
+          nombre: nombre,
+          razon_social: razon_social,
+          whatsapp_corporativo: whatsapp_corporativo,
+          facebook_corporativo: facebook_corporativo,
+          youtube_corporativo: youtube_corporativo,
+          twitter_corporativo: twitter_corporativo,
+          instagram_corporativo: instagram_corporativo,
+          email_corporativo: email_corporativo,
+          direccion: direccion,
+          nombre_contacto: nombre_contacto,
+          celular_contacto: celular_contacto,
+          email_contacto: email_contacto,
+          contrasena,
+        },
+        success: function (data) {
+
+          Swal.close();
+          window.location.reload(true);
+        },
+        error: function (err) {
+          if ((err.responseJSON.msg == "Usuario existente") == true) {
+            Swal.fire({
+              position: "center",
+              icon: "error",
+              title: "#{translation.ALERTS.CORPORATE_EMAIL_WAS_ALREADY_REGISTERED}",
+              showConfirmButton: false,
+              timer: 2500,
+            });
+          } else {
+
+            Swal.close();
+            Swal.fire({
+              position: "center",
+              icon: "error",
+              title: "#{translation.ALERTS.PROBLEM_SAVING}",
+              showConfirmButton: false,
+              timer: 2500,
+            });
+          }
+        }
+      });
+    } else {
+
+      $.ajax({
+        url: `/admin-empresas/actualizar/${id}`,
+        type: "PUT",
+        dataType: "json",
+        data: {
+          nombre: nombre,
+          razon_social: razon_social,
+          whatsapp_corporativo: whatsapp_corporativo,
+          facebook_corporativo: facebook_corporativo,
+          youtube_corporativo: youtube_corporativo,
+          twitter_corporativo: twitter_corporativo,
+          instagram_corporativo: instagram_corporativo,
+          email_corporativo: email_corporativo,
+          direccion: direccion,
+          nombre_contacto: nombre_contacto,
+          celular_contacto: celular_contacto,
+          email_contacto: email_contacto,
+        },
+        success: function (data) {
+          Swal.close();
+          if (data.ok) {
+            window.location.reload(true);
+          } else {
+            Swal.fire({
+              position: "center",
+              icon: "error",
+              title: "#{translation.ALERTS.PROBLEM_UPDATING}",
+              showConfirmButton: false,
+              timer: 2500,
+            });
+          }
+        },
+        error: function (err) {
+          Swal.close();
+          Swal.fire({
+            position: "center",
+            icon: "error",
+            title: "#{translation.ALERTS.PROBLEM_UPDATING}",
+            showConfirmButton: false,
+            timer: 2500,
+          });
+        },
+      });
+    }
+  });

@@ -1,0 +1,53 @@
+script.
+
+  //Metodo de Envío Eliminar
+  const handleDeleteMetodo = (val) => {
+    Swal.fire({
+      title: "#{translation.ALERTS.ARE_YOU_SURE}",
+      text: "#{translation.ALERTS.YOU_COULD_NOT_REVERT}",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "#{translation.ALERTS.YES_DELETE}",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        handleDeleteMetodoEnvioGeneral(val);
+      }
+    });
+  };
+
+  //Eliminar Todos los Datos Asociados al Método
+  const handleDeleteMetodoEnvioGeneral = (val) => {
+    Swal.showLoading();
+    $.ajax({
+      method: "DELETE",
+      url: `/admin-shipping/metodos-envio/${val}`,
+      dataType: "json",
+      success: function (data) {
+        if (data.status === "success") {
+          Swal.close();
+          window.location.reload(true);
+        } else {
+          Swal.close();
+          Swal.fire({
+            position: "center",
+            icon: "error",
+            title: "#{translation.ALERTS.WRONG}",
+            showConfirmButton: false,
+            timer: 2500,
+          });
+        }
+      },
+      error: function () {
+        Swal.close();
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "#{translation.ALERTS.WRONG}",
+          showConfirmButton: false,
+          timer: 2500,
+        });
+      },
+    });
+  };

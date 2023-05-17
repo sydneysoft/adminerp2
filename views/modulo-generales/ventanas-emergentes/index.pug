@@ -1,0 +1,43 @@
+extends ./layout.pug
+append contenido
+  include /mixins/select2/estados.pug
+  .row.jutify-content-end
+    if empresa_id
+      include /mixins/btn/back.pug
+      input#empresa_id(type="hidden" value=empresa_id)
+      .col-6
+        +btn-back()
+    .col-6.text-right
+      button.btn.btn-primary(type="button" data-toggle="modal" data-target="#nuevoBannerAdministrador") Crear 
+        i.fas.fa-plus.ml-3
+
+  .row.mt-3
+    .col-6.col-md-3
+      +select2Estados()
+  .row.mt-3
+    .col-12
+      .table-responsive
+        table#tabla-ventanas-emergentes.table
+          thead.thead-dark
+          tbody
+          tfoot
+
+  include ./modals/crear-ventana-emergente.pug
+  include ./modals/editar-ventana-emergente.pug
+  include ./modals/seleccionar-imagen.pug    
+
+  include ./save/ventana-emergente.pug
+  include ./update/ventana-emergente.pug
+  include ./delete/ventana-emergente.pug
+
+
+  include ./datatable/ventanas-emergentes.pug
+
+  script.
+    $("#lista-estados-filtro").change(function () {
+      if (typeof tablaVentanaEmergentes != "undefined") {
+        tablaVentanaEmergentes.columns([3]).search(this.value).draw();
+      }
+    })
+  script.
+    getQuantityImages(); 

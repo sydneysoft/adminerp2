@@ -1,0 +1,73 @@
+extends ../layout.pug
+
+append contenido 
+  .border-bottom.border-left.border-right.rounded-bottom.p-3
+    .my-3.row.justify-content-between 
+      .col 
+        button.btn.btn-info(type='button' onclick="window.history.back()") #{translation.BACK}
+      .col.text-right
+        button#guardarItem.btn.btn-primary(type='submit') #{translation.SAVE}
+          i.fas.fa-save.ml-2
+    .my-3 
+      .row 
+        .col-12.col-md-8 
+          .form-group
+            label(for='nombre') #{translation.FORM.NAME}
+            input#nombre.form-control(type='text' placeholder=translation.FORM.NAME name="nombre" required)
+          .form-group 
+            label(for='estracto') #{translation.FORM.EXCERPT}
+            textarea#estracto.form-control(name="estracto" placeholder=translation.FORM.EXCERPT)
+        .col-12.col-md-2
+          .form-group
+            label(for='icono') #{translation.FORM.ICON}
+            .controls
+              button.btn.btn-info#icono(data-iconset="fontawesome5" data-icon="fas fa-wifi" role="iconpicker")
+        .col-12.col-md-2
+          .form-group
+            label(for='iconoImagen') #{translation.FORM.ICON_IMAGE}
+            .controls
+              button.btn.btn-info#iconoImagen(data-iconset="fontawesome5" data-icon="fas fa-wifi" role="iconpicker")
+
+      .row 
+        .col-12.col-md-8
+          .form-group   
+            label(for="body") #{translation.FORM.BODY}
+            textarea#body(name="body" placeholder=translation.FORM.BODY)
+        .col-12.col-md-4
+          include ../../modulo-general/galeria-fotos/modal-galeria.pug
+          include ../../modulo-general/galeria-fotos/partial-modal-galeria.pug
+
+  script.
+    const editor = CKEDITOR.replace('body')   
+  script
+    include ../../../js/modulo-tv/save.js
+    include ../../modulo-general/galeria-fotos/modal-galeria.js
+    include ../../../js/modulo-tv/select2-icon.js
+
+  script.
+    const nombre = document.getElementById('nombre');
+    const estracto = document.getElementById('estracto');
+    const icono = document.getElementById('icono');
+    const iconoImagen = document.getElementById('iconoImagen');
+    const imagen = document.getElementById('imagen');
+
+    const clearForm = () => {
+      nombre.value = '';
+      estracto.value = '';
+      icono.value = '';
+      iconoImagen.value = '';
+      imagen.value = '';
+      editor.setData('','');
+    };
+    document.getElementById('guardarItem').addEventListener('click', (event) => {
+      save('/admin-ceservicios/servicios', {
+        nombre: nombre.value,
+        estracto: estracto.value,
+        icono: $("#icono input").val(),
+        icono_imagen: $("#iconoImagen input").val(),
+        imagen: imagen.value,
+        body: editor.getData()
+      });
+    });
+
+  script(src="/js/bootstrap-iconpicker.bundle.min.js")

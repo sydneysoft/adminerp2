@@ -1,0 +1,148 @@
+extends ../../extends/menu-superior-admin
+
+block contenido
+  .row
+    if empresa_id
+      input#empresa_id(type="hidden" value=empresa_id)
+    .col-md-6.col-12.text-grey(style="margin-bottom:10px;")
+      h1.display-1
+        strong #{translation.PAYMENT_PROVIDERS} 
+    .col-md-6.col-12.text-right(style="margin-top: 5px")
+      button.btn.btn-success(type="button" onClick="openNewPayment()")
+        i.fas.fa-plus
+          span #{translation.PAYMENTS} 
+      span  
+        //- button.btn.btn-success(type="button" onClick="openInsumosAgregar()")
+          i.fas.fa-plus
+            span   Insumos
+        button.btn.btn-success(type="button" data-toggle="modal" data-target="#nuevoInsumoModal")
+          i.fas.fa-plus
+            span #{translation.INGREDIENTS}
+      span  
+      button.btn.btn-success(type="button" onClick="openInsumos()")
+        span #{translation.SEE_INGREDIENTS}
+
+    //- if activo_marketplace===1
+      .col-md-6.col-6
+        div 
+          .form-group
+            label.font-weight-bold.datev-label Empresa
+              select#filtroEmpresas.form-control.seleccionar 
+                option(value=0) Seleccione
+                  each item in empresas
+                    option(value=item.nombre)= item.nombre        
+    .col-md-4.col-6
+      div 
+        .form-group
+          label.font-weight-bold.datev-label #{translation.FORM.NAME} 
+            select#lista-filtro-nombre-proveedores
+              //- select#filtroNombre.form-control.seleccionar 
+                option(value=0) Seleccione
+                  //- each item in nombres
+                    option(value=item)= item
+
+    .col-md-4.col-6
+      div 
+        .form-group
+          label.font-weight-bold.datev-label #{translation.FORM.CUIT}
+            select#lista-filtro-cuit-proveedores
+              //- select#filtroDocumento.form-control.seleccionar  
+                option(value=0) Seleccione
+                  //- each id in cuit
+                    option(value=id)= id
+
+
+    .col-md-4.col-sm-6
+      div 
+        .form-group
+          label.font-weight-bold.datev-label(for='dateFrom') #{translation.FORM.DATE_CREATED}
+            input#dateFrom.form-control(type='date' name='dateFrom' min='2010-01-01')
+
+
+    .col-md-4.col-12(style="max-width: 400px")
+      div(style="display: inline-flex")
+        select#acciones.form-control
+          option(value=null) #{translation.FORM.MASSIVE_ACTIONS}
+          option(value="0") #{translation.FORM.DELETE}
+
+        button#accionesBoton(class="btn btn-success-2") #{translation.FORM.CONFIRM} 
+
+    .col-12(style="margin-top: 5px;")
+      div.table-responsive
+        table#tabla-pago-proveedores.table.table-bordered
+          thead.thead-dark
+            //- tr.table-head
+              th
+              th.text-left Insumo/Servicio
+              th.text-center CUIT
+              th.text-center Nombre Proveedor
+              th.text-center Monto
+              th.text-center Fecha
+              if activo_marketplace===1
+                th.text-center Empresa
+              th.text-center Acción
+          //- tbody
+            each item in supplier
+              tr(id= item.id)
+                td.text-center
+                td.text-left(style="text-transform: capitalize;")= item.insumo
+                td.text-center= item.cuit
+                td.text-center=item.nombre_proveedor
+                td.text-center= "$/ "+ item.monto
+                td.text-center=new Date(item.updated_at).toJSON().slice(0,10)
+                if activo_marketplace===1
+                  td.text-center= item.empresa_id?((empresas.filter((i) => i.empresa_id == item.empresa_id)).length?(empresas.filter((i) => i.empresa_id == item.empresa_id))[0].nombre:item.empresa_id==0?"-" : item.empresa_id):"-" 
+
+                td.text-center
+                  button.btn.btn-warning( onclick="openNewHandleModalSupplier('"+item.id+"','"+item.insumo+"','"+item.cuit+"','"+item.monto+"','"+item.empresa_id+"')")  
+                    i.fa.fa-edit
+                  button.btn.btn-danger( onclick="deleteAdminPanel('"+item.id+"',`/admin-pago-proveedores/`)" style="margin-left:8px")
+                    i.fa.fa-trash  
+          tfoot 
+            tr 
+              th
+              th.text-left #{translation.FORM.INGREDIENTS_SERVICE}
+              th.text-center #{translation.FORM.CUIT}
+              th.text-center #{translation.FORM.PROVIDER_NAME}
+              th.text-center #{translation.FORM.DATE}
+              th.text-center #{translation.FORM.ACTION}
+  script
+    include /js/toast.sweet.js
+  script.
+    $("#lista-filtro-nombre-proveedores").change(function () {
+      tablaPagoProveedores.search(this.value).draw();
+    });
+    $("#lista-filtro-cuit-proveedores").change(function () {
+      tablaPagoProveedores.search(this.value).draw();
+    });
+    $("#dateFrom").change(function () {
+      tablaPagoProveedores.search(this.value).draw();
+    });
+  include ./modals/crear-pagos.pug
+   include ./modals/crear-insumo.pug
+  include ./modals/editar.pug
+  include ./modals/gestionar-insumos.pug
+
+  include ./styles/proveedores.pug
+
+  script(src='//cdn.jsdelivr.net/npm/sweetalert2@11')
+
+  include ./delete/admin-panel.pug
+  include ./save/crear-insumo.pug
+  include ./save/crear-pago.pug
+  include ./update/proveedores.pug 
+
+  include ./script.pug
+
+  include ./datatable/proveedores.pug
+  include ./select2/proveedores.pug
+  include ./select2/filtro-nombre.pug
+  include ./select2/filtro-cuit.pug
+
+  //- Otros modulos
+  include /modulo-financiero/insumos/select2/insumos.pug
+  include /modulo-financiero/insumos/modals/crear-insumo.pug
+  include /modulo-financiero/insumos/datatable/gestionar-insumos.pug
+  include /modulo-financiero/insumos/save/insumo.pug
+  include /modulo-financiero/insumos/delete/insumo.pug
+

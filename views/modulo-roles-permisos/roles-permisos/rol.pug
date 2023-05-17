@@ -1,0 +1,241 @@
+extends ../layout.pug
+
+append contenido
+  .border-left.border-right.border-bottom.rounded-bottom.p-3
+    .container-fluid
+      .row
+        .col-12
+          #permisos
+            #renderPermisos
+
+
+  script.
+    const renderPermisosNode = document.getElementById('renderPermisos');
+    addEventListener('DOMContentLoaded', () => {
+      getAllPermisos();
+    });
+
+    function getAllPermisos () {
+      const ajaxUrl = '/admin-roles-permisos/allpermisos';
+      $.ajax({
+        url: ajaxUrl,
+        type: 'GET',
+        dataType: 'json',
+        success: function (data) {
+          console.log(data)
+          // data.permisos = [{ id: 1, nombre: "Nombre", identificador: "modulo_tv.categoria.create"}]
+          // filtar por identificador, el identificador antes del punto es el modulo general, intermedio es sub grupo y el ultimo es el permiso
+          // generar una estructura asi: permisos = [{modulo: "modulo_tv", grupos: [{grupo: "categoria", permisos: [{id: 1, nombre: "Nombre", identificador: "modulo_tv.categoria.create"}]}]}]
+          
+          if (data.ok) {
+            let permisos = []
+            data.permisos.forEach(p => {
+              let modulo = p.identificador.split('.')[0];
+              let grupo = p.identificador.split('.')[1];
+              let permiso = p.identificador.split('.')[2];
+              let permisoObj = {id: p.id, nombre: p.nombre, identificador: p.identificador};
+              let grupoObj = {grupo: grupo, permisos: [permisoObj]};
+              let moduloObj = {modulo: modulo, grupos: [grupoObj]};
+              let moduloIndex = permisos.findIndex(m => m.modulo == modulo);
+              if(moduloIndex == -1) {
+                permisos.push(moduloObj);
+              } else {
+                let grupoIndex = permisos[moduloIndex].grupos.findIndex(g => g.grupo == grupo);
+                if(grupoIndex == -1) {
+                  permisos[moduloIndex].grupos.push(grupoObj);
+                } else {
+                  permisos[moduloIndex].grupos[grupoIndex].permisos.push(permisoObj);
+                }
+              }
+            });
+            renderPermisos(permisos);
+          }          
+        },
+        error: function (error) {
+          console.log(error)
+        }
+      })
+    }
+
+    function renderPermisos (data) {
+      // data = [{modulo: "modulo_tv", grupos: [{grupo: "categoria", permisos: [{id: 1, nombre: "Nombre", identificador: "modulo_tv.categoria.create"}]}]}]
+      // recorrer la estructura
+      // generar un checkbox por cada permiso
+      // generar un checkbox por cada grupo
+      // generar un checkbox por cada modulo
+
+      let html = '';
+      data.forEach(m => {
+        html += `
+          <div class="card">
+            <div class="card-header">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="modulo_${m.modulo}">
+                <label class="custom-control-label" for="modulo_${m.modulo}">${m.modulo}</label>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="row">
+        `;
+        m.grupos.forEach(g => {
+          html += `
+            <div class="col-4">
+              <div class="card">
+                <div class="card-header">
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="grupo_${g.grupo}">
+                    <label class="custom-control-label" for="grupo_${g.grupo}">${g.grupo}</label>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <div class="row">
+          `;
+          g.permisos.forEach(p => {
+            html += `
+              <div class="col-12">
+                <div class="custom-control custom-checkbox">
+                  <input type="checkbox" class="custom-control-input" id="permiso_${p.id}" data-target="${p.identificador}">
+                  <label class="custom-control-label" for="permiso_${p.id}">${p.nombre}</label>
+                </div>
+              </div>
+            `;
+          });
+          html += `
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+        });
+        html += `
+              </div>
+            </div>
+          </div>
+        `;
+      });
+
+
+      // Si selecciona el grupo se seleccionan todos los permisos de ese grupo
+      // Si selecciona el modulo se seleccionan todos los grupos y permisos de ese modulo
+      // Si selecciona el permiso se selecciona el grupo y el modulo al que pertenece
+
+      //- let html = '';
+      //- data.forEach(m => {
+      //-   html += `
+      //-     <div class="card">
+      //-       <div class="card-header">
+      //-         <div class="custom-control custom-checkbox">
+      //-           <input type="checkbox" class="custom-control-input" id="modulo_${m.modulo}">
+      //-           <label class="custom-control-label" for="modulo_${m.modulo}">${m.modulo}</label>
+      //-         </div>
+      //-       </div>
+      //-       <div class="card-body">
+      //-         <div class="row">
+      //-   `;
+      //-   m.grupos.forEach(g => {
+      //-     html += `
+      //-       <div class="col-4">
+      //-         <div class="card">
+      //-           <div class="card-header">
+      //-             <div class="custom-control custom-checkbox">
+      //-               <input type="checkbox" class="custom-control-input" id="grupo_${g.grupo}">
+      //-               <label class="custom-control-label" for="grupo_${g.grupo}">${g.grupo}</label>
+      //-             </div>
+      //-           </div>
+      //-           <div class="card-body">
+      //-             <div class="row">
+      //-     `;
+      //-     g.permisos.forEach(p => {
+      //-       html += `
+      //-         <div class="col-12">
+      //-           <div class="custom-control custom-checkbox">
+      //-             <input type="checkbox" class="custom-control-input" id="permiso_${p.id}">
+      //-             <label class="custom-control-label" for="permiso_${p.id}">${p.nombre}</label>
+      //-           </div>
+      //-         </div>
+      //-       `;
+      //-     });
+      //-     html += `
+      //-             </div>
+      //-           </div>
+      //-         </div>
+      //-       </div>
+      //-     `;
+      //-   });
+      //-   html += `
+      //-         </div>
+      //-       </div>
+      //-     </div>
+      //-   `;
+      //- });
+
+      renderPermisosNode.innerHTML = html;
+      initGrupoChangeEventListener();
+    }
+
+    function getPermisos () {
+      let permisos = [];
+      let permisosNode = document.querySelectorAll('#permisos input[type="checkbox"]:checked');
+      permisosNode.forEach(p => {
+        let identificador_permiso = p.getAttribute('data-target');
+        let id_permiso = p.id.split('_')[1]
+        permisos.push({
+          id: id_permiso,
+          identificador: identificador_permiso
+        });
+      });
+      return permisos;
+    }
+
+    function guardar () {
+      let permisos = getPermisos();
+      console.log(permisos);
+      //- let data = {
+      //-   id: id,
+      //-   permisos: permisos
+      //- }
+      //- $.ajax({
+      //-   url: '/api/roles/permisos',
+      //-   type: 'POST',
+      //-   data: data,
+      //-   success: function (data) {
+      //-     console.log(data)
+      //-   },
+      //-   error: function (error) {
+      //-     console.log(error)
+      //-   }
+      //- })
+    }
+
+    function initGrupoChangeEventListener () {
+      let gruposNode = document.querySelectorAll('#permisos input[type="checkbox"]');
+      gruposNode.forEach(g => {
+        g.addEventListener('change', function (e) {
+          let id = e.target.id;
+          let tipo = id.split('_')[0];
+          let identificador = id.split('_')[1];
+          let permisosNode = document.querySelectorAll(`#permisos input[type="checkbox"][data-target*="${identificador}"]`);
+          if (tipo == 'modulo') {
+            // disable grupo checkbox
+            let gruposNode = document.querySelectorAll(`#permisos input[type="checkbox"][id*="grupo_${identificador}"]`);
+            gruposNode.forEach(g => {
+              console.log(g)
+              g.checked = e.target.checked;
+            });
+            
+            permisosNode.forEach(p => {
+              p.checked = e.target.checked;
+            });
+          } else if (tipo == 'grupo') {
+            permisosNode.forEach(p => {
+              p.checked = e.target.checked;
+            });
+          } else if (tipo == 'permiso') {
+            let grupoNode = document.querySelector(`#permisos input[type="checkbox"][id="grupo_${identificador.split('.')[1]}"]`);
+            let moduloNode = document.querySelector(`#permisos input[type="checkbox"][id="modulo_${identificador.split('.')[0]}"]`);
+            grupoNode.checked = e.target.checked;
+            moduloNode.checked = e.target.checked;
+          }
+        });
+      });
+    }

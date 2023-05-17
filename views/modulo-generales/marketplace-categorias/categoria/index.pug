@@ -1,0 +1,87 @@
+extends ../layout.pug
+
+append contenido
+  include /mixins/btn/back.pug
+  .border-left.border-right.border-bottom.rounded-bottom.p-3
+    .container-fluid
+      .row
+        .col-6.text-left
+          +btn-back()
+
+        //- .col-6.text-right
+        //-   button#nuevoItem.btn.btn-primary(type="button" data-toggle="modal" data-target="#crearModal") #{translation.CREATE}
+        //-     i.fas.fa-plus-circle.ml-2
+      .row.mt-3
+        .col-12
+          .table-responsive
+            table#marketplace.table
+              thead.thead-dark
+        .col-12
+          input#categoria_id(type="text" value=categoria[0].id hidden)
+
+  script 
+    include /js/modulo-tv/save.js
+    include /js/modulo-tv/update.js
+    include /js/modulo-tv/delete.js
+  script.
+    const categoria_id = document.querySelector('#categoria_id');
+    const empresas = [];
+    let tabla;
+
+  include ./datatable/categoria.pug
+  script.
+    function clearForm () {}
+    //- La siguiente funcion se ejecuta cuando se agrega un item y esta agrega la informacion de empresas y categoriable_server en el front
+    function createItemSuccess (data) {
+      let auxCategoria = {
+        id: data.id,
+        marketplace_categoria_id: data.data.marketplace_categoria_id,
+        marketplace_id: data.data.marketplace_id
+      };
+      categoriable_server.push(auxCategoria);
+
+      empresas.forEach(empresa => {
+        if (empresa.id == auxCategoria.marketplace_id) {
+          empresa.categorias = [auxCategoria];
+        }
+      });
+      reloadTabla();
+    }
+
+    function agregarEmpresa(data) {
+      save('/admin-marketplace-categorias/categorias', {
+        marketplace_categoria_id: data.categoria_id,
+        marketplace_id: data.empresa_id
+      }, createItemSuccess); 
+    }
+
+    function removerEmpresa (data) {
+      beforeDeleteItem(`/admin-marketplace-categorias/categorias/${data.id}`, deleteItemSuccess);
+    }
+
+    //- La siguiente funcion se ejecuta cuando se elimina un item y esta elimina la informacion de empresas y categoriable_server en el front
+    function deleteItemSuccess(data) {
+      //- data.id
+      empresas.forEach(empresa => {
+        if (empresa.categorias) {
+          if (empresa.categorias[0].id == data.id) {
+            empresa.categorias = null;
+          }
+        }
+      });
+
+      categoriable_server.forEach((categoria, index) => {
+        if (categoria.id == data.id) {
+          categoriable_server.splice(index, 1);
+        }
+      });
+
+      reloadTabla();
+
+    }
+
+    const empresa_server = !{JSON.stringify(empresas)};
+
+
+    const categoriable_server = !{JSON.stringify(categoriable)}; // Variable auxiliar para attach la categoria a la empresa
+    

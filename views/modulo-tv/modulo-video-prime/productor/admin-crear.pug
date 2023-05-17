@@ -1,0 +1,59 @@
+extends ../layout.pug
+
+append contenido 
+  .my-3
+    div
+      a.btn.btn-info(href="/admin-video-prime/productores") 
+        i.fas.fa-arrow-left
+        span.px-3 #{translation.BACK}
+    h1.text-center.mb-5 
+      | #{translation.CREATE_NEW_PRODUCER}
+  .my-3 
+    form#nuevaActor(action=`/admin-video-prime/productores` method="post")
+      input#empresa_id(type="text" value=empresa.id hidden)
+      .row.g-3 
+        .col-12.mb-3.text-right 
+          button.btn.btn-primary(type="submit") #{translation.SAVE}
+        .col-12.col-md-8
+          label.form-label(for='nombre') #{translation.FORM.ACTORS_NAME}
+          input#nombre.form-control(type='text' value='' required='' placeholder #{translation.FORM.ACTORS_NAME} name="nombre")
+          .valid-feedback
+            | #{translation.FORM.ACTORS_NAME}
+        .col-12.col-md-4 
+          label.form-label(for="nacionalidad") #{translation.FORM.NATIONALITY} 
+          input#nacionalidad.form-control(type="text" value="" placeholder #{translation.FORM.NATIONALITY} name="nacionalidad" required)
+        .col-12.my-3 
+        .col-12.col-md-6 
+          label.form-label(form="biografia") #{translation.FORM.BIOGRAPHY} 
+          textarea#biografia.form-control(type="text" placeholder #{translation.FORM.BIOGRAPHY})
+            | 
+        .col-12.col-md-3 
+          label.form-label(for="fecha_nacimiento") #{translation.FORM.BIRTH_DATE} 
+          input#fecha_nacimiento.form-control(type="date" placeholder #{translation.FORM.BIRTH_DATE} value="")
+        .col-12.col-md-3 
+          label.form-label(for="genero") #{translation.FORM.GENRE}
+          select#genero.custom-select
+            option(value='Masculino') #{translation.FORM.MALE}
+            option(value='Femenino') #{translation.FORM.FEMALE}
+
+
+  script.
+    const editor = CKEDITOR.replace('biografia')
+
+  script 
+    include ./productor.js
+    include ../../../js/modulo-tv/save.js
+
+  script.
+    document.getElementById('nuevaActor').addEventListener('submit', (event) => {
+      event.preventDefault();
+      save('/admin-video-prime/productores', {
+        nombre: nombre.value,
+        nacionalidad: nacionalidad.value,
+        fecha_nacimiento: fecha_nacimiento.value,
+        genero: genero.value,
+        biografia: editor.getData(),
+        empresa_id: document.getElementById('empresa_id').value
+      })
+    })
+

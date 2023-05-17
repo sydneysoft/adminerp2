@@ -1,0 +1,112 @@
+script.
+  document.getElementById('actualizarTratamiento').addEventListener('click', function () {
+    updateTratamiento();
+  });
+  function updateTratamiento() {
+    if (pacienteEditar.value !== '' && nombreEditar.value !== '' && dosisEditar.value !== '' && inicio_tratamientoEditar.value !== '' && fin_tratamientoEditar.value !== '' && duracionEditar.value !== '') {
+      const data = {
+        paciente_id: pacienteEditar.value,
+        nombre_tratamiento: nombreEditar.value,
+        dosis: dosisEditar.value,
+        inicio_tratamiento: inicio_tratamientoEditar.value,
+        fin_tratamiento: fin_tratamientoEditar.value,
+        descripcion_corta: descripcion_cortaEditar.value,
+        costo_tratamiento: costo_tratamientoEditar.value,
+        duracion: duracionEditar.value,
+        codigo_externo: codigoexternoEditar.value,
+        descripcion_larga: descripcion_largaEditar.value,
+        resultado: resultadoEditar.value,
+        imagen: imagenEditar.value,
+        sede_id: sedeEditar.value,
+        sintomas: sintomasEditar.value,
+        estado: estadoEditar.value
+      };
+
+      if (typeof empresa_id != 'undefined' && !isNaN(empresa_id.value)) {
+        data.empresa_id = empresa_id.value;
+      }
+      
+      $.ajax({
+        method: "PUT",
+        url: "/admin-clinica/tratamiento/items/" + idTratamiento.value,
+        data: data,
+        success: function (response) {
+          if (response.ok) {
+            Swal.fire({
+              icon: 'success',
+              title: 'Tratamiento actualizado',
+              text: response.message,
+              timer: 2000
+            });
+            tablaTratamiento.row(`#delete${idTratamiento.value}`).remove().draw();
+            tablaTratamiento.row.add({
+              "ID": idTratamiento.value,
+              "Nombre": data.nombre_tratamiento,
+              "Paciente": pacienteEditar.options[pacienteEditar.options.selectedIndex].text,
+              "Dosis": data.dosis,
+              "Estado": data.estado,
+              "Acciones": JSON.stringify(data)
+            }).draw();
+            $("#editarTratamientoModal").modal("hide");
+          } else {
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: response.message,
+              timer: 2000
+            });
+          }
+        },
+        error: function (error) {
+          if (error.responseJSON) {
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: error.responseJSON.msg,
+              timer: 2000
+            });
+          } else {
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: 'Error al actualizar tratamiento',
+              timer: 2000
+            });
+          }
+        }
+      });
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Llene los campos obligatorios',
+        timer: 2000
+      })
+    }
+  }
+
+  function editarTratamiento(str) {
+    const edite = JSON.parse(JSON.stringify(str));
+    console.log(edite)
+    idTratamiento.value = edite.id;
+    pacienteEditar.value = edite.paciente_id;
+    nombreEditar.value = edite.nombre_tratamiento;
+    dosisEditar.value = edite.dosis;
+    inicio_tratamientoEditar.value = moment(edite.inicio_tratamiento).format('YYYY-MM-DD');
+    fin_tratamientoEditar.value = moment(edite.fin_tratamiento).format('YYYY-MM-DD');
+    descripcion_cortaEditar.value = edite.descripcion_corta;
+    costo_tratamientoEditar.value = edite.costo_tratamiento;
+    duracionEditar.value = edite.duracion;
+    codigoexternoEditar.value = edite.codigo_externo;
+    descripcion_largaEditar.value = edite.descripcion_larga;
+    resultadoEditar.value = edite.resultado;
+    imagenEditar.value = edite.imagen;
+    sedeEditar.value = edite.sede_id;
+    sintomasEditar.value = edite.sintomas;
+    estadoEditar.value = edite.estado;
+    $(".imagen_").empty();
+    $('.imagen_').append(
+      `<img class="image-item-galeria-photo" src="${imagenEditar.value}"/>`
+    );
+    $("#editarTratamientoModal").modal("show");
+  };

@@ -1,0 +1,64 @@
+script.
+  //Funciones Modulos
+  const crearCategoriaModulo = () => {
+    let nombre = $("#nombreCategoria").val();
+    if (nombre) {
+      $.ajax({
+        method: "POST",
+        url: "/admin-modulos/categorias",
+        dataType: "json",
+        data: {
+          nombre: nombre,
+        },
+        success: function (data) {
+          if (data.ok) {
+            $("#nuevoModuloAdmin").modal("hide");
+            Swal.close();
+            Swal.fire({
+              position: "center",
+              icon: "success",
+              title: "Se agrego el módulo exitósamente.",
+              showConfirmButton: false,
+              timer: 2500,
+            });
+            if (typeof tablaCategorias != "undefined") {
+              tablaCategorias.ajax.reload();
+            }
+            clearCategoriaModuloAdmin();
+          } else {
+            Swal.close();
+            Swal.fire({
+              position: "center",
+              icon: "error",
+              title:
+                "No se pudo agregar el módulo, inténtalo nuevamente  por favor.",
+              showConfirmButton: false,
+              timer: 2500,
+            });
+          }
+        },
+        error: function () {
+          Swal.close();
+          Swal.fire({
+            position: "center",
+            icon: "error",
+            title: "Ocurrió un error interno inténtalo más tarde.",
+            showConfirmButton: false,
+            timer: 2500,
+          });
+        },
+      });
+    } else {
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: "Debes completar el formulario.",
+        showConfirmButton: false,
+        timer: 2500,
+      });
+    }
+  };
+
+  const clearCategoriaModuloAdmin = () => {
+    $("#nombreCategoria").val("");
+  };

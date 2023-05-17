@@ -1,0 +1,91 @@
+extends ./layout.pug
+append contenido
+  .row
+    
+  .row.mt-3.justify-content-end
+    if empresa_id
+      .col-md-6.col-6
+        include /mixins/btn/back.pug
+        input#empresa_id(type="hidden" value=empresa_id)
+        +btn-back()
+    .col-md-6.col-6.text-right 
+      button.btn.btn-success( type="button" onClick="openNewHandleModalProduct()")
+        i.fas.fa-plus
+          span  #{translation.ADD_PRODUCT} 
+  .row.mt-3
+    .col-md-3.col-6
+      .form-group
+        label.font-weight-bold.datev-label #{translation.CATEGORY} 
+        select#lista-categorias-filtro.form-control
+
+    .col-md-3.col-6
+      .form-group
+        label.font-weight-bold.datev-label #{translation.FORM.SUBCATEGORY} 
+        select#lista-subcategorias-filtro.form-control
+      
+  .row.mt-3  
+      .col-md-4.col-12(style="max-width: 400px")
+        label.font-weight-bold.datev-label #{translation.MASSIVE_ACTIONS} 
+          .row
+            .col-7
+              select#acciones.form-control
+                option(value=null) #{translation.FORM.SELECT} 
+                option(value="0") #{translation.DELETE} 
+                option(value="1") #{translation.PUBLISH} 
+                option(value="2") #{translation.SAVE_AS_DRAFT} 
+            .col-2
+              button#accionesBoton(class="btn btn-success-2") #{translation.CONFIRM}  
+
+      div.table-responsive
+        table#tabla-productos.table.table-bordered
+          thead.thead-dark
+          tbody
+          tfoot
+
+  include ./modals/crear-producto.pug
+  include ./modals/editar-producto.pug
+  include ./modals/galeria-editar-producto.pug
+  include ./styles/producto.pug
+
+  include ./save/producto.pug
+  include ./update/producto.pug
+  include ./delete/producto.pug
+  include ./duplicate/producto.pug
+
+
+  script
+    include /js/toast.sweet.js
+  include ./../../modulo-generales/galeria-fotos/seleccion-multiple-galeria/admin-galeria-modal-multiple
+
+  include ./script.pug
+
+  script.
+
+    $("#lista-subcategorias-filtro").change(function () {
+      tablaProductos.columns([4]).search(this.value).draw();
+    })
+
+    $("#lista-categorias-filtro").change(function () {
+      tablaProductos.columns([5]).search(this.value).draw();
+    })
+
+    var oldFiltersArray=[];
+    var deleteFiltrosArray=[];
+    var typeUpdate=1;
+    var typeAction=1;
+    CKEDITOR.replace('ckeditorarea');
+    CKEDITOR.replace('ckeditorareaEditar');
+    //Manejar Imagen Principal del Producto
+
+    var typeOperation="1"; 
+  include ./datatable/productos.pug
+
+  //- Otros modulos
+
+  include /modulo-ecommerce/subcategorias/select2/subcategoria.pug
+  include /modulo-ecommerce/subcategorias/modals/crear-banner-admin.pug
+  include /modulo-ecommerce/subcategorias/save/subcategoria-admin.pug
+
+  include /modulo-ecommerce/categorias/modals/crear-categoria.pug
+  include /modulo-ecommerce/categorias/save/categoria.pug
+  include /modulo-ecommerce/categorias/select2/categorias.pug

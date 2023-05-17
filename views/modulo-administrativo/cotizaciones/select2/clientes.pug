@@ -1,0 +1,62 @@
+script.
+  let clientesUrlAjaxSelect2 = "/cotizaciones/clientes/select2";
+  $('#empresa').on('change', (e) => {
+    const empresa = parseInt($('#empresa').val());
+    if (!isNaN(empresa) ) {
+      clientesUrlAjaxSelect2 = `/cotizaciones/clientes/select2/${empresa}`;
+      initClientesSelect2();
+    }
+  });
+  function initClientesSelect2() {
+    let empresa = parseInt($('#empresa').val());
+    if (empresa_id && empresa_id.value != "" && isNaN(empresa)) {
+      clientesUrlAjaxSelect2 = `/cotizaciones/clientes/select2/${empresa_id.value}`;
+    }
+    $('#cliente').select2({
+      ajax: {
+        url: clientesUrlAjaxSelect2,
+        dataType: 'json',
+        delay: 500,
+        data: function (params) {
+          return {
+            term: params.term,
+            select: ['id', 'nombre', 'email'],
+            page: params.page
+          }
+        },
+        processResults: function (data, params) {
+          return {
+            results: $.map(data.data, (item) => {
+              return {
+                id: item.email,
+                text: item.nombre,
+                "data-value": item.nombre,
+                email: item.email,
+              }
+            })
+          }
+        },
+        cache: true
+      },
+      placeholder: 'Search for a repository',
+      templateResult: clienteState
+    }).on("select2:open", () => {
+      $(".select2-results:not(:has(a))").append(
+        '<a href="#" style="padding: 6px;height: 20px;display: inline-table;" onclick="clientesAgregar()">Crea nuevo cliente</a>'
+      );
+    });
+
+    function clienteState (cliente) {
+      //- option(value=item.email data-value=item.nombre)= item.nombre +" | " + item.email 
+      if (!cliente.id) {
+        return cliente.text;
+      }
+      let $container = $(`
+        <span>${cliente.text} | ${cliente.email}</span>
+      `)
+
+      return $container;
+    }
+  }
+
+  initClientesSelect2();

@@ -1,0 +1,36 @@
+extends ../layout.pug
+
+append contenido
+  .my-3
+    div
+      a.btn.btn-primary(href="/admin-tv/faqs") 
+        i.fas.fa-arrow-left
+        span.px-3 #{translation.BACK}
+
+    h1.text-center.mb-5 
+      | #{data.pregunta}
+
+    .my-3.text-right 
+      a.btn.btn-primary(href=`/admin-tv/faqs/edite/${data.id}`) #{translation.EDIT}
+    .card   
+      .card-body 
+        .table-responsive 
+          table.table 
+            thead
+              tr
+                th(scope='col') #{translation.FORM.NAME}
+                th(scope='col') #{translation.FORM.DESCRIPTION}
+
+            tbody
+              tr
+                th(scope='row') ID
+                td #{data.id}
+              tr
+                th(scope='row') #{translation.FORM.QUESTION}
+                td #{data.pregunta}
+              tr
+                th(scope='row') #{translation.FORM.ICON}
+                td #{data.icono}
+              tr
+                th(scope='row') #{translation.FORM.ANSWER}
+                td!= data.respuesta

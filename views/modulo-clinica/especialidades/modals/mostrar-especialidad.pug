@@ -1,0 +1,130 @@
+//- Modal para mostrar especialidad
+.modal.fade.justify-content-center.align-items-center(tabindex="-1" role="dialog" id="mostrarEspecialidadModal")
+  .modal-dialog.modal-lg
+    .modal-content.modalContent(style="height: 100%;")
+      .modal-header 
+        .row(style="margin:0;")
+          .col-md-12
+            h3(style="margin:0px 0;") #{translation.SHOW}
+
+      .modal-body.borderBottom
+        .row 
+          .col-12.col-md-9
+            .form-group 
+              label(for="nombre_mostrar") #{translation.FORM.NAME}
+              input#nombre_mostrar.form-control(type="text" placeholder=translation.FORM.NAME readonly)
+          .col-12.col-md-3
+            .form-group
+              label(for="codigoexterno_mostrar") #{translation.FORM.EXTERNAL_CODE}
+              input#codigoexterno_mostrar.form-control(type="text" placeholder=translation.FORM.EXTERNAL_CODE readonly)
+        .row.mt-3
+          .col-12.col-md-6
+            .form-group 
+              label(for="estado_mostrar") #{translation.FORM.STATE}
+              //- input#estado.form-control(type="text" placeholder=translation.FORM.STATE)
+              select#estado_mostrar.form-control(name="estado" disabled)
+                option(value="1") #{translation.FORM.ACTIVE}
+                option(value="2") #{translation.FORM.INACTIVE}
+          .col-12.col-md-6 
+            .form-group
+              label(for="sede_mostrar") #{translation.FORM.BRANCH}
+              select#sede_mostrar.form-control(disabled)
+                option(value="0") #{translation.FORM.NO_BRANCH}
+                each sede in sedes
+                  option(value=sede.id) #{sede.nombre}
+        .row.mt-3
+          .col-12.col-md-6
+            .form-group 
+              label(for="categoria_mostrar") #{translation.FORM.CATEGORY}
+              select#categoria_mostrar.form-control(name="categoria" disabled)
+                //- Categorias medicas
+                option(value="1") Angiología
+                option(value="2") Cardiología
+                option(value="3") Cirugía General
+                option(value="4") Dermatología
+                option(value="5") Endocrinología
+                option(value="6") Gastroenterología
+                option(value="7") Geriatría
+                option(value="8") Ginecología
+                option(value="9") Hematología
+                option(value="10") Infectología
+                option(value="11") Medicina Interna
+                option(value="12") Nefrología
+                option(value="13") Neurología
+                option(value="14") Neurocirugía
+                option(value="15") Nutrición
+                option(value="16") Oftalmología
+                option(value="17") Oncología
+                option(value="18") Otorrinolaringología
+                option(value="19") Pediatría
+                option(value="20") Psiquiatría
+                option(value="21") Reumatología
+                option(value="22") Traumatología
+                option(value="23") Urología
+                option(value="24") Otros
+                //- Categorias odontologicas
+                option(value="25") Odontología General
+                option(value="26") Odontopediatría
+                option(value="27") Ortodoncia
+                option(value="28") Periodoncia
+                option(value="29") Endodoncia
+                option(value="30") Cirugía Maxilofacial
+                option(value="31") Prótesis
+                option(value="32") Implantes
+                option(value="33") Otros
+                //- Categorias de laboratorio
+                option(value="34") Análisis Clínicos
+                option(value="35") Análisis de Orina
+                option(value="36") Análisis de Sangre
+                option(value="37") Análisis de Heces
+                option(value="38") Otros
+                //- Categorias de fisioterapia
+                option(value="39") Fisioterapia General
+                option(value="40") Fisioterapia Respiratoria
+                option(value="41") Fisioterapia Neurológica
+                option(value="42") Fisioterapia Pediátrica
+                option(value="43") Fisioterapia Deportiva
+                option(value="44") Fisioterapia Geriátrica
+                option(value="45") Fisioterapia Oncológica
+                option(value="46") Fisioterapia Cardiovascular
+                option(value="47") Fisioterapia Traumatológica
+                option(value="48") Fisioterapia Uroginecológica
+                option(value="49") Fisioterapia Estética
+                option(value="50") Fisioterapia del Suelo Pélvico
+                option(value="51") Fisioterapia del Trastorno del Espectro Autista
+                option(value="52") Fisioterapia del Trastorno del Espectro Autista
+                option(value="53") Fisioterapia del Trastorno del Espectro Autista
+          .col-12.col-md-6
+            .form-group
+              label(for="icono_mostrar") #{translation.FORM.ICON}
+                span#showIcono_mostrar
+              input#icono_mostrar.form-control(type="text" placeholder=translation.FORM.ICON readonly)
+
+        .row.mt-3
+          .col-12.col-md-6
+            .form-group 
+              label(for="descriptionlarga_mostrar") #{translation.FORM.LONG_DESCRIPTION}
+              textarea#descriptionlarga_mostrar.form-control(placeholder=translation.FORM.LONG_DESCRIPTION readonly)
+          .col-12.col-md-6
+            .form-group
+              label(for="descripcioncorta_mostrar") #{translation.FORM.SHORT_DESCRIPTION}
+              textarea#descripcioncorta_mostrar.form-control(placeholder=translation.FORM.SHORT_DESCRIPTION readonly)
+
+        .row.mt-3 
+          .col-12.col-md-6
+            .row.mb-3.align-items-end
+              .col-8
+                span #{translation.FORM.IMAGE}
+                br
+              .col-4
+                #mostrarImagen_mostrar
+          .col-12.col-md-6
+            //- Checkbox
+            .form-check 
+              input#activado_mostrar.form-check-input(type="checkbox" value="" disabled)
+              label.form-check-label(for="activado") #{translation.FORM.ENABLED}
+
+      .modal-footer(style="padding:8px;")
+        .row(style="margin:0;")
+          .col-md-12.text-right
+            button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}

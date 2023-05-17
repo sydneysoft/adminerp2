@@ -1,0 +1,37 @@
+script.
+  const eliminarPagoPersonalAdmin = (id, url) => {
+    Swal.fire({
+      title: "Estás Seguro?",
+      text: "No podras revertir esta acción",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: #{translation.ALERTS.YES_DELETE},
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.showLoading();
+
+        fetch("/admin-pago-personal/" + id, {
+          method: "delete",
+        })
+          .then((data) => {
+              if (data.ok) {
+                Swal.close();
+                if (typeof tablaPagoPersonal != "undefined") {
+                tablaPagoPersonal.ajax.reload();
+              }
+
+              toastSweet('Success', "#{translation.ALERTS.CREATED}", 'success');
+            } else {
+              Swal.close();
+              toastSweet('Error', "#{translation.ALERTS.WRONG}", 'error');
+            }
+          })
+          .catch(() => {
+            Swal.close();
+            toastSweet('Error', "#{translation.ALERTS.WRONG}", 'error');
+          });
+      }
+    });
+  };

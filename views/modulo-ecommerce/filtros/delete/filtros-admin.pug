@@ -1,0 +1,39 @@
+script.
+  //Handle Data DELETE
+  function eliminarFiltrosAdmin (val) {
+    Swal.fire({
+      title: "#{translation.ALERTS.ARE_YOU_SURE}",
+      text: "#{translation.ALERTS.YOU_COULD_NOT_REVERT}", 
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "#{translation.ALERTS.YES_DELETE}",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        handleDeleteFiltroAdmin(val);
+      }
+    });
+  }
+  function handleDeleteFiltroAdmin (val) {
+    Swal.showLoading();
+    $.ajax({
+      method: "GET",
+      url: "/grupo-filtro-delete/" + val,
+      dataType: "json",
+      data: null,
+      success: function (data) {
+        if (data.status === "success") {
+          Swal.close();
+          window.location.reload(true);
+        } else {
+          Swal.close();
+          toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+        }
+      },
+      error: function () {
+        Swal.close();
+        toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+      },
+    });
+  }

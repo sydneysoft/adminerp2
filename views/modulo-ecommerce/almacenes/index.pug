@@ -1,0 +1,86 @@
+extends ./layout.pug
+
+append contenido
+  .row.justify-content-end
+    if empresa_id
+      include /mixins/btn/back.pug
+      input#empresa_id(type="text" value=empresa_id hidden)
+      .col-md-6.col-6
+        +btn-back()
+    .col-md-6.col-6.text-right 
+      button.btn.btn-success(type="button" onClick="openNewStore()")
+        i.fas.fa-plus
+          span  #{translation.WAREHOUSES}
+
+  .row.mt-3
+    .col-md-3.col-sm-6
+      .form-group
+        label.font-weight-bold.datev-label(for='dateFrom') #{translation.FORM.CREATED_AT}
+        input#dateFrom.form-control(type='date' name='dateFrom' min='2010-01-01')
+    .col-md-3.col-sm-6
+      .form-group
+        label(for="") #{translation.FORM.COUNTRY}
+        select#lista-paises-filtro
+  .row.mt-3
+    .col-md-4.col-6(style="max-width: 400px")
+
+      label.font-weight-bold.datev-label #{translation.MASSIVE_ACTIONS}
+        .row
+          .col-md-8.col-12
+            select#acciones.form-control
+              option(value=null) #{translation.SELECT}
+              option(value="0") #{translation.DELETE}
+          .col-md-4.col-12
+            button#accionesBoton(class="btn btn-success-2") #{translation.CONFIRM}
+
+
+    .col-12(style="margin-top: 20px;")
+      div.table-responsive
+        table#tabla-almacenes.table.table-bordered
+          thead.thead-dark
+          tbody
+          tfoot  
+
+
+  include ./modals/crear-almacen.pug
+  include ./modals/editar-almacen.pug
+  include ./styles/almacenes.pug
+
+  script
+    include /js/toast.sweet.js
+
+  include ./datatable/almacen.pug
+  include ./update/almacen.pug
+  include ./save/almacen.pug
+  include ./delete/almacen.pug
+
+  script.
+    addEventListener("DOMContentLoaded", function () {
+      $(select2Paises).change(function () {
+        if (this.value != "") {
+          $("#seleccionarProvincia").show();
+          if (typeof actualizarProvincias === "function") {
+            actualizarProvincias()
+          }
+        } else {
+          $("#seleccionarProvincia").hide();
+          if (typeof select2Estados != 'undefined') {
+            select2Estados.select2('destroy');
+          }
+        }
+      });
+    });
+    $("#lista-paises-filtro").change(function () {
+      let filtro_pais_id = this.value;
+      if (filtro_pais_id != "") {
+        tablaAlmacenes.search(filtro_pais_id).draw();
+      } else {
+        tablaAlmacenes.search("").draw();
+      }
+    })
+    
+
+  //- otros modulos
+  include /modulo-generales/geolocalizacion/select2/paises.pug
+  include /modulo-generales/geolocalizacion/select2/provincias.pug
+  include /modulo-generales/geolocalizacion/select2/pais-provincia-ciudades.pug

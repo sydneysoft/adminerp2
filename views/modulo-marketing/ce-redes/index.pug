@@ -1,0 +1,146 @@
+extends ./layout.pug
+
+append contenido 
+  .border-bottom.border-left.border-right.rounded-bottom.p-3
+    if empresa_id
+      input#empresa_id(type="text" value=empresa_id hidden)
+    else
+      input#empresa_id(type="text" value="" hidden)
+    .row
+      .col-6 
+        if empresa_id 
+          button.btn.btn-info(type="button" onclick="window.history.back()") #{translation.BACK}
+            i.fas.fa-arrow-left.ml-2
+      .col-6.text-right
+        button#btnCrear.btn.btn-primary(type='button' data-toggle="modal" data-target="#nuevoRedModal") #{translation.CREATE}
+          i.fas.fa-plus.ml-2
+
+
+    .my-3.table-responsive 
+      table#tabla-redes.table.rounded-lg
+        thead.thead-dark
+        tbody 
+        tfoot
+
+  script 
+    include /js/modulo-tv/save.js
+    include /js/modulo-tv/update.js
+    include /js/modulo-tv/delete.js
+    include /js/modulo-tv/select2-icon.js
+  script.
+    const empresa_id = document.getElementById('empresa_id');
+  .container-body
+    include ./datatable/redes.pug
+    include ./modals/crear-red.pug
+    include ./modals/editar-red.pug
+    include ./modals/mostrar-red.pug
+
+  script.
+    const nombre = document.getElementById('nombre');
+    const url = document.getElementById('url');
+    const identificador = document.getElementById('identificador');
+    const icono_select = document.getElementById('icono');
+
+    const nombre_edit = document.getElementById('nombre_edit');
+    const url_edit = document.getElementById('url_edit');
+    const identificador_edit = document.getElementById('identificador_edit');
+    const icono_select_edit = document.getElementById('icono_edit');
+
+    const nombre_mostrar = document.getElementById('nombre_mostrar');
+    const url_mostrar = document.getElementById('url_mostrar');
+    const identificador_mostrar = document.getElementById('identificador_mostrar');
+    const icono_select_mostrar = document.getElementById('icono_mostrar');
+
+    const itemId = document.getElementById('itemId');
+    const addRed = document.getElementById('addRed');
+    const editRed = document.getElementById('editRed');
+
+    function editarRed(data) {
+      console.log(data)
+      nombre_edit.value = data.nombre;
+      url_edit.value = data.url;
+      identificador_edit.value = data.identificador;
+      //- icono_select_edit.value = data.icono;
+      //- icono_select_edit.value = $("#icono_edit").val(data.icono);
+      $("#icono_edit i").attr("class", data.icono);
+      $("#icono_edit input").val(data.icono);
+      itemId.value = data.id;
+      $("#icono_edit").trigger('change');
+    }
+
+    function mostrarRed(data) {
+      nombre_mostrar.value = data.nombre;
+      url_mostrar.value = data.url;
+      identificador_mostrar.value = data.identificador;
+      //- icono_select_mostrar.value = data.icono;
+      //- icono_select_mostrar.value = $("#icono_mostrar").val(data.icono);
+      $("#icono_mostrar i").attr("class", data.icono);
+      $("#icono_mostrar input").val(data.icono);
+      $('#icono_mostrar').trigger('change');
+    }
+
+    addRed.addEventListener('click', (event) => {
+      if (nombre.value != '') {
+        const data = {
+          nombre: nombre.value,
+          url: url.value,
+          identificador: identificador.value,
+          //- icono: icono_select.value
+          icono: $("#icono input").val()
+        };
+        if(empresa_id.value != '') {
+          data.empresa_id = empresa_id.value;
+        }
+        save('/admin-ceredes/redes', data, itemCreateSuccess);
+      } else {
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          title: "#{translation.ALERTS.ERROR}",
+          text: "#{translation.FORM.REQUIRED_FIELDS}",
+          icon: 'error',
+          showConfirmButton: false,
+          timer: 2500,
+          timerProgressBar: true,
+        })
+      }
+    });
+
+    editRed.addEventListener('click', (event) => {
+      const data = {
+        nombre: nombre_edit.value,
+        url: url_edit.value,
+        identificador: identificador_edit.value,
+        icono: $("#icono_edit input").val()
+      };
+      if (nombre_edit.value != '') {
+        updateItem('/admin-ceredes/redes/' + itemId.value, data, itemUpdateSuccess);
+      } else {
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          title: 'Error!',
+          text: "#{translation.FORM.REQUIRED_FIELDS}",
+          icon: 'error',
+          showConfirmButton: false,
+          timer: 2500,
+          timerProgressBar: true,
+        })
+      }
+    });
+
+    function  itemCreateSuccess(data) {
+      nombre.value = '';
+      url.value = '';
+      icono_select.value = '';
+      $('#icono').trigger('change');
+      $('#nuevoRedModal').modal('hide');
+      tablaRedes.ajax.reload();
+    }
+    function itemUpdateSuccess(data) {
+      $('#editRedModal').modal('hide');
+      tablaRedes.ajax.reload();
+    }
+
+  //- include ./script.pug
+  script(src="/js/bootstrap-iconpicker.bundle.min.js") 

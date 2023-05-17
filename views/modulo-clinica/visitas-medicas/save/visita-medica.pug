@@ -1,0 +1,76 @@
+script.
+  addVisitaMedica.addEventListener('click', () => {
+    //- paciente_id	medico_id	fecha	hora	motivo	anotaciones	resultado	diagnostico	recetas	estado	costo	clinica_id	referencias
+    const nombre = $("#nombre").val(),
+      paciente_id = $("#lista-pacientes").val(),
+      medico_id = $("#lista-medicos").val(),
+      fecha = $("#fecha").val(),
+      hora = $("#hora").val(),
+      motivo = $("#motivo").val(),
+      anotaciones = $("#anotaciones").val(),
+      resultado = $("#resultado").val(),
+      diagnostico = $("#diagnostico").val(),
+      recetas = $("#recetas").val(),
+      estado = $("#estado").val(),
+      costo = $("#costo").val(),
+      clinica_id = $("#lista-sedes").val(),
+      referencias = $("#referencias").val();
+
+
+    if (nombre != '' && paciente_id != '' && medico_id != '' && clinica_id != '') {
+      const data = {
+        nombre,
+        paciente_id,
+        medico_id,
+        fecha,
+        hora,
+        motivo,
+        anotaciones,
+        resultado,
+        diagnostico,
+        recetas,
+        estado,
+        costo,
+        clinica_id,
+        referencias
+      }
+      if (typeof empresa_id != 'undefined' && !isNaN(empresa_id.value)) {
+        data.empresa_id = empresa_id.value;
+      }
+      const url = '/admin-visitas-medicas/items';
+
+      save(url, data, saveItemSuccess);
+
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Debe llenar todos los campos con *',
+        timer: 2000
+      })
+    }
+  });
+
+  function saveItemSuccess (data) {
+    if (typeof tablaVisitasMedicas != "undefined") {
+      tablaVisitasMedicas.ajax.reload();
+    }
+    $("#nombre").val('');
+    $("#lista-pacientes").val('').trigger('change');
+    $("#lista-medicos").val('').trigger('change');
+    $("#lista-sedes").val('').trigger('change');
+    $("#fecha").val('');
+    $("#hora").val('');
+    $("#motivo").val();
+    $("#anotaciones").val();
+    $("#resultado").val();
+    $("#diagnostico").val();
+    $("#recetas").val();
+    $("#estado").val();
+    $("#costo").val();
+    $("#referencias").val();        
+  }
+
+  //- function nuevaSede() {
+  //-   createImageGroup('imagen', 'imagenFile', 'mostrarImagen', 'galeriaImagen');
+  //- }

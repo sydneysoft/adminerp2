@@ -1,0 +1,49 @@
+script.
+  const select2Marcas = $("#lista-marcas, #lista-marcas-editar").select2({
+    ajax: {
+      url: "/admin-marcas/select2",
+      dataType: 'json',
+      delay: 500,
+      data: function (params) {
+        return {
+          term: params.term,
+          select: ['id', 'name'],
+          page: params.page
+        }
+      },
+      processResults: function (data, params) {
+        return {
+          results: $.map(data.data, (item) => {
+            return {
+              id: item.id,
+              text: item.name,
+            }
+          })
+        }
+      },
+      cache: true
+    },
+    placeholder: 'Search',
+    templateResult: marcasState,
+    allowClear: true
+  })
+  .on("select2:open", () => {
+    $(".select2-results:not(:has(a))").append(
+      '<a href="#" style="padding: 6px;height: 20px;display: inline-table;" data-toggle="modal" data-target="#nuevoBannerAdministrador" onclick="closeMarcassSelect2()">#{translation.FORM.ADD_BRAND}</a>'
+    );
+  }); //- No se debe crear
+
+  function marcasState (state) {
+    if (!state.id) {
+      return state.text;
+    }
+    let $container = $(`
+      <span><strong>${state.id}</strong> | ${state.text}</span>
+    `);
+
+    return $container;
+  }
+
+  function closeMarcassSelect2 () {
+    $("#lista-marcas, #lista-marcas-editar").select2('close');
+  }

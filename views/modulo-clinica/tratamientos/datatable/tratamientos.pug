@@ -1,0 +1,83 @@
+script.
+  let tablaTratamientos;
+  $(document).ready(function () {
+    let urlAjaxTablaTratamientos = "/admin-cetratamientos/datatable"
+    if (typeof empresa_id != 'undefined' && !isNaN(empresa_id.value)) {
+      urlAjaxTablaTratamientos += `/${empresa_id.value}`;
+    }
+    tablaTratamientos = $("#tabla-tratamientos").DataTable({
+      columnDefs: [
+        {
+          orderable: false,
+          className: "select-checkbox",
+          targets: 0,
+        },
+      ],
+      select: {
+        style: "multi",
+        selector: "td:first-child",
+      },
+      dom: "Bfrtip",
+      buttons: ["selectAll", "selectNone"],
+      order: [[1, "asc"]],
+      language: {
+        buttons: {
+          selectAll: '#{translation.FORM.SELECT_EVERYTHING}',
+          selectNone: '#{translation.FORM.ERASE_SELECTION}',
+        },
+        url: "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json",
+        select: {
+          rows: "%d filas seleccionadas",
+        },
+      },
+      responsive: true,
+      searchDelay: 500,
+      processing: true,
+      serverSide: true,
+      ajax: urlAjaxTablaTratamientos,
+      rowId: 'id',
+      columns: [
+        { 
+          data: 'id', name: 'id', title: 'ID', orderable: false, searchable: false,
+          render: function (data, type, row) {
+            return ``;
+          }
+        },
+        { data: 'nombre', name: 'nombre', title: '#{translation.FORM.NAME}', orderable: true, searchable: true},
+        { data: 'costo', name: 'costo', title: '#{translation.FORM.COST}', orderable: true, searchable: true},
+        { data: 'duracion', name: 'duracion', title: '#{translation.FORM.DURATION}', orderable: true, searchable: true},
+        { data: 'frecuencia', name: 'frecuencia', title: '#{translation.FORM.FREQUENCY}', orderable: true, searchable: true},
+        { data: 'modo_aplicacion', name: 'modo_aplicacion', title: '#{translation.FORM.APPLICATION_MODE}', orderable: true, searchable: true},
+        { data: 'dosificacion', name: 'dosificacion', title: '#{translation.FORM.DOSE}', orderable: true, searchable: true},
+        { 
+          data: 'acciones', name: 'acciones', title: '#{translation.FORM.ACTIONS}', orderable: false, searchable: false,
+          render: function (data, type, row) {
+            let strRow = JSON.stringify(row);
+            return `<button type="button" class="btn btn-primary btn-sm" onclick='editarTratamiento(${strRow})'>Editar</button>
+          <button type="button" class="btn btn-danger btn-sm" onclick="beforeDeleteItem('/admin-clinica/tratamiento/items/${row.id}',${row.id})">Eliminar</button>`;
+          }
+        }
+      ],
+      initComplete: function (settings) {
+        //- clone thead to tfoot
+        $("#tabla-tratamientos thead tr").clone().appendTo($("#tabla-tratamientos tfoot"));
+      }
+    });
+
+
+    $("#accionesBoton").click(function () {
+      const valorSeleccionado = $("#acciones").val();
+      const selected_rows = tablaTratamientos
+        .rows({
+          selected: true,
+        })
+        .ids();
+
+      const arraySeleccion = $.makeArray(selected_rows);
+      switch (valorSeleccionado) {
+        case "0":
+          eliminarProductos(arraySeleccion, "ce_tratamientos");
+          break;
+      }
+    });
+  });

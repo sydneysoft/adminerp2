@@ -1,0 +1,20 @@
+.modal.fade#editarCategoriaModal(tabindex="-1" role="dialog")
+  .modal-dialog.modal-sm(role="document")
+    .modal-content
+      .modal-header
+        .row(style="margin:0;")
+          .col-md-12
+            h3(style="margin:0px 0;") #{translation.ADD_CATEGORY}
+      .modal-body
+        .row
+          .col-12
+            .form-group
+              label(for="nombreCategoria-editar") #{translation.FORM.CATEGORY_NAME}
+              input#nombreCategoria-editar.form-control(type="text" placeholder=translation.FORM.CATEGORY_NAME)
+              input#idItem-categoria(type="hidden")
+      .modal-footer(style="padding:8px;")
+        .row(style="margin:0;")
+          .col-md-12.text-right
+            button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}
+            button.btn.btn-success.ml-2(type="button" onclick="actualizarCategoriaModuloAdminPanel()") #{translation.FORM.CREATE_CATEGORY}
+              i.fas.fa-plus.ml-3

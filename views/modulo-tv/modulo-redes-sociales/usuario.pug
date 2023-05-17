@@ -1,0 +1,141 @@
+extends ./layout.pug
+
+append contenido
+  .container-fluid.mt-3.border-bottom.border-left.border-right 
+    if data !== null
+      input#idItem(type="text" value=data.id hidden)
+      .row 
+        .col-12.text-right 
+          button#updateButton.btn.btn-primary(type="button") #{translation.SAVE}
+      .row.mt-3
+        .col-12.col-md-6
+          .form-group
+            label(for="facebook") Facebook 
+            input#facebook.form-control(type="text" name="facebook", value=data.facebook)
+        .col-12.col-md-6
+          .form-group
+            label(for="instagram") Instagram 
+            input#instagram.form-control(type="text" name="instagram", value=data.instagram)
+      .row.mt-3 
+        .col-12.col-md-6
+          .form-group
+            label(for="github") Github 
+            input#github.form-control(type="text" name="github", value=data.github)
+        .col-12.col-md-6
+          .form-group
+            label(for="tiktok") Tiktok 
+            input#tiktok.form-control(type="text" name="tiktok", value=data.tiktok)
+      .row.mt-3 
+        .col-12.col-md-6
+          .form-group
+            label(for="twitter") Twitter 
+            input#twitter.form-control(type="text" name="twitter", value=data.twitter)
+        .col-12.col-md-6
+          .form-group
+            label(for="youtube") Youtube 
+            input#youtube.form-control(type="text" name="youtube", value=data.youtube) 
+      .row.mt-3
+        .col-12.col-md-6
+          .form-group
+            label(for="linkedin") Linkedin 
+            input#linkedin.form-control(type="text" name="linkedin", value=data.linkedin)
+        .col-12.col-md-6
+          .form-group
+            label(for="pinterest") Pinterest 
+            input#pinterest.form-control(type="text" name="pinterest", value=data.pinterest)
+      .row.mt-3
+        .col-12.col-md-6
+          .form-group
+            label(for="whatsapp") Whatsapp 
+            input#whatsapp.form-control(type="text" name="whatsapp", value=data.whatsapp)
+        .col-12.col-md-6
+          .form-group
+            label(for="telegram") Telegram 
+            input#telegram.form-control(type="text" name="telegram", value=data.telegram)
+      script 
+        include ./redes-sociales.js
+        include ../js/update.js
+      script.
+        document.getElementById('updateButton').addEventListener('click', () => {
+          const idItem = document.getElementById('idItem').value;
+          updateItem(`/admin-redes-sociales/items/${idItem}`, {
+            facebook: document.getElementById('facebook').value,
+            instagram: document.getElementById('instagram').value,
+            github: document.getElementById('github').value,
+            tiktok: document.getElementById('tiktok').value,
+            twitter: document.getElementById('twitter').value,
+            youtube: document.getElementById('youtube').value,
+            linkedin: document.getElementById('linkedin').value,
+            pinterest: document.getElementById('pinterest').value,
+            whatsapp: document.getElementById('whatsapp').value,
+            telegram: document.getElementById('telegram').value,
+          });
+        })
+      
+    else 
+      .row 
+        .col-12.text-right 
+          button#saveButton.btn.btn-primary(type="button") #{translation.SAVE}
+      .row.mt-3
+        .col-12.col-md-6
+          .form-group
+            label(for="facebook") Facebook 
+            input#facebook.form-control(type="text" name="facebook")
+        .col-12.col-md-6
+          .form-group
+            label(for="instagram") Instagram 
+            input#instagram.form-control(type="text" name="instagram")
+      .row.mt-3 
+        .col-12.col-md-6
+          .form-group
+            label(for="github") Github 
+            input#github.form-control(type="text" name="github")
+        .col-12.col-md-6
+          .form-group
+            label(for="tiktok") Tiktok 
+            input#tiktok.form-control(type="text" name="tiktok")
+      .row.mt-3 
+        .col-12.col-md-6
+          .form-group
+            label(for="twitter") Twitter 
+            input#twitter.form-control(type="text" name="twitter")
+        .col-12.col-md-6
+          .form-group
+            label(for="youtube") Youtube 
+            input#youtube.form-control(type="text" name="youtube") 
+      .row.mt-3
+        .col-12.col-md-6
+          .form-group
+            label(for="linkedin") Linkedin 
+            input#linkedin.form-control(type="text" name="linkedin")
+        .col-12.col-md-6
+          .form-group
+            label(for="pinterest") Pinterest 
+            input#pinterest.form-control(type="text" name="pinterest")
+      .row.mt-3
+        .col-12.col-md-6
+          .form-group
+            label(for="whatsapp") Whatsapp 
+            input#whatsapp.form-control(type="text" name="whatsapp")
+        .col-12.col-md-6
+          .form-group
+            label(for="telegram") Telegram 
+            input#telegram.form-control(type="text" name="telegram")
+      script 
+        include ./redes-sociales.js
+        include ../../js/modulo-tv/save.js
+      script.
+        document.getElementById('saveButton').addEventListener('click', () => {
+          save('/admin-redes-sociales/items', {
+            facebook: document.getElementById('facebook').value,
+            instagram: document.getElementById('instagram').value,
+            github: document.getElementById('github').value,
+            tiktok: document.getElementById('tiktok').value,
+            twitter: document.getElementById('twitter').value,
+            youtube: document.getElementById('youtube').value,
+            linkedin: document.getElementById('linkedin').value,
+            pinterest: document.getElementById('pinterest').value,
+            whatsapp: document.getElementById('whatsapp').value,
+            telegram: document.getElementById('telegram').value,
+          });
+        });

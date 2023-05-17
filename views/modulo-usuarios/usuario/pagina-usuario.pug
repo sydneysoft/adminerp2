@@ -1,0 +1,69 @@
+extends ../../extends/menu-superior-admin
+block contenido
+
+    .container
+        .row(style="margin-top:15px;")
+            .col-12 
+                div 
+                    .text-left(style="padding-bottom:20px;")
+               
+                        h2(style="color:#202124;margin-bottom:10px;") #{translation.WELCOME}, 
+                          span= usuario[0].nombre_empresa
+                        span(style="font-weight:600;margin-bottom:20px;") #{translation.MANAGE_YOUR_INFO}
+            .col-12.col-md-10 
+                form#perfil(data-id=usuario[0].id)   
+                  .row
+                    .col-12.col-md-6
+                            
+                                    .form-group
+                                        label(for="nombre") #{translation.FORM.BUSINESS_NAME}
+                                        input#nombre.con__input(type="text", name="nombre" value=usuario[0].nombre)
+                                    .form-group
+                                                label(for="categoria") #{translation.FORM.CATEGORY}
+                                                .form-group.content-select-multiple
+                                                select.selectpicker(id="categoria" multiple title="Selecciona") 
+                                                    option(value=0 disabled) #{translation.FORM.SELECT_CATEGORY}
+                                                        each item in categorias
+                                                            option(value= item.categoria)= item.categoria
+                    .col-12.col-md-6
+                                    .form-group
+                                        label(for="email") #{translation.FORM.EMAIL}
+                                        input#email.con__input(type="email", name="email" value=usuario[0].correo disabled)
+                                    .form-group
+                                        label(for="password") #{translation.FORM.PASSWORD}
+                                        input#password.con__input(type="password", name="pswd" placeholder="Contraseña" )
+              
+ 
+
+                button.btn.btn__green.send(type="button", onClick=`validarActualizacion(${usuario[0].id})`) #{translation.UPDATE}
+
+
+    script(src="//cdn.jsdelivr.net/npm/bootstrap-select@1.13.17/dist/js/bootstrap-select.min.js")
+    link(rel='stylesheet' href="//cdn.jsdelivr.net/npm/bootstrap-select@1.13.17/dist/css/bootstrap-select.min.css")
+          
+    style.
+        .send{
+            max-width:200px;
+            float:right; 
+            margin-top:50px
+         
+            
+        }
+        .con__input {
+          text-align: left;}
+        
+    script
+          include ./script.js
+
+    script.
+            const idPerfil=$('#perfil').data('id')
+ 
+            $.ajax({
+                method: "GET",
+                url: `/usuario/categoria/${idPerfil}`,
+                dataType:"json",
+              success: function(data){
+                $('#categoria').selectpicker('val', data.categorias);
+            } 
+            })
+         

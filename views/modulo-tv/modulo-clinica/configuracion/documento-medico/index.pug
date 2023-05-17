@@ -1,0 +1,223 @@
+extends ../../layout.pug
+
+append contenido
+  .border-left.border-right.border-bottom.p-3
+    if empresa_id
+      input#empresa_id(type="text" value=empresa_id hidden)
+    else 
+      input#empresa_id(type="text" value="" hidden)
+    .container-fluid 
+      .row
+        .col-12.text-right 
+          button.btn.btn-primary(type="button" data-toggle="modal" data-target="#nuevoModal") #{translation.ADD}
+            i.fas.fa-plus.ml-2
+    .container-fluid.mt-3
+      .table-responsive
+        table#tablaDocumentos.table.table-striped
+          thead.thead-dark
+
+
+  //- Modal para agregar sede
+  .modal.fade.justify-content-center.align-items-center(tabindex="-1" role="dialog" id="nuevoModal")
+    .modal-dialog.modal-sm
+        .modal-content.modalContent(style="height: 100%;")
+            .modal-header 
+                .row(style="margin:0;")
+                    .col-md-12
+                        h3(style="margin:0px 0;") #{translation.ADD}
+
+            .modal-body.borderBottom
+              //- nombre_documento
+              .row
+                .col-12
+                  .form-group 
+                    label(for="nombre_documento") #{translation.FORM.NAME}
+                    input#nombre_documento.form-control(type="text" placeholder=translation.FORM.NAME)
+
+            .modal-footer(style="padding:8px;")
+                .row(style="margin:0;")
+                    .col-md-12.text-right
+                        button#nuevoItem.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;") #{translation.ADD}
+                        button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}
+
+  //- Modal para editar sede
+  .modal.fade.justify-content-center.align-items-center(tabindex="-1" role="dialog" id="editarModal")
+    .modal-dialog.modal-sm
+        .modal-content.modalContent(style="height: 100%;")
+            .modal-header 
+                .row(style="margin:0;")
+                    .col-md-12
+                        h3(style="margin:0px 0;") #{translation.EDIT}
+
+            .modal-body.borderBottom
+              .row
+                .col-12
+                  .form-group 
+                    label(for="nombre_documento_editar") #{translation.FORM.NAME}
+                    input#nombre_documento_editar.form-control(type="text" placeholder=translation.FORM.NAME)
+              
+              input#itemId(type="text" value="" hidden)
+            .modal-footer(style="padding:8px;")
+                .row(style="margin:0;")
+                    .col-md-12.text-right
+                        button#editarItem.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;") #{translation.EDIT}
+                        button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}
+  
+  //- Modal para mostrar sede
+  .modal.fade.justify-content-center.align-items-center(tabindex="-1" role="dialog" id="mostrarModal")
+    .modal-dialog.modal-sm
+        .modal-content.modalContent(style="height: 100%;")
+            .modal-header 
+                .row(style="margin:0;")
+                    .col-md-12
+                        h3(style="margin:0px 0;") #{translation.SHOW}
+
+            .modal-body.borderBottom
+              .row
+                .col-12
+                  .form-group 
+                    label(for="nombre_documento_mostrar") #{translation.FORM.NAME}
+                    input#nombre_documento_mostrar.form-control(type="text" placeholder=translation.FORM.NAME)
+              
+            .modal-footer(style="padding:8px;")
+                .row(style="margin:0;")
+                    .col-md-12.text-right
+                        button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE} 
+  
+  script
+    include ../../../../js/modulo-tv/save.js
+    include ../../../../js/modulo-tv/update.js
+    include ../../../../js/modulo-tv/delete.js
+  script.
+    const nombre_documento = document.getElementById('nombre_documento');
+    const nombre_documento_editar = document.getElementById('nombre_documento_editar');
+    const nombre_documento_mostrar = document.getElementById('nombre_documento_mostrar');
+
+    const itemId = document.getElementById('itemId');
+
+    const nuevoItem = document.getElementById('nuevoItem');
+    const editarItem = document.getElementById('editarItem');
+
+    let tabla;
+    addEventListener('DOMContentLoaded', () => {
+      let urlAjax = '/admin-clinica/configuracion/documento-medico/datatable'
+      if (empresa_id)
+      tabla = $('#tablaDocumentos').DataTable({
+        fnCreatedRow: function (nRow, aData, iDataIndex) {
+          $(nRow).attr('id', aData.id);
+        },
+        searchDelay: 500,
+        serverSide: true,
+        processing: true,
+        ajax: urlAjax,
+        columns: [
+          //- nombre	numero_identificacion	direccion	tipo_seguro	cobertura	correo	celular	
+          { 
+            data: 'id',
+            name: 'id',
+            title: 'ID',
+            orderable: false,
+            searchable: false,
+            visible: false
+          },
+          {
+            data: 'nombre_documento',
+            name: 'nombre_documento',
+            title: '#{translation.FORM.DOCUMENT_NAME}'
+          },
+          {
+            data: 'actions',
+            name: 'actions',
+            title: '#{translation.FORM.ACTIONS}',
+            render: function (data, type, row) {
+              let rowStr = JSON.stringify(row);
+              return `
+                <div class="btn-group">
+                  <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editarModal" onclick='editarData(${rowStr})'>
+                    <i class="fas fa-edit"></i>
+                  </button>
+                  <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#mostrarModal" onclick='mostrarData(${rowStr})'>
+                    <i class="fas fa-eye"></i>
+                  </button>
+                  <button class="btn btn-danger btn-sm" onclick="beforeDeleteItem('/admin-clinica/configuracion/documento-medico/items/${row.id}', deleteSuccessData)">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              `
+            },
+            orderable: false,
+            searchable: false
+          }
+          
+        ]
+      })
+    })
+
+    nuevoItem.addEventListener('click', (event) => {
+      let auxData = {
+        nombre_documento: nombre_documento.value
+      }
+      if (empresa_id.value != '') {
+        auxData.empresa_id = empresa_id.value
+      }
+      if(nombre_documento.value != ''){
+        save('/admin-clinica/configuracion/documento-medico/items', auxData, createItemSuccess)
+      } else {
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'error',
+          title: 'Oops...',
+          text: #{translation.FORM.REQUIRED_FIELDS},
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+        })
+      }
+    });
+
+    editarItem.addEventListener('click', (event) => {
+      let auxData = {
+        nombre_documento: nombre_documento_editar.value
+      }
+      if (empresa_id.value != '') {
+        auxData.empresa_id = empresa_id.value
+      }
+      if(nombre_documento_editar.value != ''){
+        updateItem(`/admin-clinica/configuracion/documento-medico/items/${itemId.value}`, auxData, UpdateItemSuccess)
+      } else {
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'error',
+          title: 'Oops...',
+          text: #{translation.FORM.REQUIRED_FIELDS},
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+        })
+      }
+    });
+
+    function editarData (data) {
+      nombre_documento_editar.value = data.nombre_documento;
+      itemId.value = data.id;
+    }
+
+    function mostrarData (data) {
+      nombre_documento_mostrar.setAttribute('disabled', 'disabled');
+      nombre_documento_mostrar.value = data.nombre_documento;
+    }
+
+    function deleteSuccessData (data) {
+      tabla.row($(`#${data.target}`)).remove().draw();
+    }
+    function createItemSuccess(data) {
+      nombre_documento.value = ''
+      tabla.ajax.reload();
+    }
+    function UpdateItemSuccess(data) {
+      tabla.ajax.reload();
+    }
+
+    function clearForm () {}

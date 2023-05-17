@@ -1,0 +1,73 @@
+script.
+  let tablaGrupoFiltros;
+  $(document).ready(function () {
+    let urlAjaxTablaGrupoFiltros = "/admin-filtros/grupo/datatable"
+    if (typeof empresa_id != 'undefined' && empresa_id && !isNaN(empresa_id.value)) {
+      urlAjaxTablaGrupoFiltros += `/${empresa_id.value}`;
+    }
+    tablaGrupoFiltros = $('#tabla-filtros').DataTable({
+      columnDefs: [
+        {
+          orderable: false,
+          className: "select-checkbox",
+          targets: 0,
+        },
+      ],
+      select: {
+        style: "multi",
+        selector: "td:first-child",
+      },
+      dom: "Bfrtip",
+      buttons: ["selectAll", "selectNone"],
+      order: [[1, "asc"]],
+      language: {
+        buttons: {
+          selectAll: "Seleccionar todos",
+          selectNone: "Borrar Selección",
+        },
+        url: "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json",
+        select: {
+          rows: "%d filas seleccionadas",
+        },
+      },
+      rowId: 'id',
+      responsive: true,
+      searchDelay: 500,
+      processing: true,
+      serverSide: true,
+      ajax: urlAjaxTablaGrupoFiltros,
+      columns: [
+        { 
+          data: 'id', name: 'id', title: 'ID', orderable: false, searchable: false,
+          render: function (data, type, row) {
+            return ''
+          }
+        },
+        {
+          data: 'nombre', name: 'nombre', title: '#{translation.FORM.NAME}', orderable: true, searchable: true,
+        },
+        {
+          data: 'categoria', name: 'categoria', title: '#{translation.FORM.CATEGORY}', orderable: true, searchable: true,
+          render: function (data, type, row) {
+            return data;
+          }
+        },
+        { 
+          data: 'acciones', name: 'acciones', title: '#{translation.FORM.ACTIONS}', orderable: false, searchable: false,
+          render: function (data, type, row) {
+            let strRow = JSON.stringify(row);
+            return `
+              <button class="btn btn-info" onclick='handleAddValuesFilter(${row.id}, ${row.categoria})'><i class="fas fa-plus"></i></button>
+              <button class="btn btn-warning" onclick='handleEdiFiltros(${row.id})'><i class="fas fa-edit"></i></button>
+              <button class="btn btn-danger" onclick='eliminarFiltrosAdmin(${row.id})'><i class="fas fa-trash"></i></button>
+            `;
+          }
+        }
+      ],
+      initComplete: function (settings) {
+        //- clone thead to tfoot
+        $("#tabla-filtros thead tr").clone().appendTo($("#tabla-filtros tfoot"));
+      }
+    });
+
+  });

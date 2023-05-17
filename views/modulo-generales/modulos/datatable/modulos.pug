@@ -1,0 +1,48 @@
+script.
+  let tablaModulos;
+  $(document).ready( function () {
+    let urlAjaxTablaModulos = "/admin-modulos/datatable";
+
+    tablaModulos = $('#tabla-modulos').DataTable({
+      "language": {"url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"},
+      order: [[ 0, "desc" ]],
+      searchDelay: 500,
+      processing: true,
+      serverSide: true,
+      ajax: urlAjaxTablaModulos,
+      columns: [
+        { data: 'id', name: 'id', title: "ID", orderable: true, searchable: false, visible: false},
+        { data: 'nombre', name: 'nombre', title: "#{translation.FORM.NAME}", orderable: true, searchable: true},
+        {
+          data: 'categoria_id', name: 'categoria_id', title: "#{translation.FORM.CATEGORY}", orderable: false, searchable: false,
+          render: function (data, type, row) {
+            let nombre = "";
+            $.ajax({
+              url: '/admin-modulos/categorias/' + row.categoria_id,
+              type: 'GET',
+              async: false,
+              success: function (data) {
+                nombre = data.nombre;
+              }
+            })
+            return nombre;
+          }
+        },
+        { data: 'fuente', name: 'fuente', title: "Fuente", orderable: true, searchable: true},
+        { data: 'icono', name: 'icono', title: "Icono", orderable: true, searchable: true},
+        { data: 'activo', name: 'activo', title: "Activo", orderable: true, searchable: true},
+        { data: 'orden', name: 'orden', title: "Orden", orderable: true, searchable: true},
+        { data: 'url', name: 'url', title: "URL", orderable: true, searchable: true},
+        { 
+          data: 'actions', name: 'actions', title: "Acciones", orderable: false, searchable: false,
+          render: function (data, type, row) {
+            let strRow = JSON.stringify(row);
+            return `
+              <button class="btn btn-warning" onclick='handleDataEditModulos(${strRow})'><i class="fa fa-edit"></i></button>
+              <button class="btn btn-danger" onclick='deleteModuloAdminPanel("${row.id}")'><i class="fa fa-trash"></i></button>
+            `;
+          }  
+        }
+      ]
+    });
+  });

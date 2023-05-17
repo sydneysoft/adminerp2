@@ -1,0 +1,50 @@
+script.
+  const openNewStore = () => {
+    typeOperation = "1";
+    $("#nuevo").modal("show");
+  };
+
+  // la variable guardarImpuesto viene del id del boton guardar moneda */modals/crear-moneda.pug
+  guardarDocumento.addEventListener("click", (event) => {
+    const nombre = $("#nombreDocumento").val(),
+      pais = $("#lista-paises").val(),
+      //- provincia = $("#lista-provincias").val(),
+      abreviatura = $("#abreviaturaDocumento").val();
+
+    const auxData = {
+      nombre,
+      pais,
+      //- provincia,
+      abreviatura,
+    };
+
+    if (typeof empresa_id != 'undefined' && empresa_id && !isNaN(empresa_id.value)) {
+      auxData.empresa_id = empresa_id.value;
+    }
+
+    if ((nombre)) {
+      Swal.showLoading();
+      $.ajax({
+        url: "/admin-documentos",
+        type: "POST",
+        data: auxData,
+        success: function (data) {
+          Swal.close();
+          if (data.ok) {
+            if (typeof tablaCompaniasSeguros !== 'undefined') {
+              tablaCompaniasSeguros.ajax.reload();
+            }
+            $("#nuevo").modal("hide");
+            toastSweet('Success', '#{translation.ALERTS.CREATED}', 'success');
+          } else {
+            toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+          }
+        },
+        error: function (err) {
+          Swal.close();
+          toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+        }
+      })
+    }
+
+  });

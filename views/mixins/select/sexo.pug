@@ -1,0 +1,7 @@
+mixin select-sexo(target)
+  .form-group
+    label(for=target) #{translation.FORM.SEX}
+    select.form-control(id=target name=target)
+      option(value="male") #{translation.FORM.MALE}
+      option(value="female") #{translation.FORM.FEMALE}
+      option(value="other") #{translation.FORM.OTHER}

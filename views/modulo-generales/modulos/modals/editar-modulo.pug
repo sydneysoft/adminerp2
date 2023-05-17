@@ -1,0 +1,83 @@
+.modal.fade#editarModuloModalAdmin(tabindex="-1" role="dialog")
+  .modal-dialog(role="document")
+    .modal-content
+      .modal-header
+        .row(style="margin:0;")
+          .col-md-12
+            h3(style="margin:0px 0;") #{translation.EDIT_MODULE}
+      .modal-body
+        .row
+          .col-md-6
+            .form-group
+              input#idEditar-modulo-admin(type="hidden")
+              label(for="nombreEditar-modulo-admin") #{translation.FORM.NAME}
+              input#nombreEditar-modulo-admin.form-control(type="text" placeholder="Nombre" name="nombre") 
+          .col-md-6
+            .form-group
+              label(for="urlEditar-modulo-admin") #{translation.FORM.URL}
+              input#urlEditar-modulo-admin.form-control(type="text" placeholder="URL" name="url")
+          .col-md-6
+            .form-group
+              label(for="iconoEditar-modulo-admin") #{translation.FORM.ICON}
+              input#iconoEditar-modulo-admin.form-control(type="text" placeholder="Icono" name="icono")
+          .col-md-6
+            .form-group
+              label(for="textoEditar-modulo-admin") #{translation.FORM.TEXT}
+              textarea#textoEditar-modulo-admin.form-control(name="texto" placeholder="Texto")
+          .col-md-6
+            .form-group
+              label(for="ordenEditar-modulo-admin") #{translation.FORM.ORDER}
+              input#ordenEditar-modulo-admin.form-control(type="number" placeholder="Orden" name="orden")
+          .col-md-6
+            .form-group
+              label(for="fuenteEditar-modulo-admin") #{translation.FORM.FONT}
+              select#fuenteEditar-modulo-admin.form-control(name="fuente")
+                option(value="Roboto Condensed, sans-serif") Roboto Condensed, sans-serif
+                option(value="Roboto, sans-serif") Roboto, sans-serif
+                option(value="Open Sans, sans-serif") Open Sans, sans-serif
+                option(value="Lato, sans-serif") Lato, sans-serif
+                option(value="Oswald, sans-serif") Oswald, sans-serif
+                option(value="Raleway, sans-serif") Raleway, sans-serif
+                option(value="Ubuntu, sans-serif") Ubuntu, sans-serif
+                option(value="Montserrat, sans-serif") Montserrat, sans-serif
+                option(value="Lora, serif") Lora, serif
+                option(value="Merriweather, serif") Merriweather, serif
+                option(value="Playfair Display, serif") Playfair Display, serif
+                option(value="PT Serif, serif") PT Serif, serif
+                option(value="Source Serif Pro, serif") Source Serif Pro, serif
+                option(value="Noto Serif, serif") Noto Serif, serif
+                option(value="Crimson Text, serif") Crimson Text, serif
+                option(value="Libre Baskerville, serif") Libre Baskerville, serif
+                option(value="Georgia, serif") Georgia, serif
+                option(value="Times New Roman, serif") Times New Roman, serif
+                option(value="Arial, sans-serif") Arial, sans-serif
+                option(value="Helvetica, sans-serif") Helvetica, sans-serif
+                option(value="Verdana, sans-serif") Verdana, sans-serif
+                option(value="Tahoma, sans-serif") Tahoma, sans-serif
+                option(value="Trebuchet MS, sans-serif") Trebuchet MS, sans-serif
+                option(value="Courier New, monospace") Courier New, monospace
+                option(value="Lucida Console, monospace") Lucida Console, monospace
+                option(value="Comic Sans MS, cursive") Comic Sans MS, cursive
+          .col-md-6
+            .form-group
+              input#roleshiddenDataModulos(type="hidden")
+              label(for="rolesEditar-admin-modulos") #{translation.ROLES}
+              div#controlerEditarModulos
+                span#rolesEditar-admin-modulos
+          .col-md-6
+            .form-group
+              label(for="activadoEditar-modulo-admin") #{translation.FORM.STATUS}
+              select#activadoEditar-modulo-admin.form-control(name="activado")
+                option(value="1") #{translation.FORM.ACTIVE}
+                option(value="0") #{translation.FORM.DEACTIVATED}
+        .row
+          .col-md-6
+            .form-group
+              label(for="lista-modulo-categorias-editar") #{translation.FORM.CATEGORY}
+              select#lista-modulo-categorias-editar.form-control
+
+      .modal-footer(style="padding:8px;")
+        .row(style="margin:0;")
+          .col-md-12.text-right
+            button.btn.btn-success.nuevo(type="button" onClick="actualizarModulosAdminPanel()") #{translation.FORM.UPDATE_DATA}
+            button.btn.btn-danger.ml-2(type="buton" data-dismiss="modal") #{translation.CLOSE}           

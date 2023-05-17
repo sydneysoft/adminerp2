@@ -1,0 +1,303 @@
+extends ../layout.pug
+
+
+append contenido
+  .border.p-3
+    if (Array.isArray(data) && Array.isArray(paciente)) && (data.length == 1 && paciente.length == 1)
+      .container-fluid 
+        .row 
+          .col-6 
+          .col-6.text-right 
+            button#guardar_cita.btn.btn-primary(type="button") #{translation.REPROGRAMMINGS} 
+              i.fas.fa-plus
+        .row
+          .col-12.col-md-6.border-right-md
+            .row
+              .col-12 
+                h3.text-center 
+              //- .col-md-2.col-xs-2(style="padding:0;")
+              //-     div.text-center
+              //-       img(src="http://ssl.gstatic.com/s2/oz/images/sge/grey_silhouette.png" style="width:47px;border-radius:50%;")
+              .col-md-12.col-xs-12(style="padding:0;")
+                .row(style="margin:0;")
+                  .col-md-6
+                    .form-group
+                      h5(style="margin:0px;opacity:0;") #{translation.FORM.DOCTOR} 
+                      .controls(style="position:relative;")
+                        select#doctor.inputFormulario
+                          option(value="0" selected) #{translation.FORM.SELECT_DOCTOR} 
+                          if Array.isArray(medicos) && medicos.length > 0
+                            each item in medicos
+                              option(value=`${item.id}`, selected=item.id === data[0].idProfesional ? 'selected': null ) #{item.nombre} #{item.apellido}
+                          else
+                            option(value="0") #{translation.FORM.NO_DOCTORS}
+                        h5.tituloInput Doctor:
+                  .col-md-6
+                    .form-group
+                      h5(style="margin:0px;opacity:0;") #{translation.FORM.BRANCH}
+                      .controls(style="position:relative;")
+                        select#sede.inputFormulario
+                          option(value="") #{translation.FORM.SELECT_BRANCH} 
+                          if Array.isArray(sedes)
+                            each item in sedes
+                              option(value=`${item.id}` selected=item.id === data[0].idSede ? 'selected': null) #{item.nombre} - #{item.direccion}
+                        h5.tituloInput #{translation.FORM.BRANCH}:
+              .col-12
+                .row
+                  .col-12.col-md-4
+                    .form-group
+                      label(for="fecha") #{translation.FORM.DATE}
+                      input#fecha.form-control(type="date" placeholder="Fecha" value=moment(data[0].fechaCita).format('YYYY-MM-DD'))
+                  .col-12.col-md-4
+                    .form-group
+                      label(for="estado") #{translation.FORM.STATE} 
+                      select#estado.form-control
+                        if Array.isArray(estado_cita) && estado_cita.length > 0
+                          each item in estado_cita[0].valor
+                            option.text-capitalize(value=`${item}` selected=item === data[0].estado ? '':null) #{item}
+                        else 
+                          option(value="0") #{translation.FORM.UNDEFINED}
+                  .col-12.col-md-4
+                    .form-group
+                      label(for="tipoCita") Tipo de cita
+                      select#tipoCita.form-control
+                        if Array.isArray(tipo_cita) && tipo_cita.length > 0
+                          each item in tipo_cita[0].valor
+                            option.text-capitalize(value=`${item}` selected=item === data[0].tipoCita) #{item}
+                        else 
+                          option(value="0") #{translation.FORM.UNDEFINED}
+              .col-12    
+                .row
+                  .col-12.col-md-4
+                    .form-group
+                      label(for="hora") Hora de inicio
+                      input#hora.form-control(type="time" placeholder="Hora" value=moment(data[0].horaInicio, 'HH:mm:ss').format('HH:mm'))
+                  .col-12.col-md-4 
+                    .form-group 
+                      label(for="editarHoraFin") Hora de fin
+                      input#editarHoraFin.form-control(type="time" placeholder="Hora" value=moment(data[0].horaFin, 'HH:mm:ss').format('HH:mm'))
+                  .col-12.col-md-4
+                    .form-group
+                      label(for="precio") Precio 
+                      input#precio.form-control(type="number" placeholder="Precio" value=data[0].precio readonly)
+              .col-12
+                .row
+                  .col-12.col-md-2
+                    .form-group
+                      label(for="colorpicker") Color
+                      input#colorpicker.form-control(type="color" value=data[0].color)
+                      input#idCita(type="text" hidden)
+                  .col-12.col-md-3
+                    .form-group 
+                      label(for="especialidad") Especialidad 
+                      select#especialidad.form-control
+                        if Array.isArray(especialidades) && especialidades.length > 0
+                          each item in especialidades
+                            option(value=`${item.id}` selected=item.id === data[0].idEspecialidad) #{item.nombre}
+                        else
+                          option(value="0") -No hay Especialidades-
+                  .col-12.col-md-7
+                    .form-group 
+                      label(for="paciente") Paciente 
+                      input#paciente.form-control(type="text" value=`${paciente[0].nombre} ${paciente[0].apellido_paterno} ${paciente[0].apellido_materno}` readonly)
+                      //- select#paciente.form-control
+                      //-   option(value="0") -Selecciona el Paciente-
+                      //-   if Array.isArray(pacientes) && pacientes.length > 0
+                      //-     each item in pacientes
+                      //-       if 
+                      //-       option(value=`${item.id}` selected=item.id === data[0].idUser? '': null) #{item.nombre} #{item.apellido_paterno} #{item.apellido_materno}
+                      //-   else
+                      //-     option(value="0") -No hay Pacientes-
+                .row 
+                  .col-12
+                    .row
+                      .col-12
+                        .form-group
+                          label(for="nota") #{translation.FORM.NOTE} 
+                          textarea#nota.form-control(name="", cols="30", rows="10" placeholder="Nota")  
+                        input#item_id(type="text" value=data[0].id hidden)
+          .col-12.col-md-6
+            .row
+              .col-12 
+                h3.text-center 
+                  | #{translation.FORM.APPOINTMENT_INFORMATION}
+              .col-12.col-md-6
+                .form-group
+                  label(for="doctor_read") #{translation.FORM.DOCTOR}
+                  if Array.isArray(medicos) && medicos.length > 0
+                    each item in medicos
+                      if item.id === data[0].idProfesional
+                        input#doctor_read.form-control(type="text" value=`${item.nombre} ${item.apellido}` readonly) 
+                      else
+                  else
+                    input#doctor_read.form-control(type="text" value="No hay medicos" readonly)
+              .col-12.col-md-6
+                .form-group
+                  label(for="sede_read") #{translation.FORM.BRANCH}
+                  if Array.isArray(sedes)
+                    each item in sedes
+                      if item.id === data[0].idSede
+                        input#sede_read.form-control(type="text" value=`${item.nombre} - ${item.direccion}` readonly) 
+                      else
+                  else
+                    input#sede_read.form-control(type="text" value="No hay sedes" readonly)
+              
+              .col-12
+                .row
+                  .col-12.col-md-4
+                    .form-group
+                      label(for="fecha") #{translation.FORM.DATE}
+                      input#fecha.form-control(type="date" placeholder="Fecha" value=moment(data[0].fechaCita).format('YYYY-MM-DD') readonly)
+                  .col-12.col-md-4
+                    .form-group
+                      label(for="estado") #{translation.FORM.STATE} 
+                      input#estado_read.form-control(type="text" placeholder="Estado" value=data[0].estado readonly)
+                  .col-12.col-md-4
+                    .form-group
+                      label(for="tipoCita") #{translation.FORM.APPOINTMENT_DATE}
+                      input#tipoCita_read.form-control(type="text" placeholder="Tipo de cita" value=data[0].tipoCita readonly)
+              .col-12    
+                .row
+                  .col-12.col-md-4
+                    .form-group
+                      label(for="hora") Hora de inicio
+                      input#hora_read.form-control(type="time" placeholder="Hora" value=moment(data[0].horaInicio, 'HH:mm:ss').format('HH:mm') readonly)
+                  .col-12.col-md-4 
+                    .form-group 
+                      label(for="editarHoraFin") Hora de fin
+                      input#editarHoraFin_read.form-control(type="time" placeholder="Hora" value=moment(data[0].horaFin, 'HH:mm:ss').format('HH:mm') readonly)
+                  .col-12.col-md-4
+                    .form-group
+                      label(for="precio") Precio 
+                      input#precio_read.form-control(type="number" placeholder="Precio" value=data[0].precio readonly)
+              .col-12
+                .row
+                  .col-12.col-md-2
+                    .form-group
+                      label(for="colorpicker") Color
+                      input#colorpicker_read.form-control(type="color" value=data[0].color disabled)
+                  .col-12.col-md-3
+                    .form-group 
+                      label(for="especialidad_read") Especialidad 
+                      if Array.isArray(especialidades) && especialidades.length > 0
+                        each item in especialidades
+                          if item.id === data[0].idEspecialidad
+                            input#especialidad_read.form-control(type="text" value=item.nombre readonly)
+                      else 
+                        input#especialidad_read.form-control(type="text" value="No hay Especialidades" readonly)
+                  .col-12.col-md-7
+                    .form-group 
+                      label(for="paciente_read") Paciente 
+                      if Array.isArray(pacientes) && pacientes.length > 0
+                        each item in pacientes
+                          if item.id === data[0].idUser
+                            input#paciente_read.form-control(type="text" value=item.nombre + " " + item.apellido_paterno + " " + item.apellido_materno readonly)
+                      else
+                        input#paciente_read.form-control(type="text" value="No hay Pacientes" readonly)
+                .row 
+                  .col-12
+                    .row
+                      .col-12
+                        .form-group
+                          label(for="nota") Nota 
+                          textarea#nota.form-control(name="", cols="30", rows="10" placeholder="Nota" readonly)  
+                      //- input#editarPrecio.form-control(type="number" placeholder="Precio")     
+
+      script 
+        include ../../../js/modulo-tv/save.js
+      script.
+        document.getElementById('guardar_cita').addEventListener('click', function () {
+          let item_id = document.getElementById('item_id').value;
+          let idProfesional = document.getElementById('doctor').value;
+          let idSede = document.getElementById('sede').value;
+          let fechaCita = document.getElementById('fecha').value;
+          let horaInicio = document.getElementById('hora').value;
+          let horaFin = document.getElementById('editarHoraFin').value;
+          let precio = document.getElementById('precio').value;
+          let color = document.getElementById('colorpicker').value;
+          let idEspecialidad = document.getElementById('especialidad').value;
+          let nota = document.getElementById('nota').value;
+          let estado = document.getElementById('estado').value;
+          let tipoCita = document.getElementById('tipoCita').value;
+          if (idProfesional != '' && idSede != '' && fechaCita != '' && horaInicio != '' && horaFin != '' && precio != '' && color != '' && idEspecialidad != '' && estado != '' && tipoCita != '') {
+            let data = {
+              idProfesional: idProfesional,
+              idSede: idSede,
+              fechaCita: fechaCita,
+              horaInicio: horaInicio,
+              horaFin: horaFin,
+              precio: precio,
+              color: color,
+              idEspecialidad: idEspecialidad,
+              nota: nota,
+              estado: estado,
+              tipoCita: tipoCita,
+              cita_id: item_id
+            };
+            save('/admin-clinica/citas-medicas/reprogramar',data);
+          } else {
+            Swal.fire({
+              toast: true,
+              position: 'top-end',
+              icon: 'error',
+              title: 'Oops...',
+              text: 'Todos los campos son obligatorios',
+              timer: 2000
+            });
+          }
+        });
+
+  if (Array.isArray(primera_cita) && Array.isArray(otras_citas)) && (primera_cita.length > 0 || otras_citas.length > 0)
+    .card 
+      .card-header 
+        h3.text-center 
+          | #{translation.FORM.APPOINTMENT_HISTORY}         
+      .card-body 
+        //- crear un accordion en bootstrap 4
+        .accordion#accordionExample(role="tablist")
+          each item in primera_cita
+            .card
+              .card-header(role="tab", id=`heading${item.id}`)
+                h5.mb-0
+                  a(data-toggle="collapse", href=`#collapse${item.id}`, aria-expanded="true", aria-controls=`collapse${item.id}`)
+                    | #{item.nombre} #{item.apellido_paterno} #{item.apellido_materno} - #{item.fechaCita} - #{item.horaInicio} - #{item.horaFin} - #{item.estado}
+              .collapse(id=`collapse${item.id}` role="tabpanel", aria-labelledby=`heading${item.id}`, data-parent="#accordionExample")
+                .card-body
+                  .row
+                    .col-12.col-md-6
+                      .row
+                        .col-12
+                          .form-group
+                            label(for="doctor_read") #{translation.FORM.DOCTOR}
+                            if Array.isArray(medicos) && medicos.length > 0
+                              each item in medicos
+                                if item.id === item.idProfesional
+                                  input#doctor_read.form-control(type="text" value=`${item.nombre} ${item.apellido}` readonly) 
+                                else
+                            else
+                              input#doctor_read.form-control(type="text" value="No hay medicos" readonly)
+                        .col-12
+                          .form-group
+                            label(for="sede_read") #{translation.FORM.BRANCH}
+                            if Array.isArray(sedes)
+                              each item in sedes
+                                if item.id === item.idSede
+                                  input#sede_read.form-control(type="text" value=`${item.nombre} - ${item.direccion}` readonly) 
+                                else
+                            else
+                              input#sede_read.form-control(type="text" value="No hay sedes" readonly)
+                        
+                        .col-12
+                          .row
+                            .col-12.col-md-4
+                              .form-group
+                                label(for="fecha") #{translation.FORM.DATE}
+                                input#fecha.form-control(type="date" placeholder="Fecha" value=moment(item.fechaCita).format('YYYY-MM-DD') readonly)
+                            .col-12.col-md-4
+                              .form-group
+                                label(for="estado") #{translation.FORM.STATE} 
+                                input#estado_read.form-control(type="text" placeholder="Estado" value=item.estado readonly)
+                            .col-12.col-md-4
+                              .form-group
+                                label(for="tipoCita_read") #{translation.FORM.APPOINTMENT_TYPE}
+                                input#tipoC_read.form-control(type="text" placeholder="Tipo de cita" value=item.tipoCita readonly)

@@ -1,0 +1,79 @@
+//- Modal para mostrar sede
+.modal.fade.justify-content-center.align-items-center(tabindex="-1" role="dialog" id="mostrarVisitaMedicaModal")
+  .modal-dialog.modal-lg
+    .modal-content.modalContent(style="height: 100%;")
+      .modal-header 
+        .row(style="margin:0;")
+          .col-md-12
+            h3(style="margin:0px 0;") #{translation.SHOW}
+
+      .modal-body.borderBottom
+        //- id	paciente_id	medico_id	fecha	hora	motivo	anotaciones	resultado	diagnostico	recetas	estado	costo	clinica_id	referencias	
+        .row
+          .col-12.col-md-6
+            .form-group
+              label(for="lista-pacientes") Pacientes
+              select#lista-pacientes
+          .col-12.col-md-6
+            .form-group
+              label(for="lista-medicos") Medicos
+              select#lista-medicos
+          .col-12.col-md-6
+            .form-group
+              label(for="lista-sedes") Clinica sedes
+              select#lista-sedes 
+          .col-12.col-md-6
+            .form-group
+              label(for="fecha") Fecha
+              input#fecha.form-control(type="date")
+          .col-12.col-md-6
+            .form-group
+              label(for="hora") Hora
+              input#hora.form-control(type="time")
+          .col-12.col-md-6
+            .form-group
+              label(for="estado") Estado
+              select#estado(name="estado")
+                option(value="") Seleccionar 
+                option(value="0") Pendiente
+                option(value="1") Realizada
+                option(value="2") Cancelada
+          .col-12.col-md-6
+            .form-group
+              label(for="costo") Costo
+              input#costo.form-control(type="number") 
+          .col-12.col-md-6
+            .form-group
+              label(for="motivo") Motivo
+              textarea#motivo.form-control(name="motivo")       
+          .col-12.col-md-6
+            .form-group
+              label(for="anotaciones") Anotaciones
+              textarea#anotaciones.form-control(name="anotaciones")
+          .col-12.col-md-6
+            .form-group
+              label(for="diagnostico") Diagnostico
+              textarea#diagnostico.form-control(name="diagnostico")
+          .col-12.col-md-6
+            .form-group
+              label(for="resultado") Resultado
+              textarea#resultado.form-control(name="resultado")
+          .col-12.col-md-6
+            .form-group
+              label(for="recetas") Recetas
+              textarea#recetas.form-control(name="recetas")
+          .col-12.col-md-6
+            .form-group
+              label(for="referencias") Referencias
+              textarea#referencias.form-control(name="referencias")
+
+      .modal-footer(style="padding:8px;")
+        .row(style="margin:0;")
+          .col-md-12.text-right
+            button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}
+
+  script.
+
+    function mostrarSede (data) {
+      
+    }

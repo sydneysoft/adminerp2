@@ -1,0 +1,6 @@
+script.
+  function deleteItemSuccess (data) {
+    if (typeof tablaClinicaSedes != "undefined") {
+      tablaClinicaSedes.ajax.reload();
+    }
+  }

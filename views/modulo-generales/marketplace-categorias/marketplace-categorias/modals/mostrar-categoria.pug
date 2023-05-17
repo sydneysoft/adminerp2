@@ -1,0 +1,37 @@
+//- Modal para mostrar
+.modal.fade.justify-content-center.align-items-center(tabindex="-1" role="dialog" id="mostrarModal")
+  .modal-dialog.modal-lg
+    .modal-content.modalContent(style="height: 100%;")
+      .modal-header 
+        .row(style="margin:0;")
+          .col-md-12
+            h3(style="margin:0px 0;") #{translation.ADD}
+
+      .modal-body.borderBottom
+        .row
+          .col-12.col-md-8
+            .form-group
+              label(for='nombre_mostrar') #{translation.FORM.NAME} *
+              input#nombre_mostrar.form-control(type='text' placeholder=translation.FORM.NAME name="nombre" required)
+          .col-12.col-md-4 
+            .form-group
+              label(for="telefono_mostrar") #{translation.FORM.PHONE}
+              input#telefono_mostrar.form-control(type="number" placeholder=translation.FORM.PHONE name="telefono")
+          .col-12
+            .form-group
+              label(for="eslogan_mostrar") #{translation.FORM.SLOGAN}
+              textarea#eslogan_mostrar.form-control(placeholder=translation.FORM.SLOGAN name="eslogan")
+          .col-12
+            .form-group
+              label(for="repository") REPOSITORY
+              input#repository_mostrar.form-control(type="text" placeholder="REPOSITORY" name="repository")
+        .row.mt-3
+          .col-12
+            .form-group
+              label(for="token_mostrar") TOKEN
+              input#token_mostrar.form-control(type="text" placeholder="TOKEN" name="token" readonly)
+
+      .modal-footer(style="padding:8px;")
+        .row(style="margin:0;")
+          .col-md-12.text-right
+            button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}

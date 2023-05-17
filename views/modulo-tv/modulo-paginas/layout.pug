@@ -1,0 +1,28 @@
+extends ../../extends/menu-superior-admin
+
+block contenido
+  h1 #{translation.PAGES}
+  ul.nav.nav-tabs
+    li.nav-item
+      a.nav-link(href='/admin-paginas') #{translation.PAGES}
+    li.nav-item
+      a.nav-link(href='/admin-paginas/pasos') #{translation.STEPS}
+    li.nav-item
+      a.nav-link(href='/admin-paginas/nosotros') #{translation.FORM.ABOUT}
+    li.nav-item
+      a.nav-link(href='/admin-paginas/politica') #{translation.FORM.PRIVACY}
+    li.nav-item
+      a.nav-link(href='/admin-paginas/cookie') #{translation.FORM.COOKIES}
+    li.nav-item
+      a.nav-link(href='/admin-paginas/mision') #{translation.FORM.MISSION}
+    li.nat-item
+      a.nav-link(href='/admin-paginas/contacto') #{translation.FORM.CONTACT}
+
+  script.
+      const currentPath = window.location.pathname
+      const navLinks = $(".nav .nav-link");
+      $.each(navLinks, function (index, value) {
+        if(currentPath.startsWith(value.getAttribute('href'))) {
+          value.classList.toggle('active')
+        }
+      });

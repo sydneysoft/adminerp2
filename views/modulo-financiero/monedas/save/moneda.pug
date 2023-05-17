@@ -1,0 +1,50 @@
+script.
+  const openNewStore = () => {
+    typeOperation = "1";
+    $("#nuevo").modal("show");
+  };
+
+  // la variable guardarMoneda viene del id del boton guardar moneda */modals/crear-moneda.pug
+  guardarMoneda.addEventListener("click", (event) => {
+    const nombre = $("#nombreMoneda").val(),
+      simbolo = $("#simboloMoneda").val(),
+      pais = $("#lista-paises").val(),
+      codigo = $("#codigoMoneda").val();
+
+    const auxData = {
+      nombre,
+      simbolo,
+      pais,
+      codigo,
+    };
+
+    if (typeof empresa_id != 'undefined' && empresa_id && !isNaN(empresa_id.value)) {
+      auxData.empresa_id = empresa_id.value;
+    }
+
+    if ((nombre, codigo)) {
+      Swal.showLoading();
+      $.ajax({
+        url: "/admin-monedas",
+        type: "POST",
+        data: auxData,
+        success: function (data) {
+          Swal.close();
+          if (data.ok) {
+            if (typeof tablaMonedas !== 'undefined') {
+              tablaMonedas.ajax.reload();
+            }
+            $("#nuevo").modal("hide");
+            toastSweet('Success', '#{translation.ALERTS.CREATED}', 'success');
+          } else {
+            toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+          }
+        },
+        error: function (err) {
+          Swal.close();
+          toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+        }
+      })
+    }
+
+  });

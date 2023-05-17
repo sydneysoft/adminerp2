@@ -1,0 +1,90 @@
+script.
+
+  //- Functions
+  async function updateTable(id) {
+
+    const res = await fetch(`/admin-trabajadores/${id}`);
+    const worker = await res.json()
+    const data = {
+      id: id,
+      primer_nombre: worker.primer_nombre,
+      segundo_nombre: worker.segundo_nombre,
+      apellido_paterno: worker.apellido_paterno,
+      apellido_materno: worker.apellido_materno,
+      celular: worker.celular,
+      telefono: worker.telefono,
+      correo: worker.correo,
+      direccion: worker.direccion,
+      tipo_de_documento: worker.tipo_de_documento,
+      numero_de_documento: worker.numero_de_documento,
+      foto_de_documento_cara_frontal: `<a target="_blank" href="admin-trabajadores/files/${worker.foto_de_documento_cara_frontal}">${worker.foto_de_documento_cara_frontal}</a>`,
+      foto_de_documento_cara_trasera: `<a target="_blank" href="admin-trabajadores/files/${worker.foto_de_documento_cara_trasera}">${worker.foto_de_documento_cara_trasera}</a>`,
+      entidad_bancaria: worker.entidad_bancaria,
+      numero_de_cuenta: worker.numero_de_cuenta,
+      AFP: worker.AFP,
+      CTS: worker.CTS,
+      observaciones: worker.observaciones,
+      fecha_de_contratacion: worker.fecha_de_contratacion,
+      estado: worker.estado,
+      fecha_de_despido: worker.fecha_de_despido,
+      CV: `<a target="_blank" href="admin-trabajadores/files/${worker.CV}">${worker.CV}</a>`,
+      contrato: `<a target="_blank" href="admin-trabajadores/files/${worker.contrato}">${worker.contrato}</a>`,
+      nombres_de_persona_de_contacto: worker.nombres_de_persona_de_contacto,
+      celular_de_persona_de_contacto: worker.celular_de_persona_de_contacto,
+      tipo_de_documento_de_persona_de_contacto: worker.tipo_de_documento_de_persona_de_contacto,
+      numero_de_documento_de_persona_de_contacto: worker.numero_de_documento_de_persona_de_contacto,
+      acciones: `<td>
+      <button class="btn btn-info" data-action="duplicate" data-id="${worker.id}"><i class="fa fa-camera"></i></button>
+      <button class="btn btn-warning" type="button" data-toggle="modal" data-target="#guardarTrabajadorAdmin" data-action="edit" data-id="${worker.id}"><i class="fa fa-edit"></i></button>
+      <button class="btn btn-danger" type="button" style="margin-left:8px" data-id="${worker.id}"><i class="fa fa-trash"> </i></button></td>`
+    };
+    console.log(data);
+
+    if (action === 'new') {
+      tablaTrabajadores.row.add(data).draw(false);
+    } else {
+
+      const dataValues = Object.values(data);
+
+      $('button[data-id="' + id + '"]').parents('tr')[0].querySelectorAll('td').forEach((td, index) => {
+        td.innerHTML = dataValues[index]
+      });
+
+    }
+
+    $('#tabla-trabajadores .btn.btn-danger').click(deleteRegister);
+    $('button[data-action="edit"]').click(edit);
+    $('button[data-action="duplicate"]').click(duplicate);
+
+    action = ''
+
+  }
+
+  async function edit(e) {
+    action = 'edit';
+
+    try {
+
+      const res = await fetch(`/admin-trabajadores/${e.currentTarget.getAttribute('data-id')}`);
+
+      const worker = await res.json()
+
+
+      $('.modal#guardarTrabajadorAdmin').modal('show')
+
+      if (action == 'edit' && worker) {
+
+        document.querySelectorAll('#guardarTrabajadorAdmin form input, #guardarTrabajadorAdmin form select, #guardarTrabajadorAdmin form textarea').forEach(element => {
+          $(element).attr('type') !== 'file' && $(element).val(worker[$(element).attr('name')])
+          if (element.nodeName === 'SELECT') {
+            $(element).change();
+          }
+        })
+
+        $('.modal#guardarTrabajadorAdmin').attr('data-id', e.currentTarget.getAttribute('data-id'));
+      }
+
+    } catch (error) {
+      console.log(error)
+    }
+  }

@@ -1,0 +1,31 @@
+script
+  include /js/modulo-tv/save.js
+script.
+  const nombre = document.getElementById('nombre');
+  const descripcion = document.getElementById('descripcion');
+  const diaDe = document.getElementById('diaDe');
+  const diaA = document.getElementById('diaA');
+  const horaDe = document.getElementById('horaDe');
+  const horaA = document.getElementById('horaA');
+  document.getElementById("saveItem").addEventListener('click', (event) => {
+    if (diaA.value != "" && diaDe.value != "") {
+      const auxData = {
+        nombre: nombre.value,
+        descripcion: descripcion.value,
+        dia_de: diaDe.value,
+        dia_a: diaA.value,
+        hora_de: horaDe.value,
+        hora_a: horaA.value
+      };
+      if (typeof empresa_id != 'undefined' && !isNaN(empresa_id.value)){
+        auxData.empresa_id = empresa_id.value;
+      }
+      if (typeof createItemSuccess == 'function') {
+        save('/admin-horarios/horarios', auxData, createItemSuccess);
+      } else {
+        save('/admin-horarios/horarios', auxData);
+      }
+    } else {
+      toastSweet('Error', 'El dia de inicio debe ser menor al dia de fin', 'error');
+    }
+  });

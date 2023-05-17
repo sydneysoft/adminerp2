@@ -1,0 +1,103 @@
+extends ./layout.pug
+append contenido
+  .row
+    .col-12.text-grey(style="margin-bottom:10px;")
+      h1.display-1
+        strong #{translation.CATALOGUE_LIST}
+    .col-12
+      button.btn.btn-success(style="margin-bottom:25px;" type="button" data-toggle="modal" data-target="#nuevoCatalogoPDFAdministrador")
+        i.fas-fa-plus
+        span #{translation.ADD_CATALOGUE_PDF}
+      button.btn.btn-success(style="margin-bottom:25px;margin-left:8px" type="button" data-toggle="modal" data-target="#nuevoCatalogoImagenesAdministrador")
+        i.fas-fa-plus
+        span #{translation.ADD_CATALOGUE_IMAGE}
+    .col-12
+      div.table-responsive
+        table.table.table-bordered#tabla-categorias
+          thead.thead-dark
+            tr
+              th.text-center #{translation.FORM.TITLE}
+              th.text-center #{translation.FORM.PHOTO}
+              th.text-center #{translation.FORM.DATE}
+              th.text-center #{translation.FORM.STATUS}
+              th.text-center #{translation.FORM.ACTIONS}
+          tbody
+            each book in bookStore
+              -var finalStatusCategoria = (book.estado=="0" ? 'Desactivado': 'Activado')
+              tr
+                td.text-center=book.titulo
+                td.text-center
+                  img(src=book.foto,style="width:50px;height:50px;object-fit:cover")
+                td.text-center="Desde el "+moment(book.fecha_inicio).format('D [de] MMMM')+" al "+moment(book.fecha_fin).format('D [de] MMMM')
+                td.text-center=finalStatusCategoria
+                td.text-center.col-right
+                  if(book.estado=="0")
+                    button.btn.btn-success(type="button" onClick="handleStateCatalogo('"+book.id+"','1')")
+                      i.fas.fa-error
+                      b="Activar"
+                  else 
+                    button.btn.btn-warning(type="button" onClick="handleStateCatalogo('"+book.id+"','0')")
+                      i.fas.fa-error
+                      b="Desactivar"
+                  button.btn.btn-info(style="margin-right:7px;margin-left:7px;" type="button" onclick="handlePreviewPDF('"+book.url+"')")
+                    i.fas.fa-eye
+                  button.delete.btn.btn-danger(onClick="deleteHandlePdf('"+book.id+"')")
+                    i.fas.fa-trash
+
+  .modal#nuevoCatalogoImagenesAdministrador(tabindex="-1" role="dialog")
+    .modal-dialog.modal-lg(role="document")
+      .modal-content
+        .modal-body
+          .row(style="padding:10px;margin-bottom:8px;")
+            .col-md-12.col-12.text-center(style="padding:6px;width:100%;")
+              form.dropzone(action="/file-upload" id="my-awesome-dropzone" method="post" enctype="multipart/form-data")  
+            .col-md-6.col-12
+              .form-group
+                label #{translation.FORM.TITLE}:
+                .controls
+                  input#titulo-catalogo-new-imagenes.form-control(type="text")
+            .col-md-6.col-12
+              .form-group
+                label #{translation.FORM.STATUS}:
+                .controls
+                  select#estado-catalogo-new-imagenes.form-control
+                    option(value="1") #{translation.FORM.ACTIVE}
+                    option(value="0") #{translation.FORM.DEACTIVATED}
+            .col-md-6.col-12
+              .form-group
+                label #{translation.FORM.BEGIN_DATE}:
+                .controls
+                  input#estado-fecha-inicio-new-imagenes.form-control(type="date")
+            .col-md-6.col-12
+              .form-group
+                label #{translation.FORM.END_DATE}:
+                .controls
+                  input#estado-fecha-final-new-imagenes.form-control(type="date")
+        .modal-footer
+          button.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;" onClick="AgregarNuevoCatalogoAdminImagenes()") #{translation.ADD}
+          button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}
+
+  .modal#previewPDFModal(tabindex="-1" role="dialog")
+    .modal-dialog.modal-lg(role="document")
+      .modal-content
+        .modal-body
+          embed(id="data-pdf-change" frameborder="0" width="100%" height="450px")
+  script. 
+    var inputs = document.getElementById("file-pdf-new");
+
+    inputs.addEventListener( 'change', function( e ){
+      let fileName=e.target.value;
+      if(fileName){
+        $('#data-route-file-new').text(fileName)
+      }
+    });
+
+    Dropzone.autoDiscover = false;
+    var myDropzone = new Dropzone(".dropzone", { 
+      name: "multimedia",
+      acceptedFiles: ".jpeg,.jpg,.png,.gif",
+      autoQueue: false,
+      addRemoveLinks:true,
+      dictDefaultMessage:"<b>Suelta los archivos aquí o haz click para subirlos</b><br><p>(Recuerda que la máxima cantidad permitida de imágenes es 30 y la resolución es 538*807)</p>",
+      dictRemoveFile:"<b style='color:red;margin-top:5px;'>#{translation.REMOVE}</b>",
+    });

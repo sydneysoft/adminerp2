@@ -1,0 +1,66 @@
+extends ../../extends/menu-superior-admin
+
+block contenido
+  .my-3
+    div
+      a.btn.btn-primary(href="/admin-video-prime/actores") 
+        i.fas.fa-arrow-left
+        span.px-3 #{translation.BACK}
+
+    h1.text-center.mb-5 
+      | #{translation.EDIT_ACTOR}
+    
+    .card 
+      .card-body 
+        form#editar-actor-forms
+          input#idItem(type="text" value=data.id hidden)
+          .row.g-3 
+            .col-12.mb-3.text-right 
+              button.btn.btn-primary(type="submit") #{translation.SAVE}
+            .col-12.col-md-8
+              label.form-label(for='nombre') #{translation.FORM.ACTORS_NAME}
+              input#nombre.form-control(type='text' value=data.nombre required='' placeholder #{translation.FORM.ACTORS_NAME} name="nombre")
+              .valid-feedback
+                | #{translation.FORM.NAME}
+            .col-12.col-md-4 
+              label.form-label(for="nacionalidad") #{translation.FORM.NATIONALITY}  
+              input#nacionalidad.form-control(type="text" value=data.nacionalidad placeholder #{translation.FORM.NATIONALITY}  name="nacionalidad" required)
+            .col-12.my-3 
+            .col-12.col-md-6 
+              label.form-label(form="biografia") #{translation.FORM.BIOGRAPHY}  
+              textarea#biografia.form-control(type="text" placeholder #{translation.FORM.BIOGRAPHY} )
+                | #{data.biografia} 
+            .col-12.col-md-3 
+              label.form-label(for="fecha_nacimiento") #{translation.FORM.BIRTH_DATE} 
+              input#fecha_nacimiento.form-control(type="date" placeholder #{translation.FORM.BIRTH_DATE}  value=data.fecha_nacimiento)
+            .col-12.col-md-3 
+              label.form-label(for="genero") #{translation.FORM.GENRE} 
+              select#genero.custom-select
+                if data.genero == 'Masculino'
+                  option(value #{translation.FORM.MALE} selected) #{translation.FORM.MALE}
+                else 
+                  option(value #{translation.FORM.MALE}) #{translation.FORM.MALE}
+                if data.genero == 'Femenino'
+                  option(value #{translation.FORM.FEMALE} selected) #{translation.FORM.FEMALE}
+                else 
+                  option(value #{translation.FORM.FEMALE}) #{translation.FORM.FEMALE}
+
+  script.
+    const editor = CKEDITOR.replace('biografia')
+
+  script 
+    include ./actor.js
+    include ../../../js/modulo-tv/update.js
+
+  script.
+    const idItem = document.getElementById('idItem')
+    document.getElementById('editar-actor-forms').addEventListener('submit', (event) => { 
+      event.preventDefault()
+      updateItem(`/admin-video-prime/actores/actor/${idItem.value}`, {
+        nombre: nombre.value,
+        nacionalidad: nacionalidad.value,
+        fecha_nacimiento: fecha_nacimiento.value,
+        genero: genero.value,
+        biografia: editor.getData()
+      })
+    })

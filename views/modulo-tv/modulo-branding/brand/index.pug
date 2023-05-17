@@ -1,0 +1,125 @@
+extends ../layout.pug
+
+append contenido   
+  .border-bottom.border-left.border-right.rounded-bottom.p-3
+    .container-fluid 
+      .row 
+        .col-6
+          button.btn.btn-info(type="button" onclick="window.history.back()") #{translation.BACK}
+        .col-6.text-right
+          button#updateButton.btn.btn-primary(type="button") #{translation.SAVE}
+            i.fas.fa-save
+      .row 
+        #brands_select(data-target=data[0].brands)
+        .col-12.col-md-8 
+          .row 
+            input#idItem(type="text" value=data[0].id hidden)
+            input#empresa_id(type="text" value=empresa_id hidden)
+            .col-12.col-md-6
+              .form-group 
+                label(for="width_brand") #{translation.FORM.WIDTH}
+                input.form-control(type="number" id="width_brand" placeholder=translation.FORM.WIDTH value=data[0].width)
+            .col-12.col-md-6
+              .form-group 
+                label(for="height_brand") #{translation.FORM.HEIGHT}
+                input.form-control(type="number" id="height_brand" placeholder=translation.FORM.HEIGHT value=data[0].height)
+          .row
+            .col-12
+              #showBrands(style="flex-wrap: nowrap; overflow-x: auto; width: 100%;")
+        .col-12.col-md-4 
+          include ../../modulo-general/galeria-fotos/modal-galeria.pug
+          include ../../modulo-general/galeria-fotos/partial-modal-galeria.pug
+          .row.mt-3 
+            .col-12
+              button#insertar_brand.btn.btn-primary.btn-block(type="button" onclick="insertarBrand()") #{translation.INSERT}
+  script.
+    let brand_select = document.getElementById('brands_select');
+    let brands = brand_select.getAttribute('data-target');
+    const width_brand = document.getElementById('width_brand');
+    const height_brand = document.getElementById('height_brand');
+    const show_brand = document.getElementById('showBrands');
+
+    if (typeof brands === 'string') {
+      brands = JSON.parse(brands);
+    } else if (Array.isArray(brands)) {
+      brands = brands;
+    } else {
+      console.log(typeof brands);
+    }
+
+    function loopBrands() {
+      let images = '';
+      for (let i = 0; i < brands.length; i++) {
+        images += `
+        <figure style="display: inline-block;width: ${width_brand.value == 0 ? 200: width_brand.value}px; height: ${height_brand.value == 0 ? 200: height_brand.value}px; overflow: hidden; position:relative;">
+          <img class="w-100 h-100" src="${brands[i]}" alt="Brand show ${i}" style="object-fit: cover;"/>
+          <button type="button" class="btn btn-danger btn-sm" style="position: absolute; top: 0; right: 0;" onclick="deleteBrand(${i}, 1)">
+            <i class="fas fa-trash"></i>
+          </button>
+        </figure>
+        `;
+      }
+      show_brand.innerHTML = images;
+      $('.imagen_').html('')
+      // width="${width_brand.value}" height="${height_brand.value}"
+    }
+
+    loopBrands();
+
+    function insertarBrand () {
+      if (imagen.value !== '') {
+        try {
+          new URL(imagen.value);
+          brands.push(imagen.value);
+          imagen.value = '';
+          loopBrands();
+        } catch (error) {
+          Swal.fire({
+            toast: true,
+            position: 'top-end',
+            icon: 'error',
+            title: 'Oops...',
+            text: "#{translation.ALERTS.IMAGE_ERROR_1}",
+          });
+          return;
+        }
+      } else {
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'error',
+          title: 'Oops...',
+          text: "#{translation.ALERTS.IMAGE_ERROR_2}",
+        });
+      }
+    }
+
+    function deleteBrand(from, to) {
+      brands.splice(from, to); 
+      loopBrands();
+      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        icon: 'success',
+        title: 'Eliminado',
+        text: "#{translation.ALERTS.IMAGE_DELETED}",
+        timer: 2500,
+        timerProgressBar: true,
+        showConfirmButton: false
+      })
+    }
+
+  script 
+    include ../../modulo-general/galeria-fotos/modal-galeria.js
+    include /js/modulo-tv/update.js
+  script.
+    const idItem = document.getElementById('idItem')
+    const empresa_id = document.getElementById('empresa_id')
+    document.getElementById('updateButton').addEventListener('click', function () {
+      updateItem(`/admin-branding/brand/${idItem.value}`, {
+        width: width_brand.value,
+        height: height_brand.value,
+        brands: JSON.stringify(brands)
+      });
+      loopBrands();
+    });

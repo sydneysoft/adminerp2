@@ -1,0 +1,81 @@
+script.
+  const generateInvoice = (token) => {
+    let razonSocial = $("#nombreNuevo-factura").val();
+    let tipoPago = $("#tipoNuevo-factura").val();
+    let tipoDocumento = $("#tipodocumentoNuevo-factura").val();
+    let numeroDocumento = $("#numeroDocumentoNuevo-factura").val();
+    let email = $("#emailNuevo-factura").val();
+    let celular = $("#celularNuevo-factura").val();
+    let direccion = $("#direccionNuevo-factura").val();
+    if (
+      razonSocial &&
+      tipoPago &&
+      tipoDocumento &&
+      numeroDocumento &&
+      email &&
+      celular &&
+      direccion
+    ) {
+      if (arrayProductsFactura.length > 0) {
+        Swal.showLoading();
+        $.ajax({
+          method: "POST",
+          url: "/admin-facturacion",
+          dataType: "json",
+          data: {
+            nombre: razonSocial,
+            tipoPago: tipoPago,
+            tipoDocumento: tipoDocumento,
+            numeroDocumento: numeroDocumento,
+            email: email,
+            celular: celular,
+            direccion: direccion,
+            productos: arrayProductsFactura,
+            empresa_id:token
+          },
+          success: function (data) {
+            if (data.status == "error") {
+              Swal.close();
+              Swal.fire({
+                position: "center",
+                icon: "error",
+                html: "<b>" + data.msg + "</b>",
+                showConfirmButton: false,
+                timer: 2500,
+              });
+            } else {
+              Swal.close();
+              window.location.reload(true);
+            }
+          },
+          error: function (e) {
+            console.log(e);
+            Swal.close();
+            Swal.fire({
+              position: "center",
+              icon: "error",
+              title: #{translation.ALERTS.WRONG},
+              showConfirmButton: false,
+              timer: 2500,
+            });
+          },
+        });
+      } else {
+        Swal.fire({
+          position: "center",
+          icon: "info",
+          html: #{translation.ALERTS.MIN_ONE_PRODUCT},
+          showConfirmButton: false,
+          timer: 2500,
+        });
+      }
+    } else {
+      Swal.fire({
+        position: "center",
+        icon: "info",
+        html: #{translation.ALERTS.MUST_COMPLETE_NECESSARY_DATA_REGISTRATION},
+        showConfirmButton: false,
+        timer: 2500,
+      });
+    }
+  };

@@ -1,0 +1,59 @@
+extends ../layout.pug
+
+
+append contenido 
+  .my-3
+    div
+      a.btn.btn-info(href="/admin-tv/pages") 
+        i.fas.fa-arrow-left
+        span.px-3 #{translation.BACK}
+    h1.text-center.mb-5 
+      | #{translation.CREATE_NEW_PAGE}
+  .my-3 
+    form#nuevaPagina(action=`/admin-tv/pages/index` method="post")
+      .row
+        .col-12.text-right 
+          button.btn.btn-primary(type="submit") #{translation.SAVE}
+        .col-12.my-3
+        .col-12 
+          .form-group
+            label(for='nombre') #{translation.FORM.NAME}
+            input#nombre.form-control(type='text' aria-describedby='nombreHelp' placeholder="Nombre de la página.")
+            small#nombreHelp.form-text.text-muted.d-none #{translation.FORM.WRITE_NAME}
+        .col-12.my-3
+        .col-12.col-md-8 
+          .form-group 
+            label(for="estracto") #{translation.FORM.EXTRACT} 
+            textarea#estracto.form-control(name="estracto" placeholder #{translation.FORM.IMAGE_THUMBNAIL})
+              |
+        .col-12.col-md-4 
+          .form-group 
+            label(for="tipo") #{translation.FORM.TYPE} 
+            select#tipo.form-control(name="tipo")
+              option(value="post") #{translation.FORM.POST}
+        .col-12.my-3
+        .col-12.col-md-8
+          label(for='thumbnail') #{translation.FORM.IMAGE_THUMBNAIL}
+          input#thumbnail.form-control(type='text'  placeholder #{translation.FORM.IMAGE_THUMBNAIL})
+        .col-12.col-md-4
+          label(for='identificador') #{translation.INDENTIFIER}
+          input#identificador.form-control(type='text'  placeholder #{translation.FORM.ID_UNIQUE_VALUE})
+        .col-12.my-3
+        .col-12
+          .form-group 
+            label(for="body") #{translation.BODY} 
+            textarea#body(name="body") 
+
+
+  script.
+    const editor = CKEDITOR.replace('body')
+
+  script 
+    include ./page.js
+    include ./save.js
+
+  script.
+    document.getElementById('nuevaPagina').addEventListener('submit', (event) => {
+      event.preventDefault();
+      guardarPagina();
+    })

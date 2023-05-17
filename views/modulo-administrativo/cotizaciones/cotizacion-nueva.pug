@@ -1,0 +1,187 @@
+extends ../../extends/menu-superior-admin
+
+block contenido
+  if empresa_id
+    input#empresa_id(type="text" value=empresa_id hidden)
+  else
+    input#empresa_id(type="text" value=0 hidden)
+  .row(style="place-content: center;")
+    .col-md-12.col-12.text-grey(style="margin-bottom:10px;")
+      h1.display-2
+        strong Nueva Cotización 
+    .col-md-12.col-12
+      form#guardarCotizacion
+
+        h4.title.font-weight-bold Información de cotización
+
+        .row.space 
+          .col-md-12.col-12
+            label.form-label(for='titulo' ) Título
+            input.form-control(type='text' name='titulo' id='titulo' required='true')
+
+          if activo_marketplace===1
+            .col-md-6.col-12
+              .form-group
+                label.form-label(style="display:block") Empresa  
+                  select#empresa.form-control.seleccionar(onChange="seleccionaProductoNuevo()")
+
+          .col-md-6.col-12
+            .form-group
+              label.form-label(style="display:block") Cliente   
+              if activo_marketplace===0
+                select#cliente.form-control.clientesFound 
+                  option(disabled selected value=null) Elige un contacto     
+              else 
+                select#cliente.form-control.clientesFound(disabled) 
+            a(href="#" onclick="editarClientes()") Editar Clientes 
+            include ./select2/clientes.pug
+
+
+          .col-md-7.col-12
+            span
+          .col-md-6.col-12#nuevoCliente
+            .row
+              .col-md-6.col-12
+                .form-group
+                  label.form-label(for='nombre' ) Nombre
+                  input.form-control(type='text' name='nombre' id='nombre' required='true')
+              .col-md-6.col-12
+                .form-group
+                  label.form-label(for='email' ) Email
+                  input.form-control(type='email' name='email' id='email' required='true')
+
+          .col-md-6.col-12
+            label.datev-label(for='dateFrom') Fecha Vencimiento
+              input#dateFrom.form-control(type='date' name='dateFrom' min='2022-01-01')
+          .col-md-6.col-12
+            label.form-label(for='terminos') Términos de pago 
+              select#terminos.form-control
+                option(value="Abonar al ser recibido") Abonar al ser recibido
+                option(value="En un plazo de 15 días") En un plazo de 15 días
+                option(value="En un plazo de 30 días") En un plazo de 30 días
+                option(value="En un plazo de 60 días") En un plazo de 60 días
+
+                option(value="personalizado") Establecer términos personalizados
+          .col-md-6.col-12#nuevosTerminos
+            label.form-label(for='terminos') Términos personalizados
+              input.form-control(type='text' name='nuevosTerminosdetalle' id='nuevosTerminosdetalle')
+
+        h4.title.font-weight-bold Detalles de la cotización
+        .row.space
+
+
+          div.table-responsive(style="margin-top:15px;")
+            table.table#nuevaCotizacion
+              thead
+                tr 
+                  th.text-center Producto o Servicio
+                  th.text-center Descripción
+                  th.text-center Precio
+                  th.text-center Cantidad
+                  th.text-center Impuesto  
+                  th.text-center Impuesto 2 
+                  th.text-center Impuesto Total
+                  th.text-center Total  
+                  th
+
+              tbody#tdbodyServicio 
+                tr.rowAgregaServicio
+                  td.add(style="width:20%")
+                    if activo_marketplace===1
+                      select#productos_servicios.servicios.form-control(disabled style="width:10%")
+                    else        
+                      select#productos_servicios.servicios.form-control(style="width:10%")
+
+                    include ./select2/productos-servicios.pug
+                  td.add(style="width:10%")
+                    input#descripcion.descripcion.form-control(type="text" style="text-align:center" disabled)
+                  td(style="min-width: 60px;")   
+                    span  
+                    input#precio.precio.form-control(type="number" placeholder="$" style="text-align:center" disabled)
+                  td  
+                    input#cantidad.cantidad.form-control(type="number" style="text-align:center")
+                  td 
+                    if activo_marketplace===0
+                      select.impuesto.form-control(style="width:100%")
+                    else 
+                      select.impuesto.form-control(style="width:100%" disabled)
+                  td 
+                    if activo_marketplace===0
+                      select.impuesto2.form-control(style="width:100%")
+                    else 
+                      select.impuesto2.form-control(style="width:100%" disabled)
+
+
+                    include ./select2/impuestos.pug                  
+
+                  td 
+                    input#impuestoTotal.impuestoTotal.form-control(type="number" style="text-align:center" readonly) 
+
+                  td(style="min-width: 120px") 
+                    input#total.total.form-control(type="number" style="text-align:center" readonly) 
+
+                  td(style="min-width: 70px; display:flex") 
+                    button#agregarServ.agregaNuevo.btn.btn-light(type="button" style="margin-left:8px")
+                      i.fa.fa-plus
+                    button#remove.rowDelete.btn.btn-light(type="button" style="margin-left:8px")
+                      i.fa.fa-trash 
+
+
+                tfoot.text-right 
+                  tr.itemsSubtotal
+                    th.text-left   Subtotal
+                    td   
+                      span.strong.centerRow $ 
+                        span#subtotal.strong
+                  tr.descuento
+                    th.text-left   Descuento %
+                      input#descuento.form-control.fieldDescuento(type="number" placeholder="0%" style="text-align:center") 
+                    td   
+                      span.strong.centerRow $ 
+                        span#descuentoSubtotal.strong
+
+                  tr.impuestosSubtotal 
+                    th.text-left   Impuestos
+                    td  
+                      span.strong.centerRow $ 
+                        span#subtotalImpuestos.strong
+                  tr.precioTotal 
+                    th.text-left   Precio Total: 
+                    td   
+                      span.strong.centerRow $ 
+                        span#totalGeneral.strong
+
+
+        h4.title.font-weight-bold Información Adicional
+        .row.space
+          .col-12
+            label.form-label(for='notas') Notas
+              textarea.form-control#notas(name="notas" cols="100" rows="2" placeholder="Escriba una nota adicional para los clientes")
+          .col-12
+            label.form-label(for='terminosExtra') Términos
+              textarea(name="terminosExtra" cols="100" rows="2" placeholder="Escriba los términos especificos para los clientes").form-control#terminosExtra
+        .row.justify-content-end.mt-3
+          .col-md-3.text-right
+            button.btn.btn-danger(type="buton" onclick="history.back()" data-dismiss="modal") #{translation.CANCEL}
+            span 
+            button.btn.btn-success(type='button' onClick=`guardarCotizacionNueva()`) #{translation.SAVE}
+
+  
+  include ./modals/agregar-impuesto.pug
+  include ./modals/gestionar-cliente.pug
+  include ./modals/revision-cliente.pug
+  include ./modals/agregar-servicio.pug
+  
+  script
+    include ../../js/toast.sweet.js
+    include ./script.js
+
+  include ./save/nueva-cotizacion.pug
+  include ./save/nuevo-cliente.pug
+  include ./save/nuevo-impuesto.pug
+  include ./save/nuevo-servicio.pug
+
+  include ./styles/cotizacion-nueva.pug
+
+  if activo_marketplace == 1
+    include ./select2/empresas.pug

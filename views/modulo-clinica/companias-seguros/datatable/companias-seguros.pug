@@ -1,0 +1,91 @@
+script.
+  let tablaCompaniasSeguros;
+  $(document).ready(function () {
+    let urlAjaxTablaCompaniasSeguros = "/admin-companias-seguros/datatable"
+    if (typeof empresa_id != 'undefined' && !isNaN(empresa_id.value)) {
+      urlAjaxTablaCompaniasSeguros += `/${empresa_id.value}`;
+    }
+    tablaCompaniasSeguros = $("#tabla-companias-seguros").DataTable({
+      columnDefs: [
+        {
+          orderable: false,
+          className: "select-checkbox",
+          targets: 0,
+        },
+      ],
+      select: {
+        style: "multi",
+        selector: "td:first-child",
+      },
+      dom: "Bfrtip",
+      buttons: ["selectAll", "selectNone"],
+      order: [[1, "asc"]],
+      language: {
+        buttons: {
+          selectAll: '#{translation.FORM.SELECT_EVERYTHING}',
+          selectNone: '#{translation.FORM.ERASE_SELECTION}',
+        },
+        url: "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json",
+        select: {
+          rows: "%d filas seleccionadas",
+        },
+      },
+      responsive: true,
+      searchDelay: 500,
+      processing: true,
+      serverSide: true,
+      ajax: urlAjaxTablaCompaniasSeguros,
+      rowId: 'id',
+      columns: [
+        { 
+          data: 'id', name: 'id', title: 'ID', orderable: false, searchable: false,
+          render: function (data, type, row) {
+            return ``;
+          }
+        },
+        { data: 'pais', name: 'pais', title: '#{translation.FORM.COUNTRY}', orderable: true, searchable: true},
+        { data: 'nombre', name: 'nombre', title: '#{translation.FORM.NAME}', orderable: true, searchable: true},
+        {
+          data: 'direccion', name: 'direccion', title: '#{translation.FORM.ADDRESS}', orderable: true, searchable: true,
+          render: function (data, type, row) {
+            return `${row.direccion} - ${row.provincia} - ${row.pais}`;
+          }
+        },
+        //- { data: 'provincia', name: 'provincia', title: '#{translation.FORM.PROVINCE}', orderable: true, searchable: true},
+        { data: 'correo', name: 'correo', title: '#{translation.FORM.EMAIL}', orderable: true, searchable: true},
+        { data: 'telefono', name: 'telefono', title: '#{translation.FORM.PHONE}', orderable: true, searchable: true},
+        { data: 'sitio_web', name: 'sitio_web', title: '#{translation.FORM.WEBSITE}', orderable: true, searchable: true},
+        { 
+          data: 'acciones', name: 'acciones', title: '#{translation.FORM.ACTIONS}', orderable: false, searchable: false,
+          render: function (data, type, row) {
+            let strRow = JSON.stringify(row);
+            return `
+              <button class="btn btn-warning" onclick='setDataEditarCompaniaSeguro(${strRow})'><i class="fa fa-edit"></i></button>
+              <button class="btn btn-danger" onclick="deleteCompaniaSeguro(${row.id})"><i class="fa fa-trash"></i></button>
+            `;
+          }
+        }
+      ],
+      initComplete: function (settings) {
+        //- clone thead to tfoot
+        $("#tabla-companias-seguros thead tr").clone().appendTo($("#tabla-companias-seguros tfoot"));
+      }
+    });
+
+
+    $("#accionesBoton").click(function () {
+      const valorSeleccionado = $("#acciones").val();
+      const selected_rows = tablaCompaniasSeguros
+        .rows({
+          selected: true,
+        })
+        .ids();
+
+      const arraySeleccion = $.makeArray(selected_rows);
+      switch (valorSeleccionado) {
+        case "0":
+          eliminarProductos(arraySeleccion, "companias_seguros");
+          break;
+      }
+    });
+  });

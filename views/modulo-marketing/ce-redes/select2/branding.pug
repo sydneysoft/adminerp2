@@ -1,0 +1,52 @@
+//- Este archivo depende de /modulo-tv/modulo-branding/brand/modals/crear-tienda-admin.pug
+//- Y el anterior depende de /
+script.
+  const select2CeRedes = $("#lista-ceredes, #lista-ceredes-editar").select2({
+    ajax: {
+      url: "/admin-ceredes/select2",
+      dataType: 'json',
+      delay: 500,
+      data: function (params) {
+        return {
+          term: params.term,
+          select: ['id', 'nombre','imagen'],
+          page: params.page
+        }
+      },
+      processResults: function (data, params) {
+        return {
+          results: $.map(data.data, (item) => {
+            return {
+              id: item.imagen,
+              text: item.nombre,
+              identificador: item.id,
+            }
+          })
+        }
+      },
+      cache: true
+    },
+    placeholder: '#{translation.SEARCH}',
+    templateResult: ceredesState,
+    allowClear: true
+  })
+  //- .on("select2:open", () => {
+  //-   $(".select2-results:not(:has(a))").append(
+  //-     '<a href="#" style="padding: 6px;height: 20px;display: inline-table;" data-toggle="modal" data-target="#" onclick="closePortadasSelect2()">Agregar brand</a>'
+  //-   );
+  //- }); //- No se debe crear
+
+  function ceredesState (state) {
+    if (!state.id) {
+      return state.text;
+    }
+    let $container = $(`
+      <span><strong>${state.identificador}</strong> | ${state.text}</span>
+    `);
+
+    return $container;
+  }
+
+  function closePortadasSelect2 () {
+    $("#lista-ceredes, #lista-ceredes-editar").select2('close');
+  }

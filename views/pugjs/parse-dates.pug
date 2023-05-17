@@ -1,0 +1,48 @@
+script.
+  function parseDay (dia) {
+    switch (dia) {
+      case '1':
+        return '#{translation.DAYS.MONDAY}';
+      case '2':
+        return '#{translation.DAYS.TUESDAY}';
+      case '3':
+        return '#{translation.DAYS.WEDNESDAY}';
+      case '4':
+        return '#{translation.DAYS.THURSDAY}';
+      case '5':
+        return '#{translation.DAYS.FRIDAY}';
+      case '6':
+        return '#{translation.DAYS.SATURDAY}';
+      case '0':
+        return '#{translation.DAYS.SUNDAY}';
+    }
+  }
+
+  function parseMonth (month) {
+    switch (month) {
+      case '1':
+        return '#{translation.MONTHS.JANUARY}';
+      case '2':
+        return '#{translation.MONTHS.FEBRUARY}';
+      case '3':
+        return '#{translation.MONTHS.MARCH}';
+      case '4':
+        return '#{translation.MONTHS.APRIL}';
+      case '5':
+        return '#{translation.MONTHS.MAY}';
+      case '6':
+        return '#{translation.MONTHS.JUNE}';
+      case '7':
+        return '#{translation.MONTHS.JULY}';
+      case '8':
+        return '#{translation.MONTHS.AUGUST}';
+      case '9':
+        return '#{translation.MONTHS.SEPTEMBER}';
+      case '10':
+        return '#{translation.MONTHS.OCTOBER}';
+      case '11':
+        return '#{translation.MONTHS.NOVEMBER}';
+      case '12':
+        return '#{translation.MONTHS.DECEMBER}';
+    }
+  }

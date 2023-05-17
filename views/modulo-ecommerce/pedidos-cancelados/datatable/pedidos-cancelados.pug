@@ -1,0 +1,68 @@
+
+script.
+  let tablaPedidos;
+  $(document).ready( function () {
+    let urlAjaxTablaPedidos = "/admin-pedidos-cancelados/datatable";
+    if (typeof empresa_id != 'undefined' && empresa_id.value != "" && !isNaN(empresa_id.value)) {
+      urlAjaxTablaPedidos = "/admin-pedidos-cancelados/datatable/" + empresa_id.value;
+    }
+    tablaPedidos = $('#tabla-pedidos').DataTable({
+      "language": {"url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"},
+      order: [[ 0, "desc" ]],
+      searchDelay: 500,
+      processing: true,
+      serverSide: true,
+      ajax: urlAjaxTablaPedidos,
+      columns: [
+        { data: 'id', name: 'id', title: "ID", orderable: true, searchable: false, visible: false},
+        { 
+          data: 'fecha_registro', name: 'fecha_registro', title: "#{translation.FORM.DATE}", orderable: false, searchable: false,
+          render: function (data, type, row) {
+            return moment(data).format('DD/MM/YYYY');
+          }
+        },
+        { data: 'usuario', name: 'usuario', title: "#{translation.FORM.USER}", orderable: true, searchable: true},
+        { 
+          data: 'total', name: 'total', title: "#{translation.FORM.TOTAL}", orderable: false, searchable: false,
+          render: function (data, type, row) {
+            return row.moneda + "" + row.suma_subtotal
+          }
+        },
+        { data: 'tipo_pago', name: 'tipo_pago', title: "#{translation.FORM.PAYMENT}", orderable: true, searchable: true},
+        { data: 'direccion_entrega', name: 'direccion_entrega', title: "#{translation.FORM.ADDRESS}", orderable: true, searchable: true},
+        { data: 'provincia', name: 'provincia', title: "#{translation.FORM.PROVINCE}", orderable: true, searchable: true},
+        { 
+          data: 'estado', name: 'estado', title: "#{translation.FORM.STATE}", orderable: false, searchable: false,
+          render: function (data, type, row) {
+            switch (parseInt(data)) {
+              case 1:
+                return "<span class='badge badge-success'>#{translation.PAID}</span>";
+              case 2:
+                return "<span class='badge badge-warning'>#{translation.PROCESSED}</span>";
+              case 3:
+                return "<span class='badge badge-info'>#{translation.DELIVERED}</span>";
+              default:
+                return "<span class='badge badge-danger'>#{translation.ERROR}</span>";
+            }
+          }  
+        },
+        { 
+          data: 'acciones', name: 'acciones', title: "#{translation.FORM.ACTIONS}", orderable: false, searchable: false,
+          render: function (data, type, row) {
+            return `
+              <button class="btn btn-warning" style="margin-right:7px;" type="button" onclick="editarPedido('${row.id}')">
+                <i class="fas fa-edit"></i>
+              </button>
+              <button class="delete btn btn-danger" onclick="eliminarPedido('${row.id}')">
+                <i class="fas fa-trash"></i>
+              </button>
+            `;
+          }
+        }
+      ],
+      initComplete: function (settings) {
+        //- clone thead to tfoot
+        $("#tabla-pedidos thead tr").clone().appendTo($("#tabla-pedidos tfoot"));
+      }
+    });
+  });

@@ -1,0 +1,74 @@
+//- Modal para editar sede
+.modal.fade.justify-content-center.align-items-center(tabindex="-1" role="dialog" id="editarVisitaMedicaModal")
+  .modal-dialog.modal-lg
+    .modal-content.modalContent(style="height: 100%;")
+      .modal-header 
+        .row(style="margin:0;")
+          .col-md-12
+            h3(style="margin:0px 0;") #{translation.EDIT}
+
+      .modal-body.borderBottom
+        //- id	paciente_id	medico_id	fecha	hora	motivo	anotaciones	resultado	diagnostico	recetas	estado	costo	clinica_id	referencias	
+        .row
+          .col-12.col-md-6
+            .form-group
+              label(for="lista-pacientes-editar") Pacientes
+              select#lista-pacientes-editar
+          .col-12.col-md-6
+            .form-group
+              label(for="lista-medicos-editar") Medicos
+              select#lista-medicos-editar
+          .col-12.col-md-6
+            .form-group
+              label(for="lista-sedes-editar") Clinica sedes
+              select#lista-sedes -editar
+          .col-12.col-md-6
+            .form-group
+              label(for="fecha-editar") Fecha
+              input#fecha-editar.form-control(type="date")
+          .col-12.col-md-6
+            .form-group
+              label(for="hora-editar") Hora
+              input#hora-editar.form-control(type="time")
+          .col-12.col-md-6
+            .form-group
+              label(for="estado-editar") Estado
+              select#estado-editar(name="estado")
+                option(value="") Seleccionar 
+                option(value="0") Pendiente
+                option(value="1") Realizada
+                option(value="2") Cancelada
+          .col-12.col-md-6
+            .form-group
+              label(for="costo-editar") Costo
+              input#costo-editar.form-control(type="number") 
+          .col-12.col-md-6
+            .form-group
+              label(for="motivo-editar") Motivo
+              textarea#motivo-editar.form-control(name="motivo")       
+          .col-12.col-md-6
+            .form-group
+              label(for="anotaciones-editar") Anotaciones
+              textarea#anotaciones-editar.form-control(name="anotaciones")
+          .col-12.col-md-6
+            .form-group
+              label(for="diagnostico-editar") Diagnostico
+              textarea#diagnostico-editar.form-control(name="diagnostico")
+          .col-12.col-md-6
+            .form-group
+              label(for="resultado-editar") Resultado
+              textarea#resultado-editar.form-control(name="resultado")
+          .col-12.col-md-6
+            .form-group
+              label(for="recetas-editar") Recetas
+              textarea#recetas-editar.form-control(name="recetas")
+          .col-12.col-md-6
+            .form-group
+              label(for="referencias-editar") Referencias
+              textarea#referencias-editar.form-control(name="referencias")
+          input#itemId(type="hidden" readonly)
+      .modal-footer(style="padding:8px;")
+        .row(style="margin:0;")
+          .col-md-12.text-right
+            button#editVisitaMedica.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;") #{translation.EDIT}
+            button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}

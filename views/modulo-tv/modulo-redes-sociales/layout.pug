@@ -1,0 +1,16 @@
+extends ../../extends/menu-superior-admin
+
+block contenido
+  //- h1 Páginas
+  ul.nav.nav-tabs
+    li.nav-item
+      button.nav-link.active() #{translation.SOCIAL_NETWORKS}
+
+  script.
+      const currentPath = window.location.pathname
+      const navLinks = $(".nav .nav-link");
+      $.each(navLinks, function (index, value) {
+        if(currentPath.startsWith(value.getAttribute('href'))) {
+          value.classList.toggle('active')
+        }
+      });

@@ -1,0 +1,89 @@
+extends ../layout.pug
+
+append contenido
+  .border-bottom.border-left.border-right.rounded-bottom.p-3
+    h1.text-center.text-capitalize #{translation.CLINIC}
+    .my-3
+      .container 
+        .row 
+          .col-12.text-right 
+            button.btn.btn-primary#guardar_cambios #{translation.SAVE_CHANGES}
+        .row 
+          if Array.isArray(data) && data.length > 0
+            each item in data
+              if item.propiedad === 'tipo_documento'
+                .col-12.col-md-4
+                  h3 #{translation.DOCUMENT_TYPE}
+                  #tipo_documento
+                    each valor in item.valor
+                      .form-group.d-flex.mt-3
+                        input.tipo_documento.form-control(name="tipo_documento" value=valor)
+                        button.btn.btn-danger.ml-1(onclick="eliminarTipoDocumento(this)")
+                          i.fas.fa-trash
+                  .form-group
+                    button.btn.btn-primary.btn-block.btn-sm#agregar_tipo_documento #{translation.ADD}
+                      i.fas.fa-plus.ml-1
+              if item.propiedad === 'tipo_seguro'
+                .col-12.col-md-4 
+                  h3 Tipo de seguro
+                  #tipo_seguro
+                    each valor in item.valor
+                      .form-group.d-flex.mt-3
+                        input.tipo_seguro.form-control(name="tipo_seguro" value=valor)
+                        button.btn.btn-danger.ml-1(onclick="eliminarTipoSeguro(this)")
+                          i.fas.fa-trash
+                  .form-group
+                    button.btn.btn-primary.btn-block.btn-sm#agregar_tipo_seguro #{translation.ADD}
+                      i.fas.fa-plus.ml-1
+              if item.propiedad === 'tipo_cita'
+                .col-12.col-md-4 
+                  h3 Tipo de cita
+                  #tipo_cita
+                    each valor in item.valor
+                      .form-group.d-flex.mt-3
+                        input.tipo_cita.form-control(name="tipo_cita" value=valor)
+                        button.btn.btn-danger.ml-1(onclick="eliminarTipoCita(this)")
+                          i.fas.fa-trash
+                  .form-group
+                    button.btn.btn-primary.btn-block.btn-sm#agregar_tipo_cita #{translation.ADD}
+                      i.fas.fa-plus.ml-1
+              if item.propiedad === 'sexo'
+                .col-12.col-md-4 
+                  h3 Sexo
+                  #sexo
+                    each valor in item.valor
+                      .form-group.d-flex.mt-3
+                        input.sexo.form-control(name="sexo" value=valor)
+                        button.btn.btn-danger.ml-1(onclick="eliminarSexo(this)")
+                          i.fas.fa-trash
+                  .form-group
+                    button.btn.btn-primary.btn-block.btn-sm#agregar_sexo #{translation.ADD}
+                      i.fas.fa-plus.ml-1
+              if item.propiedad === 'estado_civil'
+                .col-12.col-md-4 
+                  h3 Estado civil
+                  #estado_civil
+                    each valor in item.valor
+                      .form-group.d-flex.mt-3
+                        input.estado_civil.form-control(name="estado_civil" value=valor)
+                        button.btn.btn-danger.ml-1(onclick="eliminarEstadoCivil(this)")
+                          i.fas.fa-trash
+                  .form-group
+                    button.btn.btn-primary.btn-block.btn-sm#agregar_estado_civil #{translation.ADD}
+                      i.fas.fa-plus.ml-1
+              if item.propiedad === 'estado_cita'
+                .col-12.col-md-4 
+                  h3 #{translation.APPOINTMENT_STATE}
+                  #estado_cita
+                    each valor in item.valor
+                      .form-group.d-flex.mt-3
+                        input.estado_cita.form-control(name="estado_cita" value=valor)
+                        button.btn.btn-danger.ml-1(onclick="eliminarEstadoCita(this)")
+                          i.fas.fa-trash
+                  .form-group
+                    button.btn.btn-primary.btn-block.btn-sm#agregar_estado_cita #{translation.ADD}
+                      i.fas.fa-plus.ml-1
+                
+          
+  script
+    include ./clinica.js

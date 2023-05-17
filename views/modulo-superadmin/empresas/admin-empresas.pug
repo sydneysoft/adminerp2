@@ -1,0 +1,67 @@
+extends ../../extends/menu-superior-admin
+block contenido
+  .row
+    .col-md-6.col-6.text-grey(style="margin-bottom:10px;")
+      h1.display-1
+        strong #{translation.BUSINESSES} 
+        //-   span.light= `${empresas.length}`
+      p.light #{translation.CREATE_MANAGE_BUSINESS}
+
+
+    .col-md-6.col-6.text-right 
+
+
+      button.btn.btn-success(type="button" onClick="nuevaEmpresa()")
+        i.fas.fa-plus
+          span   #{translation.NEW_BUSINESS}  
+
+    .col-12 
+      div.table-responsive
+      table#tabla-empresas.table.table-bordered
+        thead.thead-dark
+        tfoot
+
+
+
+  include ./modals/crear-empresa.pug
+  include ./modals/editar-empresa.pug
+
+  include ./styles/empresas.pug
+
+  script(src="//cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.15/js/intlTelInput.js")
+  script(src="//cdn.jsdelivr.net/npm/bootstrap-select@1.13.17/dist/js/bootstrap-select.min.js")
+  link(rel='stylesheet' href="//cdn.jsdelivr.net/npm/bootstrap-select@1.13.17/dist/css/bootstrap-select.min.css")
+
+  include ./script.pug 
+  include ./save/empresa.pug
+  include ./update/empresa.pug
+  include ./delete/empresa.pug
+  include ./save/categoria.pug
+
+  script.
+    const modulo_grupo = !{JSON.stringify(modulo_grupo)};
+    const modulos_categorias = !{JSON.stringify(modulos_categorias)};
+    const asignarModulo=(id)=>{
+      $("#permisosEmpresas").modal("show").attr("data-id", id);
+
+
+        $.ajax({
+          method: "GET",
+          url: `/admin-empresas/categoria/${id}`,
+          dataType: "json",
+          success: function (data) {
+
+            $('#modulosSel').selectpicker('val', data.categorias);
+
+          }
+        })
+
+    }
+
+  include ./datatable/empresas.pug
+
+
+
+
+
+

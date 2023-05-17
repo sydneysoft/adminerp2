@@ -1,0 +1,327 @@
+extends extends/menu-superior-admin
+block contenido
+    .row
+        .col-12.text-grey(style="margin-bottom:10px;")
+            h1.display-1
+                strong #{translation.FORM.STORE_LIST}
+        .col-12
+                button.btn.btn-success(type="button", onClick="openNewHandleModalTienda()")
+                    i.fas-fa-plus
+                    span #{translation.ADD_STORE}
+        .col-12(style="margin-top: 20px;")
+            div.table-responsive
+                table#tabla-tiendas.table.table-bordered
+                    thead.thead-dark
+                        tr.table-head
+                            th.text-center #{translation.FORM.NAME}
+                            th.text-center #{translation.FORM.SCHEDULE}
+                            th.text-center #{translation.FORM.IMAGE}
+                            th.text-center #{translation.FORM.USER}
+                            th.text-center
+                    tbody
+                        each book in bookStore
+                            tr
+                                td.text-centera=book.nombre
+                                td.text-center=book.horario
+                                td.text-center
+                                    img(src=book.imagen,style="width:50px;height:50px;object-fit:cover")
+                                td.text-center=book.nombre_usuario
+                                td.text-center
+                                    button.btn.btn-warning(onclick="handleTiendaAdmin('"+book.id+"')")
+                                        i.fa.fa-edit
+                                    button.btn.btn-danger(type="button" onclick="deleteTiendasAdminPanel('"+book.id+"')",style="margin-left:8px")
+                                        i.fa.fa-trash
+                                          
+    .modal#nuevoTiendaAdmin(tabindex="-1" role="dialog")
+        .modal-dialog.modal-lg(role="document")
+            .modal-content
+                .modal-body
+                    .row(style="padding:15px;")
+                        .col-md-12.col-12
+                            .form-group(style="display:flex;justify-content:center;align-items:center;")
+                                img(id="imagen-data-banner" src="https://www.cuba.travel/images/noimage.png" class="imagen-data-producto" onClick="handleModalMultimediaSingle()")
+                        .col-md-4.col-12
+                            .form-group
+                                label #{translation.FORM.NAME}
+                                .controls
+                                    input#nombreNuevo-tienda-admin.form-control(type="text")
+                        .col-md-4.col-12
+                            .form-group
+                                label #{translation.FORM.USER}
+                                .controls
+                                    input#usuarioNuevo-tienda-admin.form-control(type="text")
+                        .col-md-4.col-12
+                            .form-group
+                                label #{translation.FORM.PASSWORD}
+                                .controls
+                                    input#passwordNuevo-tienda-admin.form-control(type="password")
+                        .col-md-4.col-12
+                            .form-group
+                                label #{translation.FORM.SITE_WEB}
+                                .controls
+                                    input#websiteNuevo-tienda-admin.form-control(type="text")
+                        .col-md-4.col-12
+                            .form-group
+                                label Facebook
+                                .controls
+                                    input#facebookNuevo-tienda-admin.form-control(type="text")
+                        .col-md-4.col-12
+                            .form-group
+                                label Instagram
+                                .controls
+                                    input#instagramNuevo-tienda-admin.form-control(type="text")
+                        .col-md-4.col-12
+                            .form-group
+                                label Twitter
+                                .controls
+                                    input#twitterNuevo-tienda-admin.form-control(type="text")
+                        .col-md-4.col-12
+                            .form-group
+                                label TikTok
+                                .controls
+                                    input#tiktokNuevo-tienda-admin.form-control(type="text")
+                        .col-md-4.col-12
+                            .form-group
+                                label Whatsapp
+                                .controls
+                                    input#whatsappNuevo-tienda-admin.form-control(type="number")
+                        .col-md-4.col-12
+                            .form-group
+                                label #{translation.FORM.PHONE}
+                                .controls
+                                    input#telefonoNuevo-tienda-admin.form-control(type="number")
+                        .col-md-4.col-12
+                            .form-group
+                                label #{translation.FORM.MOBILE}
+                                .controls
+                                    input#telefonoNuevo-tienda-admin.form-control(type="number")
+                        .col-md-4.col-12
+                            .form-group
+                                label #{translation.FORM.BUSINESS_PHONE}
+                                .controls
+                                    input#telefonoEmpresaNuevo-tienda-admin.form-control(type="number")
+                        .col-md-4.col-12
+                            .form-group
+                                label #{translation.FORM.EMAIL}
+                                .controls
+                                    input#correoNuevo-tienda-admin.form-control(type="text")
+                        .col-md-4.col-12
+                            .form-group
+                                label #{translation.FORM.STATE}
+                                .controls
+                                    select#statusNuevo-tienda-admin.form-control
+                                        option(value="1") #{translation.FORM.ACTIVE}
+                                        option(value="0") #{translation.FORM.DEACTIVATED}
+                        .col-md-4.col-12
+                            .form-group
+                                label #{translation.FORM.ACTIVE}
+                                .controls
+                                    select#activadoNuevo-tienda-admin.form-control
+                                        option(value="1") #{translation.FORM.YES}
+                                        option(value="0") #{translation.FORM.NO}
+                        .col-md-4.col-12
+                            .form-group
+                                label #{translation.FORM.SCHEDULE}
+                                .controls
+                                    input#horarioNuevo-tienda-admin.form-control(type="text")
+                        .col-md-4.col-12
+                            .form-group
+                                label #{translation.FORM.ADDRESS}
+                                .controls
+                                    input#direccionNuevo-tienda-admin.form-control(type="text")
+                        .col-md-4.col-12
+                            .form-group
+                                label #{translation.FORM.COORDENATES}
+                                .controls
+                                    input#coordenadasNuevo-tienda-admin.form-control(type="text")                  
+                        .col-12 
+                            .form-group
+                                label #{translation.FORM.DESCRIPTION}
+                                textarea#ckeditorarea(name="ckeditorarea")
+                .modal-footer      
+                    button.btn.btn-success.nuevo(type="button", style="margin-left:7px;margin-right:7px;",onClick="addTiendaAdmin()") #{translation.ADD}
+                    button.btn.btn-danger(type="buton", data-dismiss="modal") #{translation.CLOSE}
+    .modal#SelectImageFrame(tabindex="-1" role="dialog")
+        .modal-dialog.modal-lg(role="document")
+            .modal-content
+                .modal-body
+                    div(class='row',style='padding:8px;')
+                        div(class='col-md-12')
+                            input#selected-img-data-editar(type="hidden")
+                            input#selected-img-data(type="hidden")
+                            div#dataRowListMultimedia(class='row m-0 mt-4')
+                            div#loadingDataAjax(class='row m-0 mt-4 ajaxLoading')
+                                img(class="image-loader" src="https://ceisantagema.com/wp-content/plugins/gallery-by-supsystic/src/GridGallery/Galleries/assets/img/loading.gif")
+                            div(style="width:100%;display:flex;justify-content:center;align-items:center")
+                                div(id="data-paginate-images" data-take='16')
+                .modal-footer 
+                    button.btn.btn-success(disabled id="choice-image-banner",data-dismiss="modal")="Seleccionar Imágenes"
+                    button.btn.btn-danger(data-dismiss="modal")="Cancelar"
+    .modal#editarTiendaAdmin(tabindex="-1" role="dialog")
+        .modal-dialog.modal-lg(role="document")
+            .modal-dialog.modal-lg(role="document")
+            .modal-content
+                .modal-body
+                    .row(style="padding:15px;")
+                        .col-md-12.col-12
+                            .form-group(style="display:flex;justify-content:center;align-items:center;")
+                                img(id="imagen-data-banner-editar" src="https://www.cuba.travel/images/noimage.png" class="imagen-data-producto" onClick="handleModalMultimediaSingle()")
+                        .col-md-4.col-12
+                            input#dataIdTienda(type="hidden")
+                            .form-group
+                                label #{translation.FORM.NAME}
+                                .controls
+                                    input#nombreEditar-tienda-admin.form-control(type="text")
+                        .col-md-4.col-12
+                            .form-group
+                                label #{translation.FORM.USER}
+                                .controls
+                                    input#usuarioEditar-tienda-admin.form-control(type="text")
+                        .col-md-4.col-12
+                            .form-group
+                                label #{translation.FORM.PASSWORD}
+                                .controls
+                                    input#passwordEditar-tienda-admin.form-control(type="password")
+                        .col-md-4.col-12
+                            .form-group
+                                label #{translation.FORM.WEBSITE}
+                                .controls
+                                    input#websiteEditar-tienda-admin.form-control(type="text")
+                        .col-md-4.col-12
+                            .form-group
+                                label Facebook
+                                .controls
+                                    input#facebookEditar-tienda-admin.form-control(type="text")
+                        .col-md-4.col-12
+                            .form-group
+                                label Instagram
+                                .controls
+                                    input#instagramEditar-tienda-admin.form-control(type="text")
+                        .col-md-4.col-12
+                            .form-group
+                                label Twitter
+                                .controls
+                                    input#twitterEditar-tienda-admin.form-control(type="text")
+                        .col-md-4.col-12
+                            .form-group
+                                label TikTok
+                                .controls
+                                    input#tiktokEditar-tienda-admin.form-control(type="text")
+                        .col-md-4.col-12
+                            .form-group
+                                label Whatsapp
+                                .controls
+                                    input#whatsappEditar-tienda-admin.form-control(type="number")
+                        .col-md-4.col-12
+                            .form-group
+                                label #{translation.FORM.PHONE}
+                                .controls
+                                    input#telefonoEditar-tienda-admin.form-control(type="number")
+                        .col-md-4.col-12
+                            .form-group
+                                label #{translation.FORM.MOBILE}
+                                .controls
+                                    input#celularEditar-tienda-admin.form-control(type="number")
+                        .col-md-4.col-12
+                            .form-group
+                                label #{translation.FORM.BUSINESS_PHONE}
+                                .controls
+                                    input#telefonoEmpresaEditar-tienda-admin.form-control(type="number")
+                        .col-md-4.col-12
+                            .form-group
+                                label #{translation.FORM.EMAIL}
+                                .controls
+                                    input#correoEditar-tienda-admin.form-control(type="text")
+                        .col-md-4.col-12
+                            .form-group
+                                label #{translation.FORM.STATE}
+                                .controls
+                                    select#statusEditar-tienda-admin.form-control
+                                        option(value="1") #{translation.FORM.ACTIVE}
+                                        option(value="0") #{translation.FORM.DEACTIVATED}
+                        .col-md-4.col-12
+                            .form-group
+                                label #{translation.FORM.ACTIVE}
+                                .controls
+                                    select#activadoEditar-tienda-admin.form-control
+                                        option(value="1") #{translation.FORM.YES}
+                                        option(value="0") #{translation.FORM.NO}
+                        .col-md-4.col-12
+                            .form-group
+                                label #{translation.FORM.SCHEDULE}
+                                .controls
+                                    input#horarioEditar-tienda-admin.form-control(type="text")
+                        .col-md-4.col-12
+                            .form-group
+                                label #{translation.FORM.ADDRESS}
+                                .controls
+                                    input#direccionEditar-tienda-admin.form-control(type="text")
+                        .col-md-4.col-12
+                            .form-group
+                                label #{translation.FORM.COORDENATES}
+                                .controls
+                                    input#coordenadasEditar-tienda-admin.form-control(type="text")
+                        .col-12 
+                            .form-group
+                                label #{translation.FORM.DESCRIPTION}
+                                textarea#ckeditorareaEditar(name="ckeditorareaEditar")
+                .modal-footer      
+                    button.btn.btn-success.nuevo(type="button", style="margin-left:7px;margin-right:7px;",onClick="updateDataTienda()") #{translation.UPDATE}
+                    button.btn.btn-danger(type="buton", data-dismiss="modal") #{translation.CLOSE}
+    .modal#galeriaEditProducto(tabindex="-1" role="dialog")
+        .modal-dialog.modal-lg(role="document")
+            .modal-content
+                .modal-body
+                    input#data-id-product(type="hidden")
+                    div.mb-3(style="display:flex;justify-content:center;align-items:center")
+                        button.btn.btn-info(onClick="multimediaModalEdit()")="Agregar Más Fotos"
+                    .row#imagesAll(style="padding:15px;")
+                .modal-footer 
+                    button.btn.btn-success(onClick="updateDataGalery()")="Actualizar Galería"
+                    button.btn.btn-danger(data-dismiss="modal")="Cancelar"
+    .modal#SelectImageFrameEdit(tabindex="-1" role="dialog")
+        .modal-dialog.modal-lg(role="document")
+            .modal-content
+                .modal-body
+                    div(class='row',style='padding:8px;')
+                        div(class='col-md-12')
+                            div#dataRowListMultimediaEditar(class='row m-0 mt-4')
+                            div#loadingDataAjaxEditar(class='row m-0 mt-4 ajaxLoading')
+                                img(class="image-loader" src="https://ceisantagema.com/wp-content/plugins/gallery-by-supsystic/src/GridGallery/Galleries/assets/img/loading.gif")
+                            div(style="width:100%;display:flex;justify-content:center;align-items:center")
+                                div(id="data-paginate-images-editar" data-take='16')
+                .modal-footer 
+                    button.btn.btn-success(disabled id="choice-image-banner-editar",data-dismiss="modal")="Seleccionar Imágenes"
+                    button.btn.btn-danger(data-dismiss="modal")="Cancelar"
+    .modal#SelectImageFrameSingle(tabindex="-1" role="dialog")
+            .modal-dialog.modal-lg(role="document")
+                .modal-content
+                    .modal-body
+                        div(class='row',style='padding:8px;')
+                            div(class='col-md-12')
+                                input#selected-img-data-editar-single(type="hidden")
+                                input#selected-img-data-single(type="hidden")
+                                div#dataRowListMultimedia-single(class='row m-0 mt-4')
+                                div#loadingDataAjax-single(class='row m-0 mt-4 ajaxLoading')
+                                    img(class="image-loader" src="https://ceisantagema.com/wp-content/plugins/gallery-by-supsystic/src/GridGallery/Galleries/assets/img/loading.gif")
+                                div(style="width:100%;display:flex;justify-content:center;align-items:center")
+                                    div(id="data-paginate-images-single"  data-take='16')
+                    .modal-footer 
+                        button.btn.btn-success(disabled id="choice-image-banner-single",onClicK="choiceImgSingleProducto()")="Elegir Imagen"
+                        button.btn.btn-danger(data-dismiss="modal")="Cancelar"
+    
+    script. 
+        var imagesGalery=[];
+        var typeUpdate=1;
+        var arrayImagesNew=[];
+        var typeAction=1;
+        CKEDITOR.replace('ckeditorarea');
+        CKEDITOR.replace('ckeditorareaEditar');
+        getMultimediaInitialMultiple();
+        $(document).ready( function () {
+            $('#tabla-tiendas').DataTable({
+                "language": {"url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"}
+            });
+        });
+        var typeOperation="1";
+        getQuantityImagesProduct();

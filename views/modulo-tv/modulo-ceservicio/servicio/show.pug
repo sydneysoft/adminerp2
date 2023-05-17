@@ -1,0 +1,51 @@
+extends ../layout.pug
+
+append contenido 
+  .border-bottom.border-left.border-right.rounded-bottom.p-3
+    .my-3
+      .row 
+        .col-6.lext-left 
+          button.btn.btn-info(type="button" onclick="window.history.back()") #{translation.BACK}
+        .col-6.text-right 
+          if typeof data == 'object' && data.id
+            a.btn.btn-primary(type='submit' href=`/admin-ceservicios/servicio/editar/${data.id}`) #{translation.EDIT}
+              i.fas.fa-pen.ml-2
+    if typeof data == 'object' && data.id
+      .my-3 
+        .row 
+          .col-12.col-md-8 
+            .form-group
+              label(for='nombre') #{translation.FORM.NAME}
+              input#nombre.form-control(type='text' placeholder=translation.FORM.NAME name="nombre" value=data.nombre readonly)
+            .form-group 
+              label(for='estracto') #{translation.FORM.EXCERPT}
+              textarea#estracto.form-control(name="estracto" placeholder=translation.FORM.EXCERPT readonly) #{data.estracto}
+          .col-12.col-md-4 
+            .row 
+              .col-6 
+                .form-group
+                  label(for='icono') #{translation.FORM.ICON}: 
+                  span 
+                    i(class=data.icono)
+              .col-6
+                .form-group
+                  label(for='iconoImagen') #{translation.FORM.ICON_IMAGE}: 
+                  span 
+                    i(class=data.icono_imagen)
+            .form-group.mt-3 
+              label(for="image") #{translation.IMAGE}
+              figure 
+                img.w-100(src=data.imagen)
+        .row 
+          .col-12.col-md-8
+            .form-group   
+              label(for="body") #{translation.FORM.BODY}
+              #body.p-3.border.rounded
+                | !{data.body}
+              //- textarea#body(placeholder="Body" name="body")
+
+
+    else 
+      //- crear alerta bien bonita en bootstrap 4 que informe que no se encontro el servicio
+      .alert.alert-info(role="alert")
+        | #{translation.ALERTS.NO_DATA}

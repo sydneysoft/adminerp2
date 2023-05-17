@@ -1,0 +1,32 @@
+extends ../layout.pug
+
+append contenido 
+  .border-bottom.border-left.border-right.rounded-bottom.p-3
+    if data
+      .row.justify-content-between
+        .col
+          button.btn.btn-info(role="button" onclick="window.history.back()") #{translation.BACK}
+        .col.text-right 
+          a.btn.btn-primary(role="button" href=`/admin-paginas/pagina/editar/${data.id}`) #{translation.EDIT}
+      .row.mt-3 
+        .col-12
+          .input-group.mb-3
+            .input-group-prepend
+              span.input-group-text #{translation.FORM.NAME}
+            input.form-control(type='text' aria-describedby='basic-addon1' placeholder=translation.FORM.NAME value=data.nombre readonly)
+        .col-12
+          .input-group.mb-3
+            .input-group-prepend
+              span.input-group-text #{translation.FORM.IDENTIFIER}
+            input.form-control(type='text' placeholder=translation.FORM.IDENTIFIER aria-describedby='basic-addon1' value=data.image readonly)
+        .col-12
+          .input-group.mb-3
+            textarea.form-control(type='text' aria-describedby='basic-addon1' readonly)
+              |#{data.estracto} 
+        .col-12 
+          p.text-label.mb-3 #{translation.FORM.BODY}
+          div.border.p-3.rounded!= data.body
+    else 
+      .alert.alert-info.mt-3(role="alert")
+        | #{translation.ALERTS.NO_DATA}
+

@@ -1,0 +1,52 @@
+script.
+  const openNewStore = () => {
+    typeOperation = "1";
+    $("#nuevo").modal("show");
+  };
+
+  // la variable guardarImpuesto viene del id del boton guardar moneda */modals/crear-moneda.pug
+  guardarImpuesto.addEventListener("click", (event) => {
+    const nombre = $("#nombreImpuesto").val(),
+      tasa = $("#tasaImpuesto").val(),
+      codigo = $("#codigoImpuesto").val(),
+      descripcion = $("#descripcionImpuesto").val(),
+      pais = $("#lista-paises").val();
+
+    const auxData = {
+      nombre,
+      tasa,
+      codigo,
+      descripcion,
+      pais,
+    };
+
+    if (typeof empresa_id != 'undefined' && empresa_id && !isNaN(empresa_id.value)) {
+      auxData.empresa_id = empresa_id.value;
+    }
+
+    if ((nombre, codigo)) {
+      Swal.showLoading();
+      $.ajax({
+        url: "/admin-impuestos",
+        type: "POST",
+        data: auxData,
+        success: function (data) {
+          Swal.close();
+          if (data.ok) {
+            if (typeof tablaImpuestos !== 'undefined') {
+              tablaImpuestos.ajax.reload();
+            }
+            $("#nuevo").modal("hide");
+            toastSweet('Success', '#{translation.ALERTS.CREATED}', 'success');
+          } else {
+            toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+          }
+        },
+        error: function (err) {
+          Swal.close();
+          toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+        }
+      })
+    }
+
+  });

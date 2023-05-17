@@ -1,0 +1,497 @@
+extends ../layout.pug
+
+append contenido
+  .border-left.border-right.border-bottom.rounde-bottom.p-3
+    include ../../../mixins/btn/back.pug
+    .container-fluid
+      .row
+        .col-6.text-left
+          +btn-back()
+        .col-6.text-right
+          button#guardarPrograma.btn.btn-primary(type="submit") #{translation.SAVE}
+            i.fas.fa-save.ml-2
+      .row
+        .col-12
+          if empresa_id
+            input#empresa_id(type="text" value=empresa_id hidden)
+          else
+            input#empresa_id(type="text" value="" hidden)
+          .row.g-3 
+            .col-12.mb-3.text-right 
+            .col-12.col-md-8
+              .form-group
+                label.form-label(for='nombre') #{translation.FORM.NAME}
+                input#nombre.form-control(type='text' value=programa[0].nombre required='' placeholder=translation.FORM.NAME name="nombre")
+            .col-12.col-md-2
+              .form-group
+                label.form-label(for='numero_temporadas') #{translation.FORM.NUMBER_SEASONS}
+                input#numero_temporadas.form-control(type='number' value=programa[0].num_temporadas required='' placeholder=translation.FORM.NUMBER_SEASONS name="num_temporadas")
+            .col-12.col-md-2
+              
+            .col-12.col-md-8
+              .form-group
+                label.form-label(for='slogan') #{translation.FORM.SLOGAN}
+                textarea#slogan.form-control(placeholder=translation.FORM.SLOGAN name="slogan") #{programa[0].slogan}
+              .form-group
+                label.form-label(for='slogan') #{translation.FORM.EXCERPT}
+                textarea#estracto.form-control(placeholder=translation.FORM.EXCERPT name="estracto") #{programa[0].estracto}
+            .col-12.col-md-4
+              //- Imagen
+              .row.mb-3.align-items-end
+                .col-8
+                  span #{translation.FORM.COVER} 
+                  br
+                  .btn-group
+                    label.btn.btn-info.m-0(for="preImagen") #{translation.UPLOAD}
+                      i.fas.fa-upload.ml-2
+                    button#fromImagen.btn.btn-primary(type="button" onclick="getImagePagedGaleria(0, 'modalTarget', 'showModalTarget')") #{translation.FROM_GALLERY}
+                .col-4
+                  input#preImagen.form-control-file(type="file" name="" value="" hidden)
+                  input#imagen(type="text" hidden value=programa[0].foto_portada)
+                  #showImagen
+                  
+              .modal.fade.justify-content-center.align-items-center(tabindex="-1" role="dialog" id="modalTarget" style="height: 100vh;overflow-y: scroll;")
+                .modal-dialog.modal-lg
+                  .modal-content.modalContent(style="height: 100%;")
+                    .modal-header 
+                      .row(style="margin:0;")
+                        .col-md-12.text-center
+                          h3(style="margin:0px 0;") #{translation.FORM.GALLERY}
+
+                    .modal-body.borderBottom
+                      #showModalTarget.row
+                      
+                    .modal-footer(style="padding:8px;")
+                      .row(style="margin:0;")
+                        .col-md-12.text-right
+                          button.btn.btn-danger(type="buton" onclick="$('#modalFavicon').modal('hide');") #{translation.CLOSE}
+            .col-12.col-md-4
+              label.form-label(for='lanzamiento') #{translation.FORM.RELEASE_DATE}
+              input#lanzamiento.form-control(type='date' required='' placeholder=translation.FORM.RELEASE_DATE name="lanzamiento" value=moment(programa[0].fecha_lanzamiento).format('YYYY-MM-DD'))
+          
+            .col-12.my-3
+              input#itemId(type="text" value=programa[0].id hidden)
+            .col-12.col-md-4
+              .row.align-items-end
+                .col-9
+                  .form-group
+                    label.form-label(for="genero") #{translation.FORM.GENRE}
+                    select#genero.form-control(name="genero")
+                      if Array.isArray(generos)
+                        each genero in generos
+                          option(value=genero.id data-attr=JSON.stringify(genero)) #{genero.nombre}
+                      else
+                        option(value="0") #{translation.FORM.NO_GENRES}
+                .col-3
+                  .form-group
+                    button.btn.btn-primary(type="button" onclick="agregarGenero()")
+                      i.fas.fa-plus-circle
+              .row
+                .col-12
+                  #showRenderGeneros
+            .col-12.col-md-4
+              .row.align-items-end
+                .col-9
+                  .form-group
+                    label.form-label(for="director") #{translation.FORM.DIRECTORS}
+                    select#director.form-control
+                      if Array.isArray(directores)
+                        each director in directores
+                          option(value=director.id data-attr=JSON.stringify(director)) #{director.nombre}
+                      else
+                        option(value="0") #{translation.FORM.NO_DIRECTORS}
+                .col-3
+                  .form-group
+                    button.btn.btn-primary(type="button" onclick="agregarDirector()")
+                      i.fas.fa-plus-circle
+              .row
+                .col-12
+                  #showRenderDirectores
+            .col-12.col-md-4
+              .row.align-items-end
+                .col-9
+                  .form-group
+                    label.form-label(for="productor") #{translation.FORM.PRODUCERS}
+                    select#productor.form-control
+                      if Array.isArray(productores)
+                        each productor in productores
+                          option(value=productor.id data-attr=JSON.stringify(productor)) #{productor.nombre}
+                      else
+                        option(value="0") #{translation.FORM.NO_PRODUCERS}
+                .col-3
+                  .form-group
+                    button.btn.btn-primary(type="button" onclick="agregarProductor()")
+                      i.fas.fa-plus-circle
+              .row
+                .col-12
+                  #showRenderProductores
+  
+  script 
+    include ../../../js/modulo-tv/update.js
+  
+  script.
+    const directores = [];
+    const productores = [];
+    const generos = [];
+
+    const nombrePrograma = document.getElementById('nombre');
+
+    const num_temporadas = document.getElementById('numero_temporadas');
+    const sloganPrograma = document.getElementById('slogan');
+    const estractoPrograma = document.getElementById('estracto');
+    const portadaPrograma = document.getElementById('imagen'); // Foto de portada
+    const lanzamiento = document.getElementById('lanzamiento');
+    const genero = document.getElementById('genero');
+    const actor = document.getElementById('actor');
+    const director = document.getElementById('director');
+    const productor = document.getElementById('productor');
+
+    const showRenderGeneros = document.getElementById('showRenderGeneros');
+    const showRenderDirectores = document.getElementById('showRenderDirectores');
+    const showRenderProductores = document.getElementById('showRenderProductores');
+
+    const guardarPrograma = document.getElementById('guardarPrograma');
+
+    const empresa_id = document.getElementById('empresa_id');
+    const itemId = document.getElementById('itemId');
+
+    const clearForm = () => {
+      nombrePrograma.value = ''
+      num_temporadas.value = ''
+      sloganPrograma.value = ''
+      estractoPrograma.value = ''
+      portadaPrograma.value = ''
+      lanzamiento.value = ''
+      generos.splice(0, generos.length)
+      directores.splice(0, directores.length)
+      productores.splice(0, productores.length)
+      showRenderGeneros.innerHTML = ''
+      showRenderDirectores.innerHTML = ''
+      showRenderProductores.innerHTML = ''
+    };
+
+    addEventListener('DOMContentLoaded', () => {
+      createImageGroup ('imagen', 'preImagen', 'showImagen', 'fromImagen');
+    });
+
+    guardarPrograma.addEventListener('click', (event) => {
+      const auxData = {
+        nombre: nombrePrograma.value,
+        slogan: sloganPrograma.value,
+        estracto: estractoPrograma.value,
+        foto_portada: portadaPrograma.value,
+        num_temporadas: num_temporadas.value,
+        productor: JSON.stringify(productores),
+        director: JSON.stringify(directores),
+        genero: JSON.stringify(generos),
+        fecha_lanzamiento: lanzamiento.value
+      }
+      updateItem(`/admin-tv/programas/items/${itemId.value}`, auxData);
+    });
+
+
+    function agregarDirector () {
+      const data_director = director.options[director.selectedIndex].getAttribute('data-attr');
+      if (typeof data_director === 'string') {
+        if (Array.isArray(directores)){
+          if (directores.every(director => director.id !== JSON.parse(data_director).id)) {
+            directores.push(JSON.parse(data_director));
+            renderDirectores();
+          } else {
+            Swal.fire({
+              toast: true,
+              position: 'top-end',
+              icon: 'error',
+              title: 'Oops...',
+              text: 'El director ya esta agregado',
+              showConfirmButton: false,
+              timer: 1500
+
+            })
+          }
+        }
+      }
+    }
+
+    function renderDirectores () {
+      if (Array.isArray(directores) && directores.length > 0) {
+        showRenderDirectores.innerHTML = '';
+        directores.forEach((director, index) => {
+          let row = document.createElement('div');
+          row.classList.add('row');
+          row.classList.add('my-1');
+
+          let col9 = document.createElement('div');
+          col9.classList.add('col-9');
+
+          let p = document.createElement('p');
+          p.classList.add('form-control');
+          p.innerHTML = director.nombre;
+          
+          col9.appendChild(p);
+
+          let col3 = document.createElement('div');
+          col3.classList.add('col-3');
+
+          //- boton eliminar director
+          let button = document.createElement('button');
+          button.classList.add('btn');
+          button.classList.add('btn-danger');
+          button.classList.add('btn-sm');
+          button.setAttribute('type', 'button');
+          button.setAttribute('onclick', `eliminarDirector(${director.id})`);
+          //- icono trash
+          let icon = document.createElement('i');
+          icon.classList.add('fas');
+          icon.classList.add('fa-trash');
+          button.appendChild(icon);
+
+          col3.appendChild(button);
+
+          row.appendChild(col9);
+          row.appendChild(col3);
+
+          showRenderDirectores.appendChild(row);
+
+        });
+      }
+    }
+
+    function eliminarDirector (director_id) {
+      Swal.fire({
+        title: '¿Estas seguro?',
+        text: "No podras revertir esta accion",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, eliminar'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          if (Array.isArray(directores) && directores.length > 0) {
+            directores.forEach((director, index) => {
+              if (director.id === director_id) {
+                directores.splice(index, 1);
+                renderDirectores();
+              }
+            });
+          }
+        }
+      })
+    }
+
+    function agregarProductor() {
+      const data_productor = productor.options[productor.selectedIndex].getAttribute('data-attr');
+      if (typeof data_productor === 'string') {
+        if (Array.isArray(productores)){
+          if (productores.every(productor => productor.id !== JSON.parse(data_productor).id)) {
+            productores.push(JSON.parse(data_productor));
+            renderProductores();
+          } else {
+            Swal.fire({
+              toast: true,
+              position: 'top-end',
+              icon: 'error',
+              title: 'Oops...',
+              text: 'El productor ya esta agregado',
+              showConfirmButton: false,
+              timer: 1500
+
+            })
+          }
+        }
+      }
+    }
+
+    function renderProductores () {
+      if (Array.isArray(productores) && productores.length > 0) {
+        showRenderProductores.innerHTML = '';
+        productores.forEach((productor, index) => {
+          let row = document.createElement('div');
+          row.classList.add('row');
+          row.classList.add('my-1');
+
+          let col9 = document.createElement('div');
+          col9.classList.add('col-9');
+
+          let p = document.createElement('p');
+          p.classList.add('form-control');
+          p.innerHTML = productor.nombre;
+          
+          col9.appendChild(p);
+
+          let col3 = document.createElement('div');
+          col3.classList.add('col-3');
+
+          //- boton eliminar productor
+          let button = document.createElement('button');
+          button.classList.add('btn');
+          button.classList.add('btn-danger');
+          button.classList.add('btn-sm');
+          button.setAttribute('type', 'button');
+          button.setAttribute('onclick', `eliminarProductor(${productor.id})`);
+          //- icono trash
+          let icon = document.createElement('i');
+          icon.classList.add('fas');
+          icon.classList.add('fa-trash');
+          button.appendChild(icon);
+
+          col3.appendChild(button);
+
+          row.appendChild(col9);
+          row.appendChild(col3);
+
+          showRenderProductores.appendChild(row);
+
+        });
+      }
+    }
+
+    function eliminarProductor (productor_id) {
+      Swal.fire({
+        title: '¿Estas seguro?',
+        text: "No podras revertir esta accion",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, eliminar'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          if (Array.isArray(productores) && productores.length > 0) {
+            productores.forEach((productor, index) => {
+              if (productor.id === productor_id) {
+                productores.splice(index, 1);
+                renderProductores();
+              }
+            });
+          }
+        }
+      })
+    }
+
+    function agregarGenero() {
+      const data_genero = genero.options[genero.selectedIndex].getAttribute('data-attr');
+      if (typeof data_genero === 'string') {
+        if (Array.isArray(generos)){
+          if (generos.every(genero => genero.id !== JSON.parse(data_genero).id)) {
+            generos.push(JSON.parse(data_genero));
+            renderGeneros();
+          } else {
+            Swal.fire({
+              toast: true,
+              position: 'top-end',
+              icon: 'error',
+              title: 'Oops...',
+              text: 'El genero ya esta agregado',
+              showConfirmButton: false,
+              timer: 1500
+
+            })
+          }
+        }
+      }
+    }
+
+    function renderGeneros () {
+      if (Array.isArray(generos) && generos.length > 0) {
+        showRenderGeneros.innerHTML = '';
+        generos.forEach((genero, index) => {
+          let row = document.createElement('div');
+          row.classList.add('row');
+          row.classList.add('my-1');
+
+          let col9 = document.createElement('div');
+          col9.classList.add('col-9');
+
+          let p = document.createElement('p');
+          p.classList.add('form-control');
+          p.innerHTML = genero.nombre;
+          
+          col9.appendChild(p);
+
+          let col3 = document.createElement('div');
+          col3.classList.add('col-3');
+
+          //- boton eliminar genero
+          let button = document.createElement('button');
+          button.classList.add('btn');
+          button.classList.add('btn-danger');
+          button.classList.add('btn-sm');
+          button.setAttribute('type', 'button');
+          button.setAttribute('onclick', `eliminarGenero(${genero.id})`);
+          //- icono trash
+          let icon = document.createElement('i');
+          icon.classList.add('fas');
+          icon.classList.add('fa-trash');
+          button.appendChild(icon);
+
+          col3.appendChild(button);
+
+          row.appendChild(col9);
+          row.appendChild(col3);
+
+          showRenderGeneros.appendChild(row);
+
+        });
+      }
+    }
+
+    function eliminarGenero(genero_id) {
+      Swal.fire({
+        title: '¿Estas seguro?',
+        text: "No podras revertir esta accion",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, eliminar'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          if (Array.isArray(generos) && generos.length > 0) {
+            generos.forEach((genero, index) => {
+              if (genero.id === genero_id) {
+                generos.splice(index, 1);
+                renderGeneros();
+              }
+            });
+          }
+        }
+      })
+    }
+
+    addEventListener('DOMContentLoaded', () => {
+      let auxDirector = !{programa[0].director}
+      let auxProductor = !{programa[0].productor}
+      let auxGenero = !{programa[0].genero}
+
+      if (Array.isArray(auxDirector) && auxDirector.length > 0) {
+        directores.push(...auxDirector);
+      }
+
+      if (Array.isArray(auxProductor) && auxProductor.length > 0) {
+        productores.push(...auxProductor);
+      }
+
+      if (Array.isArray(auxGenero) && auxGenero.length > 0) {
+        generos.push(...auxGenero);
+      }
+
+      if (portadaPrograma.value != '') {
+        try {
+          new URL(portadaPrograma.value);
+          let img = document.createElement('img');
+          img.classList.add('img-fluid');
+          img.setAttribute('src', portadaPrograma.value);
+          img.setAttribute('alt', 'imagen');
+          $("#showImagen").append(img);
+
+        } catch (e) {}
+      }
+
+      renderDirectores();
+      renderProductores();
+      renderGeneros();
+    });
+
+  include ../../modulo-general/galeria-fotos/image.pug

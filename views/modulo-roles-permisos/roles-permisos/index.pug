@@ -1,0 +1,167 @@
+extends ../layout.pug
+
+append contenido
+  .border-left.border-right.border-bottom.rounded-bottom.p-3 
+    if empresa_id
+      input#empresa_id(type="text" value=empresa_id hidden)
+    else
+      input#empresa_id(type="text" value="" hidden)
+    .container-fluid 
+      .row
+        .col-6.text-left
+        .col-6.text-right
+          button#nuevo_rol.btn.btn-primary(type="button" data-toggle="modal" data-target="#modal-crear-rol") #{translation.CREATE}
+            i.fas.fa-plus.ml-2  
+      .row.mt-3 
+        .col-12 
+          .table-responsive
+            table#datatable
+              thead.thead-dark
+
+  //- Modal para crear un nuevo rol
+  .modal.fade#modal-crear-rol(role="dialog" aria-labelledby="modal-crear-rol" aria-hidden="true")
+    .modal-dialog.modal-sm(role="document")
+      .modal-content
+        .modal-header
+          h5.modal-title #{translation.CREATE}
+          button.close(type="button" data-dismiss="modal" aria-label="Close")
+            span(aria-hidden="true") &times;
+        .modal-body
+          .row
+            .col-12
+              .form-group
+                label(for="nombre") #{translation.FORM.NAME} *
+                input#nombre.form-control(type="text" placeholder="Nombre del rol")
+            .col-12
+              .form-group 
+                label(for="identificador") #{translation.FORM.IDENTIFIER} *
+                input#identificador.form-control(type="text" placeholder=translation.FORM.IDENTIFIER)
+
+        .modal-footer
+          button#btn-crear-rol.btn.btn-primary(type="button") #{translation.CREATE}
+            i.fas.fa-save.ml-2
+          button.btn.btn-secondary(type="button" data-dismiss="modal") #{translation.CANCEL}
+            i.fas.fa-times-circle.ml-2
+    
+  script.
+    const empresa_id = document.getElementById('empresa_id');
+    const nuevo_rol = document.getElementById('nuevo_rol');
+    const nombre = document.getElementById('nombre');
+    const identificador = document.getElementById('identificador');
+    const btnCrearRol = document.getElementById('btn-crear-rol');
+
+
+    let tabla;
+    addEventListener('DOMContentLoaded', () => {
+      let tableAjaxUrl = '/admin-roles-permisos/datatable';
+      if(empresa_id.value != '') {
+        tableAjaxUrl = '/admin-roles-permisos/datatable/' + empresa_id.value;
+      }
+      tabla = $('#datatable').DataTable({
+        fnCreatedRow: function (nRow, aData, iDataIndex) {
+          $(nRow).attr('id', `delete${aData.id}`);
+        },
+        searchDelay: 500,
+        serverSide: true,
+        processing: true,
+        ajax: tableAjaxUrl,
+        columns: [
+          {
+            data: 'id',
+            name: 'id',
+            title: 'ID',
+            orderable: false,
+            searchable: false,
+            visible: false
+          },
+          {
+            data: 'nombre',
+            name: 'nombre',
+            title: '#{translation.FORM.NAME}',
+
+          },
+          {
+            data: 'identificador',
+            name: 'identificador',
+            title: '#{translation.FORM.IDENTIFIER}',
+          },
+          {
+            data: 'acciones',
+            name: 'acciones',
+            title: '#{translation.ACTIONS}',
+            render: function (data, type, row) {
+
+              return `
+                <div class="btn-group" role="group" aria-label="Basic example">
+                  <a href="/admin-roles-permisos/empresa/${empresa_id.value}/rol/${row.id}" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></a>
+                  <button type="button" class="btn btn-danger btn-sm" onclick="eliminarRol(${row.id})"><i class="fas fa-trash"></i></button>
+                </div>
+              `
+            },
+            orderable: false,
+            searchable: false,
+
+          }
+          //- { data: 'created_at' },
+          //- { data: 'updated_at' },
+        ],
+      })
+    });
+
+    nuevo_rol.addEventListener('click', () => {
+      nombre.value = '';
+      identificador.value = '';
+    });
+
+    btnCrearRol.addEventListener('click', () => {
+      if (nombre.value === '' || identificador.value === '') {
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'error',
+          title: 'Oops...',
+          text: '#{translation.FORM.REQUIRED_FIELDS}',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+        });
+      } else {
+        const data = {
+          nombre: nombre.value,
+          identificador: identificador.value,
+        };
+        let urlAjax = '/admin-roles-permisos/create'
+        if(empresa_id.value != '') {
+          data.id = empresa_id.value;
+          urlAjax = '/admin-roles-permisos/create/' + empresa_id.value;
+        }
+        $.ajax({
+          url: urlAjax,
+          method: 'POST',
+          data,
+          success: function (data) {
+            if (data.ok) {
+              Swal.fire({
+                icon: 'success',
+                title: '#{translation.ALERTS.SUCCESS}',
+                text: '#{translation.ALERTS.ROLE_CREATED}'
+              });
+              $('#modal-crear-rol').modal('hide');
+            } else {
+              Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: '#{translation.ALERTS.ERROR_DATA}'
+              });
+            }
+          },
+          error: function (err) {
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: '#{translation.ALERTS.ERROR_DATA}'
+            });
+          }
+        });
+      }
+    });

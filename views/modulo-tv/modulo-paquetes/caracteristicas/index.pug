@@ -1,0 +1,398 @@
+extends ../layout.pug
+
+
+append contenido 
+  .border-left.border-right.border-bottom.p-3 
+    .container-fluid 
+      .row
+        .col-12.text-right 
+          button#nuevaCaracteristica.btn.btn-primary(type="button") #{translation.ADD}
+            i.fas.fa-plus
+      .row.mt-5
+        .col-12 
+          .table-responsive 
+            table#caracteristicasTable.table
+              thead.thead-dark
+                tr
+                  th(scope='col') ID
+                  th(scope='col') #{translation.FORM.NAME}
+                  th(scope='col') #{translation.FORM.ICON}
+                  th(scope='col') #{translation.FORM.ACTIONS}
+              tbody
+  
+    if empresa_id 
+      input#empresa_id(type="text" value=empresa_id hidden)
+    else 
+      input#empresa_id(type="text" value="" hidden)
+
+  //- Modal para agregar caracteristica
+  .modal.fade.justify-content-center.align-items-center(tabindex="-1" role="dialog" id="nuevaCaracteristicaModal")
+    .modal-dialog.modal-md
+        .modal-content.modalContent(style="height: 100%;")
+            .modal-header 
+                .row(style="margin:0;")
+                    .col-md-12
+                        h3(style="margin:0px 0;") #{translation.ADD}
+
+            .modal-body.borderBottom
+              .row 
+                .col-12
+                  .form-group 
+                    label(for="descripcion") #{translation.FORM.DESCRIPTION}
+                    textarea#descripcion.form-control(name="descripcion")
+                    span#textAreaCounter.text-sm
+                .col-12 
+                  .form-group 
+                    label(for="icono") #{translation.FORM.ICON}
+                      span#showIcono.ml-3
+                    select#icono.form-control
+                      option(value="") #{translation.FORM.ICON}
+            .modal-footer(style="padding:8px;")
+                .row(style="margin:0;")
+                    .col-md-12.text-right
+                        button#addCaracteristica.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;") #{translation.ADD}
+                          i.fas.fa-plus.ml-3
+                        button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}
+  
+  //- Modal para editar
+  .modal.fade.justify-content-center.align-items-center(tabindex="-1" role="dialog" id="editarCaracteristicaModal")
+    .modal-dialog.modal-md
+        .modal-content.modalContent(style="height: 100%;")
+            .modal-header 
+                .row(style="margin:0;")
+                    .col-md-12
+                        h3(style="margin:0px 0;") #{translation.EDIT}
+
+            .modal-body.borderBottom
+              .row 
+                .col-12
+                  .form-group 
+                    label(for="descripcion_editar") #{translation.FORM.DESCRIPTION}
+                    textarea#descripcion_editar.form-control(name="descripcion")
+                    span#textAreaCounter.text-sm
+                .col-12 
+                  .form-group 
+                    label(for="icono_editar") #{translation.FORM.ICON}
+                      span#showIcono_editar.ml-3
+                    select#icono_editar.form-control
+                      option(value="") #{translation.FORM.ICON}
+                .col-12 
+                  #id_editar(type="text" value="" hidden)
+            .modal-footer(style="padding:8px;")
+                .row(style="margin:0;")
+                    .col-md-12.text-right
+                        button#saveCaracteristica.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;") #{translation.SAVE}
+                          i.fas.fa-save.ml-3
+                        button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}
+  //- Modal para mostrar
+  .modal.fade.justify-content-center.align-items-center(tabindex="-1" role="dialog" id="mostrarCaracteristicaModal")
+    .modal-dialog.modal-md
+        .modal-content.modalContent(style="height: 100%;")
+            .modal-header 
+                .row(style="margin:0;")
+                    .col-md-12
+                        h3(style="margin:0px 0;") #{translation.EDIT}
+
+            .modal-body.borderBottom
+              .row 
+                .col-12
+                  .form-group 
+                    label(for="descripcion_mostrar") #{translation.FORM.DESCRIPTION}
+                    textarea#descripcion_mostrar.form-control(name="descripcion" readonly)
+                    span#textAreaCounter.text-sm
+                .col-12 
+                  .form-group 
+                    label(for="icono_mostrar") #{translation.FORM.ICON}
+                      span#showIcono_mostrar.ml-3
+                    select#icono_mostrar.form-control(disabled)
+                      option(value="") #{translation.FORM.ICON}
+                .col-12 
+                  #id_editar(type="text" value="" hidden)
+            .modal-footer(style="padding:8px;")
+                .row(style="margin:0;")
+                    .col-md-12.text-right
+                        button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}
+
+  script
+    include ../../../js/modulo-tv/save.js
+    include ../../../js/modulo-tv/update.js
+    include ../../../js/modulo-tv/delete.js
+  script.
+    let tabla = null;
+    let urlAjaxTable = '/admin-paquetes/caracteristicas/datatable';
+    const caracteristicasTable = document.getElementById('caracteristicasTable');
+    const empresa_id = document.getElementById('empresa_id');
+    const nuevaCaracteristica = document.getElementById('nuevaCaracteristica');
+
+    const descripcion = document.getElementById('descripcion');
+    const description_editar = document.getElementById('descripcion_editar');
+    const icono = document.getElementById('icono');
+    const icono_editar = document.getElementById('icono_editar');
+    const showIcono = document.getElementById('showIcono');
+    const showIcono_editar = document.getElementById('showIcono_editar');
+    const id_editar = document.getElementById('id_editar');
+
+    const description_mostrar = document.getElementById('descripcion_mostrar');
+    const icono_mostrar = document.getElementById('icono_mostrar');
+    const showIcono_mostrar = document.getElementById('showIcono_mostrar');
+
+    const addCaracteristica = document.getElementById('addCaracteristica');
+    const saveCaracteristica = document.getElementById('saveCaracteristica');
+
+    const editarCaracteristicaModal = document.getElementById('editarCaracteristicaModal');
+
+    const textAreaCounter = document.getElementById('textAreaCounter');
+    let maxCounter = 255;
+    textAreaCounter.innerHTML = maxCounter;
+
+    descripcion.addEventListener('keyup', (event) => {
+      let counter = maxCounter - descripcion.value.length;
+      textAreaCounter.innerHTML = counter;
+    });
+
+    addCaracteristica.addEventListener('click', (event) => {
+      if(icono.value != '' && descripcion.value != '') {
+        const payloadData = {
+          nombre: descripcion.value,
+          icono: icono.value,
+        }
+        if(empresa_id.value != '') {
+          payloadData.empresa_id = empresa_id.value;
+        }
+        save('/admin-paquetes/caracteristicas/items', payloadData, clearForm);
+
+      } else {
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Todos los campos son obligatorios',
+          showConfirmButton: false,
+          timer: 2000
+        })
+      }
+    });
+
+    saveCaracteristica.addEventListener('click', (event) => {
+      if(icono_editar.value != '' && description_editar.value != '') {
+        const payloadData = {
+          nombre: description_editar.value,
+          icono: icono_editar.value,
+        }
+        updateItem(`/admin-paquetes/caracteristicas/items/${id_editar.value}`, payloadData, clearEditForm);
+
+      } else {
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Todos los campos son obligatorios',
+          showConfirmButton: false,
+          timer: 2000
+        })
+      }
+    });
+
+    function deleteItemSuccess (data) {
+      tabla.row($(`#data.target`)).remove().draw();
+    }
+
+    function clearForm (data) {
+      icono.value = '';
+      descripcion.value = '';
+      showIcono.innerHTML = '';
+      tabla.ajax.reload();
+      $('#nuevaCaracteristicaModal').modal('hide');
+    }
+
+    function clearEditForm (data) {
+      icono_editar.value = '';
+      description_editar.value = '';
+      showIcono_editar.innerHTML = '';
+      tabla.ajax.reload();
+      $('#editarCaracteristicaModal').modal('hide');
+    }
+
+    addEventListener("DOMContentLoaded", () => {
+      if (empresa_id.value != '') {
+        urlAjaxTable = `/admin-paquetes/caracteristicas/datatable/${empresa_id.value}`;
+      }
+      tabla = $('#caracteristicasTable').DataTable({
+        fnCreatedRow: function (nRow, aData, iDataIndex) {
+          $(nRow).attr('id', `delete${aData.id}`);
+        },
+        dom: 'lBfrtip',
+        buttons: [
+          'copy', 'excel', 'pdf', 'print'
+        ],
+        processing: true,
+        serverSide: true,
+        ajax: urlAjaxTable,
+        searchDelay: 500,
+
+        columns: [
+          // nombre icono
+          { 
+            data: 'id', 
+            name: 'id', 
+            value: "ID", 
+            orderable: false,
+            searchable: false},
+          { data: 'nombre', name: 'nombre', value: "Nombre"},
+          { 
+            data: 'icono', 
+            name: 'icono', 
+            value: "Icono", 
+            render: function (data, type, row) {
+              return `<i class="${row.icono}"></i>`
+            },
+            orderable: false,
+            searchable: false
+          },
+          { 
+            data: 'acciones', 
+            value: "Acciones",
+            render: function (data, type, row) {
+              return `
+                <button class="btn btn-primary btn-sm" onclick='editarCaracteristicas(${JSON.stringify(row)})'>Editar</button>
+                <button class="btn btn-info btn-sm" onclick='mostrarCaracteristicas(${JSON.stringify(row)})'>Mostrar</button>
+                <button class="btn btn-danger btn-sm" onclick="beforeDeleteItem('/admin-paquetes/caracteristicas/items/${row.id}', deleteItemSuccess)">Eliminar</button>
+              `
+            },
+            orderable: false,
+            searchable: false
+          }
+        ]
+
+      });
+    });
+
+    nuevaCaracteristica.addEventListener('click', (event) =>{ 
+      $('#nuevaCaracteristicaModal').modal('show');
+    });
+
+     let iconosPricingFeatures = [
+      ["fas fa-bolt", "Bold"],
+      ["fas fa-bullseye", "Bullseye"],
+      ["fas fa-bullhorn", "Bullhorn"],
+      ["fas fa-broadcast-tower", "Broadcast tower"],
+      ["fas fa-bomb", "Bomb"],
+      ["fas fa-bone", "Bone"],
+      ["fas fa-bong", "Bong"],
+      ["fas fa-book", "Book"],
+      ["fas fa-book-dead", "Book Dead"],
+      ["fas fa-book-medical", "Book Medical"],
+      ["fas fa-book-open", "Book Open"],
+      ["fas fa-book-reader", "Book Reader"],
+      ["fas fa-bookmark", "Bookmark"],
+      ["fas fa-bowling-ball", "Bowling Ball"],
+      ["fas fa-box", "Box"],
+      ["fas fa-box-open", "Box Open"],
+      ["fas fa-box-tissue", "Box Tissue"],
+      ["fas fa-boxes", "Boxes"],
+      ["fas fa-braille", "Braille"],
+      ["fas fa-brain", "Brain"],
+      ["fas fa-bread-slice", "Bread Slice"],
+      ["fas fa-briefcase", "Briefcase"],
+      ["fas fa-briefcase-medical", "Briefcase Medical"],
+      ["fas fa-broom", "Broom"],
+      ["fas fa-brush", "Brush"],
+      ["fas fa-bug", "Bug"],
+      ["fas fa-building", "Building"],
+      ["fas fa-burn", "Burn"],
+      ["fas fa-bus", "Bus"],
+      ["fas fa-bus-alt", "Bus Alt"],
+      ["fas fa-business-time", "Business Time"],
+      ["fas fa-calculator", "Calculator"],
+      ["fas fa-calendar", "Calendar"],
+      ["fas fa-calendar-alt", "Calendar Alt"],
+      ["fas fa-calendar-check", "Calendar Check"],
+      ["fas fa-calendar-day", "Calendar Day"],
+      ["fas fa-calendar-minus", "Calendar Minus"],
+      ["fas fa-calendar-plus", "Calendar Plus"],
+      ["fas fa-calendar-times", "Calendar Times"],
+      ["fas fa-calendar-week", "Calendar Week"],
+      ["fas fa-camera", "Camera"],
+      ["fas fa-camera-retro", "Camera Retro"],
+      ["fas fa-campground", "Campground"],
+      ["fas fa-candy-cane", "Candy Cane"],
+      ["fas fa-cannabis", "Cannabis"],
+      ["fas fa-check", "Check"],
+      ["fas fa-check-circle", "Check Circle"],
+      ["fas fa-check-double", "Check Double"],
+      ["fas fa-check-square", "Check Square"],
+      ["fas fa-chess", "Chess"],
+      ["fas fa-chess-bishop", "Chess Bishop"],
+      ["fas fa-chess-board", "Chess Board"],
+      ["fas fa-chess-king", "Chess King"],
+      ["fas fa-chess-knight", "Chess Knight"],
+      ["fas fa-chess-pawn", "Chess Pawn"],
+      ["fas fa-chess-queen", "Chess Queen"],
+      ["fas fa-chess-rook", "Chess Rook"],
+      ["fas fa-chevron-circle-down", "Chevron Circle Down"],
+      ["fas fa-chevron-circle-left", "Chevron Circle Left"],
+      ["fas fa-chevron-circle-right", "Chevron Circle Right"],
+      ["fas fa-chevron-circle-up", "Chevron Circle Up"],
+      ["fas fa-chevron-down", "Chevron Down"],
+      ["fas fa-chevron-left", "Chevron Left"],
+      ["fas fa-chevron-right", "Chevron Right"],
+      ["fas fa-chevron-up", "Chevron Up"],
+      ["fas fa-child", "Child"],
+      ["fas fa-church", "Church"],
+      ["fas fa-circle", "Circle"],
+      ["fas fa-circle-notch", "Circle Notch"],
+      ["fas fa-city", "City"],
+      ["fas fa-clinic-medical", "Clinic Medical"],
+      ["fas fa-clipboard", "Clipboard"],
+      ["fas fa-clipboard-check", "Clipboard Check"],
+      ["fas fa-clipboard-list", "Clipboard List"],
+      ["fas fa-clock", "Clock"],
+      ["fas fa-clone", "Clone"],
+      ["fas fa-closed-captioning", "Closed Captioning"],
+      ["fas fa-cloud", "Cloud"],
+      ["fas fa-cloud-download-alt", "Cloud Download Alt"],
+      ["fas fa-cloud-meatball", "Cloud Meatball"],
+      ["fas fa-cloud-moon", "Cloud Moon"],
+      ["fas fa-cloud-moon-rain", "Cloud Moon Rain"],
+      ["fas fa-cloud-rain", "Cloud Rain"],
+      ["fas fa-cloud-showers-heavy", "Cloud Showers Heavy"],
+      ["fas fa-cloud-sun", "Cloud Sun"],
+      ["fas fa-cloud-sun-rain", "Cloud Sun Rain"],
+      ["fas fa-cloud-upload-alt", "Cloud Upload Alt"],
+    ]
+    // Crea las opciones de los iconos en los select del modal
+    iconosPricingFeatures.forEach((icon) => {
+      let option = document.createElement('option');
+      option.value = icon[0];
+      option.innerHTML = icon[1];
+      icono.appendChild(option);
+      icono_editar.appendChild(option.cloneNode(true));
+    })
+
+    // Muestra el icono seleccionado en el select
+
+    icono.addEventListener('change', (event) => {
+      showIcono.innerHTML = `<i class="${event.target.value}"></i>`;
+    });
+
+    icono_editar.addEventListener('change', (event) => {
+      showIcono_editar.innerHTML = `<i class="${event.target.value}"></i>`;
+    });
+
+    // Inserta las caracteristicas a los inputs del modal y abre el modal
+    function editarCaracteristicas(data) {
+      icono_editar.value = data.icono;
+      showIcono_editar.innerHTML = `<i class="${data.icono}"></i>`;
+      descripcion_editar.value = data.nombre;
+      id_editar.value = data.id;
+      $('#editarCaracteristicaModal').modal('show');
+    }
+    // Inserta las caracteristicas a los inputs del modal y abre el modal
+    function mostrarCaracteristicas(data) {
+      icono_mostrar.value = data.icono;
+      showIcono_mostrar.innerHTML = `<i class="${data.icono}"></i>`;
+      descripcion_mostrar.value = data.nombre;
+      $('#mostrarCaracteristicaModal').modal('show');
+    }

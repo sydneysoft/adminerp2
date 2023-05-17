@@ -1,0 +1,45 @@
+extends ../layout.pug
+
+
+append contenido 
+  .my-3
+    .d-grid
+      a#aCrear.btn.btn-primary.btn-block(type='button' href="/admin-video-prime/series/crear") Crear nueva 
+        span#spanCrear Serie
+  if data && data.length > 0
+    .table-responsive
+      table.table
+        thead#headTable 
+          tr 
+            th ID 
+            th Nombre 
+            th Estracto 
+            th Actions 
+        tbody#programasTable 
+          each item, key in data 
+            tr(id=`delete${id}`)
+              td #{item.id}
+              td #{item.estracto}
+              td #{item.tipo}
+              td 
+                .btn-group
+                  a.btn.btn-primary(href=`/admin-video-prime/series/edite/${item.id}`)
+                    i.fas.fa-pen
+                  a.btn.btn-info(href=`/admin-video-prime/series/mostrar/${item.id}`)
+                    i.fas.fa-eye
+                  button.btn.btn-danger(onclick=`beforeDeleteItem('/admin-video-prime/series/serie/${item.id}',${item.id})`)
+                    i.fas.fa-trash
+ 
+  else 
+    .alert.alert-primary(role='alert')
+      | Aun no hay Series
+
+  nav(aria-label='...')
+    ul.pagination
+      li.page-item
+        a#prevPage.page-link Previous
+      li.page-item
+        a#nextPage.page-link(href='#') Next
+
+  script 
+    include ../../../js/modulo-tv/delete.js

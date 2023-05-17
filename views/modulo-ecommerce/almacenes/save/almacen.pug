@@ -1,0 +1,50 @@
+script.
+  const openNewStore = () => {
+    typeOperation = "1";
+    $("#nuevo").modal("show");
+  };
+
+  async function agregarAlmacen(token) {
+    let nombre = $("#nombreNuevo").val(),
+      direccion = $("#direccionNuevo").val(),
+      provincia = $("#lista-estados").val(),
+      pais = $("#lista-paises").val();
+      //- empresa_id_select = $("#empresaNuevo").select2().val();
+      const auxData = {
+        nombre,
+        direccion,
+        provincia,
+        pais
+      };
+
+    if (typeof empresa_id != 'undefined' && empresa_id && !isNaN(empresa_id.value)) {
+      auxData.empresa_id = empresa_id.value;
+    }
+
+    if ((nombre, direccion)) {
+      Swal.showLoading();
+      await fetch(`/admin-almacenes`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(auxData),
+      })
+        .then((data) => {
+          Swal.close();
+          if (data.ok) {
+            if (typeof tablaAlmacenes !== 'undefined') {
+              tablaAlmacenes.ajax.reload();
+            }
+            $("#nuevo").modal("hide");
+            toastSweet('Success', '#{translation.ALERTS.CREATED}', 'success');
+          } else {
+            toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+          }
+        })
+        .catch(() => {
+          Swal.close();
+          toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+        });
+    } else {
+      toastSweet('Error', '#{translation.ALERTS.REQUIRED_FIELDS}', 'error');
+    }
+  }

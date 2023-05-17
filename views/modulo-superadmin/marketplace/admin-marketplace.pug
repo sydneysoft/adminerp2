@@ -1,0 +1,20 @@
+extends ../../extends/menu-superior-admin
+
+block contenido
+    .row
+        .col-12.text-grey(style="margin-bottom:10px;")
+            h1.display-1.text-capitalize
+                strong #{translation.TV_MODULE}
+        .col-12 
+            nav     
+                .row
+                    .col-mod-8.col-8
+                      p #{translation.MODULE_STATE}
+                        .form-group
+                            input(id="toggleMarket" type="checkbox" data-toggle="toggle" data-on="Activo" data-off="Desactivado" data-onstyle="success" data-offstyle="danger")
+                    .col-12.mt-4
+                        button.btn.btn-info(type="button" onClick="actualizarMarket()")=#{translation.SAVE_CHANGES}
+
+    script
+        include ./script.js
+        

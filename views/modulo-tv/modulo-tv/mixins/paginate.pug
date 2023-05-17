@@ -1,0 +1,15 @@
+mixin paginate(next, prev)
+  nav(aria-label='pagination')
+        ul.pagination
+          if prev 
+            li.page-item.disabled
+              a#prevPage.page-link(href='#') #{translation.FORM.PREVIOUS}
+          else 
+            li.page-item
+              a#prevPage.page-link(href=prev) #{translation.FORM.PREVIOUS}
+          if next
+            li.page-item.disabled
+              a#nextPage.page-link(href='#') #{translation.FORM.NEXT}
+          else
+            li.page-item
+              a#nextPage.page-link(href=next) #{translation.FORM.NEXT} 

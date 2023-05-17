@@ -1,0 +1,139 @@
+.modal.fade#guardarTrabajadorAdmin(tabindex="-1" role="dialog")
+  .modal-dialog.modal-lg(role="document")
+    .modal-content
+      .modal-body
+        form
+          #step-one.step.step-active
+            .row
+              .col-md-6.mb-3
+                label.form-label(for='primer_nombr-editare' )  #{translation.FORM.FIRST_NAME} 
+                input.form-control(type='text' name='primer_nombre' id='primer_nombre-editar' )
+              .col-md-6.mb-3
+                label.form-label(for='segundo_nombre-editar')  #{translation.FORM.SECOND_NAME} 
+                input.form-control(type='text' name='segundo_nombre' id='segundo_nombre-editar' )
+            .row
+              .col-md-6.mb-3
+                label.form-label(for='apellido_paterno-editar') #{translation.FORM.FATHERS_NAME} 
+                input.form-control(type='text' name='apellido_paterno' id='apellido_paterno-editar' )
+              .col-md-6.mb-3
+                label.form-label(for='apellido_materno-editar') #{translation.FORM.MOTHERS_NAME} 
+                input.form-control(type='text' name='apellido_materno' id='apellido_materno-editar' )
+            .row
+              .col-md-6.mb-3
+                label.form-label(for='celular-editar') #{translation.FORM.MOBILE} 
+                input.form-control(type='text' name='celular' id='celular-editar' )
+              .col-md-6.mb-3
+                label.form-label(for='telefono-editar') #{translation.FORM.PHONE} 
+                input.form-control(type='text' name='telefono' id='telefono-editar' )
+            .row
+              .col-md-6.mb-3
+                label.form-label(for='correo-editar') #{translation.FORM.EMAIL} 
+                input.form-control(type='text' name='correo' id='correo-editar' )
+              .col-md-6.mb-3
+                label.form-label(for='foto_de_documento_cara_trasera-editar') #{translation.FORM.DOCUMENT_PHOTO_BACK}
+                input.form-control(type='file' name='foto_de_documento_cara_trasera' id='foto_de_documento_cara_trasera-editar' )
+            .row
+              .col-md-6.mb-3
+                label.form-label(for='tipo_de_documento-editar') #{translation.FORM.DOCUMENT_TYPE}
+                select.form-control(name='tipo_de_documento' id='tipo_de_documento-editar' )
+                  option(value="") #{translation.FORM.SELECT_OPTION}
+                  option(value="DNI") #{translation.FORM.DOCUMENT_NUMBER}
+                  option(value="Carnet de Extranjería") #{translation.FORM.FOREIGNER_CARD}
+                  option(value="Pasaporte") #{translation.FORM.PASSPORT}
+              .col-md-6.mb-3
+                label.form-label(for='numero_de_documento-editar') #{translation.FORM.DOCUMENT_NUMBER}
+                input.form-control(type='text' name='numero_de_documento' id='numero_de_documento-editar' )
+            .row
+              .col-md-6.mb-3
+                label.form-label(for='foto_de_documento_cara_frontal-editar') #{translation.FORM.DOCUMENT_PHOTO_FRONT}
+                input.form-control(type='file' name='foto_de_documento_cara_frontal' id='foto_de_documento_cara_frontal-editar' )
+
+
+            .row
+              .col-md-12.mb-3
+                label.form-label(for='direccion-editar') #{translation.FORM.ADDRESS}
+                textarea.form-control(type='text' name='direccion' id='direccion-editar' )
+            .row.justify-content-end.mt-3
+              .col-md-3
+                button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.FORM.CANCEL}
+              .col-md-3
+                button.btn.btn-primary(data-action='change-step' type="button") #{translation.FORM.NEXT}
+          #step-two.step.hidden
+            .row
+              .col-md-6.mb-3
+                label.form-label(for='entidad_bancaria-editar') #{translation.FORM.BANK_ENTITY}
+                input.form-control(type='text' name='entidad_bancaria' id='entidad_bancaria-editar')
+              .col-md-6.mb-3
+                label.form-label(for='numero_de_cuenta-editar') #{translation.FORM.ACCOUNT_NUMBER}
+                input.form-control(type='text' name='numero_de_cuenta' id='numero_de_cuenta-editar')
+            .row
+              .col-md-6.mb-3
+                label.form-label(for='AFP-editar') #{translation.FORM.AFP}
+                select.form-control(name='AFP' id='AFP-editar')
+                  option(value="") #{translation.FORM.SELECT_OPTION}
+                  option(value="AFP INTEGRA") AFP INTEGRA
+                  option(value="AFP PRIMA") AFP PRIMA
+                  option(value="AFP HABITAT") AFP HABITAT
+              .col-md-6.mb-3
+                label.form-label(for='CTS-editar') #{translation.FORM.CTS}
+                select.form-control( name='CTS' id='CTS-editar')
+                  option(value="") #{translation.FORM.SELECT_OPTION}
+                  option(value="BCP") BCP
+                  option(value="INTERBANK") INTERBANK
+                  option(value="SCOTIABANK") SCOTIABANK
+                  option(value="BBVA") BBVA
+            .row
+              .col-md-6.mb-3
+                label.form-label(for='observaciones-editar') #{translation.FORM.OBSERVATIONS}
+                input.form-control(type='text' name='observaciones' id='observaciones-editar')
+              .col-md-6.mb-3
+                label.form-label(for='fecha_de_contratacion-editar' ) #{translation.FORM.DATE_HIRED}
+                input.form-control.date-picker(type='text' name='fecha_de_contratacion' id='fecha_de_contratacion-editar' data-provide="datepicker" data-date-language="es")
+            .row
+              .col-md-6.mb-3
+                label.form-label(for='estado-editar') #{translation.FORM.STATE}
+                select.form-control( name='estado' id='estado-editar')
+                  option(value="ACTIVO") #{translation.FORM.ACTIVE} 
+                  option(value="SUSPENDIDO") #{translation.FORM.SUSPENDED} 
+                  option(value="DESPEDIDO") #{translation.FORM.FIRED} 
+                  option(value="RENUNCIA") #{translation.FORM.QUITTED} 
+              .col-md-6.mb-3
+                label.form-label(for='fecha_de_despido-editar' ) #{translation.FORM.FIRED_DATE}
+                input.form-control.date-picker(type='text' name='fecha_de_despido' id='fecha_de_despido-editar' data-provide="datepicker" data-date-language="es")
+            .row
+              .col-md-6.mb-3
+                label.form-label(for='CV-editar') #{translation.FORM.CV}
+                input.form-control(type='file' name='CV' id='CV-editar')
+              .col-md-6.mb-3
+                label.form-label(for='contrato-editar') #{translation.FORM.CONTRACT}
+                input.form-control(type='file' name='contrato' id='contrato-editar')
+            .row
+              .col-md-6.mb-3
+
+                label.form-label(for='nombres_de_persona_de_contacto-editar') #{translation.FORM.NAMES_PERSON_CONTACT}
+                input.form-control(type='text' name='nombres_de_persona_de_contacto' id='nombres_de_persona_de_contacto-editar' )
+              .col-md-6.mb-3
+                label.form-label(for='celular_de_persona_de_contrato-editar') #{translation.FORM.MOBILE_PERSON_CONTACT}
+                input.form-control(type='text' name='celular_de_persona_de_contacto' id='celular_de_persona_de_contacto-editar')
+            .row
+              .col-md-6.mb-3
+                label.form-label(for='tipo_de_documento_de_persona_de_contacto-editar')
+                  #{translation.FORM.DOCUMENT_TYPE_PERSON_CONTACT}
+                select.form-control(type='text' name='tipo_de_documento_de_persona_de_contacto' id='tipo_de_documento_de_persona_de_contacto-editar')
+                  option(value="") #{translation.FORM.SELECT_OPTION}
+                  option(value="DNI") #{translation.FORM.DOCUMENT_NUMBER}
+                  option(value="Carnet de Extranjería") #{translation.FORM.FOREGINER_CARD}
+                  option(value="Pasaporte") #{translation.FORM.PASSPORT}
+              .col-md-6.mb-3
+                label.form-label(for='numero_de_documento_de_persona_de_contacto-editar')
+                | #{translation.FORM.DOCUMENT_NUMBER_PERSON_CONTACT}
+                input.form-control(type='text' name='numero_de_documento_de_persona_de_contacto' id='numero_de_documento_de_persona_de_contacto-editar')
+            .row.justify-content-end.mt-3
+              .col-md-3
+                button.btn.btn-primary(data-action='change-step' type="button") #{translation.FORM.BACK}
+              .col-md-3
+                button.btn.btn-success(type='submit') #{translation.FORM.SAVE}
+
+    .modal-footer      
+
+      button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.FORM.CLOSE}

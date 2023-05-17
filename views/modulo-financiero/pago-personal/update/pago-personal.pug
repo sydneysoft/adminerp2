@@ -1,0 +1,42 @@
+script.
+  async function actualizar() {
+    const id = $("#itemId").val();
+    const tipo_de_pago = $("#editarTipoPago").val();
+    const monto = $("#editarMonto").val();
+    if (id > 0) {
+      Swal.showLoading();
+      const auxData = {
+        tipo_de_pago,
+        monto,
+      }
+      if (typeof empresa_id != "undefined" && empresa_id && !isNaN(empresa_id.value)) {
+        auxData.empresa_id = empresa_id_select;
+      }
+      await fetch(`/admin-pago-personal/` + id, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(auxData),
+      })
+        .then((data) => {
+          Swal.close();
+          if (data.ok) {
+            if (typeof tablaPagoPersonal != "undefined") {
+              tablaPagoPersonal.ajax.reload();
+            }
+
+            toastSweet('Success', "#{translation.ALERTS.CREATED}", 'success');
+            $("#editar").modal('hide');
+            
+          } else {
+            toastSweet('Error', "#{translation.ALERTS.WRONG}", 'error');
+          }
+        })
+
+        .catch(() => {
+          Swal.close();
+          toastSweet('Error', "#{translation.ALERTS.WRONG}", 'error');
+        });
+    } else {
+      toastSweet('Error', "#{translation.ALERTS.REQUIRED_FIELDS}", 'error');
+    }
+  }

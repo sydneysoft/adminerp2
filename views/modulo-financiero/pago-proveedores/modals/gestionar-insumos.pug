@@ -1,0 +1,11 @@
+.modal.fade#gestionar(tabindex="-1" role="dialog")
+  .modal-dialog.modal-md(role="document")
+    .modal-content
+      .modal-body
+        .row
+          .col-12.table-responsive
+            table#tabla-gestionar-insumos.table.w-100
+              thead.thead-dark
+      .modal-footer
+        button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}
+          i.fas.fa-times-circle.ml-2

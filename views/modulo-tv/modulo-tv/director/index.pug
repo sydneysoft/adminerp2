@@ -1,0 +1,342 @@
+extends ../layout.pug
+
+
+append contenido 
+  include ../../../mixins/btn/back.pug
+  include ../../../mixins/select/pais.pug
+  include ../../../mixins/select/sexo.pug
+  //- .my-3
+  //-   .d-grid
+  //-     a#aCrear.btn.btn-primary.btn-block(type='button' href="/admin-tv/generos/crear") Crear nueva 
+  //-       span#spanCrear Genero
+  .border-left.border-right.border-bottom.rounded-bottom.p-3
+    .row
+      .col-6.text-left
+        +btn-back()
+      .col-6.text-right
+        button#nuevoItem.btn.btn-primary(type="text" data-toggle="modal" data-target="#crearItem") #{translation.CREATE}
+          i.fas.fa-plus.ml-2
+    .row.mt-3
+      .col-12
+        if empresa_id
+          input#empresa_id(type="text" value=empresa_id hidden)
+        else
+          input#empresa_id(type="text" value="" hidden)     
+        .table-responsive
+          table#tabla.table
+            thead.thead-dark
+  //- Modal para agregar un nuevo genero
+  .modal.fade.justify-content-center.align-items-center(tabindex="-1" role="dialog" id="crearItem")
+    .modal-dialog.modal-lg
+        .modal-content.modalContent(style="height: 100%;")
+            .modal-header 
+                .row(style="margin:0;")
+                    .col-md-12
+                        h3(style="margin:0px 0;") #{translation.ADD}
+
+            .modal-body.borderBottom
+              //- nombre	nacionalidad	biografia	fecha_nacimiento	genero
+              .row
+                .col-12
+                  .row
+                    .col-12.col-md-8
+                      label(for="nombre") #{translation.FORM.NAME} *
+                      input#nombre.form-control(type="text" value="" placeholder=translation.FORM.NAME)
+                    .col-12.col-md-4
+                      +select-pais('pais')
+                  .row.mt-3
+                    .col-12.col-md-6
+                      label(for="fecha_nacimiento") #{translation.FORM.BIRTH_DATE} *
+                      input#fecha_nacimiento.form-control(type="date" value="" placeholder=translation.FORM.BIRTH_DATE)
+                    .col-12.col-md-6
+                      +select-sexo('sexo')
+                  .row.mt-3
+                    .col-12
+                      .form-group
+                        label(for='biografia') #{translation.FORM.BIOGRAPHY}
+                        textarea#biografia.form-control(name="biografia" placeholder=translation.FORM.BIOGRAPHY) 
+
+            .modal-footer(style="padding:8px;")
+                .row(style="margin:0;")
+                    .col-md-12.text-right
+                        button#agregarItem.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;") #{translation.ADD}
+                          i.fas.fa-plus.ml-3
+                        button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}
+  
+  //- Modal para editar un nuevo genero
+  .modal.fade.justify-content-center.align-items-center(tabindex="-1" role="dialog" id="editarItem")
+    .modal-dialog.modal-lg
+        .modal-content.modalContent(style="height: 100%;")
+            .modal-header 
+                .row(style="margin:0;")
+                    .col-md-12
+                        h3(style="margin:0px 0;") #{translation.ADD}
+
+            .modal-body.borderBottom
+              .row
+                .col-12
+                  .row
+                    .col-12.col-md-8
+                      label(for="nombre_editar") #{translation.FORM.NAME} *
+                      input#nombre_editar.form-control(type="text" value="" placeholder=translation.FORM.NAME)
+                    .col-12.col-md-4
+                      +select-pais('pais_editar')
+                  .row.mt-3
+                    .col-12.col-md-6
+                      label(for="fecha_nacimiento_editar") #{translation.FORM.BIRTH_DATE} *
+                      input#fecha_nacimiento_editar.form-control(type="date" value="" placeholder=translation.FORM.BIRTH_DATE)
+                    .col-12.col-md-6
+                      +select-sexo('sexo_editar')
+                  .row.mt-3
+                    .col-12
+                      .form-group
+                        label(for='biografia') #{translation.FORM.BIOGRAPHY}
+                        textarea#biografia_editar.form-control(name="biografia" placeholder=translation.FORM.BIOGRAPHY) 
+
+              input#itemId(type="text" value="" hidden)
+            .modal-footer(style="padding:8px;")
+                .row(style="margin:0;")
+                    .col-md-12.text-right
+                        button#actualizarItem.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;") #{translation.ADD}
+                          i.fas.fa-plus.ml-3
+                        button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}
+  
+  //- Modal para mostrar un nuevo genero
+  .modal.fade.justify-content-center.align-items-center(tabindex="-1" role="dialog" id="mostrarItem")
+    .modal-dialog.modal-lg
+        .modal-content.modalContent(style="height: 100%;")
+            .modal-header 
+                .row(style="margin:0;")
+                    .col-md-12
+                        h3(style="margin:0px 0;") #{translation.ADD}
+
+            .modal-body.borderBottom
+              .row
+                .col-12
+                  .row
+                    .col-12.col-md-8
+                      label(for="nombre_mostrar") #{translation.FORM.NAME} *
+                      input#nombre_mostrar.form-control(type="text" value="" placeholder=translation.FORM.NAME)
+                    .col-12.col-md-4
+                      +select-pais('pais_mostrar')
+                  .row.mt-3
+                    .col-12.col-md-6
+                      label(for="fecha_nacimiento_mostrar") #{translation.FORM.BIRTH_DATE} *
+                      input#fecha_nacimiento_mostrar.form-control(type="date" value="" placeholder=translation.FORM.BIRTH_DATE)
+                    .col-12.col-md-6
+                      +select-sexo('sexo_mostrar')
+                  .row.mt-3
+                    .col-12
+                      .form-group
+                        label(for='biografia') #{translation.FORM.BIOGRAPHY}
+                        textarea#biografia_mostrar.form-control(name="biografia" placeholder=translation.FORM.BIOGRAPHY) 
+
+            .modal-footer(style="padding:8px;")
+                .row(style="margin:0;")
+                    .col-md-12.text-right
+                        button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}
+  include ../../../includes/select/pais.pug
+  script 
+    include ../../../js/modulo-tv/save.js
+    include ../../../js/modulo-tv/delete.js
+    include ../../../js/modulo-tv/update.js
+  script.
+    
+    const nombre = document.getElementById('nombre');
+    const pais = document.getElementById('pais');
+    const sexo = document.getElementById('sexo');
+    const biografia = document.getElementById('biografia');
+    const fecha_nacimiento = document.getElementById('fecha_nacimiento');
+
+    const nombre_editar = document.getElementById('nombre_editar');
+    const pais_editar = document.getElementById('pais_editar');
+    const sexo_editar = document.getElementById('sexo_editar');
+    const biografia_editar = document.getElementById('biografia_editar');
+    const fecha_nacimiento_editar = document.getElementById('fecha_nacimiento_editar');
+
+    const nombre_mostrar = document.getElementById('nombre_mostrar');
+    const pais_mostrar = document.getElementById('pais_mostrar');
+    const sexo_mostrar = document.getElementById('sexo_mostrar');
+    const biografia_mostrar = document.getElementById('biografia_mostrar');
+    const fecha_nacimiento_mostrar = document.getElementById('fecha_nacimiento_mostrar');
+
+
+    const empresa_id = document.getElementById('empresa_id');
+    const agregarItem = document.getElementById('agregarItem');
+    const actualizarItem = document.getElementById('actualizarItem');
+    const itemId = document.getElementById('itemId');
+
+    let tabla;
+    addEventListener('DOMContentLoaded', () => {
+      let urlAjaxTabla = '/admin-tv/directores/datatable'
+      if (empresa_id.value != '') {
+        urlAjaxTabla = `/admin-tv/directores/datatable/${empresa_id.value}`
+      }
+      tabla = $('#tabla').DataTable({
+        fnCreatedRow: function (nRow, aData, iDataIndex) {
+          $(nRow).attr('data-id', `delete${aData.id}`);
+        },
+        searchDelay: 500,
+        processing: true,
+        serverSide: true,
+        ajax: urlAjaxTabla,
+        columns: [
+          { data: 'id', name: 'id', title: "ID", orderable: false, searchable: false, visible: false },
+          { 
+            data: 'nombre', 
+            name: 'nombre',
+            title: '#{translation.FORM.NAME}'
+          },
+          {
+            data: 'nacionalidad',
+            name: 'nacionalidad',
+            title: '#{translation.FORM.NATIONALITY}',
+            render: function (data, type, row) {
+              return paisParse(row.nacionalidad);
+            }
+          },
+          {
+            data: 'genero',
+            name: 'genero',
+            title: '#{translation.FORM.GENDER}',
+            render: function (data, type, row) {
+              switch(row.genero) {
+                case 'male': 
+                  return '#{translation.FORM.MALE}'
+                  break;
+                case 'female':
+                  return '#{translation.FORM.FEMALE}'
+                  break;
+                default:
+                  return '#{translation.FORM.OTHER}'
+              }
+            },
+            orderable: false,
+            searchable: false
+          },
+          {
+            data: 'fecha_naciemiento',
+            name: 'fecha_naciemiento',
+            title: '#{translation.FORM.BIRTH_DATE}',
+            render: function (data, type, row) {
+              return moment(row.fecha_naciemiento).format('DD/MM/YYYY');
+            },
+            orderable: false,
+            searchable: false
+          },
+          { 
+            data: 'acciones',
+            name: 'acciones',
+            title: '#{translation.FORM.ACTIONS}',
+            render: function (data, type, row) {
+              let strRow = JSON.stringify(row);
+              return `
+                <div class="btn-group">
+                  <button class="btn btn-info btn-sm" data-id="${row.id}" onclick='editarModal(${strRow})' data-toggle="modal" data-target="#editarItem">
+                    <i class="fas fa-edit"></i>
+                  </button>
+                  <button class="btn btn-primary btn-sm" data-id="${row.id}" onclick='mostrarModal(${strRow})' data-toggle="modal" data-target="#mostrarItem">
+                    <i class="fas fa-eye"></i>
+                  </button>
+                  <button class="btn btn-danger btn-sm" data-id="${row.id}" onclick="beforeDeleteItem('/admin-tv/directores/items/${row.id}', deleteItemSuccess)">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              `
+              return `
+              `;
+            },
+            orderable: false,
+            searchable: false,
+            width: '125px'
+          }
+        ]
+      });
+    });
+
+    agregarItem.addEventListener('click', (event) => {
+      if (nombre.value != '') {
+        const auxData = {
+          nombre: nombre.value,
+          nacionalidad: pais.value,
+          genero: sexo.value,
+          biografia: biografia.value,
+          fecha_nacimiento: fecha_nacimiento.value
+        }
+        if (empresa_id.value != "") {
+          auxData.empresa_id = empresa_id.value
+        }
+        console.log(auxData);
+        save('/admin-tv/directores/items', auxData, itemSuccess)
+      } else {
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'error',
+          title: 'Error',
+          text: '#{translation.FORM.REQUIRED_FIELDS}',
+          showConfirmButton: false,
+          timer: 3000
+        })
+      }
+    });
+
+    actualizarItem.addEventListener('click', (event) => {
+      if (nombre_editar.value != '') {
+        const auxData = {
+          nombre: nombre_editar.value,
+          nacionalidad: pais_editar.value,
+          genero: sexo_editar.value,
+          biografia: biografia_editar.value,
+          fecha_nacimiento: fecha_nacimiento_editar.value
+        }
+        updateItem(`/admin-tv/directores/items/${itemId.value}`, auxData, itemSuccess)
+      } else {
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'error',
+          title: 'Error',
+          text: '#{translation.FORM.REQUIRED_FIELDS}',
+          showConfirmButton: false,
+          timer: 3000
+        })
+      }
+    });
+
+
+    function mostrarModal(data) {
+      nombre_mostrar.value = data.nombre;
+      pais_mostrar.value = data.nacionalidad;
+      sexo_mostrar.value = data.genero;
+      biografia_mostrar.value = data.biografia;
+      fecha_nacimiento_mostrar.value = moment(data.fecha_naciemiento).format('DD/MM/YYYY');
+
+    }
+
+    function editarModal(data) {
+      nombre_editar.value = data.nombre;
+      pais_editar.value = data.nacionalidad;
+      sexo_editar.value = data.genero;
+      biografia_editar.value = data.biografia;
+      fecha_nacimiento_editar.value = moment(data.fecha_naciemiento).format('DD/MM/YYYY');
+      itemId.value = data.id;
+    }
+
+    function itemSuccess(data) {
+      tabla.ajax.reload();
+    }
+
+    function deleteItemSuccess(data) {
+      tabla.row($(`#${data.target}`)).remove().draw();
+    }
+
+    $('#pais').select2({});
+
+    function clearForm () {
+      nombre.value = '';
+      pais.value = '';
+      sexo.value = '';
+      biografia.value = '';
+      fecha_nacimiento.value = '';
+    }

@@ -1,0 +1,108 @@
+script.
+  let tablaRedes;
+  $(document).ready(function () {
+    let urlAjax = '/admin-ceredes/datatable'
+    if (empresa_id.value != '') {
+      urlAjax = `/admin-ceredes/datatable/${empresa_id.value}`
+    }
+    tablaRedes = $('#tabla-redes').DataTable({
+      fnCreatedRow: function (nRow, aData, iDataIndex) {
+        $(nRow).attr('id', `delete${aData.id}`);
+      },
+      columnDefs: [
+        {
+          orderable: false,
+          className: "select-checkbox",
+          targets: 0,
+        },
+      ],
+      select: {
+        style: "multi",
+        selector: "td:first-child",
+      },
+      dom: "Bfrtip",
+      buttons: ["selectAll", "selectNone"],
+      order: [[1, "asc"]],
+      language: {
+        buttons: {
+          selectAll: "Seleccionar todos",
+          selectNone: "Borrar Selección",
+        },
+        url: "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json",
+        select: {
+          rows: "%d filas seleccionadas",
+        },
+      },
+      rowId: 'id',
+      pageLength: 20,
+      responsive: true,
+      processing: true,
+      serverSide: true,
+      ajax: urlAjax,
+      dataType: 'json',
+      type: 'POST',
+      order: [[0, 'desc']],
+      searchDelay: 500,
+      columns: [
+        {
+          data: 'id',
+          name: 'id',
+          title: 'ID',
+          searchable: false,
+          orderable: true,
+          render: function (data, type, row) {
+            return "";
+          }
+        },
+        {
+          data: 'nombre',
+          name: 'nombre',
+          title: '#{translation.FORM.NAME}  '
+        },
+        {
+          data: 'icono',
+          name: 'icono',
+          title: '#{translation.FORM.ICON}',
+          searchable: false,
+          orderable: false,
+          render: function (data, type, row) {
+            return `<i class="${data}" aria-hidden="true"></i>`
+          }
+        },
+        {
+          data: 'url',
+          name: 'url',
+          title: '#{translation.FORM.URL}',
+          searchable: false,
+          orderable: false,
+        },
+        {
+          data: 'acciones',
+          name: 'acciones',
+          title: '#{translation.FORM.ACTIONS}',
+          render: function (data, type, row) {
+            let strRow = JSON.stringify(row);
+            return `
+              <div class="btn-group" role="group" aria-label="acciones">
+                <button class="btn btn-primary btn-sm" onclick='editarRed(${strRow})' data-toggle="modal" data-target="#editRedModal"><i class="fas fa-pen" aria-hidden="true"></i></button>
+                <button class="btn btn-info btn-sm" onclick='mostrarRed(${strRow})' data-toggle="modal" data-target="#showRedModal"><i class="fas fa-eye" aria-hidden="true"></i></button>
+                <button class="btn btn-danger btn-sm" onclick="beforeDeleteItem('/admin-ceredes/redes/${row.id}', deleteItemSuccess)"><i class="fas fa-trash" aria-hidden="true"></i></button>
+              </div>
+              `
+          },
+          searchable: false,
+          orderable: false
+        }
+      ],
+      initComplete: function (settings) {
+        //- clone thead to tfoot
+        $("#tabla-redes thead tr").clone().appendTo($("#tabla-redes tfoot"));
+      }
+    });
+  });
+
+  function deleteItemSuccess (data) {
+    if (data.ok) {
+      tablaRedes.row($(`#${data.target}`)).remove().draw();
+    }
+  }

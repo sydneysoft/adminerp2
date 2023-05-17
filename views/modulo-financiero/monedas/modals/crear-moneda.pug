@@ -1,0 +1,31 @@
+.modal.fade#nuevoMonedaModal(tabindex="-1" role="dialog" )
+  .modal-dialog.modal-lg(role="document")
+    .modal-content
+      .modal-header 
+        .row 
+          .col-12
+            h5.strong(style="font-size:1rem;") Nueva moneda
+
+      .modal-body-almacen
+        .row(style="padding:15px;")
+          .col-md-6.col-12
+            .form-group
+              label(for="nombreMoneda") Nombre de la moneda *
+              input#nombreMoneda.form-control(type="text" placeholder="Nombre de la moneda")
+          .col-md-6.col-12
+            .form-group
+              label(for="lista-paises") #{translation.FORM.COUNTRY}:
+              select#lista-paises
+          .col-md-6.col-12
+            .form-group
+              label(for="codigoMoneda") Codigo de la moneda: 
+              input#codigoMoneda.form-control(type="text" name="codigoMoneda" placeholder="Codigo de la moneda")
+          .col-md-6.col-12
+            .form-group
+              label(for="simboloMoneda") Simbolo de la moneda: 
+              input#simboloMoneda.form-control(type="text" name="simboloMoneda" placeholder="Simbolo de la moneda")
+      .modal-footer      
+        button#guardarMoneda.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;") #{translation.SAVE}
+          i.fas.fa-save.ml-2
+        button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}
+          i.fas.fa-times.ml-2

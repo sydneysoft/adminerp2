@@ -1,0 +1,46 @@
+extends ../layout.pug
+
+append contenido
+  .my-3
+    div
+      a.btn.btn-primary(href="/admin-video-prime/peliculas") 
+        i.fas.fa-arrow-left
+        span.px-3 Atras
+
+    h1.text-center.mb-5 
+      | #{data.nombre}
+
+    .my-3.text-right 
+      a.btn.btn-primary(href=`/admin-video-prime/peliculas/editar/${data.id}`) #{translation.EDIT}
+    .card   
+      .card-body 
+        .table-responsive 
+          table.table 
+            thead
+              tr
+                th(scope='col') #{translation.FORM.NAME}
+                th(scope='col') #{translation.FORM.DESCRIPTION}
+
+            tbody
+              tr
+                th(scope='row') ID
+                td #{data.id}
+              tr
+                th(scope='row') #{translation.FORM.NAME}
+                td #{data.nombre}
+              tr
+                th(scope='row') #{translation.FORM.THUMBNAIL}
+                td 
+                  img(src=data.thumbnail)
+              tr
+                th(scope='row') #{translation.FORM.TRAILER}
+                td #{data.trailer}
+              tr
+                th(scope='row') #{translation.FORM.MOVIE_URL}
+                td #{data.url}
+              tr
+                th(scope='row') #{translation.FORM.EXTRACT}
+                td #{data.estracto}
+              tr
+                th(scope='row') #{translation.FORM.BODY}
+                td!= data.body

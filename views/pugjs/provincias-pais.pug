@@ -1,0 +1,51 @@
+script.
+
+  const select2ProvinciasPais = $("#lista-provincias-pais, #lista-provincias-pais-editar, #provincias-pais").select2({
+    ajax: {
+      url: function () {
+        return urlProvinciasPorPais();
+      },
+      dataType: "json",
+      delay: 500,
+      data: function (params) {
+        console.log(params)
+        return {
+          q: params.term, // search term
+          page: params.page,
+        }
+      },
+      processResults: function (data, params) {
+        console.log(data);
+        return {
+          results: $.map(data, (i) => {
+            return {
+              id: i.isoCode,
+              text: i.name,
+            };
+          })
+        }
+      },
+      cache: true,
+    },
+    templateResult: stateProvinciasPais,
+    placeholder: "Seleccione un país",
+    allowClear: true,
+  });
+
+  function stateProvinciasPais (state) {
+    console.log(state);
+    if (state.loading) {
+      return state.text;
+    }
+    var baseUrl = "/img/flags";
+    var $state = $(`<span><strong>${state.id}</strong> | ${state.text}</span>`);
+    return $state;
+  }
+
+  function urlProvinciasPorPais() {
+    if (paisIsoCode != '') {
+      return `/admin-geolocalizacion/countries/${paisIsoCode}/states`;
+    } else {
+      return '/admin-geolocalizacion/states'
+    }
+  }

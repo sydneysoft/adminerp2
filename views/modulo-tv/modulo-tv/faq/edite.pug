@@ -1,0 +1,44 @@
+extends ../layout.pug
+
+
+append contenido 
+  .my-3
+    div
+      a.btn.btn-info(href="/admin-tv/faqs") 
+        i.fas.fa-arrow-left
+        span.px-3 #{translation.BACK}
+    h1.text-center.mb-5 
+      | #{translation.EDIT} #{data.nombre}
+  .my-3 
+    form#editarFAQ(action=`/admin-tv/faqs/${data.id}` method="post")
+      input#idFAQ(name="id" value=data.id hidden)
+      .row
+        .col-12.text-right 
+          button.btn.btn-primary(type="submit") #{translation.FORM.SAVE}
+        .col-12.my-3
+        .col-12.col-md-8
+          .form-group
+            label(for='pregunta') #{translation.FORM.QUESTION}
+            input#pregunta.form-control(type='text' placeholder="Pregunta" value=data.pregunta)
+        .col-12.col-md-4 
+          label(for='icono') #{translation.FORM.ICON}
+            input#icono.form-control(type='text' placeholder="Icono (font awesome)" value=data.icono)
+        .col-12.my-3
+        .col-12
+          .form-group 
+            label(for="respuesta") #{translation.FORM.ANSWER} 
+            textarea#respuesta(name="respuesta" placeholder="Respuesta") 
+              |#{data.respuesta}
+
+  script.
+    const editor = CKEDITOR.replace('respuesta')
+
+  script 
+    include ./faq.js
+    include ./update.js
+
+  script.
+    document.getElementById('editarFAQ').addEventListener('submit', function (event){
+      event.preventDefault();
+      actualizarFAQ();
+    })

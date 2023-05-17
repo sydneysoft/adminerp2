@@ -1,0 +1,96 @@
+extends ../layout.pug
+
+append contenido 
+  .border-bottom.border-left.border-right.rounded-bottom.p-3
+    .my-3.row.justify-content-between 
+      .col 
+        button.btn.btn-info.btn-lg(type='button' onclick="window.history.back()") #{translation.BACK}
+      .col.text-right
+        button#guardarItem.btn.btn-primary.btn-lg(type='submit') #{translation.SAVE}
+          i.fas.fa-save.ml-2
+    .my-3 
+        .row 
+          .col-12.col-md-8 
+            .form-group
+              label(for='nombre') #{translation.FORM.NAME} *
+              input#nombre.form-control(type='text' placeholder="Nombre" name="nombre" required)
+          .col-12.col-md-4 
+            .form-group 
+              label(for='identificador') #{translation.FORM.IDENTIFIER}
+              select#identificador.form-control(name="identificador")
+                option(value="post" selected) #{translation.FORM.POST} 
+                option(value="contacto") #{translation.FORM.CONTACT} 
+                option(value="nosotros") #{translation.FORM.ABOUT}
+                option(value="faqs") #{translation.FORM.FAQS}
+                option(value="politica") #{translation.FORM.PRIVACY}
+                option(valu="cookie") #{translation.FORM.COOKIES}
+                option(value="mision") #{translation.FORM.MISSION}
+        .row 
+          .col-12.col-md-8 
+            .form-group 
+              label(for='estracto') #{translation.FORM.EXCERPT}
+              textarea#estracto.form-control(name="estracto" placeholder=translation.FORM.EXCERPT)
+            
+        .row 
+          .col-12.col-md-8
+            .form-group 
+              label(for='body') #{translation.FORM.BODY}
+              textarea#body(name="body" placeholder=translation.FORM.BODY)
+          .col-12.col-md-4 
+            .row
+              .col-12
+                include ../../modulo-general/galeria-fotos/modal-galeria.pug
+                //- .form-group
+                //-   label(for='imagen') Imagen minuatura
+                //-   input#imagen.form-control(type='text' placeholder="Imagen miniatura" name="imagen")
+          .col-12.col-md-4 
+            .p-3.border.rounded-lg 
+              
+    include ../../modulo-general/galeria-fotos/partial-modal-galeria.pug      
+  script.
+    const editor = CKEDITOR.replace('body', {
+      height: 800
+    })   
+
+  script.
+    const nombre = document.getElementById('nombre');
+    const imagen = document.getElementById('imagen');
+    const estracto = document.getElementById('estracto');
+    const identificador = document.getElementById('identificador');
+
+    const clearForm = () => {
+      nombre.value = '';
+      imagen.value = '';
+      estracto.value = '';
+      identificador.value = 'post';
+      editor.setData('', '')// <-- CKEDITOR
+    };
+
+    function clearImage(data) {
+      $(".imagen_").empty();
+      clearForm();
+    };
+  script
+    
+    include ../../../js/modulo-tv/save.js
+    include ../../modulo-general/galeria-fotos/modal-galeria.js
+
+  script.
+    document.getElementById('guardarItem').addEventListener('click', (event) => {
+      if (nombre.value !== '') {
+        save('/admin-paginas/paginas', {
+          nombre: nombre.value,
+          imagen: imagen.value,
+          estracto: estracto.value,
+          identificador: identificador.value,
+          body: editor.getData()
+        }, clearImage);
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: '#{translation.FORM.REQUIRED_FIELDS}',
+        });
+      }
+    });
+    

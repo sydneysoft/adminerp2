@@ -1,0 +1,43 @@
+script.
+  const openModalNewRegion = () => {
+    $("#nuevaRegionAdmin").modal("show");
+  };
+
+  const seleccionPais = () => {
+    let paisSeleccionado = $("#nuevo-pais-regiones").val();
+
+    $("#nuevo-distrito-regiones").empty();
+    $("#nuevo-ciudad-regiones").empty();
+    $.ajax({
+      method: "GET",
+      url: "/admin-shipping/regiones/ciudades/" + paisSeleccionado,
+      dataType: "json",
+
+      success: function (data) {
+
+        let ciudades = data.ciudades;
+
+        if (ciudades.length > 0) {
+
+          for (let i = 0; ciudades.length > i; i++) {
+            $("#nuevo-ciudad-regiones").append(
+              '<option value="' +
+              ciudades[i].CiudadID +
+              '">' +
+              ciudades[i].CiudadNombre + ", " + ciudades[i].CiudadDistrito +
+              "</option>"
+            );
+          }
+          $("#nuevo-ciudad-regiones").attr("disabled", false);
+
+        } else {
+          $("#nuevo-ciudad-regiones").append(
+            '<option value="">#{translation.FORM.CITIES_NOT_FOUND}</option>'
+          );
+
+          $("#nuevo-ciudad-regiones").attr("disabled", true);
+
+        }
+      }
+    })
+  }

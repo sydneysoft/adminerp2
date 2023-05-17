@@ -1,0 +1,27 @@
+extends ../../extends/menu-superior-admin
+block contenido
+    .row
+        .col-12.text-grey(style="margin-bottom:10px;")
+            h1.display-1
+                strong #{translation.BILLING_METHODS}
+        .col-12 
+            .row(style="padding:20px;")
+                .col-md-6 
+                    .row
+                        .col-md-8.col-8
+                            .form-group
+                                label #{translation.FORM.TOKEN}
+                                input(class="form-control" id="nubefact-token" type="password")
+                        .col-md-8.col-8
+                            .form-group
+                                label="Ruta"
+                                input(class="form-control" id="nubefact-ruta")
+                        .col-mod-8.col-8
+                            input(id="toggle-nubefact" type="checkbox" data-toggle="toggle" data-on="Activo" data-off="Desactivado" data-onstyle="success" data-offstyle="danger")
+                        .col-12.mt-4
+                            button.btn.btn-info(type="button" onClick=`handleInvoiceMethod(${token})`) #{translation.SAVE}       
+                .col-md-6
+                    img(style="width:100%;object-fit:contain" src="https://www.nubefact.com/assets/logo-bc8f654e9ae4218bdd3903296e9ac9867add036a8437c32ed1c181b491b4f2b9.png")
+
+    script
+        include additionalNubefact.js

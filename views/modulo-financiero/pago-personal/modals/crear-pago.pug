@@ -1,0 +1,76 @@
+.modal.fade#nuevo(tabindex="-1" role="dialog" )
+  .modal-dialog.modal-lg(role="document")
+    .modal-content
+      .modal-header 
+        .row 
+          .col-12
+            h5.strong(style="font-size:1rem;") #{translation.FORM.ADD_PAYMENT}
+      .modal-body-almacen
+        .row(style="padding:15px;")
+          //- if activo_marketplace===1
+            .col-md-12.col-12
+              .form-group
+                label Empresa:
+                  select#nuevaEmpresa.seleccionar
+                    option(value=null) --SELECCIONE-- 
+                    option(value=0) Sin Asignar 
+                      each item in empresas
+                        option(value=item.id)= item.nombre
+
+          .col-md-12.col-12
+            .form-group
+              label  #{translation.FORM.WORKERS}:
+                select#lista-personal
+                //- select#campoPersonal.seleccionar
+                  option(value=null) --SELECCIONE-- 
+                    //- each item in personalInfo
+                      option( value={nombre:item.nombre,nro:item.nro_documento, tipo: item.tipo_documento })= item.nombre  +" |  " +item.nro_documento
+                  option(value="otros" style="padding-top:10px") + AGREGAR
+
+
+          .col-md-6.col-12
+            .form-group
+              label(for="Tipo de Pago") #{translation.FORM.PAYMENT_TYPE}
+              select#nuevoTipoPago.form-control
+                option(value="null") #{translation.FORM.SELECT}
+                option(value="sueldo") #{translation.FORM.SALARY}
+                option(value="afp") #{translation.FORM.AFP}
+                option(value="CTS") #{translation.FORM.CTS}
+                option(value="otros") #{translation.FORM.OTHERS}
+
+          .col-md-6.col-12
+            .form-group
+              label #{translation.FORM.AMOUNT}
+              .controls
+                input#nuevoMonto.text-center.form-control(type="number" )
+
+          //- .col-md-12.col-12(style="padding: 0")
+            div#nuevoPersonal
+              div.agregaPersonalclass
+
+                .col-md-12.col-12
+                  .form-group
+                    label Nombre
+                    .controls
+                      input#nuevoNombre.form-control(type="text")
+
+                .col-md-12.col-12
+                  .form-group
+                    label(for="Tipo de Documento") Tipo de Documento:
+                    select#nuevoTipoDocumento.form-control
+                      option(value="null") -Seleccione-
+                      option(value="L.E / DNI") L.E / DNI
+                      option(value="CARNET DE EXTRANJERIA") 	CARNET DE EXTRANJERIA
+                      option(value="REG. UNICO DE CONTRIBUYENTES") REG. UNICO DE CONTRIBUYENTES
+                      option(value="PASAPORTE") PASAPORTE
+                      option(value="PART. DE NACIMIENTO") PART. DE NACIMIENTO
+                      option(value="OTROS") OTROS
+                .col-md-12.col-12
+                  .form-group
+                    label Nro. Documento
+                    .controls
+                      input#nuevoNroDocumento.form-control(type="text")
+      
+      .modal-footer      
+        button.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;" onClick=`agregarPago(${token})`) #{translation.SAVE}
+        button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}

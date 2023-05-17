@@ -1,0 +1,101 @@
+script.
+
+  //Funciones Modulos
+  const agregarModuloAdmin = () => {
+    let idModulo = "MOD" + getUniqueValue();
+    let nombreModulo = $("#nombreNuevo-modulo-admin").val();
+    let urlModulo = $("#urlNuevo-modulo-admin").val();
+    let iconoModulo = $("#iconoNuevo-modulo-admin").val();
+    let textoModulo = $("#textoNuevo-modulo-admin").val();
+    let ordenModulo = $("#ordenNuevo-modulo-admin").val();
+    let fuenteModulo = $("#fuenteNuevo-modulo-admin").val();
+    let statusModulo = $("#activadoNuevo-modulo-admin").val();
+    let rolesModulo = autocompleteRolesNuevo.value();
+    let categoria_id = $("#lista-modulo-categorias").val()
+    if (
+      nombreModulo &&
+      urlModulo &&
+      iconoModulo &&
+      textoModulo &&
+      ordenModulo &&
+      fuenteModulo &&
+      statusModulo &&
+      rolesModulo &&
+      categoria_id &&
+      rolesModulo.length > 0
+    ) {
+      rolesModulo = rolesModulo.join();
+      $.ajax({
+        method: "POST",
+        url: "/admin-modulos",
+        dataType: "json",
+        data: {
+          nombre: nombreModulo,
+          url: urlModulo,
+          icono: iconoModulo,
+          texto: textoModulo,
+          orden: ordenModulo,
+          fuente: fuenteModulo,
+          activo: statusModulo,
+          roles: rolesModulo,
+          categoria_id: categoria_id,
+        },
+        success: function (data) {
+          if (data.ok) {
+            $("#nuevoModuloAdmin").modal("hide");
+            Swal.close();
+            Swal.fire({
+              position: "center",
+              icon: "success",
+              title: "Se agrego el módulo exitósamente.",
+              showConfirmButton: false,
+              timer: 2500,
+            });
+            if (typeof tablaModulos != "undefined") {
+              tablaModulos.ajax.reload();
+            }
+            clearModulosAdmin();
+          } else {
+            Swal.close();
+            Swal.fire({
+              position: "center",
+              icon: "error",
+              title:
+                "No se pudo agregar el módulo, inténtalo nuevamente  por favor.",
+              showConfirmButton: false,
+              timer: 2500,
+            });
+          }
+        },
+        error: function () {
+          Swal.close();
+          Swal.fire({
+            position: "center",
+            icon: "error",
+            title: "Ocurrió un error interno inténtalo más tarde.",
+            showConfirmButton: false,
+            timer: 2500,
+          });
+        },
+      });
+    } else {
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: "Debes completar el formulario.",
+        showConfirmButton: false,
+        timer: 2500,
+      });
+    }
+  };
+
+  const clearModulosAdmin = () => {
+    $("#nombreNuevo-modulo-admin").val("");
+    $("#urlNuevo-modulo-admin").val("");
+    $("#iconoNuevo-modulo-admin").val("");
+    $("#textoNuevo-modulo-admin").val("");
+    $("#ordenNuevo-modulo-admin").val("");
+    $("#fuenteNuevo-modulo-admin").val("");
+    $("#activadoNuevo-modulo-admin").val("");
+    autocompleteRolesNuevo.reset();
+  };

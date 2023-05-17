@@ -1,0 +1,96 @@
+extends ../../extends/menu-superior-admin
+
+block contenido
+  .row
+    .col-md-6.col-6.text-grey(style="margin-bottom:10px;")
+      h1.display-1
+        strong #{translation.WORKERS_PAYMENT}
+
+    .col-md-6.col-6.text-right
+      button.btn.btn-success(type="button" onClick="openNewPaymentModal()")
+        i.fas.fa-plus
+          span #{translation.PAYMENTS}
+      span 
+      button.btn.btn-success(type="button" onClick="openNewPersonal()")
+        span #{translation.SEE_WORKERS}
+
+    .col-md-4.col-6 
+      .form-group
+        label.font-weight-bold.datev-label #{translation.FORM.NAME}
+        select#lista-personal-filtro-nombre
+    .col-md-4.col-6 
+      .form-group
+        label.font-weight-bold.datev-label #{translation.FORM.DOCUMENT_NUMBER}
+        select#lista-personal-filtro-documento
+    .col-md-4.col-sm-6 
+      .form-group
+        label.font-weight-bold.datev-label(for='dateFrom') #{translation.FORM.CREATION_DATE}
+        input#dateFrom.form-control(type='date' name='dateFrom' min='2010-01-01')
+
+
+    .col-md-4.col-12(style="max-width: 400px")
+      div(style="display: inline-flex")
+
+        select#acciones.form-control
+          option(value=null)  #{translation.FORM.MASSIVE_ACTIONS}
+          option(value="0")  #{translation.FORM.DELETE}
+
+        button#accionesBoton(class="btn btn-success-2")  #{translation.FORM.CONFIRM}
+
+    .col-12(style="margin-top: 20px;")
+      div.table-responsive
+        table#tabla-pago-personal.table.table-bordered
+          thead.thead-dark
+
+  include ./modals/crear-pago.pug
+  include ./modals/editar-pago.pug
+  include ./modals/gestionar-personal.pug
+  include ./styles/pago-personal.pug
+
+  script
+    include /js/toast.sweet.js
+
+  include ./save/pago-personal.pug
+  include ./update/pago-personal.pug
+  include ./delete/admin-panel.pug
+
+  include ./script.pug
+  script.
+
+    $(function () {
+      $("#campoPersonal").change(function () {
+        if ($(this).val() !== "otros") {
+        $("#nuevoPersonal").hide();
+        } else {
+        $("#nuevoPersonal").show();
+        }
+      });
+
+      $("#editarNombre").prop("disabled", true);
+      $("#editarTipoDoc").prop("disabled", true);
+      $("#editarNroDocumento").prop("disabled", true);
+      });
+      $("#lista-personal-filtro-nombre").change(function () {
+        //- tablaPagoPersonal.columns([1]).search(this.value).draw();
+        tablaPagoPersonal.search(this.value).draw();
+      });
+
+      $("#lista-personal-filtro-documento").change(function () {
+        //- tablaPagoPersonal.columns([2]).search(this.value).draw();
+        tablaPagoPersonal.search(this.value).draw();
+      });
+      $("#dateFrom").change(function () {
+        tablaPagoPersonal.search(this.value).draw();
+      });
+  include ./datatable/pago-personal.pug
+
+
+  //- Otros modulos
+  include /modulo-financiero/personal/select2/personal.pug
+  include /modulo-financiero/personal/modals/crear-personal.pug
+  include /modulo-financiero/personal/save/personal.pug
+
+  include /modulo-financiero/personal/select2/filtro-nombre.pug
+  include /modulo-financiero/personal/select2/filtro-nro-documento.pug
+  include /modulo-financiero/personal/datatable/gestionar-personal.pug
+  include /modulo-financiero/personal/delete/personal.pug

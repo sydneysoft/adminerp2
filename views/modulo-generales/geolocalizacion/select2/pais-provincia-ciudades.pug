@@ -1,0 +1,59 @@
+script.
+  const select2Ciudades = $("#lista-ciudades, #lista-ciudades-editar, #lista-ciudades-filtro").select2({});
+  function actualizarCiudades () {
+    select2Ciudades.empty();
+    $.ajax({
+      url: urlSelect2Ciudades(),
+      dataType: 'json',
+      success: function (data) {
+        if (Array.isArray(data)) {
+          let options = [{
+            id: '',
+            text: 'Seleccione una ciudad'
+          }];
+          options.push(...data.map((item) => {
+            return {
+              id: item.name,
+              text: item.name,
+            }
+          }));
+          select2Ciudades.select2({
+              data: options,
+              placeholder: 'Seleccione una ciudad',
+              templateResult: ciudadesState,
+              allowClear: true
+            });
+        }
+      },
+    });
+  }
+
+  function ciudadesState (state) {
+    if (!state.id) {
+      return state.text;
+    }
+    let $container = $(`
+      <span>${state.text}</span>
+    `);
+
+    return $container;
+  }
+
+  //- $("#lista-ciudades, #lista-ciudades-editar").change(function (e) {
+  //-   countryCode = this.value;
+  //- });
+
+  function urlSelect2Ciudades () {
+  
+    if (typeof countryCode != 'undefined' && countryCode != null && countryCode != "" && typeof stateCode != 'undefined' && stateCode != null && stateCode != "")
+
+      return "/admin-geolocalizacion/countries/" + countryCode + "/states/" + stateCode + "/cities";
+
+    else if (typeof countryCode != 'undefined' && countryCode != null && countryCode != "")
+
+      return "/admin-geolocalizacion/countries/" + countryCode + "/cities";
+    else 
+      return ''
+  }
+
+  //- actualizarCiudades();

@@ -1,0 +1,83 @@
+script.
+  document.getElementById('nuevoPaciente').addEventListener('click', (e) => {
+    $('#nuevoPacienteModal').modal('show');
+  });
+
+  document.getElementById('guardarPaciente').addEventListener('click', (e) => {
+    if (nombre.value !== '' && apellido_paterno.value !== '') {
+      e.preventDefault();
+      const data = {
+        nombre: nombre.value,
+        apellido_paterno: apellido_paterno.value,
+        apellido_materno: apellido_materno.value,
+        numero_documento: numero_documento.value,
+        tipo_documento: $("#lista-documentos").val(),
+        //- tipo_documento: tipo_documento.value,
+        sexo: sexo.value,
+        fecha_nacimiento: fecha_nacimiento.value,
+        estado_civil: estado_civil.value,
+        numero_seguro: numero_seguro.value,
+        tipo_seguro: tipo_seguro.value,
+        celular: celular.value,
+        correo: correo.value,
+        direccion: direccion.value,
+        nota: nota.value,
+        pais: pais.value,
+        nombre_seguro: $("#lista-companias-seguros :selected").text()
+      }
+      if (typeof empresa_id != 'undefined' && !isNaN(empresa_id.value)) {
+        data.empresa_id = empresa_id.value;
+      }
+
+      fetch('/admin-pacientes/pacientes', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+        .then(res => res.json())
+        .then(response => {
+          if (response.ok) {
+            console.log(response);
+            $('#nuevoPacienteModal').modal('hide');
+            Swal.fire({
+              position: 'center',
+              icon: 'success',
+              title: '#{translation.ALERTS.PATIENT_CREATED}',
+              showConfirmButton: false,
+              timer: 1500
+            })
+            if (typeof tablaPacientes != 'undefined') {
+              tablaPacientes.ajax.reload();
+            }
+            clearForm();
+          }
+        })
+        .catch(err => console.log(err));
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: '#{translation.FORM.REQUIRED_FIELDS}',
+      });
+    }
+  });
+  function clearForm() {
+    nombre.value = ''
+    apellido_paterno.value = ''
+    apellido_materno.value = ''
+    numero_documento.value = ''
+    tipo_documento.value = ''
+    sexo.value = ''
+    fecha_nacimiento.value = ''
+    estado_civil.value = ''
+    numero_seguro.value = ''
+    tipo_seguro.value = ''
+    celular.value = ''
+    correo.value = ''
+    direccion.value = ''
+    nota.value = ''
+    $("#lista-documentos").val("").trigger("change");
+    $("#lista-companias-seguros").val("").trigger("change");
+  }

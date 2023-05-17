@@ -1,0 +1,92 @@
+script.
+  let tablaVentanaEmergentes;
+  $(document).ready(function () {
+    let urlAjaxTablaVentanaEmergentes = "/admin-ventanas-emergentes/datatable"
+    if (typeof empresa_id != 'undefined' && empresa_id && !isNaN(empresa_id.value)) {
+      urlAjaxTablaVentanaEmergentes += `/${empresa_id.value}`;
+    }
+    tablaVentanaEmergentes = $('#tabla-ventanas-emergentes').DataTable({
+      columnDefs: [
+        {
+          orderable: false,
+          className: "select-checkbox",
+          targets: 0,
+        },
+      ],
+      select: {
+        style: "multi",
+        selector: "td:first-child",
+      },
+      dom: "Bfrtip",
+      buttons: ["selectAll", "selectNone"],
+      order: [[1, "asc"]],
+      language: {
+        buttons: {
+          selectAll: "Seleccionar todos",
+          selectNone: "Borrar Selección",
+        },
+        url: "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json",
+        select: {
+          rows: "%d filas seleccionadas",
+        },
+      },
+      rowId: 'id',
+      responsive: true,
+      searchDelay: 500,
+      processing: true,
+      serverSide: true,
+      ajax: urlAjaxTablaVentanaEmergentes,
+      columns: [
+        { 
+          data: 'id', name: 'id', title: 'ID', orderable: false, searchable: false,
+          render: function (data, type, row) {
+            return ''
+          }
+        },
+        { 
+          data: 'imagen', name: 'imagen', title: "#{translation.FORM.IMAGE}", orderable: false, searchable: false,
+          render: function (data, type, row) {
+            try {
+              new URL(row.imagen)
+              return `<img src="${data}" style="width:50px;height:50px;object-fit:cover">`;
+            } catch (e) {
+              return `<img src="/images/image-default.jpg" style="width:50px;height:50px;object-fit:cover">`;
+            }
+          }
+        },
+        {
+          data: 'url', name: 'url', title: "#{translation.FORM.URL}", orderable: true, searchable: true,
+        },
+        {
+          data: 'estado', name: 'estado', title: "#{translation.FORM.STATUS}", orderable: true, searchable: true,
+          render: function (data, type, row) {
+            return data == 1 ? '<span class="badge badge-success">#{translation.FORM.ACTIVE}</span>' : '<span class="badge badge-danger">#{translation.FORM.DEACTIVATE}</span>';
+          }
+        },
+        { 
+          data: 'acciones', name: 'acciones', title: '#{translation.FORM.ACTIONS}', orderable: false, searchable: false,
+          render: function (data, type, row) {
+            let strRow = JSON.stringify(row);
+            return `
+              <button class="btn btn-info" type="button" onclick='handlingEditVentanaAdmin(${strRow})'><i class="fa fa-edit"></i></button>
+              <button class="btn btn-danger" type="button" onclick="deleteVentanasAdminPanel(${row.id})"><i class="fa fa-trash"></i></button>
+            `;
+          }
+        }
+      ],
+      initComplete: function (settings) {
+        //- clone thead to tfoot
+        $("#tabla-ventanas-emergentes thead tr").clone().appendTo($("#tabla-ventanas-emergentes tfoot"));
+      }
+    });
+
+    $(".seleccionar").select2({
+      language: {
+        noResults: function () {
+          return "#{translation.NO_RESULTS}";
+        },
+      },
+    });
+
+    var tableFilter = $("#tabla-ventanas-emergentes").dataTable();
+  });

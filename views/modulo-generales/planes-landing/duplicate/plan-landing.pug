@@ -1,0 +1,36 @@
+script.
+
+  // DUPLICATE 
+  $('button[data-action="duplicate"]').click(duplicate)
+
+  async function duplicate({ currentTarget }) {
+    const param = $(currentTarget).attr('data-id');
+
+    try {
+      const res = await fetch(`/admin-planes-landing/${param}`);
+      const { id, ...resto } =  await res.json();
+
+      const formData = new FormData();
+
+      Object.keys(resto).forEach(key => formData.append(key, resto[key]));
+
+      const response = await fetch(`/admin-planes-landing/new`, {
+        method: 'POST',
+        body: formData
+      });
+
+      const obj = await response.json();
+      console.log(obj);
+      if (obj.ok) {
+        Swal.fire('#{translation.ALERTS.DUPLICATED_REGISTERED}', '', 'success');
+
+        action = 'new';
+
+        updateTable(obj.id);
+      }
+
+    } catch (error) {
+      console.log(error)
+      Swal.fire('Oops!', '#{translation.ALERTS.ERROR_DUPLICATING_REGISTERED}', 'error');
+    }
+  }

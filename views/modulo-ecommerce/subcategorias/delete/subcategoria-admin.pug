@@ -1,0 +1,38 @@
+script.
+  //Eliminar la Subcategoría
+  const eliminarSubCategoriaAdmin = (val) => {
+    Swal.fire({
+      title: "#{translation.ALERTS.ARE_YOU_SURE}",
+      text: "#{translation.ALERTS.YOU_COULD_NOT_REVERT}",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "#{translation.ALERTS.YES_DELETE}",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        handleDeleteSubcategoriasAdmin(val);
+      }
+    });
+  };
+
+  const handleDeleteSubcategoriasAdmin = (val) => {
+    Swal.showLoading();
+    $.ajax({
+      method: "DELETE",
+      url: `/admin-subcategorias/${val}`,
+      dataType: "json",
+      success: function (data) {
+            Swal.close();
+          if (data.ok) {
+            window.location.reload(true);
+          } else {
+            toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+          }
+      },
+      error: function () {
+        Swal.close();
+        toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+      },
+    });
+  };

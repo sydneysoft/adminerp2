@@ -1,0 +1,47 @@
+.modal.fade#nuevoBannerAdministrador(tabindex="-1" role="dialog")
+  .modal-dialog(role="document")
+    .modal-content
+      .modal-body
+        .row(style="padding:10px;margin-bottom:8px;")
+          .col-md-12.col-12
+            .form-group
+              img(id="imagen-data-banner" src="https://www.cuba.travel/images/noimage.png" class="content-img-banner" onClick="handleModal()")
+          
+          if marketplace
+            .col-12
+              .form-group
+                label(for="lista-empresas") #{translation.FORM.COMPANY}
+                select#lista-empresas
+          .col-md-6.col-12
+            .form-group
+              h5 #{translation.FORM.NAME}:
+              .controls
+                input#nombreNuevo-marcas.form-control(type="text")
+          .col-md-6.col-12
+            .form-group
+              h5 #{translation.FORM.CATEGORY}	:
+              .controls
+                select#lista-categorias
+                //- select#categoriaNuevo-marcas.form-control
+                  option(disabled) --Seleccione Categoria--
+                    //- each categoria in items.categorias
+                      option(value= categoria.id)= categoria.name
+          .col-md-6.col-6
+            .form-group
+              h5 #{translation.FORM.STATUS}:
+              .controls
+                select#activadoNuevo-marcas.form-control
+                  option(value="1") #{translation.FORM.ACTIVATED}
+                  option(value="0") #{translation.FORM.DEACTIVATED}
+          .col-md-6.col-6
+            .form-group
+              h5 #{translation.FORM.HIGHLIGHT}:
+              .controls
+                select#destacadoNuevo-marcas.form-control
+                  option(value="1") #{translation.FORM.YES}
+                  option(value="0") #{translation.FORM.NO}
+      .modal-footer
+        button.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;",onClick=`AgregarMarcasAdmin(${token})`) #{translation.FORM.ADD}
+          i.fas.fa-save.ml-2
+        button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.FORM.CLOSE}
+          i.fas.fa-times-circle.ml-2

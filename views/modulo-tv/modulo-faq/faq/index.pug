@@ -1,0 +1,98 @@
+extends ../layout.pug
+
+append contenido 
+  if empresa_id
+    input#empresa_id(type="text" value=empresa_id hidden)
+  else
+    input#empresa_id(type="text" value="" hidden)
+  .border-bottom.border-left.border-right.rounded-bottom.p-3
+    .container-fluid
+      .row
+        .col-6 
+          if empresa_id
+            include ../../../mixins/btn/back.pug
+            +btn-back()
+        .col-6.text-right
+          button.btn.btn-primary(type="button" data-toggle="modal" data-target="#saveModal") #{translation.ADD}
+            i.fas.fa-save.ml-2
+      .row.mt-3
+        .table-responsive   
+          table#dataTable.table.rounded-lg.overflow-hidden
+            thead.thead-dark
+
+  script 
+    include ../../../js/modulo-tv/delete.js
+    include ../../../js/modulo-tv/save.js
+    include ../../../js/modulo-tv/update.js
+  
+  include ./datatable/faq.pug
+  include ./modals/crear-faq.pug
+  include ./modals/editar-faq.pug
+  include ./modals/mostrar-faq.pug
+
+  script.
+    const editor_crear = CKEDITOR.replace('respuesta')
+    const editor_editar = CKEDITOR.replace('respuesta_editar')
+    const editor_mostrar = CKEDITOR.replace('respuesta_mostrar')
+
+    const pregunta = document.getElementById('pregunta')
+    const respuesta = document.getElementById('respuesta')
+
+    const pregunta_editar = document.getElementById('pregunta_editar')
+    const respuesta_editar = document.getElementById('respuesta_editar')
+
+    const pregunta_mostrar = document.getElementById('pregunta_mostrar')
+    const respuesta_mostrar = document.getElementById('respuesta_mostrar')
+
+    const itemId = document.getElementById('itemId');
+
+    function mostrarFaq(data) {
+      pregunta_mostrar.value = data.pregunta;
+      editor_mostrar.setData(data.respuesta);
+      $("#icono_mostrar input").val(data.icono);
+      $("#icono_mostrar i").attr('class', data.icono);
+      editarFaq(data);
+    }
+
+    function editarFaq(data) {
+      pregunta_editar.value = data.pregunta;
+      editor_editar.setData(data.respuesta);
+      $("#icono_editar input").val(data.icono);
+      $("#icono_editar i").attr('class', data.icono);
+      itemId.value = data.id;
+    }
+
+    document.getElementById('saveItem').addEventListener('click', (event) => {
+      let auxData = {
+        pregunta: pregunta.value,
+        icono: $('#icono input').val(),
+        respuesta: editor_crear.getData()
+      };
+      if (empresa_id && empresa_id.value != ""){
+        auxData.empresa_id = empresa_id.value;
+      }
+      save('/admin-faqs', auxData, createFaqSuccess);
+    });
+
+    document.getElementById('updateItem').addEventListener('click', (event) => {
+      updateItem(`/admin-faqs/faq/${itemId.value}`, {
+        pregunta: pregunta_editar.value,
+        icono: $('#icono_editar input').val(),
+        respuesta: editor_editar.getData()
+      }, updateFaqSuccess);
+    });
+
+    function createFaqSuccess(data) {
+      tablaFaqs.ajax.reload();
+      $("#saveModal").modal('hide');
+    }
+    function  updateFaqSuccess(data) {
+      tablaFaqs.ajax.reload();
+      $("#updateModal").modal('hide');
+    }
+
+    function clearForm() {
+      editor_crear.setData("");
+      pregunta.value = "";
+    }
+  script(src="/js/bootstrap-iconpicker.bundle.min.js")

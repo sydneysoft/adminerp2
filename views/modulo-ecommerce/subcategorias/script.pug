@@ -1,0 +1,164 @@
+script.
+  const cambiarCategoriaPorEmpresaNuevo = () => {
+      let valorEmpresa = $("#empresaNuevaSubcateg").val();
+      $("#categoriaNuevo-subcategoria").empty();
+      if (valorEmpresa == null || valorEmpresa == "") {
+          valorEmpresa = 0
+      }
+      if (valorEmpresa != "") {
+          $.ajax({
+              method: "GET",
+              url: "/admin-categorias/empresa/" + valorEmpresa,
+              dataType: "json",
+              success: function (data) {
+                  let subcategorias = data.categorias;
+                  if (subcategorias.length > 0) {
+                      $("#categoriaNuevo-subcategoria").append(
+                          '<option value="">#{translation.FORM.CHOOSE_CATEGORY}</option>'
+                      );
+                      for (let i = 0; subcategorias.length > i; i++) {
+                          $("#categoriaNuevo-subcategoria").append(
+                              '<option value="' +
+                              subcategorias[i].id +
+                              '">' +
+                              subcategorias[i].name +
+                              "</option>"
+                          );
+                      }
+                      $("#categoriaNuevo-subcategoria").attr("disabled", false);
+                  } else {
+                      $("#categoriaNuevo-subcategoria").append(
+                          '<option value="0">#{translation.FORM.CATEGORIES_NOT_FOUND}</option>'
+                      );
+                      $("#categoriaNuevo-subcategoria").attr("disabled", true);
+                  }
+              },
+              error: function (e) {
+                  console.log(e);
+              },
+          });
+      } else {
+          $("#categoriaNuevo-subcategoria").attr("disabled", true);
+      }
+  };
+
+  const cambiarCategoriaPorEmpresaEdita = () => {
+      let valorEmpresa = $("#empresaEditarSubcateg").val();
+      $("#categoriaEditar-subcategoria").empty();
+      typeUpdate = 2;
+      if (valorEmpresa != "") {
+          $.ajax({
+              method: "GET",
+              url: "/admin-categorias/empresa/" + valorEmpresa,
+              dataType: "json",
+
+              success: function (data) {
+
+                  let subcategorias = data.categorias;
+
+                  if (subcategorias.length > 0) {
+                      $("#categoriaEditar-subcategoria").append(
+                          '<option value="">Elige una categoría</option>'
+                      );
+                      for (let i = 0; subcategorias.length > i; i++) {
+                          $("#categoriaEditar-subcategoria").append(
+                              '<option value="' +
+                              subcategorias[i].id +
+                              '">' +
+                              subcategorias[i].name +
+                              "</option>"
+                          );
+                      }
+                      $("#categoriaEditar-subcategoria").attr("disabled", false);
+                  } else {
+                      $("#categoriaEditar-subcategoria").append(
+                          '<option value="0">#{translation.FORM.CATEGORIES_NOT_FOUND}</option>'
+                      );
+                      $("#categoriaEditar-subcategoria").attr("disabled", true);
+                  }
+              },
+              error: function (e) {
+                  console.log(e);
+              },
+          });
+      } else {
+          $("#categoriaEditar-subcategoria").append('<option value=""></option>');
+      }
+  };
+  const handleEditSubCategoria = (
+      id
+  ) => {
+
+      typeOperation = "2";
+      Swal.showLoading();
+      $('#categoriaEditar-subcategoria').attr("disabled", true);
+      $("#idEditarSubcategoriaAdmin").val(id);
+      $("#nombreEditar-subcategoria").val("");
+      $('#categoriaEditar-subcategoria').empty();
+      $('#categoriaEditar-subcategoria').val("")
+      $("#activadoEditar-categoria").val("");
+
+      $("#selected-img-data-editar").val("");
+      $("#empresaEditarSubcateg").val("")
+      typeUpdate = 1;
+
+      $.ajax({
+          method: "GET",
+
+          url: "/get-all-subcategories/" + id,
+          dataType: "json",
+
+          success: async function (data) {
+              if (data.status === "success") {
+                  let subcategorias = data.dataSubcategorias
+                //-   let categorias = data.dataCategorias
+                //-   if (categorias.length > 0) {
+                //-       for (let i = 0; categorias.length > i; i++) {
+                //-           $("#categoriaEditar-subcategoria").append(
+                //-               '<option value="' +
+                //-               categorias[i].id +
+                //-               '">' +
+                //-               categorias[i].name +
+                //-               "</option>"
+                //-           );
+                //-       }
+                //-       $("#categoriaEditar-subcategoria").attr("disabled", false);
+                //-   } else {
+                //-       $("#categoriaEditar-subcategoria").append(
+                //-           '<option value="">No se encontraron Categorías</option>'
+                //-       );
+                //-       $("#categoriaEditar-subcategoria").attr("disabled", true);
+                //-   }
+                  $("#nombreEditar-subcategoria").val(subcategorias[0].nombre);
+                  $("#empresaEditarSubcateg").val(subcategorias[0].empresa_id).select2()
+                  $("#imagen-data-banner-editar").attr("src", subcategorias[0].imagen);
+                  $("#activadoEditar-categoria").val(subcategorias[0].activado);
+                  $("#lista-categorias-editar").select2("val", subcategorias[0].categoria);
+                  $("#lista-categorias-editar ~ .select2 .select2-selection__placeholder").html(subcategorias[0].categoria);
+                  Swal.close();
+                  $("#editarSubcategoriaModal").modal("show");
+              }
+              else {
+                  Swal.close();
+                  Swal.fire({
+                      position: "center",
+                      icon: "error",
+                      title: "#{translation.WRONG_GET_DATA}",
+                      showConfirmButton: false,
+                      timer: 2500,
+                  });
+              }
+          },
+
+          error: function () {
+              Swal.close();
+              Swal.fire({
+                  position: "center",
+                  icon: "error",
+                  title: "#{translation.WRONG_GET_DATA}",
+                  showConfirmButton: false,
+                  timer: 2500,
+              });
+          },
+      });
+  }

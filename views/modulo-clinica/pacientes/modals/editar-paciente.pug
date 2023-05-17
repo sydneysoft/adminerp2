@@ -1,0 +1,116 @@
+.modal.fade.justify-content-center.align-items-center(tabindex="-1" role="dialog" id="editarPacienteModal")
+  .modal-dialog.modal-lg
+    .modal-content.modalContent(style="height: 100%;")
+      .modal-header 
+        .row(style="margin:0;")
+          .col-md-12
+            h3(style="margin:0px 0;") #{translation.EDIT}
+
+      .modal-body.borderBottom
+        .row
+          .col-12.col-md-4 
+            .form-group 
+              label(for="nombreEditar") #{translation.FORM.NAME} *
+              input#nombreEditar.form-control(type="text" placeholder=translation.FORM.NAME)
+          .col-12.col-md-4
+            .form-group 
+              label(for="apellido_paternoEditar") #{translation.FORM.FATHER_LASTNAME}*
+              input#apellido_paternoEditar.form-control(type="text" placeholder=translation.FORM.FATHER_LASTNAME)
+          .col-12.col-md-4
+            .form-group 
+              label(for="apellido_maternoEditar") #{translation.FORM.MOTHER_LASTNAME}
+              input#apellido_maternoEditar.form-control(type="text" placeholder=translation.FORM.MOTHER_LASTNAME)
+        .row.mt-3
+          .col-12.col-md-6
+            .form-group
+              label(for="tipo_documentoEditar") #{translation.FORM.DOCUMENT_TYPE}
+              select#lista-documentos-editar
+              //- select#tipo_documentoEditar.form-control
+              //-   option(value="pasaporte") #{translation.FORM.PASSPORT}
+              //-   option(value="cedula") #{translation.FORM.CEDULA}
+              //-   option(value="carnet_extranjeria") #{translation.FORM.CARNET_EXTRANJERIA}
+              //-   option(value="dni") #{translation.FORM.DNI}
+              //-   option(value="otro") #{translation.FORM.OTHER}
+          .col-12.col-md-6
+            .form-group
+              label(for="numero_documentoEditar") #{translation.FORM.DOCUMENT_NUMBER}
+              input#numero_documentoEditar.form-control(type="text" placeholder=translation.FORM.DOCUMENT_NUMBER)
+
+        .row.mt-3 
+          .col-12.col-md-4 
+            .form-group
+              label(for="sexoEditar") #{translation.FORM.GENRE}
+              select#sexoEditar.form-control
+                option(value="masculino") #{translation.FORM.MALE}
+                option(value="femenino") #{translation.FORM.FEMALE}
+
+          .col-12.col-md-4 
+            .form-group
+              label(for="fecha_nacimientoEditar") #{translation.FORM.BIRTH_DATE}
+              input#fecha_nacimientoEditar.form-control(type="date" placeholder=translation.FORM.BIRTH_DATE)    
+          .col-12.col-md-4 
+            .form-group
+              label(for="estado_civilEditar") #{translation.FORM.CIVIL_STATUS}
+              select#estado_civilEditar.form-control
+                if Array.isArray(estado_civil) && estado_civil.length > 0
+                  each tipo in sexo[0].valor
+                    option(value=tipo)
+                      span.text-capitalize #{tipo}
+                else
+                  option(value="0") No hay tipos de sexo   
+        .row.mt-3 
+          .col-12.col-md-4
+            .form-group
+              label(for="tipo_seguroEditar") #{translation.FORM.INSURANCE_TYPE}
+              select#tipo_seguroEditar.form-control
+                if Array.isArray(tipo_seguro) && tipo_seguro.length > 0
+                  each tipo in tipo_seguro[0].valor
+                    option(value=tipo)
+                      span.text-capitalize #{tipo}
+                else
+                  option(value="0") No hay tipos de seguro
+          .col-12.col-md-4
+            .form-group
+              label(for="nombre_seguroEditar") #{translation.FORM.INSURANCE_NAME}
+              select#lista-companias-seguros-editar
+              //- select#nombre_seguroEditar.form-control
+              //-   if Array.isArray(aseguradoras) && aseguradoras.length > 0
+              //-     each item in aseguradoras
+              //-       option(value=item.id)
+              //-         span.text-capitalize #{item.nombre}
+              //-   else
+              //-     option(value="0") No hay aseguradoras
+          .col-12.col-md-4
+            .form-group
+              label(for="numero_seguroEditar") #{translation.FORM.INSURANCE_NUMBER}
+              input#numero_seguroEditar.form-control(type="text" placeholder=translation.FORM.INSURANCE_NUMBER)
+
+        .row.mt-3 
+          .col-12.col-md-4 
+            .form-group 
+              label(for="celularEditar") #{translation.FORM.CELULAR}
+              input#celularEditar.form-control(type="text" placeholder=translation.FORM.CELULAR)
+          .col-12.col-md-4 
+            .form-group 
+              label(for="correoEditar") #{translation.FORM.EMAIL}
+              input#correoEditar.form-control(type="email" placeholder=translation.FORM.EMAIL)
+          .col-12.col-md-4
+            +pais('paisEditar')
+        .row.mt-3 
+          .col-12.col-md-6 
+            .form-group
+              label(for="direccionEditar") #{translation.FORM.ADDRESS}
+              input#direccionEditar.form-control(type="text" placeholder=translation.FORM.ADDRESS)
+          .col-12.col-md-6
+            .form-group
+              label(for="notaEditar") #{translation.FORM.OBSERVATION}
+              textarea#notaEditar.form-control.h-100(placeholder=translation.FORM.OBSERVATION)
+
+        input#idEditar(type="text" hidden)
+      .modal-footer(style="padding:8px;")
+        .row(style="margin:0;")
+          .col-md-12.text-right
+            button#updatePaciente.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;") #{translation.SAVE}
+              i.fas.fa-save.ml-2
+            button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}
+              i.fas.fa-times.ml-2

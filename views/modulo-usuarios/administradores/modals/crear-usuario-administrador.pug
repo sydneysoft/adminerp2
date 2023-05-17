@@ -1,0 +1,46 @@
+.modal.fade#nuevoUsuarioAdministrador(tabindex="-1" role="dialog")
+  .modal-dialog(role="document")
+    .modal-content
+      .modal-body
+        .row(style="padding:10px;margin-bottom:8px;")
+          .col-md-6.mt-2
+            label #{translation.FORM.DOCUMENT_TYPE}
+            .controls
+              select.form-control#tipo_documento_user
+                option(value="DNI")="DNI"
+                option(value="Carnet de Extranjeria")="Carnet de Extranjeria" 
+                option(value="Otro")="Otro" 
+          .col-md-6.mt-2
+            label #{translation.FORM.DOCUMENT_NUMBER}
+            .controls
+              input.form-control#numero_documento_user(type="number" autoComplete="new-password")
+          .col-md-6.mt-2 
+            label #{translation.FORM.NAMES}
+            .controls
+              input.form-control#nombres_user(type="text" autoComplete="new-password")
+          .col-md-6.mt-2 
+            label #{translation.FORM.SURNAMES}
+            .controls
+              input.form-control#apellidos_user(type="text" autoComplete="new-password")
+          .col-md-6.mt-2 
+            label #{translation.FORM.PHONE}
+            .controls
+              input.form-control#telefono_user(type="tel")
+          .col-md-6.mt-2 
+            label #{translation.FORM.EMAIL}
+            .controls
+              input.form-control#correo_user(type="text" autoComplete="new-password")
+          .col-md-6.mt-2 
+            label #{translation.FORM.PASSWORD}
+            .controls
+              input.form-control#password_user(type="password" autoComplete="new-password")  
+          .col-md-6.mt-2 
+            label #{translation.FORM.CONFIRM_PASSWORD}
+            .controls
+              input.form-control#password_repeat_password(type="password" autoComplete="new-password")
+
+
+
+      .modal-footer 
+        button.btn.btn-success(onClick=`addUserAdmin(${token})`) #{translation.UPDATE}
+        button.btn.btn-danger(data-dismiss="modal")="Cancelar"

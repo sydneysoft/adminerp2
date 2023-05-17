@@ -1,0 +1,118 @@
+extends ../../extends/viewlogin
+block formlogin
+    script(src="https://js.hcaptcha.com/1/api.js")
+    div
+     
+        h2.logo-login
+            strong #{translation.LOGIN}
+        .form-group
+            label(for="username") #{translation.FORM.EMAIL}
+            input#dataIpUser(type="hidden",name="dataIp")
+            input#idRegistroTerminal(type="hidden",name="id_registro")
+            input#username.con__input(type="text", name="text" value="")
+        .form-group
+            label(for="password") #{translation.FORM.PASSWORD}
+            input#password.con__input(type="password", name="pswd" value="")
+
+        .my-3 
+            .h-captcha(data-sitekey="10000000-ffff-ffff-ffff-000000000001")
+            //.h-captcha(data-sitekey="8d180735-7413-447d-9db5-fed468f77f4e")
+            <input type="hidden" id="h-captcha-response" name="_token">
+        button.btn.btn__green(type="button", onClick="validateForm()" value="") #{translation.FORM.ACCESS}
+        
+    script.
+        const getUniqueValue = (strength = 1, int = false) => {
+            const u = () => (Math.random() * 10000).toString().replace(".", "");
+            let r = "";
+            for (let i = 0; i < strength; i++) {
+                r += u();
+            }
+            return int ? parseInt(r) : r;
+        };
+        function getIP(json) {
+            $('#dataIpUser').val(json.ip);
+            $('#idRegistroTerminal').val("TER"+getUniqueValue());
+        }
+        function getBrowserInfo() {
+            var ua= navigator.userAgent, tem, 
+            M= ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+            if(/trident/i.test(M[1])){
+                tem=  /\brv[ :]+(\d+)/g.exec(ua) || [];
+                return 'IE '+(tem[1] || '');
+            }
+            if(M[1]=== 'Chrome'){
+                tem= ua.match(/\b(OPR|Edge)\/(\d+)/);
+                if(tem!= null) return tem.slice(1).join(' ').replace('OPR', 'Opera');
+            }
+            M= M[2]? [M[1], M[2]]: [navigator.appName, navigator.appVersion, '-?'];
+            if((tem= ua.match(/version\/(\d+)/i))!= null) M.splice(1, 1, tem[1]);
+                return M.join(' ');
+        };
+
+        function isMobile() {
+            const toMatch = [
+                /Android/i,
+                /webOS/i,
+                /iPhone/i,
+                /iPad/i,
+                /iPod/i,
+                /BlackBerry/i,
+                /Windows Phone/i
+            ];
+
+            return toMatch.some((toMatchItem) => {
+                return navigator.userAgent.match(toMatchItem);
+            });
+        }
+        var dataEnv = {
+            browser: getBrowserInfo(),
+            device: isMobile() ? "Teléfono" : "Escritorio",
+            platform: navigator.platform,
+        } ;
+
+        function validateForm(){
+            let usuario=$('#username').val();
+            let password=$('#password').val();
+            let ipData=$('#dataIpUser').val();
+           // if(usuario && password){
+                Swal.showLoading();
+                $.ajax({
+                    method: "POST",
+                    url: "/login",
+                    dataType:"json",
+                    data:{usuario:usuario,password:password,ip:ipData,browser:dataEnv.browser,device:dataEnv.device,platform:dataEnv.platform,_token:$('[name=h-captcha-response]').val()},
+                    success: function(data){
+                        Swal.close();   
+                        if(data.status=="error"){
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'error',
+                                title: data.msg,
+                                showConfirmButton: false,
+                                timer: 2500
+                            });
+                        }else{
+                            window.location.href = url_base+data.url;
+                        }
+                    },error: function(){
+                        Swal.close();
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'error',
+                            title: '#{translation.ALERTS.WRONG}',
+                            showConfirmButton: false,
+                            timer: 2500
+                        });
+                    },
+                });
+           /* }else{
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Debes ingresar tu Usuario y Contraseña.',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+            }*/
+        }
+    script(type="application/javascript" src="https://api.ipify.org?format=jsonp&callback=getIP")

@@ -1,0 +1,71 @@
+extends ./layout.pug
+append contenido
+  .row.justify-content-end
+    if empresa_id
+      include /mixins/btn/back.pug
+      input#empresa_id(type="text" value=empresa_id hidden)
+      .col-6
+        +btn-back()
+    .col-md-6.col-6.text-right 
+      button.btn.btn-success(style="margin-bottom:25px;" type="button" data-toggle="modal" data-target="#crearSubcategoriaModal")
+        i.fas-fa-plus
+        span #{translation.ADD_SUBCATEGORY}
+  .row.mt-3
+    .col-6.col-md-3
+      .form-group
+        label(for="lista-categorias-filtro") #{translation.FORM.CATEGORY}
+        select#lista-categorias-filtro.form-control
+  .row.mt-3
+    .col-12
+      div.table-responsive
+        table.table.table-bordered#tabla-subcategorias
+          thead.thead-dark
+
+  include ./modals/crear-banner-admin.pug
+  include ./modals/editar-banner-admin.pug
+  include ./modals/agregar-filtros-dinamicos.pug
+
+  script
+    include /js/toast.sweet.js
+
+  include ./update/subcategoria-admin.pug
+  include ./save/agregar-filtros.pug
+  include ./save/subcategoria-admin.pug
+
+  include ./delete/subcategoria-admin.pug
+
+  include ./script.pug
+
+  script.
+
+    $("#lista-categorias-filtro").change(function () {
+      if (typeof tablaSubcategorias != null) {
+        tablaSubcategorias.columns([3]).search(this.value).draw();
+      }
+    });
+    
+    var marketplace
+    var deleteArray=[];
+    $(document).on('click', '#removeRowDynamic', function () {
+      if($(this).closest('#inputFormRow').attr("edit")){
+        deleteArray.push(parseInt($(this).closest('#inputFormRow').attr("edit"))); 
+      }
+      $(this).closest('#inputFormRow').remove();
+
+    });
+    var typeOperation="1";
+
+      $("#empresaEditarSubcateg").val()
+    if( $("#empresaEditarSubcateg").length || $("empresaNuevaSubcateg").length){
+      marketplace=true
+
+    } 
+
+  include /modulo-generales/galeria-fotos/seleccion-unica-galeria/admin-galeria-modal-simple
+  include ./datatable/subcategoria.pug
+
+  //- otros modulos
+  
+  include /modulo-ecommerce/categorias/modals/crear-categoria.pug
+  include /modulo-ecommerce/categorias/save/categoria.pug
+  include /modulo-ecommerce/categorias/select2/categorias.pug

@@ -1,0 +1,45 @@
+extends /extends/menu-superior-admin
+
+block contenido
+    .row
+        if empresa_id
+            input#empresa_id(type="text" value=empresa_id hidden)
+        .col-6.text-grey(style="margin-bottom:10px;")
+            h1.display-1
+                strong  #{translation.CASINO}
+        .col-12
+            button.btn.btn-success(style="margin-bottom:25px;" type="button"  data-target="#nuevoBannerAdministrador" data-toggle="modal")
+                span #{translation.ADD_TUTORIAL}
+                    i.fas.fa-plus.ml-2
+        .col-12
+            div.table-responsive
+                table.table.table-bordered#tabla-categorias
+                    thead.thead-dark
+
+
+    script
+        include /js/toast.sweet.js
+    include ./tutorial/modals/crear-tutorial.pug
+    include ./tutorial/modals/editar-tutorial.pug
+
+    include /modulo-generales/galeria-fotos/seleccion-unica-galeria/admin-galeria-modal-simple
+    include ./tutorial/datatable/tutorial.pug
+
+    include ./tutorial/save/tutorial.pug
+    include ./tutorial/update/tutorial.pug
+    include ./tutorial/delete/tutorial.pug
+    script.
+        document.getElementById("guardarVideo").addEventListener("click", (event) => {
+            event.preventDefault()
+           
+           
+        }); 
+
+
+    include /modulo-ecommerce/categorias/select2/categorias.pug
+    include /modulo-ecommerce/categorias/modals/crear-categoria.pug
+    include /modulo-ecommerce/categorias/save/categoria.pug
+
+    include /modulo-ecommerce/subcategorias/select2/subcategoria.pug
+    include /modulo-ecommerce/subcategorias/modals/crear-banner-admin.pug
+    include /modulo-ecommerce/subcategorias/save/subcategoria-admin.pug

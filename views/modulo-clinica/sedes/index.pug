@@ -1,0 +1,216 @@
+extends ./layout.pug
+
+append contenido
+  .border-left.border-right.border-bottom.p-3
+    .container-fluid 
+      .row.justify-content-end
+        if empresa_id
+          include /mixins/btn/back.pug
+          input#empresa_id(type="text" value=empresa_id hidden)
+          .col-md-6.col-6
+            +btn-back()
+        .col-md-6.col-6.text-right 
+          button.btn.btn-primary(type="button" onclick="nuevaSede()" data-toggle="modal" data-target="#nuevoSedeModal") #{translation.ADD}
+            i.fas.fa-plus.ml-2
+
+      .row.mt-3
+        .col-md-4.col-6(style="max-width: 400px")
+
+          label.font-weight-bold.datev-label #{translation.MASSIVE_ACTIONS}
+            .row
+              .col-md-8.col-12
+                select#acciones.form-control
+                  option(value=null) #{translation.SELECT}
+                  option(value="0") #{translation.DELETE}
+              .col-md-4.col-12
+                button#accionesBoton(class="btn btn-success-2") #{translation.CONFIRM}
+  
+    .container-fluid.mt-3
+      .table-responsive
+        table#tabla-sedes.table.table-striped
+          thead.thead-dark
+          tbody
+          tfoot
+
+  include ./modals/crear-sede.pug
+  include ./modals/editar-sede.pug
+  include ./modals/mostrar-sede.pug
+
+  include /modulo-tv//modulo-general/galeria-fotos/image.pug
+  script
+    include /js/modulo-tv/save.js
+    include /js/modulo-tv/update.js
+    include /js/modulo-tv/delete.js
+
+  script.
+    const nombre = document.getElementById('nombre');
+    const direccion = document.getElementById('direccion');
+    const googlemap = document.getElementById('googlemap');
+    const imagen = document.getElementById('imagen');
+    const telefono = document.getElementById('telefono');
+    const atencion = document.getElementById('atencion');
+    const estado = document.getElementById('estado');
+    const activado = document.getElementById('activado');
+    let horario_atencion = [];
+    const agregarHorarioAtencion = document.getElementById('agregarHorarioAtencion');
+    const showHorarioAtencion = document.getElementById('showHorarioAtencion');
+
+    const nombre_editar = document.getElementById('nombre_editar');
+    const direccion_editar = document.getElementById('direccion_editar');
+    const googlemap_editar = document.getElementById('googlemap_editar');
+    const imagen_editar = document.getElementById('imagen_editar');
+    const telefono_editar = document.getElementById('telefono_editar');
+    const atencion_editar = document.getElementById('atencion_editar');
+    const estado_editar = document.getElementById('estado_editar');
+    const activado_editar = document.getElementById('activado_editar');
+    let horario_atencion_editar = [];
+    const agregar_atencion_editar = document.getElementById('agregar_atencion_editar');
+    const showHorarioAtencionEditar = document.getElementById('showHorarioAtencionEditar');
+
+    const nombre_mostrar = document.getElementById('nombre_mostrar');
+    const direccion_mostrar = document.getElementById('direccion_mostrar');
+    const googlemap_mostrar = document.getElementById('googlemap_mostrar');
+    const imagen_mostrar = document.getElementById('imagen_mostrar');
+    const telefono_mostrar = document.getElementById('telefono_mostrar');
+    //- const atencion_mostrar = document.getElementById('atencion_mostrar');
+    const estado_mostrar = document.getElementById('estado_mostrar');
+    const activado_mostrar = document.getElementById('activado_mostrar');
+    let horario_atencion_mostrar = [];
+    const showHorarioAtencionMostrar = document.getElementById('showHorarioAtencionMostrar');
+
+    const addSede = document.getElementById('addSede');
+    const editSede = document.getElementById('editSede');
+    const itemId = document.getElementById('itemId');
+
+  include ./save/sede.pug
+  include ./update/sede.pug
+  include ./delete/sede.pug
+
+  script.
+    $("#atencion_editar").select2();
+    agregar_atencion_editar.addEventListener('click', (event) => {
+      console.log(event);
+      // comprobar si existe
+      if (!Array.isArray(horario_atencion_editar)) {
+        horario_atencion_editar = [];
+      }
+      let exites = horario_atencion_editar.filter((item) => {
+        return item.id == atencion_editar.value;
+      });
+      if (exites.length > 0) {
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'error',
+          title: 'Oops...',
+          text: '#{translation.ALERTS.SCHEDULE_EXISTS}',
+          timer: 2000,
+          showConfirmButton: false,
+        })
+        return;
+      }
+      if(atencion_editar.value != '') {
+        horario_atencion_editar.push({
+          id: atencion_editar.value,
+          text: atencion_editar.options[atencion_editar.selectedIndex].text
+        })
+        renderHorarioAtencionEditar();
+      }
+    });
+
+    agregarHorarioAtencion.addEventListener('click', (event) => {
+      console.log(event);
+      // comprobar si existe
+      if (!Array.isArray(horario_atencion)) {
+        horario_atencion = [];
+      }
+      let exites = horario_atencion.filter((item) => {
+        return item.id == atencion.value;
+      });
+      if (exites.length > 0) {
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'error',
+          title: 'Oops...',
+          text: '#{translation.ALERTS.SCHEDULE_EXISTS}',
+          timer: 2000,
+          showConfirmButton: false,
+        })
+        return;
+      }
+      if (atencion.value != '') {
+        horario_atencion.push({
+          id: atencion.value,
+          text: atencion.options[atencion.selectedIndex].text
+        })
+        renderHorarioAtencion();
+      }
+    });
+
+    function renderHorarioAtencionEditar () {
+      if (horario_atencion_editar) {
+        let html = '';
+        horario_atencion_editar.forEach((item) => {
+          console.log(item)
+          html += `<div class="row mt-1" style="margin:0;">
+            <div class="col-md-10">
+              <input type="text" class="form-control" value="${item.text}" readonly>
+            </div>
+            <div class="col-md-2">
+              <button type="button" class="btn btn-danger" onclick="deleteHorarioAtencionEditar('${item.id}')">#{translation.DELETE}</button>
+            </div>
+          </div>`;
+        });
+        $('#showHorarioAtencionEditar').html(html);
+      }
+    }
+
+    function renderHorarioAtencion () {
+      if (horario_atencion) {
+        let html = '';
+        horario_atencion.forEach((item) => {
+          html += `<div class="row mt-1" style="margin:0;">
+            <div class="col-md-10">
+              <input type="text" class="form-control" value="${item.text}" readonly>
+            </div>
+            <div class="col-md-2">
+              <button type="button" class="btn btn-danger" onclick="deleteHorarioAtencion('${item.id}')">#{translation.DELETE}</button>
+            </div>
+          </div>`;
+        })
+        $('#showHorarioAtencion').html(html);
+      }
+    }
+
+    function renderHorarioAtencionMostrar () {
+      if (horario_atencion_mostrar) {
+        let html = '';
+        horario_atencion.forEach((item) => {
+          html += `<div class="row mt-1" style="margin:0;">
+            <div class="col-12">
+              <input type="text" class="form-control" value="${item.text}" readonly>
+            </div>
+          </div>`;
+        })
+        $('#showHorarioAtencionMostrar').html(html);
+      }
+    }
+
+    function deleteHorarioAtencionEditar (id) {
+      horario_atencion_editar = horario_atencion_editar.filter((item) => {
+        return item.id != id;
+      });
+      renderHorarioAtencionEditar();
+    }
+
+    function deleteHorarioAtencion (id) {
+      horario_atencion = horario_atencion.filter((item) => {
+        return item.id != id;
+      });
+      renderHorarioAtencion();
+    }
+
+  include ./modals/imagen.pug
+
+  include ./datatable/sedes.pug

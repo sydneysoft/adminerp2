@@ -1,0 +1,867 @@
+extends ../layout.pug
+
+append contenido
+  .container.mt-3
+    .tab-content
+      //- h2 Medicos
+    .row
+      .col-12
+        .text-right 
+          button#nuevoMedico.btn.btn-primary(role="button") #{translation.CREATE}
+            i.fas.fa-plus.ml-3
+    .row.mt-3
+      if empresa_id
+        input#empresa_id(type="text" value=empresa_id hidden)
+      else 
+        input#empresa_id(type="text" value='' hidden)
+      .col-12 
+        input#empresa_id(type="text" value=empresa_id hidden)
+        div.table-responsive 
+          table#dataTable.w-100.table
+            thead.thead-dark
+            //-   tr 
+            //-     th ID
+            //-     th #{translation.FORM.NAME}
+            //-     th #{translation.FORM.SPECIALTY}
+            //-     th #{translation.FORM.CELULAR}
+            //-     th #{translation.FORM.EMAIL}
+            //-     th #{translation.FORM.ACTIONS}
+            //- tbody
+            //-   if Array.isArray(medicos) && medicos.length > 0
+            //-     each medico in medicos
+            //-       tr
+            //-         td= medico.id
+            //-         td= medico.nombre
+            //-         td= medico.especialidad
+            //-         td= medico.celular
+            //-         td= medico.correo
+            //-         td= JSON.stringify(medico)
+
+  .modal.fade.justify-content-center.align-items-center(tabindex="-1" role="dialog" id="nuevoMedicoModal")
+    .modal-dialog.modal-lg
+        .modal-content.modalContent(style="height: 100%;")
+            .modal-header 
+                .row(style="margin:0;")
+                    .col-md-12
+                        h3(style="margin:0px 0;") #{translation.CREATE}
+
+            .modal-body.borderBottom
+
+              .row 
+                .col-12.col-md-3
+                  .form-group
+                    label(for="first_name") #{translation.FORM.FIRST_NAME} *
+                    input#first_name.form-control(type="text" placeholder=translation.FORM.FIRST_NAME)
+                .col-12.col-md-3
+                  .form-group
+                    label(for="middle_name") #{translation.FORM.MIDDLE_NAME}
+                    input#middle_name.form-control(type="text" placeholder=translation.FORM.MIDDLE_NAME)
+                .col-12.col-md-6
+                  .form-group
+                    label(for="surnames") #{translation.FORM.SURNAMES} *
+                    input#surnames.form-control(type="text" placeholder=translation.FORM.SURNAMES)
+              
+              .row 
+                .col-12.col-md-4
+                  .form-group 
+                    label(for="especialidad") #{translation.FORM.SPECIALTY} *
+                    //- input#especialidad.form-control(type="text" placeholder=translation.FORM.SPECIALTY)
+                    select#especialidad.form-control(name="especialidad")
+                      if Array.isArray(especialidades) && especialidades.length > 0
+                        each especialidad in especialidades
+                          option(value=especialidad.id) #{especialidad.nombre}
+                      else
+                        option(value="0") #{translation.FORM.NO_SPECIALTY}
+                .col-12.col-md-4
+                  .form-group 
+                    label(for="tipo_documento") #{translation.FORM.DOCUMENT_TYPE} *
+                    select#tipo_documento.form-control
+                      if Array.isArray(tipo_documento) && tipo_documento.length === 1
+                        each tipo in tipo_documento[0].valor
+                          option(value=tipo)
+                            span.text-capitalize #{tipo}
+                      else
+                        option(value="0") #{translation.FORM.NO_DOCUMENT_TIME}
+                .col-12.col-md-4
+                  .form-group 
+                    label(for="numero_documento") #{translation.FORM.DOCUMENT_NUMBER} *
+                    input#numero_documento.form-control(placeholder=translation.FORM.DOCUMENT_NUMBER)
+              
+              .row
+                .col-12.col-md-4
+                  .form-group 
+                    label(for="celular") #{translation.FORM.CELULAR} *
+                    input#celular.form-control(type="text" placeholder=translation.FORM.CELULAR)
+                .col-12.col-md-4
+                  .form-group 
+                    label(for="correo") #{translation.FORM.EMAIL}
+                    input#correo.form-control(type="email" placeholder=translation.FORM.EMAIL)
+                .col-12.col-md-4 
+                  .form-group
+                    label(for="tiempo_cita") #{translation.FORM.APPOINTMENT_MINUTES}
+                    input#tiempo_cita.form-control(type="number" placeholder="0 (tiempo por defecto 30 minutos)")
+              
+              .row.align-items-end
+                .col-6.col-md-3
+                  .form-group
+                    label(for="dia_de") #{translation.FROM}
+                    select#dia_de.form-control
+                      option(value="lunes") #{translation.DAYS.MONDAY}
+                      option(value="martes") #{translation.DAYS.TUESDAY}
+                      option(value="miercoles") #{translation.DAYS.WEDNESDAY}
+                      option(value="jueves") #{translation.DAYS.THURSDAY}
+                      option(value="viernes") #{translation.DAYS.FRIDAY}
+                      option(value="sabado") #{translation.DAYS.SATURDAY}
+                      option(value="domingo") #{translation.DAYS.SUNDAY}
+                
+                .col-6.col-md-3
+                  .form-group
+                    label(for="dia_a") #{translation.TO}
+                    select#dia_a.form-control
+                      option(value="lunes") #{translation.DAYS.MONDAY}
+                      option(value="martes") #{translation.DAYS.TUESDAY}
+                      option(value="miercoles") #{translation.DAYS.WEDNESDAY}
+                      option(value="jueves") #{translation.DAYS.THURSDAY}
+                      option(value="viernes") #{translation.DAYS.FRIDAY}
+                      option(value="sabado") #{translation.DAYS.SATURDAY}
+                      option(value="domingo") #{translation.DAYS.SUNDAY}
+                
+                .col-6.col-md-2
+                  .form-group 
+                    label(for="hora_de") #{translation.FROM}
+                    input#hora_de.form-control(type="time" placeholder="Hora de inicio")
+                
+                .col-6.col-md-2
+                  .form-group 
+                    label(for="hora_a") #{translation.TO}
+                    input#hora_a.form-control(type="time" placeholder="Hora de fin")
+                
+                .col-6.col-md-2 
+                  .form-group
+                    button#agregar_horario(type="button" class="btn btn-success mt-4") #{translation.ADD}
+                      i.fas-fa-plus.ml-2
+                .col-12
+                  .row.align-items-start
+                    .col-5
+                      .my-3
+                        #show_horarios 
+                    .col-7
+                      .btn-group
+                        button#upload_cv.btn.btn-info(type="button" ) #{translation.FORM.UPLOAD_CV}
+                                  i.fas.fa-upload.ml-2
+                        button.btn.btn-primary.d-flex.align-items-center
+                          label.d-block(for="subir_archivo" style="position: relative;") #{translation.FORM.SEARCH_FILES} 
+                        input#subir_archivo(type="file" text="Subir archivo" value="Subir archivo" hidden)
+                        input#cv.form-control(type='text' value='' disabled hidden)
+                        a#linkCv.btn.btn-success.disabled(href="" target="_blank" aria-disabled=true) #{translation.FORM.SEE_CV}
+                      #showLink
+                      
+                                
+        
+            .modal-footer(style="padding:8px;")
+                .row(style="margin:0;")
+                    .col-md-12.text-right
+                        button#addMedico.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;") #{translation.SAVE}
+                          i.fas.fa-save.ml-2
+                        button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}
+
+  .modal.fade.justify-content-center.align-items-center(tabindex="-1" role="dialog" id="editarMedicoModal")
+    .modal-dialog.modal-lg
+        .modal-content.modalContent(style="height: 100%;")
+            .modal-header 
+                .row(style="margin:0;")
+                    .col-md-12
+                        h3(style="margin:0px 0;") #{translation.EDIT_MEDIC}
+
+            .modal-body.borderBottom
+              
+              .row
+                .col-12.col-md-3
+                  .form-group
+                    label(for="first_nameEditar") #{translation.FORM.FIRST_NAME} *
+                    input#first_nameEditar.form-control(type="text" placeholder=translation.FORM.FIRST_NAME)
+                .col-12.col-md-3
+                  .form-group
+                    label(for="middle_nameEditar") #{translation.FORM.MIDDLE_NAME}
+                    input#middle_nameEditar.form-control(type="text" placeholder=translation.FORM.MIDDLE_NAME)
+                .col-12.col-md-6
+                  .form-group
+                    label(for="surnamesEditar") #{translation.FORM.SURNAMES} *
+                    input#surnamesEditar.form-control(type="text" placeholder=translation.FORM.SURNAMES)
+              .row 
+                .col-12.col-md-4
+                  .form-group 
+                    label(for="especialidadEditar") #{translation.FORM.SPECIALTY} *
+                    //- input#especialidadEditar.form-control(type="text" placeholder=translation.FORM.SPECIALTY)
+                    select#especialidadEditar.form-control(name="especialidad")
+                      if Array.isArray(especialidades) && especialidades.length > 0
+                        each especialidad in especialidades
+                          option(value=especialidad.id) #{especialidad.nombre}
+                      else
+                        option(value="0") #{translation.FORM.NO_SPECIALTY} 
+                .col-12.col-md-4
+                  .form-group 
+                    label(for="tipo_documentoEditar") #{translation.FORM.DOCUMENT_TYPE} *
+                    
+                    select#tipo_documentoEditar.form-control
+                      if Array.isArray(tipo_documento) && tipo_documento.length === 1
+                        each tipo in tipo_documento[0].valor
+                          option(value=tipo)
+                            span.text-capitalize #{tipo}
+                      else
+                        option(value="0") #{translation.FORM.NO_DOCUMENT_TYPE}
+                    //- input#tipo_documentoEditar.form-control(type="text" placeholder="Tipo de Documento")
+                .col-12.col-md-4
+                  .form-group 
+                    label(for="numero_documentoEditar") #{translation.FORM.DOCUMENT_NUMBER} *
+                    input#numero_documentoEditar.form-control(type="text" placeholder=translation.FORM.DOCUMENT_NUMBER)
+              
+              .row
+                .col-12.col-md-4
+                  .form-group 
+                    label(for="celularEditar") #{translation.FORM.CELULAR} *
+                    input#celularEditar.form-control(type="text" placeholder=translation.FORM.CELULAR)
+                .col-12.col-md-4
+                  .form-group 
+                    label(for="correoEditar") #{translation.FORM.EMAIL}
+                    input#correoEditar.form-control(type="email" placeholder=translation.FORM.EMAIL)
+                .col-12.col-md-4 
+                  .form-group
+                    label(for="tiempo_citaEditar") #{translation.FORM.APPOINTMENT_TIME} (#{translation.FORM.MINUTES})
+                    input#tiempo_citaEditar.form-control(type="number" placeholder=`0 (${DEFAULT_TIME_MESSAGE})`)
+              
+              .row.align-items-end
+                .col-6.col-md-3
+                  .form-group
+                    label(for="dia_de_editar") #{translation.FROM}
+                    select#dia_de_editar.form-control
+                      option(value="lunes") #{translation.DAYS.MONDAY}
+                      option(value="martes") #{translation.DAYS.TUESDAY}
+                      option(value="miercoles") #{translation.DAYS.WEDNESDAY}
+                      option(value="jueves") #{translation.DAYS.THURSDAY}
+                      option(value="viernes") #{translation.DAYS.FRIDAY}
+                      option(value="sabado") #{translation.DAYS.SATURDAY}
+                      option(value="domingo") #{translation.DAYS.SUNDAY}
+                .col-6.col-md-3
+                  .form-group
+                    label(for="dia_a_editar") #{translation.TO}
+                    select#dia_a_editar.form-control
+                      option(value="lunes") #{translation.DAYS.MONDAY}
+                      option(value="martes") #{translation.DAYS.TUESDAY}
+                      option(value="miercoles") #{translation.DAYS.WEDNESDAY}
+                      option(value="jueves") #{translation.DAYS.THURSDAY}
+                      option(value="viernes") #{translation.DAYS.FRIDAY}
+                      option(value="sabado") #{translation.DAYS.SATURDAY}
+                      option(value="domingo") #{translation.DAYS.SUNDAY}
+                .col-6.col-md-2
+                  .form-group 
+                    label(for="hora_de_editar") #{translation.FROM}
+                    input#hora_de_editar.form-control(type="time" placeholder="Hora de inicio")
+                .col-6.col-md-2
+                  .form-group 
+                    label(for="hora_a_editar") #{translation.TO}
+                    input#hora_a_editar.form-control(type="time" placeholder="Hora de fin")
+                .col-6.col-md-2 
+                  .form-group
+                    button#agregar_horario_editar(type="button" class="btn btn-success mt-4") #{translation.ADD}
+                      i.fas-fa-plus.ml-2
+                .col-12
+                  .row.align-items-start
+                    .col-5
+                      .my-3
+                        #show_horarios_editar
+                    .col-7
+                      .btn-group
+                        button#upload_cvEditar.btn.btn-info(type="button" ) #{translation.FORM.UPLOAD_CV}
+                                  i.fas.fa-upload.ml-2
+                        button.btn.btn-primary.d-flex.align-items-center
+                          label.d-block(for="subir_archivoEditar" style="position: relative;") #{translation.FORM.SEARCH_FILES} 
+                        input#subir_archivoEditar(type="file" text="Subir archivo" value="Subir archivo" hidden)
+                        input#cvEditar.form-control(type='text' value='' disabled hidden)
+                        a#linkCvEditar.btn.btn-success.disabled(href="" target="_blank" aria-disabled=true) #{translation.FORM.SEE_CV}
+                      #showLinkEditar
+                
+              input#idEditar(type="text" hidden )
+            .modal-footer(style="padding:8px;")
+                .row(style="margin:0;")
+                    .col-md-12.text-right
+                        button#updateMedico.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;") #{translation.SAVE}
+                          i.fas.fa-save.ml-2
+                        button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}
+  script
+    //- include ./medico.js
+    include ../../../js/modulo-tv/delete.js
+  script.
+    //- const nombre = document.getElementById('nombre');
+    let especialidades_server = [];
+    const primer_nombre = document.getElementById('first_name');
+    const segundo_nombre = document.getElementById('middle_name');
+    const surnames = document.getElementById('surnames');
+
+    const especialidad = document.getElementById('especialidad');
+    const numero_documento = document.getElementById('numero_documento');
+    const tipo_documento = document.getElementById('tipo_documento');
+    const celular = document.getElementById('celular');
+    const correo = document.getElementById('correo');
+    const tiempo_cita = document.getElementById('tiempo_cita');
+    const cv = document.getElementById('cv');
+
+
+    //- const nombreEditar = document.getElementById('nombreEditar');
+    const primer_nombreEditar = document.getElementById('first_nameEditar');
+    const segundo_nombreEditar = document.getElementById('middle_nameEditar');
+    const surnamesEditar = document.getElementById('surnamesEditar');
+    const especialidadEditar = document.getElementById('especialidadEditar');
+    const numero_documentoEditar = document.getElementById('numero_documentoEditar');
+    const tipo_documentoEditar = document.getElementById('tipo_documentoEditar');
+    const celularEditar = document.getElementById('celularEditar');
+    const correoEditar = document.getElementById('correoEditar');
+    const idEditar = document.getElementById('idEditar');
+    const tiempo_citaEditar = document.getElementById('tiempo_citaEditar');
+
+    const empresa_id = document.getElementById('empresa_id');
+    const show_horarios = document.getElementById('show_horarios');
+    const show_horarios_editar = document.getElementById('show_horarios_editar');
+
+    let horarios = []
+    const dia_de = document.getElementById('dia_de');
+    const dia_a = document.getElementById('dia_a');
+    const hora_de = document.getElementById('hora_de');
+    const hora_a = document.getElementById('hora_a');
+
+
+    let horarios_editar = []
+    const dia_de_editar = document.getElementById('dia_de_editar');
+    const dia_a_editar = document.getElementById('dia_a_editar');
+    const hora_de_editar = document.getElementById('hora_de_editar');
+    const hora_a_editar = document.getElementById('hora_a_editar');
+
+    const upload_cv = document.getElementById('upload_cv');
+    const subir_archivo = document.getElementById('subir_archivo');
+
+    const upload_cvEditar = document.getElementById('upload_cvEditar');
+    const subir_archivoEditar = document.getElementById('subir_archivoEditar');
+    const showLinkEditar = document.getElementById('showLinkEditar');
+
+    const linkCv = document.getElementById('linkCv');
+    const showLink = document.getElementById('showLink');
+    function clearForm() {
+      primer_nombre.value = '';
+      segundo_nombre.value = '';
+      surnames.value = '';
+      especialidad.value = '';
+      numero_documento.value = '';
+      tipo_documento.value = '';
+      celular.value = '';
+      correo.value = '';
+      tiempo_cita.value = '';
+      horarios = [];
+    }
+
+    let tablaMedicos;
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.localStorage.getItem('cv')) {
+        cv.value = window.localStorage.getItem('cv');
+        let urlCv = '\\' + cv.value;
+        linkCv.href = urlCv;
+        linkCv.setAttribute('aria-disabled', false);
+        showLink.classList.remove('disabled');
+      }
+      let urlAjaxTabla = '/admin-clinica/medicos/datatable';
+      if(empresa_id.value != '') {
+        urlAjaxTabla = `/admin-clinica/medicos/datatable/${empresa_id.value}`;
+      }
+      tablaMedicos = $('#dataTable').DataTable({
+        fnCreatedRow: function (nRow, aData, iDataIndex) {
+          $(nRow).attr('id', `delete${aData.ID}`);
+        },
+        buttons: [
+          {
+            extend: 'print',
+            text: 'Print current page',
+            autoPrint: false
+          }
+        ],
+        searchDelay: 500,
+        serverSide: true, 
+        processing: true,
+        ajax: urlAjaxTabla,
+        columns: [
+          { data: 'id', name: 'id', title: 'ID', orderable: false, searchable: false, visible: false },
+          { 
+            data: 'primer_nombre',
+            name: 'nombre',
+            title: '#{translation.FORM.NAME}',
+            render: function (data, type, row) {
+              return `${row.primer_nombre} ${row.segundo_nombre} ${row.apellidos}`;
+            },
+            orderable: false,
+            searchable: false
+          },
+          { 
+            data: 'especialidad',
+            name: 'especialidad',
+            title: '#{translation.FORM.SPECIALTY}',
+            render: function (data, type, row) {
+              let aux = parseInt(row.especialidad)
+              if (!isNaN(aux)) {
+                //- console.log(especialidades_server.filter((especialidad) => {
+                //-   return especialidad.id == row.especialidad;
+                //- }))
+                return especialidades_server.filter((especialidad) => {
+                  return especialidad.id == row.especialidad;
+                })[0].nombre
+              }
+              return `${row.especialidad}`;
+            },
+            orderable: false,
+            searchable: false
+          },
+          { 
+            data: 'celular',
+            name: 'celular',
+            title: '#{translation.FORM.CELLPHONE}'
+          },
+          {
+            data: 'correo',
+            name: 'correo',
+            title: '#{translation.FORM.EMAIL}'
+          },
+          {
+            data: 'acciones',
+            name: 'acciones',
+            title: '#{translation.ACTIONS}',
+            render: function (data, type, row) {
+              let strRow = JSON.stringify(row);
+              return `
+                <button class="btn btn-primary btn-sm" onclick='editarMedicoModal(${strRow})'>
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button class="btn btn-danger btn-sm" onclick="beforeDeleteItem('/admin-clinica/medicos/medicos/${row.id}', ${row.id})">
+                  <i class="fas fa-trash"></i>
+                </button>
+                `
+            },
+            orderable: false,
+            searchable: false
+          },
+        ],
+      });
+    });
+
+    document.getElementById('nuevoMedico').addEventListener('click', (e) => {
+      $('#nuevoMedicoModal').modal('show');
+    });
+
+    document.getElementById('addMedico').addEventListener('click', (e) => {
+      if (primer_nombre.value != '' && surnames.value != '' && especialidad.value !== '' && numero_documento.value !== '' && tipo_documento.value !== '' && celular.value !== '') {
+        const data = {
+          primer_nombre: primer_nombre.value,
+          segundo_nombre: segundo_nombre.value,
+          apellidos: surnames.value,
+          cv_path: cv.value,
+          especialidad: especialidad.value,
+          numero_documento: numero_documento.value,
+          tipo_documento: tipo_documento.value,
+          celular: celular.value,
+          correo: correo.value,
+          tiempo_consulta: tiempo_cita.value * 60 * 1000,
+          horarios_atencion: JSON.stringify(horarios)
+        };
+
+        if(empresa_id != '') {
+          data.empresa_id = empresa_id.value;
+        }
+
+        fetch('/admin-clinica/medicos/medicos', {
+          method: 'POST',
+          body: JSON.stringify(data),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+          .then(res => res.json())
+          .then(data => {
+            if (data.ok) {
+              $('#nuevoMedicoModal').modal('hide');
+              Swal.fire({
+                icon: 'success',
+                title: 'Medico registrado',
+                text: 'El medico se registro correctamente',
+                timer: 2000
+              });
+              tablaMedicos.ajax.reload();
+              //- tablaMedicos.rows.add([
+              //-   {
+              //-     "id": data.id,
+              //-     "nombre": nombre.value,
+              //-     "especialidad": especialidad.value,
+              //-     "celular": celular.value,
+              //-     "correo": correo.value,
+              //-     "acciones": JSON.stringify({
+              //-       id: data.id,
+              //-       nombre: nombre.value,
+              //-       especialidad: especialidad.value,
+              //-       numero_documento: numero_documento.value,
+              //-       tipo_documento: tipo_documento.value,
+              //-       celular: celular.value,
+              //-       correo: correo.value,
+              //-       tiempo_consulta: tiempo_cita.value * 60 * 1000,
+              //-       horarios_atencion: JSON.stringify(horarios)
+              //-     })
+              //-   }
+              //- ]).draw()
+            } else {
+              Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: '#{translation.ALERTS.DOCTOR_ERROR}',
+                timer: 2000
+              });
+            }
+          })
+          .catch(err => {
+            console.log(err);
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: '#{translation.ALERTS.DOCTOR_ERROR}',
+              timer: 2000
+            });
+          });
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: '#{translation.FORM.REQUIRED_FIELDS}!',
+          timer: 2000
+        });
+      }
+
+    });
+
+
+    function editarMedicoModal(str) {
+      const data = JSON.parse(JSON.stringify(str));
+      idEditar.value = data.id;
+      primer_nombreEditar.value = data.primer_nombre;
+      segundo_nombreEditar.value = data.segundo_nombre;
+      surnamesEditar.value = data.apellidos;
+      especialidadEditar.value = data.especialidad;
+      numero_documentoEditar.value = data.numero_documento;
+      tipo_documentoEditar.value = data.tipo_documento;
+      celularEditar.value = data.celular;
+      correoEditar.value = data.correo;
+      tiempo_citaEditar.value = data.tiempo_consulta / 60000;
+      horarios_editar = [];
+      if (typeof data.horarios_atencion === 'string') {
+        horarios_editar.push(...JSON.parse(data.horarios_atencion));
+      } else if (typeof data.horarios_atencion === 'object' && Array.isArray(data.horarios_atencion)) {
+        horarios_editar.push(...data.horarios_atencion);
+      }
+
+      cvEditar.value = data.cv_path;
+      if (cvEditar.value == 0 || cvEditar.value == '') {
+        linkCvEditar.setAttribute('aria-disabled', true);
+        linkCvEditar.classList.add('disabled');
+
+      } else {
+        linkCvEditar.href = cvEditar.value;
+        linkCvEditar.setAttribute('aria-disabled', false);
+        linkCvEditar.classList.remove('disabled');
+
+      }
+      //- let urlCvEditar = cvEditar.value;
+      //- linkCvEditar.href = urlCvEditar;
+      //- linkCvEditar.setAttribute('aria-disabled', false);
+
+      loop_horarios_editar();
+      $('#editarMedicoModal').modal('show');
+    }
+    document.getElementById('editarMedicoModal').addEventListener('click', (e) => {
+
+
+    });
+
+    document.getElementById('updateMedico').addEventListener('click', (e) => {
+      if (primer_nombreEditar.value != '' && surnamesEditar.value != '' && especialidadEditar !== '' && numero_documentoEditar !== '' && tipo_documentoEditar !== '' && celularEditar !== '' && correoEditar !== '') {
+        const data = {
+          primer_nombre: primer_nombreEditar.value,
+          segundo_nombre: segundo_nombreEditar.value,
+          apellidos: surnamesEditar.value,
+          cv_path: cvEditar.value,
+          especialidad: especialidadEditar.value,
+          numero_documento: numero_documentoEditar.value,
+          tipo_documento: tipo_documentoEditar.value,
+          celular: celularEditar.value,
+          correo: correoEditar.value,
+          tiempo_consulta: tiempo_citaEditar.value * 60 * 1000,
+          horarios_atencion: JSON.stringify(horarios_editar)
+        };
+
+        fetch('/admin-clinica/medicos/medicos/' + idEditar.value, {
+          method: 'PUT',
+          body: JSON.stringify(data),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+          .then(res => res.json())
+          .then(data => {
+            if (data.ok) {
+              $('#editarMedicoModal').modal('hide');
+              tablaMedicos.ajax.reload();
+              Swal.fire({
+                icon: 'success',
+                title: 'Medico actualizado',
+                text: '#{translation.ALERTS.DOCTOR_UPDATED}',
+                timer: 2000
+              });
+            }
+            // location.reload();
+          })
+          .catch(err => console.log(err));
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: '#{translation.FORM.REQUIRED_FIELDS}',
+          timer: 2000
+        });
+      }
+    });
+
+    function agregar_horario () {
+      let horario = {
+        dia_de: dia_de.value,
+        dia_a: dia_a.value,
+        hora_de: hora_de.value,
+        hora_a: hora_a.value,
+        identificador: generate_identificador()
+      };
+
+      horarios.push(horario);
+      loop_horarios();
+    }
+
+    function agregar_horario_editar () {
+      let horario = {
+        dia_de: dia_de_editar.value,
+        dia_a: dia_a_editar.value,
+        hora_de: hora_de_editar.value,
+        hora_a: hora_a_editar.value,
+        identificador: generate_identificador()
+      };
+
+      horarios_editar.push(horario);
+      loop_horarios_editar();
+    }
+
+    function eliminar_horario (identificador) {
+      let index = horarios.findIndex((horario) => horario.identificador === identificador);
+      horarios.splice(index, 1);
+      loop_horarios();
+    }
+
+    function eliminar_horario_editar (identificador) {
+      let index = horarios_editar.findIndex((horario) => horario.identificador === identificador);
+      horarios_editar.splice(index, 1);
+      loop_horarios_editar();
+    }
+
+    function generate_identificador () {
+      let aux = Math.random().toString(36);
+      return aux.replace('0.','');
+    }
+
+    function loop_horarios () {
+      show_horarios.innerHTML = '';
+      if (Array.isArray(horarios) && horarios.length > 0) {
+        let horarios_html = '';
+        horarios.forEach((horario) => {
+          horarios_html += `
+            <div id="delete${horario.identificador}" class="alert alert-info alert-dismissible fade show mt-1">
+              <span class="text-capitalize">#{translation.FROM} ${horario.dia_de} #{translation.TO} ${horario.dia_a} / ${horario.hora_de} ${horario.hora_a}</span>
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="eliminar_horario('${horario.identificador}')">
+                <span aria-hidden="true">×</span>
+            </div>
+          `;
+        });
+        show_horarios.innerHTML = horarios_html;
+      }
+    }
+
+    function loop_horarios_editar () {
+      show_horarios_editar.innerHTML = '';
+      if (Array.isArray(horarios_editar) && horarios_editar.length > 0) {
+        let horarios_html = '';
+        horarios_editar.forEach((horario) => {
+          horarios_html += `
+            <div id="delete${horario.identificador}" class="alert alert-info alert-dismissible fade show mt-1">
+              <span class="text-capitalize">#{translation.FROM} ${horario.dia_de} #{translation.TO} ${horario.dia_a} / ${horario.hora_de} ${horario.hora_a}</span>
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="eliminar_horario_editar('${horario.identificador}')">
+                <span aria-hidden="true">×</span>
+            </div>
+          `;
+        });
+        show_horarios_editar.innerHTML = horarios_html;
+      }
+    }
+    document.getElementById('agregar_horario').addEventListener('click', function () {
+      if(dia_de.value != '' && dia_a.value != '' && hora_de.value != '' && hora_a.value != '') {
+        agregar_horario();
+      } else {  
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'error',
+          title: 'Oops...',
+          text: '#{translation.ALERTS.SCHEDULE_ERROR}',
+          timer: 2000
+        });
+      }
+    });
+
+    document.getElementById('agregar_horario_editar').addEventListener('click', function () {
+      if (dia_de_editar.value != '' && dia_a_editar.value != '' && hora_de_editar.value != '' && hora_a_editar.value != '') {
+        agregar_horario_editar();
+      } else {
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'error',
+          title: 'Oops...',
+          text: '#{translation.ALERTS.SCHEDULE_ERROR}',
+          timer: 2000
+        });
+      }
+    });
+
+    subir_archivo.addEventListener('change', (event) => {
+      const file = subir_archivo.files[0];
+      showLink.innerHTML = file.name;
+    });
+
+    subir_archivoEditar.addEventListener('change', (event) => {
+      const file = subir_archivoEditar.files[0];
+      showLinkEditar.innerHTML = file.name;
+    });
+
+    upload_cv.addEventListener('click', (event) => {
+      //- const file = event.target.files[0];
+      if (subir_archivo.files.length == 0) {
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'error',
+          title: 'Oops...',
+          text: '#{translation.ALERTS.CV_ERROR}',
+          timer: 2000
+        });
+        return;
+      }
+      const file = subir_archivo.files[0];
+      //- const reader = new FileReader();
+      // Extension images match and test
+      //- const extension = file.name.split('.').pop();
+      let dataForms = new FormData();
+      dataForms.append('cv', file);                      
+      console.log(dataForms);
+      let params = '';
+      if(empresa_id.value != '') {
+        params = `?empresa_id=${empresa_id.value}`;
+      }
+      
+      Swal.showLoading();
+      $.ajax({
+        url: '/admin-clinica/medicos/upload' + params,
+        type: 'POST',
+        data: dataForms,
+        contentType: false,
+        processData: false,
+        success: function (data) {
+          Swal.close();
+          if (data.ok) {
+            // save in localstorage data.data.file
+            window.localStorage.setItem('cv', data.data.file);
+            Swal.fire({
+              toast: true,
+              position: 'top-end',
+              icon: 'success',
+              title: 'CV subido',
+              text: '#{translation.ALERTS.CV_UPLOADED}',
+              timer: 2000
+            });
+            cvEditar = data.data.file
+
+            showLink.innerHTML = ''; 
+          }
+        },
+        error: function (error) {
+          Swal.close();
+          console.log(error);
+        }
+      })
+    });
+
+    upload_cvEditar.addEventListener('click', (event) => {
+      //- const file = event.target.files[0];
+      if (subir_archivoEditar.files.length == 0) {
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'error',
+          title: 'Oops...',
+          text: '#{translation.ALERTS.CV_ERROR}',
+          timer: 2000
+        });
+        return;
+      }
+      const file = subir_archivoEditar.files[0];
+      //- const reader = new FileReader();
+      // Extension images match and test
+      //- const extension = file.name.split('.').pop();
+      let dataForms = new FormData();
+      dataForms.append('cv', file);                      
+      console.log(dataForms);
+      let params = '';
+      if(empresa_id.value != '') {
+        params = `?empresa_id=${empresa_id.value}`;
+      }
+      
+      Swal.showLoading();
+      $.ajax({
+        url: '/admin-clinica/medicos/upload' + params,
+        type: 'POST',
+        data: dataForms,
+        contentType: false,
+        processData: false,
+        success: function (data) {
+          Swal.close();
+          if (data.ok) {
+            // save in localstorage data.data.file
+            //- window.localStorage.setItem('cv', data.data.file);
+            Swal.fire({
+              toast: true,
+              position: 'top-end',
+              icon: 'success',
+              title: 'CV subido',
+              text: '#{translation.ALERTS.CV_UPLOADED}',
+              timer: 2000
+            });
+             showLinkEditar.innerHTML = ''; 
+             cvEditar.value = data.data.file;
+             linkCvEditar.href = data.data.file;
+             linkCvEditar.setAttribute('aria-disabled', false);
+             linkCvEditar.classList.remove('disabled');
+          }
+        },
+        error: function (error) {
+          Swal.close();
+          console.log(error);
+        }
+      })
+    });
+
+    especialidades_server = !{JSON.stringify(especialidades)}
+    

@@ -1,0 +1,89 @@
+extends ../../../extends/menu-superior-admin
+
+block contenido
+  .my-3
+    div
+      button.btn.btn-primary(onclick="window.history.back()") 
+        i.fas.fa-arrow-left
+        span.px-3 #{translation.BACK}
+    h1.text-center.mb-5 
+      | #{translation.FORM.CREATE_NEW_TV_SHOW}
+   
+    .card
+      .card.card-body 
+          form#programas-forms
+            .row.g-3 
+              .col-12.mb-3.text-right 
+                button.btn.btn-primary(type="submit") #{translation.FORM.NAME}
+              .col-12.col-md-8
+                label.form-label(for='nombre') #{translation.FORM.TV_SHOW_NAME}
+                input#nombre.form-control(type='text' value='' required='' placeholder="Nombre del programa" name="")
+                .valid-feedback
+                  | #{translation.FORM.NAME}
+
+              .col-12.col-md-4
+                label.form-label(for='numero_temporadas') #{translation.FORM.SEASONS_NUMBER}
+                input#numero_temporadas.form-control(type='number' value='' required='' placeholder="numero de temporada" name="num_temporadas")
+                .valid-feedback
+                  | #{translation.FORM.SEASONS_NUMBER}
+                
+              .col-12.my-3
+              .col-12.col-md-6 
+                label.form-label(for='slogan') #{translation.FORM.SLOGAN}
+                input#slogan.form-control(type='text' value='' required='' placeholder="Eslogan" name="slogan")
+                .valid-feedback
+                  | #{translation.FORM.SLOGAN}
+              .col-12.col-md-6 
+                label.form-label(for='slogan') #{translation.FORM.SHORT_DESCRIPTION}
+                textarea#estracto.form-control(required='' placeholder="Descripcion corta" name="estracto")
+                  |
+                .valid-feedback
+                  | #{translation.FORM.SLOGAN}
+              .col-12.my-3 
+
+              .col-12.col-md-8
+                label.form-label(for='portada') #{translation.FORM.BACKGROUND_PHOTO}
+                input#portada.form-control(type='text' value='' required='' placeholder="Nombre del programa" name="foto_portada")
+                .valid-feedback
+                  | #{translation.FORM.BACKGROUND_PHOTO}
+
+              .col-12.col-md-4
+                label.form-label(for='lanzamiento') #{translation.FORM.LAUNCHING_DATE}
+                input#lanzamiento.form-control(type='text' value='' required='' placeholder="Fecha de lanzamiento")
+                .valid-feedback
+                  | #{translation.FORM.LAUNCHING_DATE}
+            
+              .col-12.my-3
+
+              .col-12.col-md-4
+                label.form-label(for='genero') #{translation.FORM.GENRE} 
+                textarea#genero.form-control(name="genero", cols="30", rows="10" placeholder="Generos ejemplo: ciencia ficcion, comedia")
+              .col-12.col-md-4
+                label.form-label() #{translation.FORM.DIRECTOR} 
+                textarea#director.form-control(name="director", cols="30", rows="10" placeholder="Directores ejemplo: Juan, Sofia")
+              .col-12.col-md-4
+                label.form-label() #{translation.FORM.PRODUCER} 
+                textarea#productor.form-control(name="productor", cols="30", rows="10" placeholder="Productor ejemplo: Elena, Pablo")
+
+  script 
+    include ./programa.js
+    include ../../../js/modulo-tv/save.js
+  
+  script.
+    document.getElementById('programas-forms').addEventListener('submit', (event) => {
+      event.preventDefault()
+      //- guardarPrograma('/admin-tv/programas/index')
+      save('/admin-tv/programas/index', {
+        nombre: nombrePrograma.value,
+        slogan: sloganPrograma.value,
+        estracto: estractoPrograma.value,
+        foto_portada: portadaPrograma.value,
+        num_temporadas: num_temporadas.value,
+        productor: productor.value,
+        genero: genero.value,
+        director: director.value,
+        fecha_lanzamiento: lanzamiento.value
+      });
+    });
+
+    

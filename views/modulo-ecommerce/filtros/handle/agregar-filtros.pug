@@ -1,0 +1,65 @@
+script.
+  //Manejar Modal con Datos del Valor de un Filtro
+  const handleAddValuesFilter = (id, idCategoria) => {
+    deleteArray = [];
+    $("#id-grupoFiltros-values").val(id);
+    $("#dataLoadingSpinner").show();
+    $("#dataCompleteValue").hide();
+    $("#dataCompleteValue").empty();
+    $("#footerLoadValues").hide();
+    $("#category-data-filtros").val(idCategoria);
+    $.ajax({
+      method: "GET",
+      url: "/get-values-filter/" + id,
+      dataType: "json",
+      data: null,
+      success: function (data) {
+        if (data.length > 0) {
+          for (let i = 0; data.length > i; i++) {
+            if (i == 0) {
+              $("#dataCompleteValue").append(
+                '<div class="input-group" id="inputFormRow" edit="' +
+                data[i].id +
+                '">' +
+                '<input class="form-control m-input" value="' +
+                data[i].name +
+                '" edit="' +
+                data[i].id +
+                '" type="text" name="filtros[]" placeholder="Ingresa el valor" autocomplete="off"/>' +
+                '<div class="input-group-append"><button class="btn btn-info" onClick="addDynamicField()"><i class="fas fa-plus"></i></button></div></div>'
+              );
+              $("#dataCompleteValue").append('<div id="newRow"></div>');
+            } else {
+              $("#newRow").append(
+                '<div class="input-group mt-3" id="inputFormRow" edit="' +
+                data[i].id +
+                '">' +
+                '<input class="form-control m-input" value="' +
+                data[i].name +
+                '" edit="' +
+                data[i].id +
+                '" type="text" name="filtros[]" placeholder="Ingresa el valor" autocomplete="off"/>' +
+                '<div class="input-group-append"><button class="btn btn-danger" id="removeRowDynamic"><i class="fas fa-minus"></i></button></div></div>'
+              );
+            }
+          }
+          $("#type-action-values").val("1");
+        } else {
+          $("#type-action-values").val("2");
+          $("#dataCompleteValue").append(
+            '<div class="input-group" id="inputFormRow">' +
+            '<input class="form-control m-input" type="text" name="filtros[]" placeholder="Ingresa el valor" autocomplete="off"/>' +
+            '<div class="input-group-append"><button class="btn btn-info" onClick="addDynamicField()"><i class="fas fa-plus"></i></button></div></div>'
+          );
+          $("#dataCompleteValue").append('<div id="newRow"></div>');
+        }
+        $("#dataLoadingSpinner").hide();
+        $("#dataCompleteValue").show();
+        $("#footerLoadValues").show();
+        $("#addFiltrosDynamic").modal("show");
+      },
+      error: function (e) {
+        console.log(e);
+      },
+    });
+  };

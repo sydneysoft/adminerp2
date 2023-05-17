@@ -1,0 +1,64 @@
+//- Este archivo depende de /modulo-ecommerce/grupo-filtros/modals/crear-categoria.pug
+//- Y el anterior depende de /
+script.
+  let grupo_filtros_select2 = "";
+  function urlAjaxSelect2GrupoFiltros () {
+    if (typeof empresa_id != 'undefined' && empresa_id.value != '' && !isNaN(empresa_id.value)) {
+      return `/admin-filtros/grupo/select2/${empresa_id.value}`;
+    }
+    return "/admin-filtros/grupo/select2";
+  }
+
+  const select2GrupoFiltros = $("#lista-grupo-filtros, #lista-grupo-filtros-editar, #lista-grupo-filtros-filtro").select2({
+    ajax: {
+      url: function () {
+        return urlAjaxSelect2GrupoFiltros();
+      },
+      dataType: 'json',
+      delay: 500,
+      data: function (params) {
+        return {
+          term: params.term,
+          select: ['id', 'nombre'],
+          page: params.page
+        }
+      },
+      processResults: function (data, params) {
+        return {
+          results: $.map(data.data, (item) => {
+            return {
+              id: item.id,
+              text: item.nombre
+            }
+          })
+        }
+      },
+      cache: true
+    },
+    placeholder: 'Search',
+    templateResult: GrupoFiltroState,
+    allowClear: true
+  }).on("select2:open", () => {
+    $(".select2-results:not(:has(a))").append(
+      '<a href="#" style="padding: 6px;height: 20px;display: inline-table;" data-toggle="modal" data-target="#crearCategoriaModal" onclick="closeCategoriaSelect2()">#{translation.FORM.FILTER_GROUPY}</a>'
+    );
+  });
+
+  function GrupoFiltroState (state) {
+    if (!state.id) {
+      return state.text;
+    }
+    let $container = $(`
+      <span><strong>${state.id}</strong> | ${state.text}</span>
+    `);
+
+    return $container;
+  }
+
+  function closeCategoriaSelect2 () {
+    $("#lista-grupo-filtros, #lista-grupo-filtros-editar, #lista-grupo-filtros-filtro").select2('close');
+  }
+
+  $("#lista-grupo-filtros, #lista-grupo-filtros-editar, #lista-grupo-filtros-filtro").change(function () {
+    grupo_filtros_select2 = $(this).val();
+  })

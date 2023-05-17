@@ -1,0 +1,63 @@
+script.
+  let productoServicioUrlAjaxSelect2 = "/cotizaciones/productos-servicios/select2";
+  $('#empresa').on('change', (e) => {
+    const empresa = parseInt($('#empresa').val());
+    if (!isNaN(empresa) ) {
+      productoServicioUrlAjaxSelect2 = `/cotizaciones/productos-servicios/select2/${empresa}`;
+      initProductoServicioSelect2();
+    }
+
+  });
+  function initProductoServicioSelect2() {
+    const empresa = parseInt($('#empresa').val());
+    if (empresa_id && empresa_id.value != "" && isNaN(empresa)) {
+      productoServicioUrlAjaxSelect2 = `/cotizaciones/productos-servicios/select2/${empresa_id.value}`;
+    }
+    $('.servicios').select2({
+      ajax: {
+        url: productoServicioUrlAjaxSelect2,
+        dataType: 'json',
+        delay: 500,
+        data: function (params) {
+          return {
+            term: params.term,
+            select: ['id', 'name', 'description', 'precio'],
+            page: params.page
+          }
+        },
+        processResults: function (data, params) {
+          return {
+            results: $.map(data.data, (item) => {
+              return {
+                id: item.name,
+                text: item.name,
+                precio: item.precio,
+                descripcion: item.description
+              }
+            })
+          }
+        },
+        cache: true
+      },
+      placeholder: '#{translation.SEARCH}',
+      templateResult: productoServicioState
+    }).on("select2:open", () => {
+      $(".select2-results:not(:has(a))").append(
+        '<a href="#" style="padding: 6px;height: 20px;display: inline-table;" onclick="agregarServicios()">Crea nuevo producto/servicio</a>'
+      );
+    });
+
+    function productoServicioState (state) {
+      //- option(value=item.email data-value=item.nombre)= item.nombre +" | " + item.email 
+      if (!state.id) {
+        return state.text;
+      }
+      let $container = $(`
+        <span>${state.text}</span>
+      `)
+
+      return $container;
+    }
+  }
+
+  initProductoServicioSelect2();

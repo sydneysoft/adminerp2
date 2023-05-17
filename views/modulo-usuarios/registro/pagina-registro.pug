@@ -1,0 +1,164 @@
+extends ../../extends/viewregister
+block formRegister
+  div#slider-home.carousel.slide(data-ride='carousel' data-pause='false')
+    ul.carousel-indicators
+      li.active(data-target='#slider-home' data-slide-to='0')
+      li(data-target='#slider-home' data-slide-to='1')
+
+    div.carousel-inner
+      div.carousel-item.active
+        img(src='/images/slide-example.jpg' alt='Inkalandia')
+        div.carousel-caption
+          h3 #{translation.REGISTER_STATEMENT_1}
+          p Crea tu tiendaonline.com
+          a.btn(href='#comprar') Comprar
+      div.carousel-item
+        img(src='/images/slide-example.jpg' alt='Inkalandia')
+        div.carousel-caption
+          h3 Vender por internet nunca fue tan fácil
+          p Crea tu tiendaonline.com
+          a.btn(href='#comprar') Comprar
+
+      a.carousel-control-prev(href='#slider-home' data-slide='prev')
+        span.carousel-control-prev-icon
+      a.carousel-control-next(href='#slider-home' data-slide='next')
+        span.carousel-control-next-icon
+
+  if Array.isArray(paquetes) && paquetes.length > 0
+    section.pricing-section#comprar.mt-5
+      div.pricing
+        div.pricing-body
+          div.pricing-body-header
+            h2 Selecciona un plan
+            div.pricing-checkbox
+              span(for="pricing__monthly") Pago Mensual
+              #custom-checkbox
+                .annual
+              span(for="pricing__anually") Pago Anual
+          div.pricing-body-plans
+            div.active(id="pricing__monthly__plan")
+              div
+                each paquete in paquetes
+                  div.card
+                    div.card-header
+                      span.card-title #{paquete.nombre}
+                      h2.card-price S/ #{paquete.precio}
+                    div.card-body
+                      ul
+                        if Array.isArray(paquete.caracteristicas) && paquete.caracteristicas.length > 0
+                          each caracteristica in paquete.caracteristicas
+                            li
+                              //- i(class=`${caracteristica.icono} mr-2`)
+                              |#{caracteristica.nombre}
+                    div.card-footer
+                      button(onclick=`location.href = 'registro/membresia/${paquete.id}';`) Comprar  
+                
+                //- div.card
+                //-   div.card-header
+                //-     span.card-title Catalogo web
+                //-     h2.card-price S/ 10
+                //-   div.card-body
+                //-     ul
+                //-       li Creamos tu tienda online
+                //-       li xxx 
+                //-       li xx
+                //-   div.card-footer
+                //-     button(onclick="location.href = 'registro/membresia/1';") Comprar  
+                //- div.card
+                //-   div.card-header
+                //-     span.card-title Ecommerce
+                //-     h2.card-price S/ 15
+                //-   div.card-body
+                //-     ul
+                //-       li Todas las funciones de plan Catalogo mas:
+                //-       li Métodos de pago
+                //-       li Chat 
+                //-       li xxx
+                //-   div.card-footer
+                //-     button(onclick="location.href = 'registro/membresia/2';") Comprar
+                //- div.card
+                //-   div.card-header
+                //-     span.card-title Plan Empresarial
+                //-     h2.card-price Contactanos
+                //-   div.card-body
+                //-     ul
+                //-       li xxx
+                //-       li xxx
+                //-       li xxx
+
+                //-   div.card-footer
+                //-     button(onclick="location.href = '/contacto';") Contactanos
+
+                //-       div.pricing-body-plans
+            
+            div(id="pricing__anually__plan")
+              div
+                each paquete in paquetes
+                  div.card
+                    div.card-header
+                      span.card-title #{paquete.nombre}
+                      h2.card-price S/ #{paquete.precio * 12}
+                    div.card-body
+                      ul
+                        if Array.isArray(paquete.caracteristicas) && paquete.caracteristicas.length > 0
+                          each caracteristica in paquete.caracteristicas
+                            li
+                              //- i(class=`${caracteristica.icono} mr-2`)
+                              |#{caracteristica.nombre}
+                    div.card-footer
+                      button(onclick=`location.href = 'registro/membresia/${paquete.id}';`) Comprar  
+                //- div.card
+                //-   div.card-header
+                //-     span.card-title Catalogo web
+                //-     h2.card-price S/ 10
+                //-   div.card-body
+                //-     ul
+                //-       li Creamos tu tienda online
+                //-       li xxx 
+                //-       li xx
+                //-   div.card-footer
+                //-     button(onclick="location.href = 'registro/membresia/3';") Comprar
+                //- div.card
+                //-   div.card-header
+                //-     span.card-title Ecommerce
+                //-     h2.card-price S/ 100
+                //-   div.card-body
+                //-     ul
+                //-       li Todas las funciones de plan Catalogo mas:
+                //-       li Métodos de pago
+                //-       li Chat 
+                //-       li xxx
+                //-   div.card-footer
+                //-     button(onclick="location.href = 'registro/membresia/4';") Comprar
+                //- div.card
+                  div.card-header
+                    span.card-title Plan Empresarial
+                    h2.card-price Contactanos
+                  div.card-body
+                    ul
+                      li xxx
+                      li xxx
+                      li xxx
+
+                  div.card-footer
+                    button(onclick="location.href = '/contacto';") Contactanos 
+
+        script.
+          $(document).ready(function () {
+            $("#cssmenu").menumaker({
+              format: "multitoggle"
+            });
+          });
+
+          const planBtn = document.getElementById("custom-checkbox");
+          const plans = document.querySelectorAll(".pricing-body-plans > div");
+
+          planBtn.addEventListener("click", function () {
+            this.classList.toggle("anually");
+            plans[0].classList.toggle("active");
+            plans[1].classList.toggle("active");
+          });
+  else
+    section
+      div.alert.alert-danger
+        | No hay membresias disponibles

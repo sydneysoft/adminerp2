@@ -1,0 +1,64 @@
+script.
+  const select2Documentos = $("#lista-documentos, #lista-documentos-editar, #lista-documentos-filtro").select2({
+    placeholder: '#{translation.FORM.SEARCH}',
+    templateResult: documentosState,
+    allowClear: true
+  })
+  //- .on("select2:open", () => {
+  //-   $(".select2-results:not(:has(a))").append(
+  //-     '<a href="#" style="padding: 6px;height: 20px;display: inline-table;" data-toggle="modal" data-target="#nuevoBannerAdministrador" onclick="closeDocumentosSelect2()">Agregar documentos</a>'
+  //-   );
+  //- }); //- No se debe crear
+
+  //- Funcion para modificar como muestra el select2 las opciones
+  function documentosState (state) {
+    if (!state.id) {
+      return state.text;
+    }
+    let $container = $(`
+      <span><strong>${state.id}</strong> | ${state.text}</span>
+    `);
+
+    return $container;
+  }
+
+  function closeDocumentosSelect2 () {
+    $("#lista-documentos, #lista-documentos-editar, #lista-documentos-filtro").select2('close');
+  }
+
+  //- Funcion para poder obtener los datos de la especialidad con empresa dinamicamente
+  function urlSelect2Documentos() {
+    let auxUrl = "/admin-documentos/select2";
+    if (typeof empresa_id != "undefined" && !isNaN(empresa_id.value)) {
+      auxUrl += `/${empresa_id.value}`;
+    }
+    return auxUrl;
+  }
+
+  $.ajax({
+    url: urlSelect2Documentos(),
+    dataType: 'json',
+    delay: 500,
+    data: {
+      select: ['id', 'nombre', 'abreviatura', 'pais']
+    },
+    success: function (data, status) {
+      if (data.ok) {
+        if (Array.isArray(data.data) && data.data.length > 0) {
+          select2Documentos.empty();
+          select2Documentos.append(new Option('Seleccionar', '', false, false));
+          data.data.forEach((item) => {
+            let newOption = new Option(`${item.nombre} ${item.abreviatura} ${item.pais}`, item.nombre, false, false);
+            select2Documentos.append(newOption);
+          });
+        } else {
+          select2Documentos.empty();
+          select2Documentos.append(new Option('Seleccionar', '', false, false));
+        }
+      }
+    }, 
+    error: function (error, status) {
+      select2Documentos.empty();
+      select2Documentos.append(new Option('Seleccionar', '', false, false));
+    }
+  })

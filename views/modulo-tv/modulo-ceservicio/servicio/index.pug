@@ -1,0 +1,29 @@
+extends ../layout.pug
+
+append contenido 
+  .border-bottom.border-left.border-right.rounded-bottom.p-3
+    if empresa_id 
+      input#empresa_id(type="text" value=empresa_id hidden)
+    else 
+      input#empresa_id(type="text" value="" hidden)
+    if empresa_id
+      .row
+        .col-6.texxt-left
+          button.btn.btn-info(type='button' onclick="window.history.back()") #{translation.BACK}
+        .col-6.text-right
+    .my-3 
+      if empresa_id 
+        a.btn.btn-primary.btn-block(type='button' href=`/admin-ceservicios/empresa/${empresa_id}/crear`) #{translation.CREATE}
+          i.fas.fa-plus.ml-2
+      else 
+        a.btn.btn-primary.btn-lg.btn-block(type='button' href="/admin-ceservicios/servicio/crear") #{translation.CREATE}
+          i.fas.fa-plus.ml-2
+    .my-3.table-responsive   
+      table#dataTable.table.rounded-lg.overflow-hidden
+        thead.thead-dark
+           
+  script 
+    include ../../../js/modulo-tv/delete.js
+  script.
+    const empresa_id = document.getElementById('empresa_id');
+  include ./datatable/servicios.pug

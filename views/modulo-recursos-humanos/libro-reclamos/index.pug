@@ -1,0 +1,32 @@
+extends ../../extends/menu-superior-admin
+block contenido
+  .row
+    if empresa_id
+      input#empresa_id(type="hidden" value=empresa_id)
+      include /mixins/btn/back.pug
+      .col-6 
+        +btn-back()
+    else
+      .col-6
+    .col-6.text-right
+      button.btn.btn-info(type="button" onClick="handleStateLibro()")
+        i.fas.fa-cog
+        b(style="margin-left:6px;") #{translation.CONFIGURATION}
+  .row.mt-3
+    .col-12
+      div.table-responsive
+        table.table.table-bordered#tabla-libro-reclamaciones
+          thead.thead-dark
+          
+  include ./modals/configuracion-libro-reclamaciones.pug
+  include ./modals/preview-libro-reclamaciones.pug
+
+
+  script.
+    CKEDITOR.replace('ckeditorareaEditar');
+    CKEDITOR.replace('ckeditorareaFooter');
+
+  include ./script.pug
+  include ./update/secciones-configuracion.pug
+
+  include ./datatable/libro-reclamaciones.pug

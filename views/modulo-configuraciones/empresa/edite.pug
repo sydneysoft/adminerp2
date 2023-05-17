@@ -1,0 +1,58 @@
+extends ../../extends/menu-superior-admin
+
+block contenido
+  .my-3
+    div
+      a.btn.btn-primary(href="/admin-configuraciones/empresa") 
+        i.fas.fa-arrow-left
+        span.px-3 #{translation.CONFIGURATIONS}
+
+    h1.text-center.mb-5 
+      | #{translation.EDIT_BUSINESS_CONFIG}
+    
+    .card 
+      .card-body 
+        form#editar-forms
+          input#idActor(type="text" value=data.id hidden)
+          .row.g-3 
+            .col-12.mb-3.text-right 
+              button.btn.btn-primary(type="submit") #{translation.SAVE}
+            .col-12.col-md-8
+              label.form-label(for='nombre') #{translation.FORM.BUSINESS_NAME}
+              input#nombre.form-control(type='text' value=data.nombre required='' placeholder="#{translation.FORM.BUSINESS_NAME}" name="nombre")
+              .valid-feedback
+                | #{translation.FORM.NAME}
+            .col-12.col-md-4 
+              label.form-label(for="esloganEmpresa") #{translation.FORM.BUSINESS_SLOGAN}
+              input#nacionalidad.form-control(type="text" value=data.esloganEmpresa placeholder="#{translation.FORM.BUSINESS_SLOGAN}" name="esloganEmpresa" required)
+            .col-12.my-3 
+            .col-12.col-md-6 
+              label.form-label(form="telefonoEmpresa") #{translation.FORM.BUSINESS_PHONE}
+              input#telefonoEmpresa.form-control(type="text" placeholder="#{translation.FORM.BUSINESS_PHONE}")
+                | #{data.telefonoEmpresa} 
+            .col-12.col-md-3 
+              label.form-label(form="telefonoEmpresa") #{translation.FORM.BUSINESS_PHONE}
+              textarea#telefonoEmpresa.form-control(type="text" placeholder="#{translation.FORM.BUSINESS_PHONE}")
+                | #{data.telefonoEmpresa} 
+            .col-12.col-md-3 
+              label.form-label(form="mensaje1Empresa") #{translation.FORM.BUSINESS_MESSAGE1}
+              textarea#mensaje1Empresa.form-control(type="text" placeholder="#{translation.FORM.BUSINESS_MESSAGE1}")
+                | #{data.mensaje1Empresa} 
+            .col-12.col-md-3 
+              label.form-label(form="mensaje2Empresa") #{translation.FORM.BUSINESS_MESSAGE2}
+              textarea#mensaje2Empresa.form-control(type="text" placeholder="#{translation.FORM.BUSINESS_MESSAGE2}")
+                | #{data.mensaje2Empresa} 
+            .col-12.col-md-3 
+              label.form-label(form="mensaje3Empresa") #{translation.FORM.BUSINESS_MESSAGE3}
+              textarea#mensaje3Empresa.form-control(type="text" placeholder="#{translation.FORM.BUSINESS_MESSAGE3}")
+                | #{data.mensaje3Empresa} 
+
+  script 
+    include ./empresa.js
+    include ./update.js
+
+  script.
+    document.getElementById('editar-forms').addEventListener('submit', (event) => { 
+      event.preventDefault()
+      actualizar()
+    })

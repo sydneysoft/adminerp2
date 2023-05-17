@@ -1,0 +1,18 @@
+block content
+  h1 Monto a pagar S/. #{amount}
+  div
+    form(action=url, method='post')
+      script(
+        src='https://static-content.vnforapps.com/v2/js/checkout.js',
+        data-sessiontoken = sessionKey,
+        data-channel = 'web',
+        data-merchantid = merchantId,
+        data-merchantlogo = logo,
+        data-formbuttoncolor = '#D80000',
+        data-purchasenumber = purchaseNumber,
+        data-amount = amount,
+        data-expirationminutes= '8',
+        data-buttonsize = 'MEDIUM',
+        data-buttoncolor = 'GRAY',
+        data-merchantname = 'INKALANDIA',
+        data-timeouturl = domain + '/pago/timeout')

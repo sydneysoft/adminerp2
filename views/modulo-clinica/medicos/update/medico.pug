@@ -1,0 +1,90 @@
+script.
+  function editarMedicoModal(str) {
+    const data = JSON.parse(JSON.stringify(str));
+    idEditar.value = data.id;
+    primer_nombreEditar.value = data.primer_nombre;
+    segundo_nombreEditar.value = data.segundo_nombre;
+    surnamesEditar.value = data.apellidos;
+    //- especialidadEditar.value = data.especialidad;
+    $("#lista-especialidades-editar").val(data.especialidad).trigger("change");
+    numero_documentoEditar.value = data.numero_documento;
+    $("#lista-documentos-editar").val(data.tipo_documento).trigger("change");
+    //- tipo_documentoEditar.value = data.tipo_documento;
+    celularEditar.value = data.celular;
+    correoEditar.value = data.correo;
+    tiempo_citaEditar.value = data.tiempo_consulta / 60000;
+    horarios_editar = [];
+    if (typeof data.horarios_atencion === 'string') {
+      horarios_editar.push(...JSON.parse(data.horarios_atencion));
+    } else if (typeof data.horarios_atencion === 'object' && Array.isArray(data.horarios_atencion)) {
+      horarios_editar.push(...data.horarios_atencion);
+    }
+
+    cvEditar.value = data.cv_path;
+    if (cvEditar.value == 0 || cvEditar.value == '') {
+      linkCvEditar.setAttribute('aria-disabled', true);
+      linkCvEditar.classList.add('disabled');
+
+    } else {
+      linkCvEditar.href = cvEditar.value;
+      linkCvEditar.setAttribute('aria-disabled', false);
+      linkCvEditar.classList.remove('disabled');
+
+    }
+    //- let urlCvEditar = cvEditar.value;
+    //- linkCvEditar.href = urlCvEditar;
+    //- linkCvEditar.setAttribute('aria-disabled', false);
+
+    loop_horarios_editar();
+    $('#editarMedicoModal').modal('show');
+  }
+  document.getElementById('editarMedicoModal').addEventListener('click', (e) => {
+  });
+
+  document.getElementById('updateMedico').addEventListener('click', (e) => {
+    if (primer_nombreEditar.value != '' && surnamesEditar.value != '' && numero_documentoEditar !== '' && celularEditar !== '' && correoEditar !== '') {
+      const data = {
+        primer_nombre: primer_nombreEditar.value,
+        segundo_nombre: segundo_nombreEditar.value,
+        apellidos: surnamesEditar.value,
+        cv_path: cvEditar.value,
+        especialidad: $("#lista-especialidades-editar").val(),
+        numero_documento: numero_documentoEditar.value,
+        tipo_documento: $("#lista-documentos-editar").val(),
+        celular: celularEditar.value,
+        correo: correoEditar.value,
+        tiempo_consulta: tiempo_citaEditar.value * 60 * 1000,
+        horarios_atencion: JSON.stringify(horarios_editar)
+      };
+
+      fetch('/admin-medicos/medicos/' + idEditar.value, {
+        method: 'PUT',
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(res => res.json())
+        .then(data => {
+          if (data.ok) {
+            $('#editarMedicoModal').modal('hide');
+            tablaMedicos.ajax.reload();
+            Swal.fire({
+              icon: 'success',
+              title: 'Medico actualizado',
+              text: '#{translation.ALERTS.DOCTOR_UPDATED}',
+              timer: 2000
+            });
+          }
+          // location.reload();
+        })
+        .catch(err => console.log(err));
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: '#{translation.FORM.REQUIRED_FIELDS}',
+        timer: 2000
+      });
+    }
+  });

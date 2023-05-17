@@ -1,0 +1,53 @@
+script.
+  let tablaFaqs;
+  function deleteItemSuccess( data ) {
+    tablaFaqs.row($(`#${data.target}`)).remove().draw();
+  };
+  $(document).ready( function () {
+    let urlAjaxFaq = '/admin-faqs/datatable';
+    if(empresa_id && empresa_id.value != "") {
+      urlAjaxFaq = `/admin-faqs/datatable/${empresa_id.value}`;
+    }
+    tablaFaqs = $('#dataTable').DataTable({
+      fnCreatedRow: function (nRow, aData, iDataIndex) {
+        $(nRow).attr('id', `delete${aData.ID}`);
+      },
+      searchDelay: 500,
+      processing: true,
+      serverSide: true,
+      ajax: urlAjaxFaq,
+      columns: [
+        { data: 'id', name: 'id', title: "ID", orderable: false, searchable: false, visible: false},
+        { data: 'pregunta', name: 'pregunta', title: '#{translation.FORM.QUESTION}', orderable: true, searchable: true},
+        { data: 'icono', name: 'icono', title: '#{translation.FORM.ICON}', 
+          render: function (data, type, row) {
+            return `<i class="${data}"></i>`;
+          },
+          orderable: false, searchable: false
+        },
+        { 
+          data: 'Actions', 
+          name: 'Actions', 
+          title: '#{translation.FORM.ACTIONS}',
+          orderable: false, 
+          searchable: false,
+          render: function (data, type, row) {
+            let strRow = JSON.stringify(row);
+            return `
+              <div class="btn-group" aria-label="Actions">
+                <button class="btn btn-primary" type='button' data-toggle="modal" data-target="#updateModal" onclick='editarFaq(${strRow})'>
+                  <i class="fas fa-pen" aria-hidden='true'></i>
+                </button>
+                <button class="btn btn-info" type='button' data-toggle="modal" data-target="#showModal" onclick='mostrarFaq(${strRow})'>
+                  <i class="fas fa-eye" aria-hidden='true'></i>
+                </button>
+                <button class="btn btn-danger" type='button' onClick="beforeDeleteItem('/admin-faqs/faq/${row.id}', deleteItemSuccess)">
+                  <i class="fas fa-trash" aria-hidden='true'></i>
+                </button>
+              </div>
+            `
+          }
+        }
+      ]
+    });
+  });

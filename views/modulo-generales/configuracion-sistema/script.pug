@@ -1,0 +1,357 @@
+script
+  include ../../js/toast.sweet.js
+script.
+  $(document).ready(function () {
+    const data = {};
+    if (typeof empresa_id != 'undefined' && !isNaN(empresa_id.value)) {
+      data.empresa_id = empresa_id.value
+    }
+    $.ajax({
+      method: "GET",
+      url: "/admin-sistema/datos",
+      dataType: "json",
+      data,
+      success: function (datos) {
+        Swal.close();
+        if (datos) {
+          let configuraciones = datos.items.configuraciones[0]
+          $("#moneda").val(configuraciones.moneda);
+          CKEDITOR.instances.privacidad.setData(configuraciones.politicasdeprivacidad);
+          CKEDITOR.instances.terminos.setData(configuraciones.terminosycondiciones);
+          let data = datos.items.correos[0]
+          $("#host-service").val(data.smtp_service);
+          $("#seguro-smtp").val(data.smtp_seguro);
+          $("#host-smtp").val(data.smtp_host);
+          $("#puerto-smtp").val(data.smtp_puerto);
+          $("#correo-smtp").val(data.smtp_correo);
+          $("#password-smtp").val(data.smpt_password);
+          $("#usuario-smtp").val(data.smtp_user);
+          if (data.estado == "1") {
+            $("#toggle-state").bootstrapToggle("on");
+          }
+        }
+      },
+    })
+  });
+
+
+  const updateConfigurationNewsletter = (token) => {
+    let datos
+    let smtp_service = $("#host-service").val();
+    let smtp_seguro = $("#seguro-smtp").val();
+    let smtp_host = $("#host-smtp").val();
+    let smtp_puerto = $("#puerto-smtp").val();
+    let smtp_correo = $("#correo-smtp").val();
+    let password_smtp = $("#password-smtp").val();
+    const smtp_user = $("#usuario-smtp").val();
+    let valState = document.getElementById("toggle-state").checked;
+    if (valState == true) {
+      valState = "1";
+    } else {
+      valState = "0";
+    }
+    if (!password_smtp) {
+      datos = {
+        empresa_id: token,
+        smtp_service: smtp_service,
+        smtp_seguro: smtp_seguro,
+        smtp_host: smtp_host,
+        smtp_puerto: smtp_puerto,
+        smtp_correo: smtp_correo,
+        smtp_user: smtp_user,
+        estado: valState
+      }
+    } else {
+      datos = {
+        empresa_id: token,
+        smtp_service: smtp_service,
+        smtp_seguro: smtp_seguro,
+        smtp_host: smtp_host,
+        smtp_puerto: smtp_puerto,
+        smtp_correo: smtp_correo,
+        smpt_password: password_smtp,
+        estado: valState,
+        smtp_user: smtp_user,
+      }
+    }
+
+    if (typeof empresa_id != 'undefined' && !isNaN(empresa_id.value)) {
+      datos.empresa_id = empresa_id.value
+    }
+
+    Swal.showLoading();
+    $.ajax({
+      method: "POST",
+      url: "/admin-sistema/configuracion-correo",
+      dataType: "json",
+      data: datos,
+      success: function (data) {
+        if (data.status == "success") {
+          Swal.close();
+          toastSweet("success", "#{translation.ALERTS.UPDATED}", "success");
+        } else {
+          Swal.close();
+          toastSweet("error", "#{translation.ALERTS.WRONG}", "error");
+        }
+      },
+      error: function () {
+        Swal.close();
+        toastSweet("error", "#{translation.ALERTS.WRONG}", "error");
+      },
+    });
+
+  };
+
+  const actualizarRedesSociales = (token) => {
+
+    let facebook_corporativo = $("#facebook").val();
+    let youtube_corporativo = $("#youtube").val();
+    let twitter_corporativo = $("#twitter").val();
+    let instagram_corporativo = $("#instagram").val();
+
+
+    Swal.showLoading();
+    $.ajax({
+      method: "POST",
+      url: "/admin-sistema/configuracion-redes/" + token,
+      dataType: "json",
+      data: {
+        facebook_corporativo: facebook_corporativo,
+        youtube_corporativo: youtube_corporativo,
+        instagram_corporativo: instagram_corporativo,
+        twitter_corporativo: twitter_corporativo
+
+      },
+      success: function (data) {
+        if (data.status == "success") {
+          Swal.close();
+          // window.location.reload(true);
+          toastSweet("success", "#{translation.ALERTS.UPDATED}", "success");
+        } else {
+          Swal.close();
+          toastSweet("error", "#{translation.ALERTS.WRONG}", "error");
+        }
+      },
+      error: function () {
+        Swal.close();
+        toastSweet("error", "#{translation.ALERTS.WRONG}", "error");
+      },
+    });
+
+  };
+
+  //Actualizar Metdatos SEO
+  const updateMetadatosSeo = (token) => {
+
+    let dataSeo = $("#data-seo-text").val();
+    if (dataSeo) {
+      Swal.showLoading();
+      $.ajax({
+        method: "POST",
+        url: "/admin-sistema/seo",
+        dataType: "json",
+        data: {
+          empresa_id: token,
+          meta_etiquetas: dataSeo,
+        },
+        success: function (data) {
+          if (data.status == "success") {
+            Swal.close();
+            // window.location.reload(true);
+            toastSweet("success", "#{translation.ALERTS.UPDATED}", "success");
+          } else {
+            Swal.close();
+            toastSweet("error", "#{translation.ALERTS.WRONG}", "error");
+          }
+        },
+        error: function () {
+          Swal.close();
+          toastSweet("error", "#{translation.ALERTS.WRONG}", "error");
+        },
+      });
+    } else {
+      Swal.close();
+      toastSweet("error", "#{translation.ALERTS.TAGS_ERROR}", "error");
+    }
+  }
+
+
+  //Actualizar Logo de Todo el Sistema
+  const UpdateLogoSistema = (token) => {
+    let logoNew = $("#imagen-data-banner").attr("src");
+    if (logoNew) {
+      Swal.showLoading();
+      $.ajax({
+        method: "POST",
+        url: "/admin-sistema",
+        dataType: "json",
+        data: {
+          empresa_id: token,
+          logo: logoNew
+
+        },
+        success: function (data) {
+          if (data.status == "success") {
+            Swal.close();
+            window.location.reload(true);
+          } else {
+            Swal.close();
+            toastSweet("error", "#{translation.ALERTS.WRONG}", "error");
+          }
+        },
+        error: function () {
+          Swal.close();
+          toastSweet("error", "#{translation.ALERTS.WRONG}", "error");
+        },
+      });
+    } else {
+      Swal.close();
+      toastSweet("error", "#{translation.ALERTS.LOGO_ERROR}", "error");
+    }
+  };
+
+  //Metodo para actualizar FAVICON
+  const UpdateFaviconSistema = (token) => {
+
+
+    let faviconNew = $("#imagen-data-banner").attr("src");
+
+    if (faviconNew) {
+      Swal.showLoading();
+
+      $.ajax({
+        method: "POST",
+        url: "/admin-sistema/icon",
+        dataType: "json",
+        data: {
+          empresa_id: token,
+          favicon: faviconNew
+
+        },
+
+        success: function (data) {
+
+          if (data.status == "success") {
+            Swal.close();
+            // window.location.reload(true);
+            toastSweet("success", "#{translation.ALERTS.UPDATED}", "success");
+          } else {
+            Swal.close();
+            toastSweet("error", "#{translation.ALERTS.WRONG}", "error");
+          }
+        },
+        error: function (e) {
+
+          Swal.close();
+          toastSweet("error", "#{translation.ALERTS.WRONG}", "error");
+        },
+      });
+    } else {
+      Swal.close();
+      toastSweet("error", "#{translation.ALERTS.FAVICON_ERROR}", "error");
+    }
+  };
+
+  //Actualizar Metdatos SEO
+  const updateEcommerce = (token) => {
+
+    let moneda = $("#moneda").val();
+    if (moneda) {
+      Swal.showLoading();
+      $.ajax({
+        method: "POST",
+        url: "/admin-sistema/save-ecommerce",
+        dataType: "json",
+        data: {
+          empresa_id: token,
+          moneda: moneda,
+        },
+        success: function (data) {
+          if (data.status == "success") {
+            Swal.close();
+            // window.location.reload(true);
+            toastSweet("success", "#{translation.ALERTS.UPDATED}", "success");
+          } else {
+            Swal.close();
+            toastSweet("error", "#{translation.ALERTS.WRONG}", "error");
+          }
+        },
+        error: function () {
+          Swal.close();
+          toastSweet("error", "#{translation.ALERTS.WRONG}", "error");
+        },
+      });
+    } else {
+      Swal.close();
+      toastSweet("error", "#{translation.ALERTS.TEXT_ERROR}", "error");
+    }
+  }
+  //Actualizar Metdatos SEO
+  const updatePrivacidad = (token) => {
+    let descripcion = CKEDITOR.instances.privacidad.getData();
+
+    if (descripcion) {
+      Swal.showLoading();
+      $.ajax({
+        method: "POST",
+        url: "/admin-sistema/save-privacidad",
+        dataType: "json",
+        data: {
+          empresa_id: token,
+          politicasdeprivacidad: descripcion,
+        },
+        success: function (data) {
+          if (data.status == "success") {
+            Swal.close();
+            // window.location.reload(true);
+            toastSweet("success", "#{translation.ALERTS.UPDATED}", "success");
+          } else {
+            Swal.close();
+            toastSweet("error", "#{translation.ALERTS.WRONG}", "error");
+          }
+        },
+        error: function () {
+          Swal.close();
+          toastSweet("error", "#{translation.ALERTS.WRONG}", "error");
+        },
+      });
+    } else {
+      Swal.close();
+      toastSweet("error", "#{translation.ALERTS.TEXT_ERROR}", "error");
+    }
+  }
+
+  const updateTerminos = (token) => {
+    let terminos = CKEDITOR.instances.terminos.getData();
+
+    if (terminos) {
+      Swal.showLoading();
+      $.ajax({
+        method: "POST",
+        url: "/admin-sistema/save-terminos",
+        dataType: "json",
+        data: {
+          empresa_id: token,
+          terminosycondiciones: terminos,
+        },
+        success: function (data) {
+          if (data.status == "success") {
+            Swal.close();
+            console.log(data);
+            // window.location.reload(true);
+            toastSweet("success", "#{translation.ALERTS.UPDATED}", "success");
+          } else {
+            Swal.close();
+            toastSweet("error", "#{translation.ALERTS.WRONG}", "error");
+          }
+        },
+        error: function () {
+          Swal.close();
+          toastSweet("error", "#{translation.ALERTS.WRONG}", "error");
+        },
+      });
+    } else {
+      Swal.close();
+      toastSweet("error", "#{translation.ALERTS.TEXT_ERROR}", "error");
+    }
+  }

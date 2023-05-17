@@ -1,0 +1,316 @@
+extends ./layout.pug
+
+append contenido
+  .border-left.border-right.border-bottom.p-3 
+    if Array.isArray(pacientes) && pacientes.length > 0
+      .container-fluid 
+        .row
+          .col-12.col-md-6 
+            .form-group 
+              label(for="paciente_nombre" ) #{translation.FORM.NAME}
+              input#paciente_nombre.form-control(type="text" value=`${pacientes[0].nombre} ${pacientes[0].apellido_paterno} ${pacientes[0].apellido_materno}` disabled)
+          .col-12.col-md-3 
+            .form-group
+              label(for="numero_documento") #{translation.FORM.DOCUMENT_NUMBER}
+              input#numero_documento.form-control(type="text" value=`${pacientes[0].numero_documento}` disabled)
+          .col-12.col-md-3 
+            .form-group
+              label(for="tipo_documento") #{translation.FORM.DOCUMENT_TYPE}
+              input#tipo_documento.form-control(type="text" value=`${pacientes[0].tipo_documento}` disabled) 
+          .col-12.col-md-3
+            .form-group 
+              label(for="fecha_nacimiento") #{translation.FORM.BIRTH_DATE}
+              input#fecha_nacimiento.form-control(type="text" value=`${moment(pacientes[0].fecha_nacimiento).format('DD/MM/YYYY')}` disabled)
+          .col-12.col-md-3 
+            .form-group
+              label(for="gender") #{translation.FORM.GENRE}
+              input#gender.form-control(type="text" value=`${pacientes[0].sexo}` disabled)
+          .col-12.col-md-3 
+            .form-group 
+              label(for="estado_civil") #{translation.FORM.CIVIL_STATUS}
+              input#estado_civil.form-control(type="text" value=`${pacientes[0].estado_civil}` disabled)
+          .col-12.col-md-3 
+            .form-group 
+              label(for="telefono") #{translation.FORM.CELULAR}
+              input#telefono.form-control(type='text' value=`${pacientes[0].celular}` disabled)
+          .col-12.col-md-6 
+            .form-group 
+              label(for="correo") #{translation.FORM.EMAIL}
+              input#correo.form-control(type='text' value=`${pacientes[0].correo}` disabled)
+          .col-12.col-md-6  
+            .form-group 
+              label(for="direccion") #{translation.FORM.ADDRESS}
+              input#direccion.form-control(type='text' value=`${pacientes[0].direccion}` disabled)
+          .col-12.col-md-6 
+            .form-group 
+              label(for="nota") #{translation.FORM.NOTE}
+              textarea#nota.form-control(type='text' disabled) #{pacientes[0].nota}
+          .col-12.col-md-6 
+            .form-group
+              label(for="diagnostico") #{translation.FORM.DIAGNOSTIC}
+              textarea#diagnostico.form-control(type='text' disabled) #{pacientes[0].diagnostico}
+    if Array.isArray(citas) && citas.length > 0
+      .container-fluid 
+        .row
+          .col-12 
+            h2 #{translation.FORM.APPOINTMENTS}
+      .list-group 
+        each item, i in citas
+          button.list-group-item.lisit-group-action.text-left(type="button" data-toggle="modal" data-target="#modalCitas" onclick='mostrarCita(' + JSON.stringify(item) + ')')
+            | #{moment(item.fechaCita).format('[The] Do [of] MMMM, YYYY')} - #{moment(item.horaInicio).format('h:mm a')} - #{item.paciente}
+  //- <div class="list-group">
+  //-   <button type="button" class="list-group-item list-group-item-action active" aria-current="true">
+  //-     The current button
+  //-   </button>
+  //-   <button type="button" class="list-group-item list-group-item-action">A second item</button>
+  //-   <button type="button" class="list-group-item list-group-item-action">A third button item</button>
+  //-   <button type="button" class="list-group-item list-group-item-action">A fourth button item</button>
+  //-   <button type="button" class="list-group-item list-group-item-action" disabled>A disabled button item</button>
+  //- </div>
+  //- Modal bootstrap
+  .modal.fade#modalCitas(role="dialog" aria-labelledby="modalDelete" aria-hidden="true")
+    .modal-dialog.modal-lg(role="document")
+      .modal-content
+        .modal-header
+          h5.modal-title #{translation.SHOW}
+          button.close(type="button" data-dismiss="modal" aria-label="Close")
+            span(aria-hidden="true") ×
+        .modal-body
+          p #{translation.FORM.DELETE_CONFIRM}
+
+          .row
+            .col-12.col-md-3
+              .form-group
+                label(for="fecha_registro") #{translation.FORM.REGISTER_DATE}
+                input#fecha_registro.form-control(type="text" placeholder=translation.FORM.REGISTER_DATE disabled)
+            .col-12.col-md-3
+              .form-group
+                label(for="fecha_cita") #{translation.FORM.APPOINTMENT_DATE}
+                input#fecha_cita.form-control(type="text" placeholder=translation.FORM.APPOINTMENT_DATE disabled)
+            .col-12.col-md-2 
+              .form-group 
+                label(for="tipo_cita") #{translation.FORM.APPOINTMENT_TYPE}
+                input#tipo_cita.form-control(type="text" placeholder=translation.FORM.APPOINTMENT_TYPE disabled)
+            .col-12.col-md-2 
+              .form-group
+                label(for="hora_inicio") #{translation.FORM.START_TIME}
+                input#hora_inicio.form-control(type="text" placeholder=translation.FORM.START_TIME disabled)
+            .col-12.col-md-2
+              .form-group
+                label(for="hora_fin") #{translation.FORM.END_TIME}
+                input#hora_fin.form-control(type="text" placeholder=translation.FORM.END_TIME disabled)
+            .col-12.col-md-8
+              .form-group
+                label(for="medico") #{translation.FORM.DOCTOR}
+                input#medico.form-control(type="text" placeholder=translation.FORM.DOCTOR disabled)
+            .col-12.col-md-4 
+              .form-group
+                label(for="especialidad") #{translation.FORM.SPECIALTY}
+                input#especialidad.form-control(type="text" placeholder=translation.FORM.SPECIALTY disabled)
+            .col-12
+              .form-group
+                label(for="sede") #{translation.FORM.BRANCH} - #{translation.FORM.ADDRESS}
+                input#sede.form-control(type="text" placeholder=translation.FORM.BRANCH disabled)
+            .col-12.col-md-4 
+              .form-group
+                label(for="estado") #{translation.FORM.STATUS}
+                input#estado.form-control(type="text" placeholder=translation.FORM.STATUS disabled)
+            .col-12.col-md-4 
+              .form-group
+                label(for="precio") #{translation.FORM.PRICE}
+                input#precio.form-control(type="text" placeholder=translation.FORM.PRICE disabled)
+            .col-12.col-md-4 
+              .form-group 
+                label(for="dia") #{translation.FORM.DAY}
+                input#dia.form-control(type="text" placeholder=translation.FORM.DAY disabled)
+          .row 
+            .col-12 
+              #mostrar_reprogramacion
+        .modal-footer
+          //- button.btn.btn-secondary(type="button" data-dismiss="modal") #{translation.FORM.CLOSE}
+          //- button.btn.btn-danger(type="button" data-dismiss="modal" id="delete") #{translation.FORM.DELETE}
+          //- closs
+          button#regresar_dato.btn.btn-primary.d-none(type="button" class="btn btn-secondary") #{translation.MAIN_DATA}
+          button.btn.btn-danger(type="button" data-dismiss="modal") #{translation.CLOSE}
+            i.fas.fa-times.ml-2
+  script.
+    const mostrar_reprogramacion = document.getElementById('mostrar_reprogramacion');
+    const regresar_dato = document.getElementById('regresar_dato');
+    let main_data = {};
+
+    function mostrarCita (data) {
+      console.log(data);
+      mostrar_reprogramacion.innerHTML = '';
+
+      $('#fecha_registro').val(moment(data.fechaRegistro).format('DD/MM/YYYY'));
+      $('#fecha_cita').val(moment(data.fechaCita).format('DD/MM/YYYY'));
+      $('#hora_inicio').val(moment(data.horaInicio, 'HH:mm:ss').format('h:mm a'));
+      $('#hora_fin').val(moment(data.horaFin, 'HH:mm:ss').format('h:mm a'));
+      $('#medico').val(data.profesional.nombre);
+      $('#especialidad').val(data.especialidad.nombre);
+      $('#sede').val(data.sede.nombre + ' - ' + data.sede.direccion);
+      switch(data.tipoCita.toString().trim().toLowerCase()) {
+        case 'virtual':
+          $('#tipo_cita').val('#{translation.FORM.VIRTUAL}');
+          break;
+        case 'presencial':
+          $('#tipo_cita').val('#{translation.FORM.FACE_TO_FACE}');
+          break;
+      }
+
+      switch(data.estado.toString().trim().toLowerCase()) {
+        case 'pendiente':
+          $('#estado').val('#{translation.FORM.PENDING}');
+          break;
+        case 'confirmada':
+          $('#estado').val('#{translation.FORM.CONFIRMED}');
+          break;
+        case 'cancelada':
+          $('#estado').val('#{translation.FORM.CANCELED}');
+          break;
+        case 'atendida':
+          $('#estado').val('#{translation.FORM.ATTENDED}');
+          break;
+      }
+
+      $('#precio').val(data.precio);
+
+      if (data.dia) {
+        switch(data.dia.toString().trim().toLowerCase()) {
+          case '1':
+            $('#dia').val('#{translation.DAYS.MONDAY}');
+            break;
+          case '2':
+            $('#dia').val('#{translation.DAYS.TUESDAY}');
+            break;
+          case '3':
+            $('#dia').val('#{translation.DAYS.WEDNESDAY}');
+            break;
+          case '4':
+            $('#dia').val('#{translation.DAYS.THURSDAY}');
+            break;
+          case '5':
+            $('#dia').val('#{translation.DAYS.FRIDAY}');
+            break;
+          case '6':
+            $('#dia').val('#{translation.DAYS.SATURDAY}');
+            break;
+          case '0':
+            $('#dia').val('#{translation.DAYS.SUNDAY}');
+            break;
+        }
+      }
+
+      main_data = data;
+      if (data.reprogramacion && Array.isArray(data.reprogramacion) && data.reprogramacion.length > 0) {
+        //- Insertar en el mostrar_reprogramacion las reprogramaciones en una lista accordion con bootstrap 4
+        const listgroup = document.createElement('div');
+        listgroup.classList.add('list-group');
+        data.reprogramacion.forEach((reprogramacion, index) => {
+          console.log(reprogramacion)
+          const listgroupitem = document.createElement('a');
+          listgroupitem.classList.add('list-group-item', 'list-group-item-action');
+          listgroupitem.setAttribute('data-toggle', 'list');
+          listgroupitem.setAttribute('href', '#list-home');
+          listgroupitem.setAttribute('role', 'tab');
+          listgroupitem.setAttribute('aria-controls', 'home');
+          listgroupitem.innerHTML = `
+            <div class="d-flex w-100 justify-content-between" onclick='mostrarSameModal(${JSON.stringify(reprogramacion)})'>
+              <h5 class="mb-1">${moment(reprogramacion.fechaCita).format('DD/MM/YYYY')} - ${moment(reprogramacion.horaInicio, 'HH:mm:ss').format('h:mm a')} - ${moment(reprogramacion.horaFin, 'HH:mm:ss').format('h:mm a')}</h5>
+            </div>
+          `;
+            //- <p class="mb-1">
+            //-   #{translation.FORM.DOCTOR}: ${reprogramacion.profesional.nombre} <br>
+            //-   #{translation.FORM.SPECIALTY}: ${reprogramacion.especialidad.nombre} <br>
+            //-   #{translation.FORM.BRANCH}: ${reprogramacion.sede.nombre} - ${reprogramacion.sede.direccion} <br>
+            //- </p>
+          listgroup.appendChild(listgroupitem);
+        });
+        mostrar_reprogramacion.appendChild(listgroup);
+
+        //-   mostrar_reprogramacion.innerHTML = `
+        //-     <div class="form-group">
+        //-       <label for="reprogramacion">#{translation.FORM.REPROGRAMATION}</label>
+        //-       <select class="form-control" id="reprogramacion">
+        //-         ${data.reprogramacion.map((reprogramacion, index) => {
+        //-           return `
+        //-             <option value="${index}">${moment(reprogramacion.fechaCita).format('DD/MM/YYYY')} - ${moment(reprogramacion.horaInicio, 'HH:mm:ss').format('h:mm a')} - ${moment(reprogramacion.horaFin, 'HH:mm:ss').format('h:mm a')}</option>
+        //-           `;
+        //-         }).join('')}
+        //-       </select>
+        //-     </div>
+        //-   `;
+      }
+        //- tipo_cita
+    }
+
+    function mostrarSameModal (data) {
+      //- regresar_dato('d-none');
+      $(regresar_dato).removeClass('d-none');
+      $('#fecha_registro').val(moment(data.fechaRegistro).format('DD/MM/YYYY'));
+      $('#fecha_cita').val(moment(data.fechaCita).format('DD/MM/YYYY'));
+      $('#hora_inicio').val(moment(data.horaInicio, 'HH:mm:ss').format('h:mm a'));
+      $('#hora_fin').val(moment(data.horaFin, 'HH:mm:ss').format('h:mm a'));
+      $('#medico').val(data.profesional.nombre);
+      $('#especialidad').val(data.especialidad.nombre);
+      $('#sede').val(data.sede.nombre + ' - ' + data.sede.direccion);
+      switch(data.tipoCita.toString().trim().toLowerCase()) {
+        case 'virtual':
+          $('#tipo_cita').val('#{translation.FORM.VIRTUAL}');
+          break;
+        case 'presencial':
+          $('#tipo_cita').val('#{translation.FORM.FACE_TO_FACE}');
+          break;
+      }
+
+      switch(data.estado.toString().trim().toLowerCase()) {
+        case 'pendiente':
+          $('#estado').val('#{translation.FORM.PENDING}');
+          break;
+        case 'confirmada':
+          $('#estado').val('#{translation.FORM.CONFIRMED}');
+          break;
+        case 'cancelada':
+          $('#estado').val('#{translation.FORM.CANCELED}');
+          break;
+        case 'atendida':
+          $('#estado').val('#{translation.FORM.ATTENDED}');
+          break;
+      }
+
+      $('#precio').val(data.precio);
+
+      if(data.dia) {
+        switch(data.dia.toString().trim().toLowerCase()) {
+          case '1':
+            $('#dia').val('#{translation.DAYS.MONDAY}');
+            break;
+          case '2':
+            $('#dia').val('#{translation.DAYS.TUESDAY}');
+            break;
+          case '3':
+            $('#dia').val('#{translation.DAYS.WEDNESDAY}');
+            break;
+          case '4':
+            $('#dia').val('#{translation.DAYS.THURSDAY}');
+            break;
+          case '5':
+            $('#dia').val('#{translation.DAYS.FRIDAY}');
+            break;
+          case '6':
+            $('#dia').val('#{translation.DAYS.SATURDAY}');
+            break;
+          case '0':
+            $('#dia').val('#{translation.DAYS.SUNDAY}');
+            break;
+        }
+      }
+
+    }
+
+    regresar_dato.addEventListener('click', () => {
+      $(regresar_dato).addClass('d-none');
+      mostrarSameModal (main_data);
+    }) 
+
+  

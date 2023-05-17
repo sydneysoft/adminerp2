@@ -1,0 +1,92 @@
+//- Modal para reprogramar cita
+.modal.fade.justify-content-center.align-items-center(tabindex="-1" role="dialog" id="reprogramarCita")
+  .modal-dialog.modal-lg
+    .modal-content.modalContent
+      .modal-header 
+        .row(style="margin:0;")
+          .col-md-12
+            h3(style="margin:0px 0;") #{translation.ADD}
+
+      .modal-body.borderBottom
+        .row
+          .col-md-2.col-xs-2
+            div.text-center
+              img(src="http://ssl.gstatic.com/s2/oz/images/sge/grey_silhouette.png" style="width:47px;border-radius:50%;")
+          .col-md-10.col-xs-10
+            .row
+              //- .col-md-6
+              //-   .form-group
+              //-     label(for="doctor_reprogramar")
+              //-     select#lista-medicos-reprogramar
+
+
+              //- .col-md-6
+              //-   .form-group
+              //-     label(for="sedes_reprogramar")
+              //-     select#lista-sedes-reprogramar(name="sedes") 
+
+
+        .row
+          .col-12.col-md-4
+            .form-group
+              label(for="fecha_reprogramar") #{translation.FORM.DATE}
+              input#fecha_reprogramar.form-control(type="date" placeholder=translation.FORM.DATE)
+          //- .col-12.col-md-4
+            .form-group
+              label(for="estado_reprogramar") #{translation.FORM.STATUS} 
+              select#estado_reprogramar.form-control
+                option(value="pendiente" selected) #{translation.FORM.PENDING}
+                option(value="confirmada") #{translation.FORM.CONFIRMED}
+                option(value="cancelada") #{translation.FORM.CANCELED}
+                option(value="atendida") #{translation.FORM.ATTENDED}
+
+          .col-12.col-md-4
+            .form-group
+              label(for="tipoCita_reprogramar") #{translation.FORM.APPOINTMENT_TYPE}
+              select#tipoCita_reprogramar.form-control
+                option(value="virtual") #{translation.FORM.VIRTUAL}
+                option(value="presencial") #{translation.FORM.FACE_TO_FACE}
+
+        .row
+          .col-12.col-md-2
+            .form-group
+              label(for="hora_reprogramar") #{translation.FORM.START_TIME}
+              input#hora_reprogramar.form-control(type="time")
+          .col-12.col-md-2 
+            .form-group
+              label(for="hora_fin_reprogramar") #{translation.FORM.END_TIME}
+              input#hora_fin_reprogramar.form-control(type="time" )
+          .col-12.col-md-2
+            .form-group
+              label(for="colorpicker_reprogramar") #{translation.FORM.COLOR}
+              input#colorpicker_reprogramar.form-control(type="color" value="#0000ff")
+              input#itemId(type="text" hidden)
+          //- .col-12.col-md-2
+            .form-group
+              label(for="precio_reprogramar") #{translation.FORM.PRICE} 
+              input#precio_reprogramar.form-control(type="number" placeholder=translation.FORM.PRICE)
+          //- .col-12.col-md-4 
+            .form-group 
+              label(for="especialidad_reprogramar") #{translation.FORM.SPECIALTY} 
+              select#lista-especialidades-reprogramar(name="especialidades") 
+
+        .row 
+          //- .col-12 
+            .form-group 
+              label(for="paciente_reprogramar") #{translation.FORM.PATIENT} 
+              select#lista-pacientes-reprogramar(name="pacientes") 
+
+          .col-12
+            .form-group
+              label(for="nota_reprogramar") #{translation.FORM.NOTE} 
+              textarea#nota_reprogramar.form-control(name="" cols="30" rows="10" placeholder=translation.FORM.NOTE)  
+
+      .modal-footer(style="padding:8px;")
+        .row(style="margin:0;")
+          .col-md-12.text-right
+            button#reprogramarButton.btn.btn-info(type="button" style="margin-left:7px;margin-right:7px;") #{translation.EDIT}
+              i.fas.fa-pen.ml-2
+            button#guardarCita.btn.btn-success.nuevo.d-none(type="button" style="margin-left:7px;margin-right:7px;") #{translation.ADD}
+              i.fas.fa-save.ml-2
+            button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}
+              i.fas.fa-times.ml-2

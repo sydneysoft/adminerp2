@@ -1,0 +1,142 @@
+extends ./layout.pug
+
+append contenido 
+  .border-bottom.border-left.border-right.p-3 
+    .my-3
+      .row
+        .col-6.text-left 
+          if empresa_id 
+            button.btn.btn-info(type='button' onclick="window.history.back()") #{translation.BACK}
+              i.fas.fa-arrow-left.ml-2
+        .col-6.text-right 
+          button.btn.btn-primary(type="button" data-toggle="modal" data-target="#nuevoModal") #{translation.CREATE}
+            i.fas.fa-plus.ml-2
+
+    if empresa_id
+      input#empresa_id(type="text" value=empresa_id hidden)
+    else
+      input#empresa_id(type="text" value="" hidden)
+
+    .container.mt-3
+      .row 
+        .col-12 
+          .table-responsive
+            table#tabla-cortes.table
+              thead.thead-dark
+              tbody 
+              tfoot 
+
+  include ./modals/crear-corte.pug
+  include ./modals/editar-corte.pug
+  include ./modals/mostrar-corte.pug
+
+  script 
+    //- include ../../../js/modulo-tv/template.js
+    include /js/modulo-tv/delete.js
+    include /js/modulo-tv/save.js
+    include /js/modulo-tv/update.js
+    //- include ./corte.js
+  script.
+    const nombre = document.getElementById('nombre');
+    const descripcion = document.getElementById('descripcion');
+    const precio = document.getElementById('precio');
+
+    const nombre_editar = document.getElementById('nombre_editar');
+    const descripcion_editar = document.getElementById('descripcion_editar');
+    const precio_editar = document.getElementById('precio_editar');
+
+    const nombre_mostrar = document.getElementById('nombre_mostrar');
+    const descripcion_mostrar = document.getElementById('descripcion_mostrar');
+    const precio_mostrar = document.getElementById('precio_mostrar');
+
+    const empresa_id = document.getElementById('empresa_id');
+    const itemId = document.getElementById('itemId');
+
+    const saveItem = document.getElementById('saveItem');
+    const editItem = document.getElementById('editItem');
+
+    saveItem.addEventListener('click', (event) => { 
+      if (nombre.value != '' && precio.value != '') {
+        let auxData = {
+          nombre: nombre.value,
+          descripcion: descripcion.value,
+          precio: precio.value,
+        }
+        if (empresa_id.value != "") {
+          auxData.empresa_id = empresa_id.value;
+        }
+        save('/admin-cortes/corte', auxData, saveItemSuccess);
+      }else {
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'error',
+          title: 'Oops...',
+          text: '#{translation.FORM.REQUIRED_FIELDS}',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+        })
+      }
+    });
+
+    editItem.addEventListener('click', (event) => {
+      if (nombre_editar.value != '' && precio_editar.value != '') {
+        let auxData = {
+          nombre: nombre_editar.value,
+          descripcion: descripcion_editar.value,
+          precio: precio_editar.value,
+        }
+        updateItem(`/admin-cortes/corte/${itemId.value}`, auxData, updateItemSuccess);
+      }else {
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'error',
+          title: 'Oops...',
+          text: '#{translation.FORM.REQUIRED_FIELDS}',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+        })
+      }
+    });
+
+    function saveItemSuccess(data) {
+      tabla.ajax.reload();
+      nombre.value = '';
+      descripcion.value = '';
+      precio.value = '';
+      $('#nuevoModal').modal('hide');
+    }
+
+    function updateItemSuccess(data) {
+      tabla.ajax.reload();
+      $('#editModal').modal('hide');
+    }
+
+    function mostrarCorte (data) {
+      nombre_mostrar.innerHTML = data.nombre;
+      descripcion_mostrar.innerHTML = data.descripcion;
+      precio_mostrar.innerHTML = data.precio;
+      setDataEditarCorte(data);
+      $('#showModal').modal('show');
+    }
+
+    function editarCorte(data) {
+      setDataEditarCorte(data)
+      $('#editModal').modal('show');
+    }
+    function setDataEditarCorte (data) {
+      nombre_editar.value = data.nombre;
+      descripcion_editar.value = data.descripcion;
+      precio_editar.value = data.precio;
+      itemId.value = data.id;
+    }
+  
+  script.
+    function deleteItemSuccess(data) {
+      tabla.row($(`#${data.target}`)).remove().draw();
+    }
+
+  include ./datatable/corte.pug

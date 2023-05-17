@@ -1,0 +1,300 @@
+container
+  .row.gutters
+    .col-xl-12.col-lg-12.col-md-12.col-sm-12.col-12
+      .card
+        .card-body.p-0
+          .invoice-container
+            .invoice-header
+  
+              .row.gutters
+                .col-xl-12.col-lg-12.col-md-12.col-sm-12
+                  a(href=`/cotizaciones/detalle/${cotizacion[0].id}`) Volver a editar
+                  .custom-actions-btns.mb-5
+                    a.btn.btn-primary(href=`${url}/cotizaciones/pdf/${cotizacion[0].id}`)
+                      i.fa.fas-download
+                      |  Descargar
+                    a.btn.btn-secondary(type="button"  onClick=`printpage(${cotizacion[0].id})`) 
+                      i.fa.fas-printer
+                      |  Imprimir
+                    button.btn.btn-success(type="button"  onClick="openModalEmail()")
+                      i.fa.fas-email
+                      |  Enviar Correo
+ 
+              .row.gutters
+                .col-lg-7.col-md-7.col-sm-12
+                    address.text-left
+                    br
+                    img(src=datosEmpresa.configuraciones[0].logo,style="width:50px;height:50px;object-fit:cover")
+
+                    h3.strong= datosEmpresa.data[0].nombre
+ 
+                    span= datosEmpresa.data[0].direccion
+                    br
+                    span Tel: 
+                    span=datosEmpresa.data[0].telefono
+                    br
+                    span Cel: 
+                    span= datosEmpresa.data[0].whatsapp_corporativo
+                    br
+                .col-xl-12.col-lg-12.col-md-12.col-sm-12
+                  a.invoice-logo= cotizacion[0].titulo_cotizacion
+
+              .row.gutters
+                .col-xl-8.col-lg-8.col-md-12.col-sm-12.col-12
+                  .invoice-details
+                    address=  cotizacion[0].cliente_nombre
+                      br
+                    address= cotizacion[0].cliente_email
+                .col-xl-4.col-lg-4.col-md-12.col-sm-12.col-12
+                  .invoice-details
+                    .invoice-num
+                      div Cotización - # 
+                          span= cotizacion[0].id
+                      div  Emitido el:  
+                          span= new Date(cotizacion[0].created_at).toJSON().slice(0,10)
+                 
+                      div  Fecha de vencimiento:  
+                          span= cotizacion[0].fecha_vencimiento
+ 
+            .invoice-body
+ 
+              .row.gutters
+                .col-lg-12.col-md-12.col-sm-12
+                  .table-responsive
+                    table.table.custom-table.m-0
+                      thead
+                        tr
+                          th Producto o servicio
+                          th Precio
+                          th Cantidad
+                          th Total
+                      tbody
+                        each item in cotizacion_detalles
+                            tr
+                            td
+                                span= item.producto
+                                p.m-0.text-muted= item.descripcion
+                                
+                            td=  item.precio + " PEN"
+                            td= item.cantidad
+                            td=  item.total + " PEN"
+                        
+                        
+                        tr
+                          td &nbsp;
+                          td(colspan='2')
+                            p
+                              | Subtotal
+                              br
+                              | Descuento
+                              br
+                              | Impuestos
+                              br
+                            h5.text-success
+                              strong Total
+                          td
+                            p= cotizacion[0].subtotal_general+ " PEN"
+                              br
+                              span= cotizacion[0].descuento + " PEN"
+                              br
+                              span= cotizacion[0].impuestos_general + " PEN"
+                              br
+                            h5.text-success
+                              strong=cotizacion[0].total_general + " PEN"
+            .invoice-footer
+                div 
+                 p Términos de pago: 
+                      span= cotizacion[0].terminos_pago
+                 p Notas: 
+                      span= cotizacion[0].nota_comentarios
+                 p Otros términos:
+                      span= cotizacion[0].nota_terminos
+  
+      .modal#nuevo(tabindex="-1" role="dialog" )
+        .modal-dialog.modal-lg(role="document")
+            .modal-content
+                .modal-header 
+                    .row 
+                        .col-12
+                         h5.strong(style="font-size:1rem;") Enviar Cotización
+                .modal-body-almacen
+                    .row(style="padding:15px;")
+                     
+                          .col-md-12.col-12
+                            p Esta cotización se enviará a: 
+                              span#emailCliente= cotizacion[0].cliente_email
+                              .form-group
+                                  label Asunto
+                                  .controls
+                                      input#asunto.form-control(type="text")
+                          .col-md-12.col-12
+                              .form-group
+                                  label Agregar un mensaje
+                                    .controls
+                                      textarea#descripcionCortaNuevo.producto-admin.form-control(name="" rows="5" cols="100") 
+                      
+                    .modal-footer      
+                        button.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;" onClick=`enviarCorreo(${cotizacion[0].id})`) Enviar
+                        button.btn.btn-danger(type="buton" data-dismiss="modal") Cancelar
+  
+  
+  
+    style.
+
+         body{margin-top:20px;
+            color: #2e323c;
+            background: #f5f6fa;
+            position: relative;
+            height: 100%;
+        }
+        .invoice-container {
+            padding: 1rem;
+        }
+        .invoice-container .invoice-header .invoice-logo {
+            margin: 0.8rem 0 0 0;
+            display: inline-block;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #2e323c;
+        }
+        .invoice-container .invoice-header .invoice-logo img {
+            max-width: 130px;
+        }
+        .invoice-container .invoice-header address {
+            font-size: 0.8rem;
+            color: #9fa8b9;
+            margin: 0;
+        }
+        .invoice-container .invoice-details {
+            margin: 1rem 0 0 0;
+            padding: 1rem;
+            line-height: 180%;
+            background: #f8f8f8;
+        }
+        .invoice-container .invoice-details .invoice-num {
+            text-align: right;
+            font-size: 0.8rem;
+            line-height: 150%;
+        }
+        .invoice-container .invoice-body {
+            padding: 1rem 0 0 0;
+        }
+        .invoice-container .invoice-footer {
+            text-align: left;
+            font-size: 0.7rem;
+            margin: 5px 0 0 0;
+        }
+
+        .invoice-status {
+            text-align: center;
+            padding: 1rem;
+            background: #ffffff;
+            -webkit-border-radius: 4px;
+            -moz-border-radius: 4px;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+        }
+        .invoice-status h2.status {
+            margin: 0 0 0.8rem 0;
+        }
+        .invoice-status h5.status-title {
+            margin: 0 0 0.8rem 0;
+            color: #9fa8b9;
+        }
+        .invoice-status p.status-type {
+            margin: 0.5rem 0 0 0;
+            padding: 0;
+            line-height: 150%;
+        }
+        .invoice-status i {
+            font-size: 1.5rem;
+            margin: 0 0 1rem 0;
+            display: inline-block;
+            padding: 1rem;
+            background: #f5f6fa;
+            -webkit-border-radius: 50px;
+            -moz-border-radius: 50px;
+            border-radius: 50px;
+        }
+        .invoice-status .badge {
+            text-transform: uppercase;
+        }
+
+        @media (max-width: 767px) {
+            .invoice-container {
+                padding: 1rem;
+            }
+        }
+
+
+        .custom-table {
+            border: 1px solid #e0e3ec;
+        }
+        .custom-table thead {
+            background: #8f8f8f!important;
+        }
+        .custom-table thead th {
+            border: 0;
+            color: #ffffff;
+        }
+        .custom-table > tbody tr:hover {
+            background: #fafafa;
+        }
+        .custom-table > tbody tr:nth-of-type(even) {
+            background-color: #ffffff;
+        }
+        .custom-table > tbody td {
+            border: 1px solid #e6e9f0;
+        }
+
+
+        .card {
+            background: #ffffff;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            border-radius: 5px;
+            border: 0;
+            margin-bottom: 1rem;
+        }
+
+        .text-success {
+          color: #0d0d0d !important;
+        }
+
+        .text-muted {
+            color: #9fa8b9 !important;
+        }
+
+        .custom-actions-btns {
+            margin: auto;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .custom-actions-btns .btn {
+            margin: .3rem 0 .3rem .3rem;
+        }
+        @media print{
+        .custom-actions-btns{
+            display:none;
+        }
+        html, body {
+        height:100%; 
+        margin: 0 !important; 
+        padding: 0 !important;
+        overflow: hidden;
+            width:100%
+        }
+        .navigator{
+            display:none;
+        }
+        .container-body{
+          width:100%
+        }}
+      
+    script
+         include ./script-email.js
+    script.
+          function printpage() {
+             window.print ();  
+          }

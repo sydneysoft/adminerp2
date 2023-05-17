@@ -1,0 +1,38 @@
+.modal.fade#revisionClientes(tabindex="-1" role="dialog" )
+  .modal-dialog.modal-lg(role="document")
+    .modal-content
+      .modal-header 
+        .row 
+          .col-12
+            h5.strong(style="font-size:1rem;") Clientes
+
+      .modal-body
+        .row(style="padding:20px;")
+          .col-md-12.col-12 
+            div.table
+              table#tabla-todosClientes.table.table-bordered
+
+                thead
+                  tr.table-head
+                    if activo_marketplace===1
+                      th.text-left Empresa
+                    th.text-left Nombre
+                    th.text-left Email
+                    th.text-center Acción
+                tbody
+                  //- each item in customer
+                  //-   tr
+                  //-     if activo_marketplace===1
+                  //-       td.text-left= item.empresa_id?((empresa.filter((i) => i.empresa_id == item.empresa_id)).length?(empresa.filter((i) => i.empresa_id == item.empresa_id))[0].nombre:item.empresa_id==0?"-" : item.empresa_id):"-" 
+
+                  //-     td.text-left= item.nombre
+                  //-     td.text-left= item.email
+                  //-     td.text-center
+
+                  //-       button#deleteCustomer.btn.btn-danger( data-id=item.id data-url="/cotizaciones/eliminar-cliente/" style="margin-left:8px")
+                  //-         i.fa.fa-trash  
+
+        .modal-footer      
+          //- button.btn.btn-danger(type="buton" data-dismiss="modal" onClick="closeWindows()") Cerrar
+          button.btn.btn-danger(type="button" data-dismiss="modal") #{translation.CLOSE}
+            i.fas.fa-times.ml-2

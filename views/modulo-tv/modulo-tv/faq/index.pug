@@ -1,0 +1,42 @@
+extends ../layout.pug
+
+
+append contenido 
+  .my-3
+    .d-grid
+      a#aCrear.btn.btn-primary.btn-block(type='button' href="/admin-tv/faqs/crear") #{translation.FORM.CREATE_NEW}
+        span#spanCrear #{translation.FORM.QUESTION} 
+  if data && data.length > 0
+    .table-responsive
+      table.table
+        thead#headTable 
+          tr 
+            th ID 
+            th #{translation.FORM.QUESTION} 
+            th #{translation.FORM.ACTIONS}
+        tbody#programasTable 
+          each item, key in data 
+            tr 
+              td #{item.id}
+              td #{item.pregunta}
+              td 
+                .btn-group
+                  a.btn.btn-primary(href=`/admin-tv/faqs/edite/${item.id}`)
+                    i.fas.fa-pen
+                  a.btn.btn-info(href=`/admin-tv/faqs/show/${item.id}`)
+                    i.fas.fa-eye
+                  button.btn.btn-danger(onclick=`beforeEliminarFAQ(${item.id})`)
+                    i.fas.fa-trash
+    
+    include ../mixins/paginate.pug
+    
+    +paginate(data.next, data.previuos)
+  
+  else 
+    .alert.alert-primary(role='alert')
+      | #{translation.FORM.NO_FAQ}
+
+  
+
+  script 
+    include ./delete.js

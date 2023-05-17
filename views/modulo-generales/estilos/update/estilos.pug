@@ -1,0 +1,46 @@
+script.
+  //Función para Agregar Estilos CSS
+  const handleSaveStyles = (token) => {
+    let estilos = $("#data-text-area").val();
+    Swal.showLoading();
+    const auxData = { style: estilos };
+    if (typeof empresa_id != 'undefined' && !isNaN(empresa_id.value)) {
+      auxData.empresa_id = empresa_id.value;
+    }
+    $.ajax({
+      method: "PUT",
+      url: "/admin-agregar-css/" + itemId,
+      dataType: "json",
+      data: auxData,
+      success: function (data) {
+        Swal.close();
+        if (data.ok) {
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            html: "<b>#{translation.STYLES_UPDATED_CORRECTLY}</b>",
+            showConfirmButton: false,
+            timer: 2500,
+          });
+        } else {
+          Swal.fire({
+            position: "center",
+            icon: "error",
+            html: "<b>#{translation.WRONG}</b>",
+            showConfirmButton: false,
+            timer: 2500,
+          });
+        }
+      },
+      error: function () {
+        Swal.close();
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          html: "<b>#{translation.WRONG}</b>",
+          showConfirmButton: false,
+          timer: 2500,
+        });
+      },
+    });
+  };

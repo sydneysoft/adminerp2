@@ -1,0 +1,103 @@
+extends ../layout.pug
+
+append contenido 
+  if empresa_id
+    input#empresa_id(type="text" value=empresa_id hidden)
+
+  select#lista-horarios
+  include /modulo-tv/modulo-ha/horario/select2/horario.pug
+  .border-bottom.border-left.border-right.rounded-bottom.p-3
+    .container-fluid
+      .row
+        .col-6.text-left
+          if empresa_id
+            include ../../../mixins/btn/back.pug
+            +btn-back()
+        .col-6.text-right
+          button.btn.btn-primary(type='button' data-toggle="modal" data-target="#saveModalHorario") #{translation.ADD}
+            i.fas.fa-plus.ml-2
+      .row.mt-3
+        .table-responsive   
+          table#dataTable.table.rounded-lg.overflow-hidden
+            thead.thead-dark
+
+  include ../../../pugjs/parse-dates.pug
+  include ./modals/crear-horario.pug
+  include ./modals/editar-horario.pug
+  include ./modals/mostrar-horario.pug
+  
+  script 
+    include ../../../js/toast.sweet.js
+    include ../../../js/modulo-tv/delete.js
+    include ../../../js/modulo-tv/update.js
+  include ./save/horario.pug
+  script.
+    const empresa_id = document.getElementById('empresa_id');
+  
+  include ./datatable/horarios.pug
+
+  script.
+    const nombre_editar = document.getElementById('nombre_editar');
+    const descripcion_editar = document.getElementById('descripcion_editar');
+    const diaDe_editar = document.getElementById('diaDe_editar');
+    const diaA_editar = document.getElementById('diaA_editar');
+    const horaDe_editar = document.getElementById('horaDe_editar');
+    const horaA_editar = document.getElementById('horaA_editar');
+
+    const nombre_mostrar = document.getElementById('nombre_mostrar');
+    const descripcion_mostrar = document.getElementById('descripcion_mostrar');
+    const diaDe_mostrar = document.getElementById('diaDe_mostrar');
+    const diaA_mostrar = document.getElementById('diaA_mostrar');
+    const horaDe_mostrar = document.getElementById('horaDe_mostrar');
+    const horaA_mostrar = document.getElementById('horaA_mostrar');
+    const itemId = document.getElementById('itemId');
+
+    document.getElementById("updateItem").addEventListener('click', (event) => {
+      if (diaA_editar.value != "" && diaDe_editar.value != "") {
+        const auxData = {
+          nombre: nombre_editar.value,
+          descripcion: descripcion_editar.value,
+          dia_de: diaDe_editar.value,
+          dia_a: diaA_editar.value,
+          hora_de: horaDe_editar.value,
+          hora_a: horaA_editar.value
+        };
+        updateItem(`/admin-horarios/horarios/${itemId.value}`, auxData, updateItemSuccess);
+      } else {
+        toastSweet('Error', 'El dia de inicio debe ser menor al dia de fin', 'error');
+      }
+    });
+
+    function createItemSuccess(preData) {
+      tablaHorarios.ajax.reload();
+      $("#saveModalHorario").modal('hide');
+    }
+
+    function updateItemSuccess(data) {
+      tablaHorarios.ajax.reload();
+      $("#updateModal").modal('hide');
+    }
+
+    function deleteItemSuccess(data) {
+      tablaHorarios.row(`#${data.target}`).remove().draw();
+    }
+
+    function mostrarHorario (data) {
+      nombre_mostrar.value = data.nombre;
+      descripcion_mostrar.value = data.descripcion;
+      diaDe_mostrar.value = data.dia_de;
+      diaA_mostrar.value = data.dia_a;
+      horaDe_mostrar.value = data.hora_de;
+      horaA_mostrar.value = data.hora_a;
+      editarHorario(data);
+    }
+
+    function editarHorario (data) {
+      nombre_editar.value = data.nombre;
+      descripcion_editar.value = data.descripcion;
+      diaDe_editar.value = data.dia_de;
+      diaA_editar.value = data.dia_a;
+      horaDe_editar.value = data.hora_de;
+      horaA_editar.value = data.hora_a;
+      itemId.value = data.id;
+    }

@@ -1,0 +1,101 @@
+script.
+  let tablaVisitasMedicas;
+  $(document).ready(function () {
+    let urlAjaxTablaVisitasMedicas = "/admin-visitas-medicas/datatable"
+    if (typeof empresa_id != 'undefined' && !isNaN(empresa_id.value)) {
+      urlAjaxTablaVisitasMedicas += `/${empresa_id.value}`;
+    }
+    tablaVisitasMedicas = $("#tabla-visitas-medicas").DataTable({
+      columnDefs: [
+        {
+          orderable: false,
+          className: "select-checkbox",
+          targets: 0,
+        },
+      ],
+      select: {
+        style: "multi",
+        selector: "td:first-child",
+      },
+      dom: "Bfrtip",
+      buttons: ["selectAll", "selectNone"],
+      order: [[1, "asc"]],
+      language: {
+        buttons: {
+          selectAll: '#{translation.FORM.SELECT_EVERYTHING}',
+          selectNone: '#{translation.FORM.ERASE_SELECTION}',
+        },
+        url: "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json",
+        select: {
+          rows: "%d filas seleccionadas",
+        },
+      },
+      responsive: true,
+      searchDelay: 500,
+      processing: true,
+      serverSide: true,
+      ajax: urlAjaxTablaVisitasMedicas,
+      rowId: 'id',
+      columns: [
+        //- id	paciente_id	medico_id	fecha	hora	motivo	anotaciones	resultado	diagnostico	recetas	estado	costo	clinica_id	referencias	
+        { 
+          data: 'id', name: 'id', title: 'ID', orderable: false, searchable: false,
+          render: function (data, type, row) {
+            return ``;
+          }
+        },
+        {
+          data: 'fecha', name: 'fecha', title: '#{translation.FORM.DATE}', searchable: false, orderable: false
+        },
+        {
+          data: 'hora', name: 'hora', title: '#{translation.FORM.TIME}', searchable: false, orderable: false
+        },
+        {
+          data: 'motivo', name: 'motivo', title: "motivo",
+        },
+        {
+          data: 'estado', name: 'estado', title: "Estado", searchable: false, orderable: false,
+          render: function (data, type, row) {
+            return row.estado == '1' ? '<span classs="badge badge-success"><i class="fas fa-check"></i></span>' : '<span classs="badge badge-danger"><i class="fas fa-times"></i></span>';
+          }
+        },
+        { 
+          data: 'actions',
+          name: 'actions',
+          title: '#{translation.FORM.ACTIONS}',
+          searchable: false,
+          orderable: false,
+          render: function (data, type, row) {
+            console.log(row);
+            //- console.log(row);
+            //- <button class="btn btn-success btn-sm" onclick='mostrarVisitaMedica(${JSON.stringify(row)})' data-toggle="modal" data-target="#mostrarVisitaMedicaModal"><i class="fas fa-eye"></i></button>
+            return `
+              <button class="btn btn-primary btn-sm" onclick='editarVisitaMedica(${JSON.stringify(row)})' data-toggle="modal" data-target="#editarVisitaMedicaModal"><i class="fas fa-edit"></i></button>
+              <button class="btn btn-danger btn-sm" onclick="beforeDeleteItem('/admin-clinica/visitas-medicas/items/${row.id}', deleteItemSuccess)"><i class="fas fa-trash"></i></button>
+            `
+          }
+        }
+      ],
+      initComplete: function (settings) {
+        //- clone thead to tfoot
+        $("#tabla-visitas-medicas thead tr").clone().appendTo($("#tabla-visitas-medicas tfoot"));
+      }
+    });
+
+
+    $("#accionesBoton").click(function () {
+      const valorSeleccionado = $("#acciones").val();
+      const selected_rows = tablaVisitasMedicas
+        .rows({
+          selected: true,
+        })
+        .ids();
+
+      const arraySeleccion = $.makeArray(selected_rows);
+      switch (valorSeleccionado) {
+        case "0":
+          eliminarProductos(arraySeleccion, "visitas_medicas");
+          break;
+      }
+    });
+  });

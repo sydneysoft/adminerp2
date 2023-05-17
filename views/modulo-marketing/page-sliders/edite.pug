@@ -1,0 +1,65 @@
+extends ../layout.pug
+
+append contenido 
+  if data 
+    .border-bottom.border-left.border-right.rounded-bottom.p-3
+      input#idItem(type="text" value=data.id hidden)
+      input#urlImagen(type="text" value=data.url hidden)
+      .my-3.row.justify-content-between 
+        .col 
+          button.btn.btn-info(type='button' onclick="window.history.back()") #{translation.BACK}
+        .col.text-right
+          button#updateItem.btn.btn-primary(type='submit') #{translation.SAVE}
+      .my-3 
+        .row 
+          .col-12.col-md-8
+            .form-group
+              label(for='nombre') #{translation.FORM.NAME} *
+              input#nombre.form-control(type='text' placeholder=translation.FORM.NAME name="nombre" value=data.nombre required)
+            .form-group 
+              label(for='alt') #{translation.FORM.ALTERNATIVE_TEXT}
+              textarea#alt.form-control(name="alt" placeholder=translation.FORM.ALTERNATIVE_TEXT) #{data.alt}
+            .form-group   
+              label(for="descripcion") #{translation.FORM.DESCRIPTION}
+              textarea#descripcion(placeholder=translation.FORM.DESCRIPTION) #{data.descripcion}
+          .col-12.col-md-4
+            .form-group 
+              label(for='imagen') #{translation.FORM.IMAGE} *
+              include /modulo-generales/galeria-fotos/modal-galeria.pug
+    include /modulo-generales/galeria-fotos/partial-modal-galeria.pug
+    script.
+      const editor = CKEDITOR.replace('descripcion')   
+
+    script
+      include /js/modulo-tv/update.js
+      include /modulo-generales/galeria-fotos/modal-galeria.js
+    
+    script.
+      const idItem = document.getElementById('idItem');
+      document.getElementById('updateItem').addEventListener('click', (event) => {
+        if (nombre.value !== '' && imagen.value !== '') {
+          updateItem(`/admin-sliders/sliders/${idItem.value}`, {
+            nombre: nombre.value,
+            url: imagen.value,
+            alt: alt.value,
+            descripcion: editor.getData()
+          });
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: '#{translation.FORM.REQUIRED_FIELDS}',
+          })
+        }
+      });
+
+      addEventListener('DOMContentLoaded', () => {
+        imagen.value = document.getElementById('urlImagen').value;
+        $(".imagen_").empty();
+        if (imagen.value !== '') {
+          $(".imagen_").append(`<img src="${imagen.value}" class="img-fluid" alt="Responsive image">`);
+        }
+      });
+  else 
+    .alert.alert-info(role="alert")
+      | #{translation.ALERTS.NO_DATA}

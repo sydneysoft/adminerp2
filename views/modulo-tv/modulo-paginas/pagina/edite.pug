@@ -1,0 +1,324 @@
+extends ../layout.pug
+
+append contenido 
+  .border-bottom.border-left.border-right.rounded-bottom.p-3
+    if data
+      input#idData(value=data.id hidden)
+    else 
+      input#idData(value=data.id)
+    .my-3.row.justify-content-between 
+      .col 
+        a.btn.btn-info.btn-lg(type='button' href="/admin-paginas/") #{translation.BACK}
+      .col.text-right
+        button#guardarItem.btn.btn-primary.btn-lg(type='submit') #{translation.SAVE}
+          i.fas.fa-save.ml-2
+    .my-3 
+      .row 
+        input#urlImagen(type="text" value=data.imagen hidden)
+        .col-12.col-md-8 
+          .form-group
+            label(for='nombre') #{translation.FORM.NAME} *
+            input#nombre.form-control(type='text' placeholder=translation.FORM.NAME name="nombre" value=data.nombre required)
+        .col-12.col-md-4 
+          .form-group 
+            label(for='identificador') #{translation.FORM.IDENTIFIER} #{data.identificador}
+            
+            select#identificador.form-control(name="identificador")
+              if data.identificador == 'post'
+                option(value="post"  selected) #{translation.FORM.POST}
+              else
+                option(value="post") #{translation.FORM.POST}
+              if data.identificador == 'contacto'
+                option(value="contacto" selected) #{translation.FORM.CONTACT}
+              else
+                option(value="contacto") #{translation.FORM.CONTACT}
+              if data.identificador == 'nosotros'
+                option(value="nosotros" selected) #{translation.FORM.ABOUT}
+              else
+                option(value="nosotros") #{translation.FORM.ABOUT}
+              if data.identificador == 'faqs'
+                option(value="faqs" selected) #{translation.FORM.FAQS}
+              else 
+                option(value="faqs") #{translation.FORM.FAQS}
+              if data.identificador == 'politica'
+                option(value="politica" selected) #{translation.FORM.PRIVACY}
+              else 
+                option(value="politica") #{translation.FORM.PRIVACY}
+              if data.identificador == 'cookie'
+                option(value="cookie" selected) #{translation.FORM.COOKIES}
+              else 
+                option(value="cookie") #{translation.FORM.COOKIES}
+              if data.identificador == 'mision'
+                option(value="mision" selected) #{translation.FORM.MISSION}
+              else
+                option(value="mision") #{translation.FORM.MISSION}
+                
+      .row 
+        .col-12.col-md-8 
+            .form-group 
+              label(for='estracto') #{translation.FORM.EXCERPT}
+              textarea#estracto.form-control(name="estracto" placeholder=translation.FORM.EXCERPT) #{data.estracto}
+      .row 
+        .col-12.col-md-8
+          .form-group 
+            label(for='body') #{translation.FORM.BODY}
+            textarea#body(name="body" placeholder=translation.FORM.BODY)
+              |#{data.body}
+        .col-12.col-md-4 
+          .row
+            .col-12
+              include ../../modulo-general/galeria-fotos/modal-galeria.pug
+          .row
+            .col-12 
+              .p-3.border.rounded-lg
+                h4.text-center #{translation.ADD} #{translation.SECTIONS}
+                .row 
+                  .col-12 
+                    button#nuevaSeccion.btn.btn-primary.btn-block(type='button')
+                      i.fa.fa-plus
+                #showSections.mt-3 
+    include ../../modulo-general/galeria-fotos/partial-modal-galeria.pug              
+  script.
+    const editor = CKEDITOR.replace('body', {
+      height: 800
+    })   
+
+
+  .modal.justify-content-center.align-items-center(tabindex="-1" role="dialog" id="nuevaSeccionModal")
+    .modal-dialog.modal-lg
+        .modal-content.modalContent(style="height: 100%;")
+            .modal-header 
+                .row(style="margin:0;")
+                    .col-md-12.text-center
+                        h3(style="margin:0px 0;") #{translation.ADD} #{translation.SECTION}
+
+            .modal-body.borderBottom
+              .row 
+                .col-12.col-md-4
+                  .row 
+                    .col-12 
+                      label(for='identificadorSection') #{translation.FORM.IDENTIFIER}
+                      select#identificadorSection.form-control(name="identificadorSection")
+                        option(value="vacio") #{translation.FORM.SELECT_SOMETHING}
+                        option(value="formulario_contactos") #{translation.CONTACT_FORM}
+              .row.mt 
+                .col-12 
+                  #showSelected.p-3
+             
+            .modal-footer(style="padding:8px;")
+                .row(style="margin:0;")
+                    .col-md-12.text-right
+                        button#guardarSeccion.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;") #{translation.ADD}
+                        button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}
+  script.
+    const nombre = document.getElementById('nombre');
+    const imagen = document.getElementById('imagen');
+    const estracto = document.getElementById('estracto');
+    const identificador = document.getElementById('identificador');
+
+    const clearForm = () => {
+      nombre.value = '';
+      imagen.value = '';
+      estracto.value = '';
+      identificador.value = 'post';
+      editor.setData('', '')// <-- CKEDITOR
+    };
+
+    function clearImage() {
+      $(".imagen_").empty();
+      clearForm();
+    };
+
+  script
+    include ../../../js/modulo-tv/update.js
+    include ../../modulo-general/galeria-fotos/modal-galeria.js
+  script.
+
+    let formulario_contactos = [];
+    const idValue = document.getElementById('idData');
+    document.getElementById('guardarItem').addEventListener('click', (event) => {
+      updateItem(`/admin-paginas/paginas/${idData.value}`, {
+        nombre: nombre.value,
+        imagen: imagen.value,
+        estracto: estracto.value,
+        identificador: identificador.value,
+        campos: JSON.stringify(sectionsPayload),
+        body: editor.getData()
+      });
+    });
+    addEventListener('DOMContentLoaded', () => {
+      imagen.value = document.getElementById('urlImagen').value;
+      $(".imagen_").empty();
+      if (imagen.value !== '') {
+        $(".imagen_").append(`<img src="${imagen.value}" class="img-fluid" alt="Responsive image">`);
+      }
+    });
+
+    const nuevaSeccion = document.getElementById('nuevaSeccion');
+
+
+    const guardarSeccion = document.getElementById('guardarSeccion');
+    const showSections = document.getElementById('showSections');
+    const identificadorSection = document.getElementById('identificadorSection');
+    const showSelected = document.getElementById('showSelected');
+
+    identificadorSection.addEventListener('change', (event) => {
+      switch (event.target.value) {
+        case 'formulario_contactos':
+          //- #{translation.ALERTS.ERROR_CONTACT_FORM}
+          showSelected.innerHTML = '';
+          contactFormRender();
+          break;
+      }
+    });
+
+    function contactFormRender() {
+      //- let html = '';
+      if (Array.isArray(formulario_contactos.campos) && formulario_contactos.campos.length > 0) {
+        let cardDiv = document.createElement('div');
+        cardDiv.setAttribute('class', 'card');
+        let cardBody = document.createElement('div');
+        cardBody.setAttribute('class', 'card-body');
+        let h3 = document.createElement('h3');
+        h3.setAttribute('class', 'card-title');
+        h3.innerHTML = formulario_contactos.nombre;
+        let paragraph = document.createElement('p');
+        paragraph.setAttribute('class', 'card-text');
+        paragraph.innerHTML = formulario_contactos.descripcion;
+        cardBody.appendChild(h3);
+        cardBody.appendChild(paragraph);
+        formulario_contactos.campos.forEach((valor, index) => {
+          if (valor.type == 'checkbox') {
+            let div = document.createElement('div');
+            div.setAttribute('class', 'form-group form-check');
+            let el = document.createElement(valor.el);
+            el.setAttribute('type', valor.type);
+            el.setAttribute('placeholder', valor.placeholder);
+            el.setAttribute('name', valor.name);
+            el.setAttribute('class', 'form-check-input');
+            el.setAttribute('id', valor.name);
+            el.setAttribute('disabled', true);
+            let label = document.createElement('label');
+            label.setAttribute('for', valor.name);
+            label.setAttribute('class', 'form-check-label');
+            label.innerHTML = valor.placeholder;
+            div.appendChild(el);
+            div.appendChild(label);
+            cardBody.appendChild(div);
+            return;
+          }
+          let div = document.createElement('div');
+          div.setAttribute('class', 'form-group');
+          let label = document.createElement('label');
+          label.setAttribute('for', valor.name);
+          label.innerHTML = valor.placeholder;
+          let el = document.createElement(valor.el);
+          el.setAttribute('type', valor.type);
+          el.setAttribute('placeholder', valor.placeholder);
+          el.setAttribute('name', valor.name);
+          el.setAttribute('class', 'form-control');
+          el.setAttribute('id', valor.name);
+          el.setAttribute('readonly', 'readonly');
+          div.appendChild(label);
+          div.appendChild(el);
+          cardBody.appendChild(div);
+        });
+        cardDiv.appendChild(cardBody);
+        showSelected.appendChild(cardDiv);
+      } else {
+        html = `
+          <div class="alert alert-danger" role="alert">
+            #{translation.ALERTS.ERROR_CONTACT_FORM}
+          </div>
+        `
+        showSelected.innerHTML = html;
+      }
+    }
+
+    guardarSeccion.addEventListener('click', (event) => {
+      let position = sectionsPayload.length + 1;
+      let identificador = identificadorSection.options[identificadorSection.selectedIndex].text;
+      let identificadorValue = identificadorSection.options[identificadorSection.selectedIndex].value;
+      if (identificadorValue == 'vacio') {
+        sectionEmpty();
+        return;
+      }
+      //no insertar si ya existe
+      let existe = false;
+      sectionsPayload.forEach((section) => {
+        if (section.identificadorValue == identificadorValue) {
+          existe = true;
+        }
+      });
+      if (existe) {
+        sectionExistAlert();
+        return;
+      }
+      sectionsPayload.push({
+        position,
+        identificador,
+        identificadorValue
+      });
+      renderSections();
+      $('#nuevaSeccionModal').modal('hide');
+    });
+
+    function renderSections () {
+      showSections.innerHTML = '';
+      sectionsPayload.forEach((section, index) => {
+        const div = document.createElement('div');
+        div.classList.add('alert', 'alert-success', 'alert-dismissible', 'fade', 'show');
+        div.setAttribute('role', 'alert');
+        div.setAttribute('data-index', index);
+        div.innerHTML = `
+          <strong>${section.position}</strong> - ${section.identificador}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="deleteSectionPayload(this)">
+            <span aria-hidden="true">
+              <i class="fa fa-times"></i>
+            </span>
+          </button>
+        `;
+        showSections.appendChild(div);
+      });
+    }
+
+    nuevaSeccion.addEventListener('click', () =>{ 
+      $('#nuevaSeccionModal').modal('show');
+    });
+    let sectionsPayload = [];
+
+    function deleteSectionPayload (e) {
+      const index = e.parentNode.getAttribute('data-index');
+      sectionsPayload.splice(index, 1);
+      renderSections();
+    }
+
+    function sectionExistAlert () {
+      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        icon: 'error',
+        title: #{translation.ALERTS.SECTION_EXISTS},
+        showConfirmButton: false,
+        timer: 2000
+      })
+    }
+
+    function sectionEmpty () {
+      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        icon: 'error',
+        title: #{translation.ALERTS.ERROR_SELECT_SECTION},
+        showConfirmButton: false,
+        timer: 2000
+      })
+    }
+    
+  if Array.isArray(formulario_contactos) && formulario_contactos.length > 0
+    script.
+      formulario_contactos = !{JSON.stringify(formulario_contactos[0])};
+      formulario_contactos.campos = JSON.parse(formulario_contactos.campos);
+  script.
+    sectionsPayload = !{data.campos ? data.campos : '[]'}
+    renderSections();

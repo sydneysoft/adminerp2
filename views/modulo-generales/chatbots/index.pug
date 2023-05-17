@@ -1,0 +1,82 @@
+extends ./layout.pug
+
+append contenido
+  .row
+    if empresa_id
+      include /mixins/btn/back.pug
+      input#empresa_id(type="hidden" value=empresa_id)
+      .col-6
+        +btn-back()
+  .row.mt-3
+    .col-12.text-grey(style="margin-bottom:10px;")
+      h1.display-1
+        strong Chatbots
+    .col-12
+      nav
+        #nav-tab.nav.nav-tabs(role='tablist')
+          a#nav-culqi-tab.nav-item.nav-link.active(data-toggle='tab' href='#nav-culqi' role='tab' aria-controls='nav-culqi' aria-selected='true') Cliengo
+          a#nav-mercado-pago-tab.nav-item.nav-link(data-toggle='tab' href='#nav-mercado-pago' role='tab' aria-controls='nav-mercado-pago' aria-selected='false') Livechat
+          a#nav-payu-tab.nav-item.nav-link(data-toggle='tab' href='#nav-payu' role='tab' aria-controls='nav-payu' aria-selected='false') Tidio
+      #nav-tabContent.tab-content
+        #nav-culqi.tab-pane.fade.show.active(role='tabpanel' aria-labelledby='nav-culqi-tab' style="margin-top:15px;")
+          .row
+            .col-md-6 
+              .row
+                .col-md-8.col-8
+                  .form-group
+                    label="Instrucciónes"
+                    textarea(class="form-control" id="cliengo-instrucciones" rows="4" cols="20")
+                .col-md-8.col-8
+                  .form-group
+                    label="Script"
+                    textarea(class="form-control" id="cliengo-script" rows="6" cols="20")
+                .col-mod-8.col-8
+                  input(id="toggle-cliengo" type="checkbox" data-toggle="toggle" data-on="Activo" data-off="Desactivado" data-onstyle="success" data-offstyle="danger")
+                  input#cliengoId(type="hidden")
+                .col-12.mt-4
+                  button.btn.btn-info(type="button" onClick=`HandleChatbotMethod("Cliengo")`) "#{translation.FORM.SAVE_CHANGES}" 
+            .col-md-6
+              img(style="width:100%;object-fit:contain" src="https://plans.cliengo.com/assets/img/logo-new.svg")
+        #nav-mercado-pago.tab-pane.fade(role='tabpanel' aria-labelledby='#nav-mercado-pago-tab' style="margin-top:15px;padding:0px 20px;")
+          .row 
+            .col-md-6
+              .row
+                .col-md-8.col-8
+                  .form-group
+                    label="Instrucciónes"
+                    textarea(class="form-control" id="livechat-instrucciones" rows="4" cols="20")
+                .col-md-8.col-8
+                  .form-group
+                    label="Script"
+                    textarea(class="form-control" id="livechat-script" rows="6" cols="20")
+                .col-mod-8.col-8
+                  .form-group
+                    input(id="toggle-livechat" type="checkbox" data-toggle="toggle" data-on="Activo" data-off="Desactivado" data-onstyle="success" data-offstyle="danger")
+                    input#livechatId(type="hidden")
+                .col-12.mt-4
+                  button.btn.btn-info(type="button" onClick=`HandleChatbotMethod("Livechat")`) #{translation.FORM.SAVE_CHANGES} 
+            .col-md-6
+              img(style="width:100%;object-fit:contain" src="https://seekvectorlogo.com/wp-content/uploads/2021/03/livechat-vector-logo.png")
+        #nav-payu.tab-pane.fade(role='tabpanel' aria-labelledby='#nav-payu-tab' style="margin-top:15px;padding:0px 20px;")
+          .row 
+            .col-md-6
+              .row
+                .col-md-8.col-8
+                  .form-group
+                    label="Instrucciónes"
+                    textarea(class="form-control" id="tidio-instrucciones" rows="4" cols="20")
+                .col-md-8.col-8
+                  .form-group
+                    label="Script"
+                    textarea(class="form-control" id="tidio-script" rows="6" cols="20")
+                .col-mod-8.col-8
+                  input(id="toggle-tidio" type="checkbox" data-toggle="toggle" data-on="Activo" data-off="Desactivado" data-onstyle="success" data-offstyle="danger")
+                  input#tidioId(type="hidden")
+                .col-12.mt-4
+                  button.btn.btn-info(type="button" onClick=`HandleChatbotMethod("Tidio")`) #{translation.FORM.SAVE_CHANGES}  
+            .col-md-6
+              img(style="width:100%;object-fit:contain" src="https://www.electriqmarketing.com/hubfs/tidio-logo.png")
+              
+
+
+  include ./update/chatbot.pug

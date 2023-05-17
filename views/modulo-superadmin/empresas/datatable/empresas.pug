@@ -1,0 +1,80 @@
+script.
+  let tablaEmpresas;
+  $(document).ready( function () {
+    let urlAjaxTablaEmpresas = "/admin-empresas/datatable";
+
+    tablaEmpresas = $('#tabla-empresas').DataTable({
+      language: {"url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"},
+      order: [[ 0, "desc" ]],
+      fixedHeader: {
+        header: true,
+        footer: true
+      },
+
+      searchDelay: 500,
+      processing: true,
+      serverSide: true,
+      ajax: urlAjaxTablaEmpresas,
+      columns: [
+        { data: 'id', name: 'id', title: "ID", orderable: true, searchable: false, visible: false},
+        { data: 'nombre', name: 'nombre', title: "Nombre", orderable: true, searchable: true},
+        { data: 'direccion', name: 'direccion', title: "Dirección", orderable: true, searchable: true},
+        { data: 'nombre_contacto', name: 'nombre_contacto', title: "Nombre de contacto", orderable: true, searchable: true},
+        { 
+          data: 'created_at', name: 'created_at', title: "Fecha de creación", orderable: true, searchable: false,
+          render: function (data, type, row) {
+            return moment(data).format('DD/MM/YYYY');
+          }
+        },
+        {
+          data: 'id_grupo', name: 'id_grupo', title: "#{translation.ENABLED_MODULES}", orderable: false, searchable: false,
+          render: function (data, type, row) {
+            //- let strRow = JSON.stringify(row);
+            var id_grupo = null;
+            let strModulos = "";
+
+            $.ajax({
+                url: "/admin-empresas/modulos-habilitados/"+row.id,
+                type: "GET",
+                dataType: "json",
+                async: false,
+                success: function (response) {
+                  if (response.length > 0) {
+                    id_grupo = response[0].id_grupo
+                      let modulos = modulo_grupo.filter(item=>item.id_grupo==id_grupo);
+                      modulos.forEach(function(modulo){
+                        strModulos += `<span class="est modulo" data="${modulo.nombre}">${modulo.nombre}</span>`;
+                      });
+                  } else {
+                    strModulos = `<span class="badge badge-danger">#{translation.ENABLED_MODULES}</span>`;
+                  }
+                }
+              });
+
+            return strModulos;
+          }
+        },
+        { 
+          data: 'actions', name: 'actions', title: "Acciones", orderable: false, searchable: false,
+          render: function (data, type, row) {
+            let strRow = JSON.stringify(row);
+            return `
+              <a id="dropdownMenuButton" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-ellipsis-v"></i>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="#" onclick='editarEmpresa(${strRow})'>#{translation.EDIT}</a>
+                <a class="dropdown-item" href="#" onclick="asignarModulo(${row.id})">#{translation.ASSIGN_MODULE}</a>
+                <a class="dropdown-item" href="#" onclick="borrarEmpresa(${row.id})">#{translation.DELETE}</a>
+
+              </div>
+            `;
+          }  
+        }
+      ],
+      initComplete: function (settings) {
+        //- clone thead to tfoot
+        $("#tabla-empresas thead tr").clone().appendTo($("#tabla-empresas tfoot"));
+      }
+    });
+  });

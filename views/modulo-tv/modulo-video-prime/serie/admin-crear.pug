@@ -1,0 +1,73 @@
+extends ../layout.pug
+
+append contenido 
+  .my-3
+    div
+      a.btn.btn-info(href="/admin-video-prime/series") 
+        i.fas.fa-arrow-left
+        span.px-3 #{translation.BACK}
+    h1.text-center.mb-5 
+      | #{translation.CREATE_NEW_SERIE}
+  .my-3 
+    form#nuevaPelicula(action=`/admin-video-prime/series` method="post")
+      input#empresa_id(type="text" value=empresa.id hidden)
+      .row
+        .col-12.text-right 
+          button.btn.btn-primary(type="submit") #{translation.SAVE}
+        .col-12.my-3
+        .col-12 
+          .form-group
+            label(for='nombre') #{translation.FORM.NAME}
+            input#nombre.form-control(type='text' aria-describedby='nombreHelp' placeholder="Nombre de la serie.")
+            small#nombreHelp.form-text.text-muted.d-none #{translation.FORM.WRITE_THE_NAME}
+        .col-12.my-3
+        .col-12.col-md-8 
+          .form-group 
+            label(for="estracto") #{translation.FORM.EXTRACT} 
+            textarea#estracto.form-control(name="estracto" placeholder #{translation.FORM.EXTRACT} )
+              |
+        .col-12.col-md-4 
+          .form-check
+            input#external.form-check-input(type='checkbox' value='')
+            label.form-check-label(for='external')
+              | #{translation.FORM.EXTERNAL_URL} 
+
+        .col-12.my-3
+        .col-12
+          label(for='thumbnail') #{translation.FORM.THUMBNAIL} 
+          input#thumbnail.form-control(type='text'  placeholder #{translation.FORM.THUMBNAIL})
+        .col-12.my-3
+        .col-12.col-md-6
+          label(for='trailer') #{translation.FORM.TRAILER}
+          input#trailer.form-control(type='text'  placeholder #{translation.FORM.TRAILER})
+        .col-12.col-md-6
+          label(for='url') #{translation.FORM.MOVIE_URL}
+          input#url.form-control(type='text'  placeholder #{translation.FORM.MOVIE_URL})
+        .col-12.my-3
+        .col-12
+          .form-group 
+            label(for="body") #{translation.FORM.BODY} 
+            textarea#body(name="body") 
+
+
+  script.
+    const editor = CKEDITOR.replace('body')
+
+  script 
+    include ./serie.js
+    include ../../../js/modulo-tv/save.js
+
+  script.
+    document.getElementById('nuevaPelicula').addEventListener('submit', (event) => {
+      event.preventDefault();
+      save('/admin-video-prime/series', {
+        nombre: nombre.value,
+        estracto: estracto.value,
+        external: externalSerie.checked ? '1': '0',
+        thumbnail: thumbnail.value,
+        url: url.value,
+        trailer: trailer.value,
+        body: editor.getData(),
+        empresa_id: document.getElementById('empresa_id').value
+      })
+    })

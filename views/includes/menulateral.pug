@@ -1,0 +1,42 @@
+div(class="flex-section")
+    
+ div(id="section-20" class="section-20 visible")
+  div(class="box")
+            <!--
+            <div class="container-search">
+                <input type="text" name="search" placeholder="Buscar médicos..." id="usr">
+                <button name="activar_voz" class="icon"> <i class="fa fa-microphone"></i> </button>
+                <button name="buscar" class="icon-alt" id="buscar"><i class="fas fa-search    "></i></button>
+            </div>-->
+
+ ul(id="list-items")
+  li(id="promociones")
+   a(href=url_base+"promociones")="Promociones"
+    img(id="promociones-img" src=url_base+"iconos/PROMOCIONES-02.png" class="nav-icon" alt="")
+          
+  li(id="medicos")
+   a(href=url_base+"u")="Staff Médico"
+    img(id="medicos-img" src=url_base+"iconos/MEDICOS.png" class="nav-icon" alt="")
+            
+  li(id="sedes")
+    a(href=url_base+"sedes")="Sedes Concebir"
+     img(id="sedes-img" src=url_base+"iconos/SEDES.png" class="nav-icon" alt="")
+  li(id="citas")
+   a(href=url_base+"reservas")="Mis citas"
+    img(id="citas-img" src=url_base+"iconos/MIS-CITAS.png" class="nav-icon" alt="")
+          
+  li(id="ajustes")
+   a(href=url_base+"configuracion")="Configuraciones"
+    img(id="ajustes-img" src=url_base+"iconos/AJUSTES.png" class="nav-icon" alt="")
+
+  ul(class="ul-bottom")
+ 
+   a(id="logout" href=url_base)="Salir"
+    i(class="nav-icon fas fa-sign-out-alt")
+           
+        
+    div(class="icon-bottom")
+     a(href="https://facebook.com/concebirperu" target="_blank")
+      img(src=url_base+"images/iconos/facebook.png" alt="" class="social-buttons")
+     a(href="https://www.instagram.com/concebir_peru/" target="_blank")
+      img(src=url_base+"images/iconos/instagram.png" alt="" class="social-buttons")

@@ -1,0 +1,151 @@
+script.
+  const initializeMethodChatbots = () => {
+    let urlAjaxChatbot = "/admin-configuracion-chatbot/method-chatbot";
+    if (typeof empresa_id != 'undefined' && !isNaN(empresa_id.value)) {
+      urlAjaxChatbot = "/admin-configuracion-chatbot/method-chatbot/" + empresa_id.value;
+    }
+      $.ajax({
+        method: "GET",
+        url: urlAjaxChatbot,
+
+        success: function (data) {
+
+          let dataChatbots = data.chat;
+          if (dataChatbots) {
+            let existCliengo = dataChatbots.filter(data => data.nombre == "Cliengo")
+            if (existCliengo) {
+
+              if (existCliengo[0].estado != "0") {
+                $("#toggle-cliengo").bootstrapToggle("on");
+              }
+              if (existCliengo[0].instrucciones) {
+                $("#cliengo-instrucciones").val(existCliengo[0].instrucciones);
+              }
+
+              if (existCliengo[0].script) {
+                $("#cliengo-script").val(existCliengo[0].script);
+              }
+
+              if (existCliengo[0].id) {
+                $("#cliengoId").val(existCliengo[0].id);
+              }
+            }
+            let existLiveChat = dataChatbots.filter(data => data.nombre== "Livechat")
+            if (existLiveChat) {
+              if (existLiveChat[0].estado != "0") {
+                $("#toggle-livechat").bootstrapToggle("on");
+              }
+              if (existLiveChat[0].instrucciones) {
+                $("#livechat-instrucciones").val(existLiveChat[0].instrucciones);
+              }
+
+              if (existLiveChat[0].script) {
+                $("#livechat-script").val(existLiveChat[0].script);
+              }
+              if (existLiveChat[0].id) {
+                $("#livechatId").val(existLiveChat[0].id);
+              }
+            }
+            let existTidio = dataChatbots.filter(data => data.nombre == "Tidio")
+            if (existTidio) {
+              if (existTidio[0].estado != "0") {
+                $("#toggle-tidio").bootstrapToggle("on");
+              }
+              if (existTidio[0].instrucciones) {
+                $("#tidio-instrucciones").val(existTidio[0].instrucciones);
+              }
+
+              if (existTidio[0].script) {
+                $("#tidio-script").val(existTidio[0].script);
+              }
+              if (existTidio[0].id) {
+                $("#tidioId").val(existTidio[0].id);
+              }
+            }
+          }
+        },
+        error: function (e) {
+          console.log(e);
+        },
+      });
+  };
+
+  const HandleChatbotMethod = (val) => {
+    let instrucciones;
+    let script;
+    let state;
+    let id;
+    if (val == "Cliengo") {
+      instrucciones = $("#cliengo-instrucciones").val();
+      script = $("#cliengo-script").val();
+      state = document.getElementById("toggle-cliengo").checked;
+      id = $("#cliengoId").val();
+    } else if (val == "Livechat") {
+      instrucciones = $("#livechat-instrucciones").val();
+      script = $("#livechat-script").val();
+      state = document.getElementById("toggle-livechat").checked;
+      id = $("#livechatId").val();
+    } else if (val == "Tidio") {
+      instrucciones = $("#tidio-instrucciones").val();
+      script = $("#tidio-script").val();
+      state = document.getElementById("toggle-tidio").checked;
+      id = $("#tidioId").val();
+    }
+
+    if (state == true) {
+      state = "1";
+    } else {
+      state = "0";
+    }
+    const auxData = {
+      nombre: val,
+      script: script,
+      estado: state,
+      instrucciones: instrucciones,
+    }
+    if (typeof empresa_id != 'undefined' && !isNaN(empresa_id.value)) {
+      auxData.empresa_id = empresa_id.value;
+    }
+    Swal.showLoading();
+    $.ajax({
+      method: "PUT",
+      url: "/admin-configuracion-chatbot/" + id,
+      dataType: "json",
+      data: auxData,
+      success: function (data) {
+        if (data.status == "success") {
+          Swal.close();
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            html: "<b>Se actualizaron los datos correctamente.</b>",
+            showConfirmButton: false,
+            timer: 2500,
+          });
+          //- window.location.reload(true);
+        } else {
+          Swal.close();
+          Swal.fire({
+            position: "center",
+            icon: "error",
+            title: "Ocurrió un error interno inténtalo más tarde.",
+            showConfirmButton: false,
+            timer: 2500,
+          });
+        }
+      },
+      error: function (e) {
+        console.log(e);
+        Swal.close();
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "Ocurrió un error interno inténtalo más tarde.",
+          showConfirmButton: false,
+          timer: 2500,
+        });
+      },
+    });
+  };
+
+  initializeMethodChatbots();

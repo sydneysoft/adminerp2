@@ -1,0 +1,456 @@
+script.
+  const handleProductoAdmin = async (idVal) => {
+    typeOperation = "2";
+    Swal.showLoading();
+    $(".stock_question").prop('checked', false);
+    $("#dataIdProducto").val(idVal);
+    $("#subcategoriasEditar-producto-admin").empty();
+    $("#categoriaEditar-producto-admin").empty();
+    $("#marcaEditar-producto-admin").empty();
+    $("#subfiltrosEditar-producto-admin").empty();
+    $("#tdbodyAlmacenEditar").empty();
+    $(".idAlmacenEditar").empty();
+    $("idEmpresaEditar").empty();
+
+    $("idEmpresaEditar").val("");
+    $(".idAlmacenEditar").val("");
+    $("#categoriaEditar-producto-admin").val("");
+    $("#subcategoriasEditar-producto-admin").val("");
+    $("#marcaEditar-producto-admin").val("");
+    $("#controlerFiltrosEditar span").remove();
+    $("#filtrosAdvancedEdit").hide();
+    $("#valueFiltersEdit").val("");
+
+    $("#tallasEditar-producto-admin").val("");
+    $("#coloresEditar-producto-admin").val("");
+    typeUpdate = 1;
+    $.ajax({
+      method: "GET",
+      url: "/get-all-data-product/" + idVal,
+      dataType: "json",
+      data: null,
+
+      success: async function (data) {
+
+        if (data.status === "success") {
+          let almacenesCantidad = data.almacenesCantidad;
+          let almacenesArray = data.almacenes;
+          let dataProducto = data.dataProducto;
+          let marcasArray = data.dataMarcas;
+          let subcategoriasArray = data.dataSubcategorias;
+          let categoriasArray = data.dataCategorias;
+          let filtrocategorias = data.dataFiltros;
+          let resultOptions = data.resultOptions;
+          let tallasProducto = data.dataProducto.tallas;
+          let coloresProducto = data.dataProducto.colores;
+
+          if (almacenesCantidad.length > 0) {
+
+            $(".stock_question").prop('checked', true);
+            $(".habilitarAlmacen").show();
+          } else {
+
+            $(".habilitarAlmacen").hide();
+
+
+          }
+
+
+          let fila = '<tr class="rowEditarAlmacen">' +
+            '<td>' +
+            '<select id="almacenEditar" class="idAlmacenEditar form-control" disabled>' +
+            '</select></td>' +
+            '<td><input id="stockEditar" type="number" class="stock form-control"></input></td>' +
+            '<td><button id="remove" type="button" class="rowDelete btn btn-danger"> - </button></td>'
+            + '</tr>'
+
+          $("#tdbodyAlmacenEditar").append(fila);
+          if (almacenesArray.length > 0) {
+
+            $(`#almacenEditar`).append(
+              '<option value="null">Seleccione una opción</option>'
+            );
+            for (let i = 0; almacenesArray.length > i; i++) {
+              $(`td #almacenEditar`).append(
+                '<option value="' +
+                almacenesArray[i].id +
+                '">' +
+                almacenesArray[i].nombre +
+                "</option>"
+              );
+              $(`td #almacenEditar`).attr("disabled", false);
+            }
+          } else {
+            $(`#almacenEditar`).append(
+              '<option value="null">No se encontraron almacenes</option>'
+            );
+            $(`#almacenEditar`).attr("disabled", true);
+          }
+
+
+          if (almacenesCantidad.length > 0) {
+            for (let i = 1; almacenesCantidad.length > i; i++) {
+              let clone = $(".rowEditarAlmacen:first").clone();
+              clone.appendTo($("#tdbodyAlmacenEditar"));
+              clone.find("input").val("");
+              clone.find("select").attr("disabled", false)
+            }
+
+          }
+
+
+          if (dataProducto.empresa_id == 0 || dataProducto.empresa_id == "" || dataProducto.empresa_id == null) {
+            categoriasArray = data.dataCategorias.filter(a => a.id != 9999)
+          } else {
+            categoriasArray = data.dataCategorias
+          }
+          if (categoriasArray.length > 0) {
+            for (let i = 0; categoriasArray.length > i; i++) {
+              $("#categoriaEditar-producto-admin").append(
+                '<option value="' +
+                categoriasArray[i].id +
+                '">' +
+                categoriasArray[i].name +
+                "</option>"
+              );
+            }
+            $("#categoriaEditar-producto-admin").attr("disabled", false);
+          } else {
+            $("#categoriaEditar-producto-admin").append(
+              '<option value="0">No se encontraron Categorías</option>'
+            );
+            // $("#categoriaEditar-producto-admin").attr("disabled", true);
+          }
+
+          if (subcategoriasArray.length > 0) {
+            for (let i = 0; subcategoriasArray.length > i; i++) {
+              $("#subcategoriasEditar-producto-admin").append(
+                '<option value="' +
+                subcategoriasArray[i].id +
+                '">' +
+                subcategoriasArray[i].nombre +
+                "</option>"
+              );
+            }
+            $("#subcategoriasEditar-producto-admin").attr("disabled", false);
+          } else {
+            $("#subcategoriasEditar-producto-admin").append(
+              '<option value="0">No se encontraron Subcategorías</option>'
+            );
+            $("#subcategoriasEditar-producto-admin").attr("disabled", true);
+          }
+
+          if (marcasArray.length > 0) {
+            for (let i = 0; marcasArray.length > i; i++) {
+              $("#marcaEditar-producto-admin").append(
+                '<option value="' +
+                marcasArray[i].id +
+                '">' +
+                marcasArray[i].name +
+                "</option>"
+              );
+            }
+            $("#marcaEditar-producto-admin").attr("disabled", false);
+          } else {
+            $("#marcaEditar-producto-admin").append(
+              '<option value="">No se encontraron Marcas</option>'
+            );
+            $("#marcaEditar-producto-admin").attr("disabled", true);
+          }
+
+          if (resultOptions.length > 0) {
+            for (let i = 0; resultOptions.length > i; i++) {
+              $("#subfiltrosEditar-producto-admin").append(
+                '<option value="' +
+                resultOptions[i].id +
+                '">' +
+                resultOptions[i].nombre +
+                "</option>"
+              );
+            }
+            $("#subfiltrosEditar-producto-admin").attr("disabled", false);
+          } else {
+            $("#subfiltrosEditar-producto-admin").append(
+              '<option value=""></option>'
+            );
+            $("#subfiltrosEditar-producto-admin").attr("disabled", true);
+          }
+
+          if (almacenesCantidad.length > 0) {
+            for (let i = 0; almacenesCantidad.length > i; i++) {
+
+              $(`td #almacenEditar:eq(${i})`)
+                .val(almacenesCantidad[i].almacen_id)
+
+
+              $(`td .stock:eq(${i})`)
+                .val(almacenesCantidad[i].stock)
+
+            }
+          }
+          let migracion = 0
+          dataProducto.empresa_id ? migracion = dataProducto.empresa_id : migracion
+          $("#idEmpresaEditar").val(migracion).select2();
+          $("#nombreEditar-producto-admin").val(dataProducto.name);
+          $("#precioEditar-producto-admin").val(dataProducto.precio);
+          $("#estatusEditar-producto-admin").val(dataProducto.activado);
+          $("#destacadoEditar-producto-admin").val(dataProducto.destacado);
+          $("#ofertaEditar-producto-admin").val(dataProducto.is_oferta);
+          $("#imagen-data-banner-editar").attr("src", dataProducto.imagen);
+          $("#subfiltrosEditar-producto-admin").val(
+            dataProducto.subcategoria_opcion
+          );
+
+          $("#calificacionEditar-producto-admin").val(
+            dataProducto.calificaciones_status
+          );
+          $("#califacion-revision-Editar-producto-admin").val(
+            dataProducto.comentarios_automaticos
+          );
+
+          if (dataProducto.is_oferta == "1") {
+            $("#porcentajeEditar-producto-admin").attr("disabled", false);
+          } else {
+            $("#porcentajeEditar-producto-admin").attr("disabled", true);
+          }
+          $("#tallasEditar-producto-admin").val(tallasProducto);
+          $("#coloresEditar-producto-admin").val(coloresProducto);
+
+          $("#categoriaEditar-producto-admin").val(dataProducto.categoria)
+          $("#subcategoriasEditar-producto-admin").val(dataProducto.subcategoria);
+          $("#marcaEditar-producto-admin").val(dataProducto.marca);
+          $("#porcentajeEditar-producto-admin").val(
+            dataProducto.oferta_porcentaje
+          );
+          $("#stockEditar-producto-admin").val(dataProducto.stock);
+          $("#descripcionCortaEditar-producto-admin").val(
+            dataProducto.descripcion_corta
+          );
+
+          CKEDITOR.instances.ckeditorareaEditar.setData(dataProducto.description);
+          let dataValueAll = data.filtrosProducto;
+
+          if (data.filtrosProducto.length > 0) {
+            dataValueAll = dataValueAll.map((item) => {
+              return item.id_filtro.toString();
+            });
+
+            oldFiltersArray = dataValueAll;
+            let valueReplace = dataValueAll.join(",");
+            $("#valueFiltersEdit").val(valueReplace);
+          }
+
+          if (dataProducto.calificaciones_status == "0") {
+            $("#comentarios-container-edit").hide();
+          }
+
+          if (filtrocategorias.length > 0) {
+            let dataFunctional = filtrocategorias.map((item) => {
+              return {
+                label: item.name + " (" + item.grupofiltro + ")",
+                value: item.id.toString(),
+              };
+            });
+
+            $("#controlerFiltrosEditar").append(
+              "<span id='filtroEditar-producto-admin'></span>"
+            );
+            new SelectPure("#filtroEditar-producto-admin", {
+              options: dataFunctional,
+              value: dataValueAll,
+              multiple: true,
+              autocomplete: true,
+              icon: "fa fa-times",
+              onChange: (value) => {
+                $("#valueFiltersEdit").val(value);
+              },
+              classNames: {
+                select: "select-pure__select",
+                dropdownShown: "select-pure__select--opened",
+                multiselect: "select-pure__select--multiple",
+                label: "select-pure__label",
+                placeholder: "select-pure__placeholder",
+                dropdown: "select-pure__options",
+                option: "select-pure__option",
+                autocompleteInput: "select-pure__autocomplete",
+                selectedLabel: "select-pure__selected-label",
+                selectedOption: "select-pure__option--selected",
+                placeholderHidden: "select-pure__placeholder--hidden",
+                optionHidden: "select-pure__option--hidden",
+              },
+            });
+            $("#filtrosAdvancedEdit").show();
+          }
+          Swal.close();
+          $("#editarProductoAdmin").modal("show");
+          if (typeof initSelect2Almacenes === "function") {
+            initSelect2Almacenes();
+          }
+        } else {
+          Swal.close();
+          Swal.fire({
+            position: "center",
+            icon: "error",
+            title: "Ocurrió un error al traer los datos.",
+            showConfirmButton: false,
+            timer: 2500,
+          });
+        }
+      },
+      error: function () {
+        Swal.close();
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "Ocurrió un error al traer los datos.",
+          showConfirmButton: false,
+          timer: 2500,
+        });
+      },
+    });
+  }
+  //- Actualizar Datos del producto
+  const updateDataProducto = () => {
+
+    let idProducto = $("#dataIdProducto").val();
+    let nombreProducto = $("#nombreEditar-producto-admin").val();
+    let precioProducto = $("#precioEditar-producto-admin").val();
+    let statusProducto = $("#estatusEditar-producto-admin").val();
+    let destacadoProducto = $("#destacadoEditar-producto-admin").val();
+    let ofertaProducto = $("#ofertaEditar-producto-admin").val();
+    //- let categoriaProducto = $("#categoriaEditar-producto-admin").val();
+    //- let categoriaProducto = $("#lista-categorias-editar").val();
+
+    let subcategoriaProducto = $("#lista-subcategorias-editar").val();
+    let marcaProducto = $("#marcaEditar-producto-admin").val();
+    let porcentajeOfertaProducto = $("#porcentajeEditar-producto-admin").val();
+    let stockProducto = $("#stockEditar-producto-admin").val();
+    let descripcionCorta = $("#descripcionCortaEditar-producto-admin").val();
+    let filtrosProducto = $("#valueFiltersEdit").val();
+    let descripcionProducto = CKEDITOR.instances.ckeditorareaEditar.getData();
+    let calificacionProducto = $("#calificacionEditar-producto-admin").val();
+    let comentariosProducto = $(
+      "#califacion-revision-Editar-producto-admin"
+    ).val();
+    let urlFotoPrincipal = $("#imagen-data-banner-editar").attr("src");
+    let subcategorias_opciones = $("#subfiltrosEditar-producto-admin").val();
+    let empresaSeleccionada = $("#idEmpresaEditar").val();
+
+    let habilitadoAlmacenes = $(".stock_question").is(":checked");
+
+
+    let stockAlmacenes = [
+      ...document.getElementById("tdbodyAlmacenEditar").children,
+    ].map(object_from_row);
+
+    let tallas_value = $("#tallasEditar-producto-admin").val();
+    let colores_value = $("#coloresEditar-producto-admin").val();
+
+    let colores = [];
+    let tallas = [];
+
+    if (tallas_value) {
+      tallas = JSON.parse(tallas_value).map((i) => i.value);
+    }
+
+    if (colores_value) {
+      colores = JSON.parse(colores_value).map((i) => i.value);
+    }
+
+    if (typeUpdate == 1) {
+      if (oldFiltersArray.length > 0) {
+        let filtrosFiltered = filtrosProducto.slice(",");
+        for (let xs = 0; oldFiltersArray.length > xs; xs++) {
+          if (!filtrosFiltered.includes(oldFiltersArray[xs])) {
+            deleteFiltrosArray.push(oldFiltersArray[xs]);
+          }
+        }
+      }
+    }
+
+    const auxData = {
+      almacenes: stockAlmacenes,
+      subcategorias_opciones: subcategorias_opciones,
+      urlFotoPrincipal: urlFotoPrincipal,
+      comentariosProducto: comentariosProducto,
+      calificacionProducto: calificacionProducto,
+      id: idProducto,
+      filtrosDelete: deleteFiltrosArray,
+      nombre: nombreProducto,
+      typeUpdate: typeUpdate,
+      precio: precioProducto,
+      status: statusProducto,
+      destacado: destacadoProducto,
+      oferta: ofertaProducto,
+      subcategoria: subcategoriaProducto,
+      marca: marcaProducto ? marcaProducto : 0,
+      porcentajeOferta: porcentajeOfertaProducto,
+      stock: stockProducto,
+      descripcionCorta: descripcionCorta,
+      filtros: filtrosProducto,
+      descripcion: descripcionProducto,
+      tallas: tallas.length ? tallas : null,
+      colores: colores.length ? colores : null,
+      habilitadoAlmacenes: habilitadoAlmacenes
+    }
+
+    if (typeof empresa_id && !isNaN(empresa_id.value)){
+      auxData.empresa_id = empresa_id.value
+    }
+    if (
+      nombreProducto &&
+      urlFotoPrincipal &&
+      precioProducto &&
+      stockProducto &&
+      descripcionCorta &&
+      subcategoriaProducto &&
+      statusProducto &&
+      destacadoProducto &&
+      ofertaProducto &&
+      descripcionProducto
+    ) {
+      Swal.showLoading();
+      $.ajax({
+        method: "POST",
+        url: "/update-producto-admin",
+        dataType: "json",
+        data: auxData,
+        success: function (data) {
+
+          if (data.status === "success") {
+            Swal.close();
+            window.location.reload(true);
+          } else {
+            Swal.close();
+            Swal.fire({
+              position: "center",
+              icon: "error",
+              title:
+                "Ocurrió un error al actualizar el registro intentalo nuevamente.",
+              showConfirmButton: false,
+              timer: 2500,
+            });
+          }
+        },
+        error: function (e) {
+          console.log(e);
+          Swal.close();
+          Swal.fire({
+            position: "center",
+            icon: "error",
+            title: "Ocurrió un error interno inténtalo más tarde.",
+            showConfirmButton: false,
+            timer: 2500,
+          });
+        },
+      });
+    } else {
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: "Debes ingresar los datos requeridos para crear un producto.",
+        showConfirmButton: false,
+        timer: 2500,
+      });
+    }
+  };

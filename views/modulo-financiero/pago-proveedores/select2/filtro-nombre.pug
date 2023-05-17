@@ -1,0 +1,54 @@
+script.
+  const select2FiltroNombrePagoProveedor = $("#lista-filtro-nombre-proveedores, #lista-filtro-nombre-proveedores-editar").select2({
+    ajax: {
+      url: function () {
+        return urlSelect2FiltroNombrePagoProveedor()
+      },
+      dataType: 'json',
+      delay: 500,
+      data: function (params) {
+        return {
+          term: params.term,
+          select: ['id', 'nombre_proveedor'],
+          page: params.page
+        }
+      },
+      processResults: function (data, params) {
+        return {
+          results: $.map(data.data, (item) => {
+            return {
+              id:  item.nombre_proveedor,
+              text: item.nombre_proveedor
+            }
+          })
+        }
+      },
+      cache: true
+    },
+    placeholder: '#{translation.SEARCH}',
+    templateResult: filtroNombreProveedorState,
+    allowClear: true
+  })
+
+  function filtroNombreProveedorState (state) {
+    if (!state.id) {
+      return state.text;
+    }
+    let $container = $(`
+      <span><strong>${state.id}</strong></span>
+    `);
+
+    return $container;
+  }
+
+  function closeFiltroNombrePagoProveedorSelect2 () {
+    $("#lista-filtro-nombre-proveedores, #lista-filtro-nombre-proveedores-editar").select2('close');
+  }
+
+  function urlSelect2FiltroNombrePagoProveedor () {
+    if (typeof empresa_id !== 'undefined' && empresa_id && !isNaN(empresa_id.value)) {
+      return `/admin-pago-proveedores/select2/${empresa_id.value}`
+    } else {
+      return "/admin-pago-proveedores/select2"
+    }
+  }

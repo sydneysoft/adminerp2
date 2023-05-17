@@ -1,0 +1,31 @@
+extends ../../extends/menu-superior-admin
+
+block contenido
+  .my-3
+    div
+      a.btn.btn-primary(href="/admin-video-prime") 
+        i.fas.fa-arrow-left
+        span.px-3 #{translation.BACK}
+    h1.text-center.mb-5 
+      | #{data.nombre}
+
+    .my-3.text-right 
+      a.btn.btn-primary(href=`/admin-video-prime/generos/editar/${data.id}`) #{translation.EDIT}
+
+    .card 
+      .card-body 
+        table.table
+          thead
+            tr
+              th(scope='col') #{translation.FORM.NAME}
+              th(scope='col') #{translation.FORM.DESCRIPTION}
+          tbody
+            tr
+              th(scope='row') ID
+              td #{data.id}
+            tr
+              th(scope='row') #{translation.FORM.NAME}
+              td #{data.nombre}
+            tr
+              th(scope='row') #{translation.FORM.EXTRACT}
+              td #{data.estracto}

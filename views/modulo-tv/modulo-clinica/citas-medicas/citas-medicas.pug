@@ -1,0 +1,901 @@
+extends ../layout.pug
+
+append contenido
+    .border-left.border-right.border-bottom.p-3
+        .container-fluid
+            .row 
+                .col-12.text-right 
+                    button#nuevaCitaButton.btn.btn-primary(type="button" data-toggle="modal" data-target="#nuevaCita") #{translation.CREATE}
+                        i.fas.fa-save.ml-2
+                if empresa_id 
+                    input#empresa_id(type="text" value=empresa_id hidden)
+                else 
+                    input#empresa_id(type="text" value="" hidden)
+            .row
+                .col-12.col-md-10
+                    .row
+                        .col-12 
+                            .row.align-items-end
+                                .col-12.col-md-2
+                                    .form-group 
+                                        label(for="fecha-citas-admin-filtro")="Fecha de Cita"
+                                        input.form-control(type="date" onChange="filterFechaInicio()" id="fecha-citas-admin-filtro")
+                                .col-12.col-md-2
+                                    .form-group
+                                        label(for="fecha-registro-citas-admin-filtro")="Fecha de Registro"
+                                        input.form-control(type="date" onChange="filterFechaRegistro()" id="fecha-registro-citas-admin-filtro")
+                                .col-12.col-md-2 
+                                    .form-group 
+                                        label(for="estado-citas-admin-filtro")="Estado"
+                                        select.form-control(onchange="filterEstado()" id="estado-citas-admin-filtro" onChange="filterEstado()")
+                                            option(value="0") #{translation.FORM.SELECT_STATUS}
+                                            option(value="pendiente") #{translation.FORM.PENDING}
+                                            option(value="confirmada") #{translation.FORM.CONFIRMED}
+                                            option(value="cancelada") #{translation.FORM.CANCELED}
+                                            option(value="atendida") #{translation.FORM.ATTENDED}
+                                .col-12.col-md-2 
+                                    .form-group 
+                                        label(for="paciente-citas-admin-filtro") #{translation.FORM.PATIENT}
+                                        input.form-control(type="text" onChange="filterPaciente()" placeholder=translation.FORM.PATIENT id="paciente-citas-admin-filtro")
+                                .col-12.col-md-2 
+                                    .form-group 
+                                        label(for="doctor-citas-admin-filtro") #{translation.FORM.DOCTOR}
+                                        input.form-control(type="text" onChange="filterDoctor()" placeholder=translation.FORM.DOCTOR id="doctor-citas-admin-filtro")
+                                .col-12.col-md-2
+                                    .form-group 
+                                        button.btn.btn-primary(type="button" onClick="resetearFiltros()")
+                                            i.fas-fa-plus
+                                            span #{translation.RESET}
+
+            #data-body-citas-filter.container.table-responsive
+                table#tablaCita.table.w-100
+                    thead.thead-dark
+    //- Modal para crear cita
+    .modal.fade.justify-content-center.align-items-center(tabindex="-1" role="dialog" id="nuevaCita")
+        .modal-dialog.modal-lg
+            .modal-content.modalContent
+                .modal-header 
+                    .row(style="margin:0;")
+                        .col-md-12
+                            h3(style="margin:0px 0;") #{translation.ADD}
+
+                .modal-body.borderBottom
+                    .row
+                        .col-md-2.col-xs-2
+                            div.text-center
+                                img(src="http://ssl.gstatic.com/s2/oz/images/sge/grey_silhouette.png" style="width:47px;border-radius:50%;")
+                        .col-md-10.col-xs-10
+                            .row
+                                .col-md-6
+                                    .form-group
+                                        label(for="doctor")
+                                        select#doctor.form-control(name="doctor")
+                                            option(value="0" selected) -#{translation.FORM.DOCTOR}-
+                                            if Array.isArray(medicos) && medicos.length > 0
+                                                each item in medicos
+                                                    option(value=`${item.id}`) #{item.nombre} #{item.apellido}
+                                            else
+                                                option(value="0") -#{translation.FORM.NO_DOCTORS}- 
+
+                                .col-md-6
+                                    .form-group
+                                        label(for="sedes")
+                                        select#sedes.form-control(name="sedes")
+                                            option(value="0" selected) -#{translation.FORM.BRANCH}-
+                                            if Array.isArray(sedes) && sedes.length > 0
+                                                each item in sedes
+                                                    option(value=`${item.id}`) #{item.nombre} - #{item.direccion}
+                                            else
+                                                option(value="0") -#{translation.FORM.NO_BRANCHES}-
+
+                    .row
+                        .col-12.col-md-4
+                            .form-group
+                                label(for="fecha") #{translation.FORM.DATE}
+                                input#fecha.form-control(type="date" placeholder=translation.FORM.DATE)
+                        .col-12.col-md-4
+                            .form-group
+                                label(for="estado") #{translation.FORM.STATUS} 
+                                select#estado.form-control
+                                    option(value="pendiente" selected) #{translation.FORM.PENDING}
+                                    option(value="confirmada") #{translation.FORM.CONFIRMED}
+                                    option(value="cancelada") #{translation.FORM.CANCELED}
+                                    option(value="atendida") #{translation.FORM.ATTENDED}
+
+                        .col-12.col-md-4
+                            .form-group
+                                label(for="tipoCita") #{translation.FORM.APPOINTMENT_TYPE}
+                                select#tipoCita.form-control
+                                    option(value="virtual") #{translation.FORM.VIRTUAL}
+                                    option(value="presencial") #{translation.FORM.FACE_TO_FACE}
+
+                    .row
+                        .col-12.col-md-2
+                            .form-group
+                                label(for="hora") #{translation.FORM.START_TIME}
+                                input#hora.form-control(type="time")
+                        .col-12.col-md-2
+                            .form-group
+                                label(for="colorpicker") #{translation.FORM.COLOR}
+                                input#colorpicker.form-control(type="color" value="#0000ff")
+                                input#idCita(type="text" hidden)
+                        .col-12.col-md-4
+                            .form-group
+                                label(for="precio") #{translation.FORM.PRICE} 
+                                input#precio.form-control(type="number" placeholder=translation.FORM.PRICE)
+                        .col-12.col-md-4 
+                            .form-group 
+                                label(for="especialidad") #{translation.FORM.SPECIALTY} 
+                                select#especialidad.form-control
+                                    if Array.isArray(especialidades) && especialidades.length > 0
+                                        each item in especialidades
+                                            option(value=`${item.id}`) #{item.nombre}
+                                    else
+                                        option(value="0") -#{translation.FORM.NO_SPECIALTIES}-
+                    .row 
+                        .col-12 
+                            .form-group 
+                                label(for="paciente") #{translation.FORM.PATIENT} 
+                                select#paciente.form-control
+                                    option(value="0") -#{translation.FORM.SELECT_PATIENT}-
+                                    if Array.isArray(pacientes) && pacientes.length > 0
+                                        each item in pacientes
+                                            option(value=`${item.id}`) #{item.nombre} #{item.apellido_paterno} #{item.apellido_materno}
+                                    else
+                                        option(value="0") -#{translation.FORM.NO_PATIENTS}-
+                        .col-12
+                            .form-group
+                                label(for="nota") #{translation.FORM.NOTE} 
+                                textarea#nota.form-control(name="" cols="30" rows="10" placeholder=translation.FORM.NOTE)  
+
+                .modal-footer(style="padding:8px;")
+                    .row(style="margin:0;")
+                        .col-md-12.text-right
+                            button#addNewCita.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;") #{translation.ADD}
+                                i.fas.fa-save.ml-2
+                            button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}
+                                i.fas.fa-times.ml-2
+
+    //- Modal para editar cita
+    .modal.fade.justify-content-center.align-items-center(tabindex="-1" role="dialog" id="editarCita")
+        .modal-dialog.modal-lg
+            .modal-content.modalContent
+                .modal-header 
+                    .row(style="margin:0;")
+                        .col-md-12
+                            h3(style="margin:0px 0;") #{translation.ADD}
+
+                .modal-body.borderBottom
+                    .row
+                        .col-md-2.col-xs-2
+                            div.text-center
+                                img(src="http://ssl.gstatic.com/s2/oz/images/sge/grey_silhouette.png" style="width:47px;border-radius:50%;")
+                        .col-md-10.col-xs-10
+                            .row
+                                .col-md-6
+                                    .form-group
+                                        label(for="doctor_editar")
+                                        select#doctor_editar.form-control(name="doctor")
+                                            option(value="0" selected) -#{translation.FORM.DOCTOR}-
+                                            if Array.isArray(medicos) && medicos.length > 0
+                                                each item in medicos
+                                                    option(value=`${item.id}`) #{item.nombre} #{item.apellido}
+                                            else
+                                                option(value="0") -#{translation.FORM.NO_DOCTORS}- 
+
+                                .col-md-6
+                                    .form-group
+                                        label(for="sedes_editar")
+                                        select#sedes_editar.form-control(name="sedes")
+                                            option(value="0" selected) -#{translation.FORM.BRANCH}-
+                                            if Array.isArray(sedes) && sedes.length > 0
+                                                each item in sedes
+                                                    option(value=`${item.id}`) #{item.nombre} - #{item.direccion}
+                                            else
+                                                option(value="0") -#{translation.FORM.NO_BRANCHES}-
+
+                    .row
+                        .col-12.col-md-4
+                            .form-group
+                                label(for="fecha_editar") #{translation.FORM.DATE}
+                                input#fecha_editar.form-control(type="date" placeholder=translation.FORM.DATE)
+                        .col-12.col-md-4
+                            .form-group
+                                label(for="estado_editar") #{translation.FORM.STATUS} 
+                                select#estado_editar.form-control
+                                    option(value="pendiente" selected) #{translation.FORM.PENDING}
+                                    option(value="confirmada") #{translation.FORM.CONFIRMED}
+                                    option(value="cancelada") #{translation.FORM.CANCELED}
+                                    option(value="atendida") #{translation.FORM.ATTENDED}
+
+                        .col-12.col-md-4
+                            .form-group
+                                label(for="tipoCita_editar") #{translation.FORM.APPOINTMENT_TYPE}
+                                select#tipoCita_editar.form-control
+                                    option(value="virtual") #{translation.FORM.VIRTUAL}
+                                    option(value="presencial") #{translation.FORM.FACE_TO_FACE}
+
+                    .row
+                        .col-12.col-md-2
+                            .form-group
+                                label(for="hora_editar") #{translation.FORM.START_TIME}
+                                input#hora_editar.form-control(type="time")
+                        .col-12.col-md-2 
+                            .form-group
+                                label(for="hora_fin_editar") #{translation.FORM.END_TIME}
+                                input#hora_fin_editar.form-control(type="time" )
+                        .col-12.col-md-2
+                            .form-group
+                                label(for="colorpicker_editar") #{translation.FORM.COLOR}
+                                input#colorpicker_editar.form-control(type="color" value="#0000ff")
+                                input#itemId(type="text" hidden)
+                        .col-12.col-md-2
+                            .form-group
+                                label(for="precio_editar") #{translation.FORM.PRICE} 
+                                input#precio_editar.form-control(type="number" placeholder=translation.FORM.PRICE)
+                        .col-12.col-md-4 
+                            .form-group 
+                                label(for="especialidad_editar") #{translation.FORM.SPECIALTY} 
+                                select#especialidad_editar.form-control
+                                    if Array.isArray(especialidades) && especialidades.length > 0
+                                        each item in especialidades
+                                            option(value=`${item.id}`) #{item.nombre}
+                                    else
+                                        option(value="0") -#{translation.FORM.NO_SPECIALTIES}-
+                    .row 
+                        .col-12 
+                            .form-group 
+                                label(for="paciente_editar") #{translation.FORM.PATIENT} 
+                                select#paciente_editar.form-control
+                                    option(value="0") -#{translation.FORM.SELECT_PATIENT}-
+                                    if Array.isArray(pacientes) && pacientes.length > 0
+                                        each item in pacientes
+                                            option(value=`${item.id}`) #{item.nombre} #{item.apellido_paterno} #{item.apellido_materno}
+                                    else
+                                        option(value="0") -#{translation.FORM.NO_PATIENTS}-
+                        .col-12
+                            .form-group
+                                label(for="nota_editar") #{translation.FORM.NOTE} 
+                                textarea#nota_editar.form-control(name="" cols="30" rows="10" placeholder=translation.FORM.NOTE)  
+
+                .modal-footer(style="padding:8px;")
+                    .row(style="margin:0;")
+                        .col-md-12.text-right
+                            button#editarButton.btn.btn-info(type="button" style="margin-left:7px;margin-right:7px;") #{translation.EDIT}
+                                i.fas.fa-pen.ml-2
+                            button#guardarCita.btn.btn-success.nuevo.d-none(type="button" style="margin-left:7px;margin-right:7px;") #{translation.ADD}
+                                i.fas.fa-save.ml-2
+                            button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}
+                                i.fas.fa-times.ml-2
+
+    script
+        include ../../../js/modulo-tv/delete.js 
+        include ../../../js/modulo-tv/save.js
+        include ../../../js/modulo-tv/update.js                          
+    script.
+        const sede = document.getElementById('sedes');
+        const doctor = document.getElementById('doctor');
+        const fecha = document.getElementById('fecha');
+        const estado = document.getElementById('estado');
+        const tipoCita = document.getElementById('tipoCita');
+        const hora = document.getElementById('hora');
+        const colorpicker = document.getElementById('colorpicker');
+        const precio = document.getElementById('precio');
+        const especialidad = document.getElementById('especialidad');
+        const paciente = document.getElementById('paciente');
+        const nota = document.getElementById('nota');
+
+        const idCita = document.getElementById('idCita');
+
+        const sede_editar = document.getElementById('sedes_editar');
+        const doctor_editar = document.getElementById('doctor_editar');
+        const fecha_editar = document.getElementById('fecha_editar');
+        const estado_editar = document.getElementById('estado_editar');
+        const tipoCita_editar = document.getElementById('tipoCita_editar');
+        const hora_editar = document.getElementById('hora_editar');
+        const hora_fin_editar = document.getElementById('hora_fin_editar');
+        const colorpicker_editar = document.getElementById('colorpicker_editar');
+        const precio_editar = document.getElementById('precio_editar');
+        const especialidad_editar = document.getElementById('especialidad_editar');
+        const paciente_editar = document.getElementById('paciente_editar');
+        const nota_editar = document.getElementById('nota_editar');
+
+        const itemId = document.getElementById('itemId');
+
+        const addNewCita = document.getElementById('addNewCita');
+        const empresa_id = document.getElementById('empresa_id');
+        const editarButton = document.getElementById('editarButton');
+        const guardarCita = document.getElementById('guardarCita');
+
+        let tablaCitas;
+        function citaHandleModal (data) {
+            //- const aux = JSON.parse(JSON.stringify(data));
+            //- console.log(data);
+            //- console.log(aux)
+            $('#nombreUsuarioInfoCitas').text(data.paciente.nombre);
+            $('#dataUsuarioNombreCitaEdit').text("Nombre: " + data.paciente.nombre);
+            $('#ubicacionCitaEdit').text("Dirección: " + data.sede.direccion);
+            $('#dataUsuarioCorreo').text("Correo: " + data.paciente.correo)
+            $('#fechaCitasEdit').text("Fecha de cita: " + data.fechaCita);
+            $('#statusCitasEdit').text("Estado: " + data.estado);
+            $('#tipoCitasEdit').text("Hora de la cita " + data.horaInicio);
+            $('#horarioFechaCitaEdit').text(`Documento: ${data.paciente.tipo_documento} : ${data.paciente.numero_documento}`);
+            $('#precioCitaPacienteEdit').text("Precio: " + data.precio);
+            // $('#correoCitaPacienteEdit').text("Correo: ", data.paciente.correo);
+            if (null) {
+                $('#importadoDataEdit').text("No cuenta con fecha de Importación");
+            } else {
+                $('#importadoDataEdit').text("Importado el " + data.fechaRegistro);
+            }
+
+            $('#infoPaciente').modal("show");
+        };
+        document.addEventListener('DOMContentLoaded', function () {
+            tablaCitas = $("#tablaCita").DataTable({
+                fnCreatedRow: function (nRow, aData, iDataIndex) {
+                    //- console.log(aData);
+                    $(nRow).attr('id', `delete${aData.id}`);
+                    //- $(nRow).attr('onclick', "citaHandleModal(" + aData.Acciones +")");
+                },
+                columns: [
+                    { 
+                        data: 'id', 
+                        name: 'id', 
+                        title: "ID",
+                        visible: false,
+                        orderable: false,
+                        searchable: false
+                    },
+                    { 
+                        data: 'paciente',
+                        name: 'paciente',
+                        title: '#{translation.FORM.PATIENT}'
+                    },
+                    { 
+                        data: 'doctor', 
+                        name: 'doctor', 
+                        title:  '#{translation.FORM.DOCTOR}'
+                    },
+                    { 
+                        data: 'sede', 
+                        name: 'sede', 
+                        title: '#{translation.FORM.BRANCH}'
+                    },
+                    { 
+                        data: 'estado', 
+                        name: 'estado', 
+                        title: '#{translation.FORM.STATUS}',
+                        render: function (data, type, row) {
+                            console.log(data);
+                            if (data == 'cancelada') {
+                                return `<span class="badge badge-danger">${data}</span>`
+                            } else if (data == 'pendiente') {
+                                return `<span class="badge badge-primary">${data}</span>`
+                            } else if (data == 'confirmada') {
+                                return `<span class="badge badge-secondary">${data}</span>`
+                            } else if( data == 'atendida') {
+                                return `<span class="badge badge-info">${data}</span>`
+                            } else if (data == 'reprogramada') {
+                                return `<span class="badge badge-warning">${data}</span>`
+                            } else if (data == 'pagado') {
+                                return `<span class="badge badge-success">${data}</span>`
+                            } else {
+                                return `<span class="badge badge-secondary">#{translation.FORM.STATUS}</span>`
+                            }
+
+                        }
+                    },
+                    { 
+                        data: 'emision', 
+                        name: 'emision', 
+                        title: '#{translation.FORM.EMISSION}',
+                        render: function (data, type, row) {
+                            return moment(data).format('DD/MM/YYYY')
+                        }
+                    },
+                    { 
+                        data: 'fechaCita',
+                        name: 'fechaCita',
+                        title: '#{translation.FORM.APPOINTMENT_DATE}',
+                        render: function (data, type, row) {
+                            return moment(data).format('DD/MM/YYYY')
+                        }
+                    },
+                    {
+                        data: 'acciones',
+                        name: 'acciones',
+                        title: '#{translation.FORM.ACTIONS}',
+                        render: function (data, type, row) {
+                        // <button class="btn btn-primary btn-sm" onclick='editarPacienteModal(${data})'>Editar</button>
+                            const aux = JSON.parse(data);
+                                //- <button class="btn btn-primary btn-sm" onclick='citaHandleModal(${data})'>
+                                //-     <i class="fas fa-pen"></i>
+                                //- </button>
+                            return `
+                                <div class="btn-group">
+                                    <button class="btn btn-info btn-sm" onclick='mostrarCita(${data})'>
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <a class="btn btn-secondary btn-sm" href="/admin-clinica/citas-medicas/reprogramar/${aux.id}">Reprogramar</a>
+                                    <button class="btn btn-danger btn-sm" onclick="beforeDeleteItem('/admin-clinica/citas-medicas/citas/${aux.id}', ${aux.id})">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                                `
+                        }
+                    }
+                ]
+            });
+            getCitas();
+        });
+
+        function getCitas() {
+            $.ajax({
+                method: 'GET',
+                url: '/admin-clinica/get-data-date',
+                dataType: 'json',
+                success: function (data) {
+                if (data.ok) {
+                    let datos = []
+                    data.data.forEach((item) => {
+                        let aux = {
+                            "id": item.id,
+                            "paciente": item.paciente.nombre,
+                            "doctor": item.doctor.nombre,
+                            "sede": item.sede.direccion,
+                            "estado": item.estado,
+                            "emision": item.fechaRegistro,
+                            "fechaCita": item.fechaCita,
+                            "acciones": JSON.stringify(item)
+                        }
+                        datos.push(aux)
+                    })
+                    // console.log(data)
+                    //- tablaCitas.fnClearTable();
+                    tablaCitas.clear().draw();
+                    if (Array.isArray(datos) && datos.length > 0) {
+                        tablaCitas.rows.add(datos).draw();
+                    }
+                }
+                },
+                error: function (err) {
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Algo salió mal!',
+                    timer: 2000,
+                    showConfirmButton: false
+                })
+                }
+            })
+        }
+
+
+        function nohayregistros() {
+            $('#data-body-citas-filter').empty();
+            $('#data-body-citas-filter').append('<p>No hay registros con esos filtros.</p>');
+        };
+
+
+        function filterFechaInicio() {
+            var fecha_cita = $('#fecha-citas-admin-filtro').val();
+            if (fecha_cita != '') {
+                $.ajax({
+                method: 'GET',
+                url: '/admin-clinica/get-data-filter-date',
+                data: {
+                    fecha_cita: fecha_cita
+                },
+                success: function (result) {
+                    console.log(result)
+                    if (result.ok) {
+                        let datos = []
+                        result.data.forEach((item) => {
+                            let aux = {
+                                "id": item.id,
+                                "paciente": item.paciente.nombre,
+                                "doctor": item.doctor.nombre,
+                                "sede": item.sede.direccion,
+                                "estado": item.estado,
+                                "emision": item.fechaRegistro,
+                                "fechaCita": item.fechaCita,
+                                "acciones": JSON.stringify(item)
+                            }
+                            datos.push(aux)
+                        });
+
+                        tablaCitas.clear().draw();
+                        if (datos.length > 0) {
+                            tablaCitas.rows.add(datos).draw();
+                        }
+                    }else {
+                        tablaCitas.clear().draw();
+                    }
+                },
+                error: function (error) {
+                    Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: 'error',
+                    title: 'Ocurrió un error al filtrar por estado.',
+                    showConfirmButton: false,
+                    timer: 2500
+                    });
+                }
+                })
+            } else {
+                Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: 'error',
+                title: 'Debes ingresar una fecha.',
+                showConfirmButton: false,
+                timer: 2500
+                });
+            }
+        };
+
+        function filterFechaRegistro() {
+        var fecha_registro = $('#fecha-registro-citas-admin-filtro').val();
+        if (fecha_registro != '') {
+            $.ajax({
+            method: 'GET',
+            url: '/admin-clinica/get-data-filter-date',
+            data: {
+                fecha_registro: fecha_registro
+            },
+            success: function (result) {
+                if (result.ok) {
+                    let datos = []
+                    result.data.forEach((item) => {
+                        let aux = {
+                            "id": item.id,
+                            "paciente": item.paciente.nombre,
+                            "doctor": item.doctor.nombre,
+                            "sede": item.sede.direccion,
+                            "estado": item.estado,
+                            "emision": item.fechaRegistro,
+                            "fechaCita": item.fechaCita,
+                            "acciones": JSON.stringify(item)
+                        }
+                        datos.push(aux)
+                    });
+
+                    tablaCitas.clear().draw();
+                    if (datos.length > 0) {
+                        tablaCitas.rows.add(datos).draw();
+                    }
+                } else {
+                    tablaCitas.clear().draw();
+                }
+            },
+            error: function (error) {
+                Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: 'error',
+                title: 'Ocurrió un error al filtrar por estado.',
+                showConfirmButton: false,
+                timer: 2500
+                });
+            }
+            })
+        } else {
+            Swal.fire({
+            toast: true,
+            position: 'top-end',
+            icon: 'error',
+            title: 'Debes ingresar una fecha.',
+            showConfirmButton: false,
+            timer: 2500
+            });
+        }
+        };
+
+        function filterEstado() {
+            let filterEstado = $('#estado-citas-admin-filtro').val();
+            if (filterEstado !== '') {
+                $.ajax({
+                method: 'GET',
+                url: '/admin-clinica/get-data-filter-date',
+                data: {
+                    estado: filterEstado
+                },
+                success: function (result) {
+                    if (result.ok) {
+                        let datos = []
+                        result.data.forEach((item) => {
+                            let aux = {
+                                "id": item.id,
+                                "paciente": item.paciente.nombre,
+                                "doctor": item.doctor.nombre,
+                                "sede": item.sede.direccion,
+                                "estado": item.estado,
+                                "emision": item.fechaRegistro,
+                                "fechaCita": item.fechaCita,
+                                "acciones": JSON.stringify(item)
+                            }
+                            datos.push(aux)
+                        });
+
+                        tablaCitas.clear().draw();
+
+                        if (datos.length > 0) {
+                            tablaCitas.rows.add(datos).draw();
+                        }
+                    } else {
+                        tablaCitas.clear().draw();
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                    Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: 'error',
+                    title: 'Ocurrió un error al filtrar por estado.',
+                    showConfirmButton: false,
+                    timer: 2500
+                    });
+                }
+                })
+            } else {
+                Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: 'error',
+                title: 'Debes seleccionar un estado.',
+                showConfirmButton: false,
+                timer: 2500
+                });
+            }
+        }
+        function filterPaciente() {
+            let filterPaciente = $('#paciente-citas-admin-filtro').val();
+            // create queryparams for paciente
+            if (filterPaciente !== '') {
+                $.ajax({
+                    method: 'GET',
+                    url: '/admin-clinica/get-data-filter-paciente',
+                    data: {
+                        paciente: filterPaciente
+                    },
+                    success: function (result) {
+                        if (result.ok) {
+                            let datos = []
+                            result.data.forEach((item) => {
+                                let aux = {
+                                    "id": item.id,
+                                    "paciente": item.paciente.nombre,
+                                    "doctor": item.doctor.nombre,
+                                    "sede": item.sede.direccion,
+                                    "estado": item.estado,
+                                    "emision": item.fechaRegistro,
+                                    "fechaCita": item.fechaCita,
+                                    "acciones": JSON.stringify(item)
+                                }
+                                datos.push(aux)
+                            });
+
+                            tablaCitas.clear().draw();
+                            if (datos.length > 0) {
+                                tablaCitas.rows.add(datos).draw();
+                            } 
+                        } else {
+                            tablaCitas.clear().draw();
+                        }
+                    },
+                    error: function (error) {
+                        console.log(error);
+                        Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        icon: 'error',
+                        title: 'Ocurrió un error al filtrar por estado.',
+                        showConfirmButton: false,
+                        timer: 2500
+                        });
+                    }
+                })
+            }
+        }
+
+        function filterDoctor() {
+            let filterDoctor = $('#doctor-citas-admin-filtro').val();
+            if (filterDoctor !== '') {
+                $.ajax({
+                    method: 'GET',
+                    url: '/admin-clinica/get-data-filter-doctor' ,
+                    data: {
+                        doctor: filterDoctor
+                    },
+                    success: function (result) {
+                        if (result.ok) {
+                        let datos = []
+                        result.data.forEach((item) => {
+                            let aux = {
+                                "id": item.id,
+                                "paciente": item.paciente.nombre,
+                                "doctor": item.doctor.nombre,
+                                "sede": item.sede.direccion,
+                                "estado": item.estado,
+                                "emision": item.fechaRegistro,
+                                "fechaCita": item.fechaCita,
+                                "acciones": JSON.stringify(item)
+                            }
+                                datos.push(aux)
+                        });
+                            tablaCitas.clear().draw();
+                            if (datos.length > 0) {
+                                tablaCitas.rows.add(datos).draw();
+                            }
+
+                        } else {
+                            tablaCitas.clear().draw();
+                        }
+                    },
+                    error: function (error) {
+                        console.log(error);
+                        Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        icon: 'error',
+                        title: 'Ocurrió un error al filtrar por estado.',
+                        showConfirmButton: false,
+                        timer: 2500
+                        });
+                    }
+                })
+            }
+        }
+
+        function resetearFiltros() {
+            $('#fecha-citas-admin-filtro')[0].value = "";
+            $('#fecha-registro-citas-admin-filtro')[0].value = "";
+            $('#estado-citas-admin-filtro')[0].value = "0";
+            getCitas();
+        };
+
+        addNewCita.addEventListener('click', (event) => {
+            if (paciente.value != '' && doctor.value != '' && sede.value != '' && fecha.value != '') {
+
+                let auxData = {
+                    doctor: doctor.value,
+                    paciente: paciente.value,
+                    tipoCita: tipoCita.value,
+                    estado: estado.value,
+                    fecha: fecha.value,
+                    hora: hora.value,
+                    precio: precio.value,
+                    sede: sede.value,
+                    color: colorpicker.value,
+                    especialidad: especialidad.value,
+                    nota: nota.value
+                }
+                if (empresa_id.value != "") {
+                    auxData.empresa = empresa_id.value;
+                }
+
+                save('/admin-clinica/cita', auxData, createItemSuccess)
+            } else {
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: 'error',
+                    title: '#{translation.FORM.REQUIRED_FIELDS}',
+                    showConfirmButton: false,
+                    timer: 2500
+                });
+            }
+        });
+
+        guardarCita.addEventListener('click', (event) => {
+            if (paciente_editar.value != '' && doctor_editar.value != '' && sede_editar.value != '' && fecha_editar.value != '') {
+
+                let auxData = {
+                    id: itemId.value,
+                    doctor: doctor_editar.value,
+                    paciente: paciente_editar.value,
+                    tipoCita: tipoCita_editar.value,
+                    estado: estado_editar.value,
+                    fecha: fecha_editar.value,
+                    hora: hora_editar.value,
+                    precio: precio_editar.value,
+                    sede: sede_editar.value,
+                    color: colorpicker_editar.value,
+                    especialidad: especialidad_editar.value,
+                    nota: nota_editar.value,
+                    horaFin: hora_fin_editar.value
+                }
+
+                updateItem('/admin-clinica/allcita', auxData, updateItemSuccess)
+            } else {
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: 'error',
+                    title: '#{translation.FORM.REQUIRED_FIELDS}',
+                    showConfirmButton: false,
+                    timer: 2500
+                });
+            }
+        });
+
+        function createItemSuccess(data) {
+            console.log(data);
+            getCitas();
+        }
+        function updateItemSuccess(data) {
+            console.log(data);
+            getCitas();
+        }
+
+        editarButton.addEventListener('click', (event) => {
+            sede_editar.removeAttribute('disabled');
+            paciente_editar.removeAttribute('disabled');
+            doctor_editar.removeAttribute('disabled');
+            tipoCita_editar.removeAttribute('disabled');
+            estado_editar.removeAttribute('disabled');
+            fecha_editar.removeAttribute('disabled');
+            hora_editar.removeAttribute('disabled');
+            precio_editar.removeAttribute('disabled');
+            colorpicker_editar.removeAttribute('disabled');
+            especialidad_editar.removeAttribute('disabled');
+            nota_editar.removeAttribute('disabled');
+            hora_fin_editar.removeAttribute('disabled');
+            
+            editarButton.classList.add('d-none');
+            guardarCita.classList.remove('d-none');
+        })
+
+        $('#editarCita').on('hide.bs.modal', function (event) {
+            sede_editar.setAttribute('disabled', 'disabled');
+            paciente_editar.setAttribute('disabled', 'disabled');
+            doctor_editar.setAttribute('disabled', 'disabled');
+            tipoCita_editar.setAttribute('disabled', 'disabled');
+            estado_editar.setAttribute('disabled', 'disabled');
+            fecha_editar.setAttribute('disabled', 'disabled');
+            hora_editar.setAttribute('disabled', 'disabled');
+            precio_editar.setAttribute('disabled', 'disabled');
+            colorpicker_editar.setAttribute('disabled', 'disabled');
+            especialidad_editar.setAttribute('disabled', 'disabled');
+            nota_editar.setAttribute('disabled', 'disabled');
+            hora_fin_editar.setAttribute('disabled', 'disabled');
+
+            editarButton.classList.remove('d-none');
+            guardarCita.classList.add('d-none');
+
+        });
+        function mostrarCita (data) {
+            console.log(data);
+            sede_editar.setAttribute('disabled', 'disabled');
+            paciente_editar.setAttribute('disabled', 'disabled');
+            doctor_editar.setAttribute('disabled', 'disabled');
+            tipoCita_editar.setAttribute('disabled', 'disabled');
+            estado_editar.setAttribute('disabled', 'disabled');
+            fecha_editar.setAttribute('disabled', 'disabled');
+            hora_editar.setAttribute('disabled', 'disabled');
+            precio_editar.setAttribute('disabled', 'disabled');
+            colorpicker_editar.setAttribute('disabled', 'disabled');
+            especialidad_editar.setAttribute('disabled', 'disabled');
+            nota_editar.setAttribute('disabled', 'disabled');
+            hora_fin_editar.setAttribute('disabled', 'disabled');
+
+            sede_editar.value = data.sede.id;
+            paciente_editar.value = data.paciente.id;
+            doctor_editar.value = data.doctor.id;
+            tipoCita_editar.value = data.tipoCita;
+            estado_editar.value = data.estado;
+            fecha_editar.value = moment(data.fechaCita).format('YYYY-MM-DD');
+            hora_editar.value = moment(data.hora, 'HH:mm:ss').format('HH:mm');
+            hora_fin_editar.value = moment(data.horaFin, 'HH:mm:ss').format('HH:mm');
+            precio_editar.value = data.precio;
+            colorpicker_editar.value = data.color;
+            especialidad_editar.value = data.especialidad.id;
+            nota_editar.value = data.nota;
+            itemId.value = data.id;
+
+            $("#editarCita").modal("show");
+        }

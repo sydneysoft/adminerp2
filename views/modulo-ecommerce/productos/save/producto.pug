@@ -1,0 +1,148 @@
+script.
+  const addProductoAdmin = () => {
+      let nombreProducto = $("#nombreNuevo-producto-admin").val();
+      let precioProducto = $("#precioNuevo-producto-admin").val();
+      let statusProducto = $("#estatusNuevo-producto-admin").val();
+      let destacadoProducto = $("#destacadoNuevo-producto-admin").val();
+      let ofertaProducto = $("#ofertaNuevo-producto-admin").val();
+      let categoriaProducto = $("#lista-categorias").val();
+      let subcategoriaProducto = $("#lista-subcategorias").val();
+      let marcaProducto = $("#marcaNuevo-producto-admin").val();
+      let subFiltro = $("#subfiltrosNuevo-producto-admin").val();
+      let filtrosProducto = $("#valueFiltersNew").val();
+      let descripcionProducto = CKEDITOR.instances.ckeditorarea.getData();
+      let calificacionProducto = $("#calificacionNuevo-producto-admin").val();
+      let comentariosProducto = $(
+        "#califacion-revision-Nuevo-producto-admin"
+      ).val();
+      let urlFotoPrincipal = $("#imagen-data-banner").attr("src");
+      let fotosProducto = arrayImagesNew;
+      let stockProducto = $("#stockNuevo-producto-admin").val();
+      let ofertaValorProducto = $("#porcentajeNuevo-producto-admin").val();
+      let descripcionCorta = $("#descripcionCortaNuevo-producto-admin").val();
+
+      let tallas_value = $("#tallasNuevo-producto-admin").val();
+      let colores_value = $("#coloresNuevo-producto-admin").val();
+
+      let colores = [];
+      let tallas = [];
+
+      if (tallas_value) {
+        tallas = JSON.parse(tallas_value).map((i) => i.value);
+      }
+
+      if (colores_value) {
+        colores = JSON.parse(colores_value).map((i) => i.value);
+      }
+
+      let stockAlmacenes = [
+        ...document.getElementById("tdbodyAlmacen").children,
+      ].map(object_from_row);
+
+      const auxData = {
+            subFiltro: subFiltro,
+            urlFotoPrincipal: urlFotoPrincipal,
+            calificacionProducto: calificacionProducto,
+            comentariosProducto: comentariosProducto,
+            nombre: nombreProducto,
+            precio: precioProducto,
+            status: statusProducto,
+            destacado: destacadoProducto,
+            oferta: ofertaProducto,
+            categoria: categoriaProducto,
+            subcategoria: subcategoriaProducto,
+            marca: marcaProducto ? marcaProducto : 0,
+            filtros: filtrosProducto,
+            descripcion: descripcionProducto,
+            stock: stockProducto,
+            ofertaValor: ofertaValorProducto,
+            descripcionCorta: descripcionCorta,
+            tallas: tallas ? tallas : null,
+            colores: colores ? colores : null,
+            almacenes: stockAlmacenes,
+          }
+
+      if (typeof empresa_id && !isNaN(empresa_id.value))  {
+        auxData.empresa_id = empresa_id.value
+      }
+
+      if (
+        nombreProducto &&
+        precioProducto &&
+        stockProducto &&
+        descripcionCorta &&
+        categoriaProducto &&
+        subcategoriaProducto &&
+        statusProducto &&
+        destacadoProducto &&
+        ofertaProducto.length > 0 &&
+        descripcionProducto
+      ) {
+        Swal.showLoading();
+        $.ajax({
+          method: "POST",
+          url: "/admin-productos",
+          dataType: "json",
+          data: auxData,
+
+            success: function (data) {
+
+              if (data.status === "success") {
+                $.ajax({
+                  method: "POST",
+                  url: "/admin-productos/galeria",
+                  dataType: "json",
+                  data: {
+                    producto_id: data.id.insertId,
+                    fotos: fotosProducto
+                  },
+                  success: function (data) {
+                    Swal.close();
+
+                    //- window.location.reload(true);
+                  }, error: function (e) {
+                    console.log(e)
+                    Swal.close();
+                    Swal.fire({
+                      position: "center",
+                      icon: "error",
+                      title: "Ocurrió un error interno inténtalo más tarde.",
+                      showConfirmButton: false,
+                      timer: 2500,
+                    });
+                  },
+                })
+
+              } else {
+                Swal.close();
+                Swal.fire({
+                  position: "center",
+                  icon: "error",
+                  title: "Ocurrió un error interno inténtalo más tarde.",
+                  showConfirmButton: false,
+                  timer: 2500,
+                });
+              }
+            },
+            error: function (e) {
+              console.log(e)
+              Swal.close();
+              Swal.fire({
+                position: "center",
+                icon: "error",
+                title: "Ocurrió un error interno inténtalo más tarde.",
+                showConfirmButton: false,
+                timer: 2500,
+              });
+            },
+          });
+      } else {
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "Debes ingresar los datos requeridos para crear un producto.",
+          showConfirmButton: false,
+          timer: 2500,
+        });
+      }
+    };

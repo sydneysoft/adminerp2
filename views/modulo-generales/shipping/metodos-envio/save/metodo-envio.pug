@@ -1,0 +1,60 @@
+script.
+
+  //Data MEtodo de Envio
+  const AgregarMetodoEnvio = () => {
+    let nombre = $("#nombreNuevoMetodo").val();
+    let activado = $("#estadoNuevoMetodo").val();
+    if (nombre && activado) {
+
+      const auxData = {
+          nombre: nombre,
+          activado: activado,
+        }
+
+      if (typeof empresa_id != 'undefined' && !isNaN(empresa_id.value)) {
+        auxData.empresa_id = empresa_id.value
+      }
+
+      Swal.showLoading();
+      $.ajax({
+        method: "POST",
+        url: "/admin-shipping/metodos-envio",
+        dataType: "json",
+        data: auxData,
+        success: function (data) {
+          if (data.status === "success") {
+            $("#nuevoMetodoAdministrador").modal("hide");
+            Swal.close();
+            window.location.reload(true);
+          } else {
+            Swal.close();
+            Swal.fire({
+              position: "center",
+              icon: "error",
+              title: "#{translation.ALERTS.DELIVERY_METHOD_COULD_NOT_BE_ADDED}", 
+              showConfirmButton: false,
+              timer: 2500,
+            });
+          }
+        },
+        error: function () {
+          Swal.close();
+          Swal.fire({
+            position: "center",
+            icon: "error",
+            title: "#{translation.ALERTS.WRONG}",
+            showConfirmButton: false,
+            timer: 2500,
+          });
+        },
+      });
+    } else {
+      Swal.fire({
+        position: "center",
+        icon: "info",
+        html: "<b>#{translation.ALERTS.MUST_COMPLETE_DATA_DELIVERY_SERVICES}</b>", 
+        showConfirmButton: false,
+        timer: 2500,
+      });
+    }
+  };

@@ -1,0 +1,40 @@
+extends ../layout.pug
+
+append contenido 
+  .border-bottom.border-left.border-right.rounded-bottom.p-3
+    .my-3 
+      a.btn.btn-primary.btn-lg.btn-block(type='button' href=`/admin-video-prime/series/empresa/${empresa_id}/crear`) Crear
+        i.fas.fa-plus.ml-3 
+    if data  && data.length > 0
+      .my-3.table-responsive   
+        table#dataTable.table.rounded-lg.overflow-hidden
+          thead.thead-dark
+            tr
+              th(scope='col') ID
+              th(scope='col') #{translation.FORM.NAME}
+              th(scope='col') #{translation.FORM.EXTRACT}
+              th(scope='col') #{translation.FORM.ACTIONS}
+          tbody
+            each item in data 
+              tr(id=`delete${item.id}`) 
+                th(scope='row') #{item.id}
+                td #{item.pregunta}
+                td #{item.estracto}
+                td
+                  .btn-group(role='group' aria-label='Basic example')
+                    a.btn.btn-primary(type='button' href=`/admin-video-prime/series/editar/${item.id}`)
+                      i.fas.fa-pen(aria-hidden='true')
+                    a.btn.btn-info(type='button' href=`/admin-video-prime/series/mostrar/${item.id}`)
+                      i.fas.fa-eye(aria-hidden='true')
+                    a.btn.btn-danger(type='button' onClick=`beforeDeleteItem('/admin-video-prime/series/pelicula/${item.id}', ${item.id})`)
+                      i.fas.fa-trash(aria-hidden='true')
+
+      script.
+        $(document).ready( function () {
+          $('#dataTable').DataTable();
+        });
+    else 
+      .alert.alert-info(role="alert")
+        | #{translation.ALERTS.NO_DATA_YET}
+  script 
+    include ../../../js/modulo-tv/delete.js

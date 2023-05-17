@@ -1,0 +1,489 @@
+extends ../layout.pug
+
+
+append contenido 
+
+  .border-left.border-right.border-bottom.p-3 
+    .container-fluid 
+      .row
+        .col-12.text-right 
+          button#nuevaPaquete.btn.btn-primary(type="button") #{translation.ADD}
+            i.fas.fa-plus
+      .row.mt-5
+        .col-12 
+          .table-responsive 
+            table#caracteristicasTable.table
+              //- thead.thead-dark
+              //-   tr
+              //-     th(scope='col') ID
+              //-     th(scope='col') #{translation.FORM.NAME}
+              //-     th(scope='col') #{translation.FORM.ICON}
+              //-     th(scope='col') #{translation.FORM.ACTIONS}
+              //- tbody
+  if empresa_id
+    input#empresa_id(type="text" value=empresa_id hidden)
+  else 
+    input#empresa_id(type="text" value="" hidden) 
+  //- Modal para agregar paquetes
+  .modal.fade.justify-content-center.align-items-center(tabindex="-1" role="dialog" id="nuevoPaqueteModal")
+    .modal-dialog.modal-lg
+        .modal-content.modalContent(style="height: 100%;")
+            .modal-header 
+                .row(style="margin:0;")
+                    .col-md-12
+                        h3(style="margin:0px 0;") #{translation.ADD}
+
+            .modal-body.borderBottom
+              .row 
+                .col-12.col-md-6 
+                  .form-group
+                    label(for="nombre") #{translation.FORM.NAME}
+                    input#nombre.form-control(type="text" name="nombre" placeholder=`${translation.FORM.NAME}`)
+                  .form-group.mt-3 
+                    label(for="price") #{translation.FORM.PRICE}
+                    input#price.form-control(type="number" name="price" placeholder=`${translation.FORM.PRICE}`)
+                .col-12.col-md-6 
+                  .form-group
+                    label(for="descripcion") #{translation.FORM.DESCRIPTION}
+                    textarea#descripcion.form-control(type="text" name="descripcion" placeholder=`${translation.FORM.DESCRIPTION}`)
+              
+              .row.mt-3.align-items-end
+                .col-8
+                  .form-group 
+                    label(for="caracteristica") #{translation.FORM.CHARACTERISTICS}
+                    select#caracteristica.form-control
+                      option(value="") #{translation.FORM.CHARACTERISTICS}
+                      if Array.isArray(caracteristicas) && caracteristicas.length > 0
+                        each caracteristica in caracteristicas
+                          option(value=caracteristica.id target-data=JSON.stringify(caracteristica)) #{caracteristica.nombre}
+                .col-4 
+                  .form-group 
+                    button#agregarCaracteristica.btn.btn-primary.btn-block(type="button") #{translation.ADD}
+                      i.fas.fa-plus.ml-2
+              .row.mt-3 
+                .col-12 
+                  #showCaracteristicasSelect
+                  //- Alert dismisible
+                  
+                 
+            .modal-footer(style="padding:8px;")
+                .row(style="margin:0;")
+                    .col-md-12.text-right
+                        button#addPaquete.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;") #{translation.ADD}
+                          i.fas.fa-plus.ml-3
+                        button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}
+  
+  //- Modal para editar paquetes
+  .modal.fade.justify-content-center.align-items-center(tabindex="-1" role="dialog" id="editarPaqueteModal")
+    .modal-dialog.modal-lg
+        .modal-content.modalContent(style="height: 100%;")
+            .modal-header 
+                .row(style="margin:0;")
+                    .col-md-12
+                        h3(style="margin:0px 0;") #{translation.ADD}
+
+            .modal-body.borderBottom
+              .row 
+                .col-12.col-md-6 
+                  .form-group
+                    label(for="nombre_editar") #{translation.FORM.NAME}
+                    input#nombre_editar.form-control(type="text" name="nombre" placeholder=`${translation.FORM.NAME}`)
+                  .form-group.mt-3 
+                    label(for="price_editar") #{translation.FORM.PRICE}
+                    input#price_editar.form-control(type="number" name="price" placeholder=`${translation.FORM.PRICE}`)
+                .col-12.col-md-6 
+                  .form-group
+                    label(for="descripcion_editar") #{translation.FORM.DESCRIPTION}
+                    textarea#descripcion_editar.form-control(type="text" name="descripcion" placeholder=`${translation.FORM.DESCRIPTION}`)
+              
+              .row.mt-3.align-items-end
+                .col-8
+                  .form-group 
+                    label(for="caracteristica_editar") #{translation.FORM.CHARACTERISTICS}
+                    select#caracteristica_editar.form-control
+                      option(value="") #{translation.FORM.CHARACTERISTICS}
+                      if Array.isArray(caracteristicas) && caracteristicas.length > 0
+                        each caracteristica in caracteristicas
+                          option(value=caracteristica.id target-data=JSON.stringify(caracteristica)) #{caracteristica.nombre}
+                .col-4 
+                  .form-group 
+                    button#agregarCaracteristica_editar.btn.btn-primary.btn-block(type="button") #{translation.ADD}
+                      i.fas.fa-plus.ml-2
+              .row.mt-3 
+                .col-12 
+                  #showCaracteristicasSelect_editar
+                  //- Alert dismisible
+                  
+              input#id_editar(type="text" hidden)
+            .modal-footer(style="padding:8px;")
+                .row(style="margin:0;")
+                    .col-md-12.text-right
+                        button#updatePaquete.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;") #{translation.ADD}
+                          i.fas.fa-plus.ml-3
+                        button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}
+  
+  //- Modal para editar paquetes
+  .modal.fade.justify-content-center.align-items-center(tabindex="-1" role="dialog" id="mostrarPaqueteModal")
+    .modal-dialog.modal-lg
+        .modal-content.modalContent(style="height: 100%;")
+            .modal-header 
+                .row(style="margin:0;")
+                    .col-md-12
+                        h3(style="margin:0px 0;") #{translation.SHOW}
+
+            .modal-body.borderBottom
+              .row 
+                .col-12.col-md-6 
+                  .form-group
+                    label(for="nombre_mostrar") #{translation.FORM.NAME}
+                    input#nombre_mostrar.form-control(type="text" name="nombre" placeholder=`${translation.FORM.NAME}` readonly)
+                  .form-group.mt-3 
+                    label(for="price_mostrar") #{translation.FORM.PRICE}
+                    input#price_mostrar.form-control(type="number" name="price" placeholder=`${translation.FORM.PRICE}` readonly)
+                .col-12.col-md-6 
+                  .form-group
+                    label(for="descripcion_mostrar") #{translation.FORM.DESCRIPTION}
+                    textarea#descripcion_mostrar.form-control(type="text" name="descripcion" placeholder=`${translation.FORM.DESCRIPTION}` readonly)
+              
+              .row.mt-3.align-items-end
+                .col-8
+                  .form-group 
+                    label(for="caracteristica_mostrar") #{translation.FORM.CHARACTERISTICS}
+                    select#caracteristica_mostrar.form-control(disabled)
+                      option(value="") #{translation.FORM.CHARACTERISTICS}
+                      if Array.isArray(caracteristicas) && caracteristicas.length > 0
+                        each caracteristica in caracteristicas
+                          option(value=caracteristica.id target-data=JSON.stringify(caracteristica)) #{caracteristica.nombre}
+                .col-4 
+                  .form-group 
+                    button#agregarCaracteristica_mostrar.btn.btn-primary.btn-block(type="button") #{translation.ADD}
+                      i.fas.fa-plus.ml-2
+              .row.mt-3 
+                .col-12 
+                  #showCaracteristicasSelect_mostrar
+                  //- Alert dismisible
+                  
+              input#id_editar(type="text" hidden)
+            .modal-footer(style="padding:8px;")
+                .row(style="margin:0;")
+                    .col-md-12.text-right
+                        button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}
+  
+
+  script
+    include ../../../js/modulo-tv/save.js
+    include ../../../js/modulo-tv/update.js
+    include ../../../js/modulo-tv/delete.js
+
+  //- Variables 
+  script.
+    let tabla = null;
+    const empresa_id = document.getElementById('empresa_id');
+    const nuevoPaqueteModal = document.getElementById('nuevoPaqueteModal');
+    const nuevoPaquete = document.getElementById('nuevaPaquete');
+
+    const addPaquete = document.getElementById('addPaquete');
+    const updatePaquete = document.getElementById('updatePaquete');
+
+    // crear
+    const nombre = document.getElementById('nombre');
+    const descripcion = document.getElementById('descripcion');
+    const precio = document.getElementById('price');
+    const showCaracteristicasSelect = document.getElementById('showCaracteristicasSelect');
+    const agregarCaracteristica = document.getElementById('agregarCaracteristica');
+    const caracteristicaSelect = document.getElementById('caracteristica');
+
+    // editar
+    const nombre_editar = document.getElementById('nombre_editar');
+    const descripcion_editar = document.getElementById('descripcion_editar');
+    const precio_editar = document.getElementById('price_editar');
+    const showCaracteristicasSelect_editar = document.getElementById('showCaracteristicasSelect_editar');
+    const agregarCaracteristica_editar = document.getElementById('agregarCaracteristica_editar');
+    const caracteristicaSelect_editar = document.getElementById('caracteristica_editar');
+
+    // mostrar
+    const nombre_mostrar = document.getElementById('nombre_mostrar');
+    const descripcion_mostrar = document.getElementById('descripcion_mostrar');
+    const precio_mostrar = document.getElementById('price_mostrar');
+    const showCaracteristicasSelect_mostrar = document.getElementById('showCaracteristicasSelect_mostrar');
+    const agregarCaracteristica_mostrar = document.getElementById('agregarCaracteristica_mostrar');
+    const caracteristicaSelect_mostrar = document.getElementById('caracteristica_mostrar');
+
+    let payloadCaracteristica = [];
+    let payloadCaracteristica_editar = []
+    let payloadCaracteristica_mostrar = []
+  script.
+
+    function renderCaracteristicasSelect() {
+      if (Array.isArray(payloadCaracteristica) && payloadCaracteristica.length > 0) {
+        showCaracteristicasSelect.innerHTML = '';
+        payloadCaracteristica.forEach((caracteristica, index) => {
+          showCaracteristicasSelect.innerHTML += `
+            <div class="alert alert-primary alert-dismissible fade show" role="alert">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="deleteCaracteristica(${index})">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <strong>
+                <i class="${caracteristica.icono}"></i>
+                ${caracteristica.nombre}
+              </strong>
+            </div>
+          `;
+        });
+      }
+    }
+    function renderCaracteristicasSelect_editar () {
+      if(Array.isArray(payloadCaracteristica_editar) && payloadCaracteristica_editar.length > 0) {
+        showCaracteristicasSelect_editar.innerHTML = '';
+        payloadCaracteristica_editar.forEach((caracteristica, index) => {
+          showCaracteristicasSelect_editar.innerHTML += `
+            <div class="alert alert-primary alert-dismissible fade show" role="alert">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="deleteCaracteristica_editar(${index})">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <strong>
+                <i class="${caracteristica.icono}"></i>
+                ${caracteristica.nombre}
+              </strong>
+            </div>
+          `;
+        });
+      }
+    }
+
+    function renderCaracteristicasSelect_mostrar () {
+      console.log('data', payloadCaracteristica_mostrar);
+      if(Array.isArray(payloadCaracteristica_mostrar) && payloadCaracteristica_mostrar.length > 0) {
+        showCaracteristicasSelect_mostrar.innerHTML = '';
+        payloadCaracteristica_mostrar.forEach((caracteristica, index) => {
+          showCaracteristicasSelect_mostrar.innerHTML += `
+            <div class="alert alert-primary" role="alert">
+              <strong>
+                <i class="${caracteristica.icono}"></i>
+                ${caracteristica.nombre}
+              </strong>
+            </div>
+          `;
+        });
+      }
+    }
+
+    function deleteCaracteristica (index) {
+      payloadCaracteristica.splice(index, 1);
+      renderCaracteristicasSelect();
+    }
+
+    function deleteCaracteristica_editar(index) {
+      payloadCaracteristica_editar.splice(index, 1);
+      renderCaracteristicasSelect_editar();
+    }
+
+    addPaquete.addEventListener('click', (event) => {
+      if(nombre.value != '' && descripcion.value != '' && precio.value != '') {
+        const data = {
+          nombre: nombre.value,
+          descripcion: descripcion.value,
+          precio: precio.value,
+          caracteristicas: JSON.stringify(payloadCaracteristica)
+        }
+
+        if(empresa_id.value != '') {
+          data.empresa_id = empresa_id.value;
+        }
+
+        save('/admin-paquetes/items', data, clearForm);
+      } else {
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Todos los campos son obligatorios',
+          showConfirmButton: false,
+          timer: 2500
+        })
+      }
+    });
+
+    updatePaquete.addEventListener('click', (event) => {
+      if(nombre_editar.value != '' && descripcion_editar.value != '' && precio_editar.value != '') {
+        const data = {
+          nombre: nombre_editar.value,
+          descripcion: descripcion_editar.value,
+          precio: precio_editar.value,
+          caracteristicas: JSON.stringify(payloadCaracteristica_editar)
+        }
+        updateItem(`/admin-paquetes/items/${id_editar.value}`, data, clearForm_editar);
+      } else {
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Todos los campos son obligatorios',
+          showConfirmButton: false,
+          timer: 2500
+        })
+      }
+    })
+
+    function clearForm (data) {
+      nombre.value = '';
+      descripcion.value = '';
+      precio.value = '';
+      payloadCaracteristica = [];
+      renderCaracteristicasSelect();
+      tabla.ajax.reload();
+      $('#nuevoPaqueteModal').modal('hide');
+    }
+    function clearForm_editar(data) {
+      nombre_editar.value = '';
+      descripcion_editar.value = '';
+      precio_editar.value = '';
+      payloadCaracteristica_editar = [];
+      id_editar.value = '';
+      renderCaracteristicasSelect_editar();
+      tabla.ajax.reload();
+      $('#editarPaqueteModal').modal('hide');
+    }
+  //- FullCalendar
+  script.
+    addEventListener("DOMContentLoaded", () => {
+      renderCaracteristicasSelect();
+      let urlAjaxTable = '/admin-paquetes/datatable';
+      if (empresa_id.value != '') {
+        urlAjaxTable = `/admin-paquetes/datatable/${empresa_id.value}`;
+      }
+      tabla = $('#caracteristicasTable').DataTable({
+        fnCreatedRow: function (nRow, aData, iDataIndex) {
+          $(nRow).attr('id', `delete${aData.id}`);
+        },
+        dom: 'lBfrtip',
+        buttons: [
+          'copy', 'excel', 'pdf', 'print'
+        ],
+        processing: true,
+        serverSide: true,
+        ajax: urlAjaxTable,
+        searchDelay: 500,
+        columns: [
+          // nombre icono
+          { 
+            data: 'id', 
+            name: 'id', 
+            title: "ID", 
+            orderable: false,
+            searchable: false
+          },
+          { data: 'nombre', name: 'nombre', title: "Nombre"},
+          {
+            data: 'descripcion',
+            name: 'descripcion',
+            title: 'Descripcion'
+          },
+          {
+            data: 'precio',
+            name: 'precio',
+            title: 'Precio',
+            render: function (data, type, row) {
+              return `S/. ${data}`
+            },
+            orderable: false,
+            searchable: false
+          },
+          {
+            data: 'caracteristicas',
+            name: 'caracteristicas',
+            title: 'Caracteristicas',
+            render: function (data, type, row) {
+              return `
+                <span class="badge badge-primary">${JSON.parse(row.caracteristicas).length}</span>
+              `
+            },
+            orderable: false,
+            searchable: false
+          },
+          { 
+            data: 'acciones', 
+            value: "Acciones",
+            render: function (data, type, row) {
+              return `
+                <button class="btn btn-primary btn-sm" onclick='editarCaracteristicas(${JSON.stringify(row)})'>Editar</button>
+                <button class="btn btn-info btn-sm" onclick='mostrarCaracteristicas(${JSON.stringify(row)})'>Mostrar</button>
+                <button class="btn btn-danger btn-sm" onclick="beforeDeleteItem('/admin-paquetes/items/${row.id}', deleteItemSuccess)">Eliminar</button>
+              `
+            },
+            orderable: false,
+            searchable: false
+          }
+        ]
+      });
+    });
+
+    function deleteItemSuccess(data) {
+      tabla.row($(`#${data.target}`)).remove().draw();
+    }
+
+    nuevoPaquete.addEventListener('click', () => {
+      $('#nuevoPaqueteModal').modal('show');
+    });
+
+    agregarCaracteristica.addEventListener('click', (event) => {
+      //- event.preventDefault();
+      const caracteristica = JSON.parse(caracteristicaSelect.options[caracteristicaSelect.selectedIndex].getAttribute('target-data'));
+      const caracteristicaIndex = payloadCaracteristica.findIndex((item) => item.id === caracteristica.id);
+      if (caracteristicaIndex === -1) {
+        payloadCaracteristica.push(caracteristica);
+        renderCaracteristicasSelect();
+      } else {
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Caracteristica ya agregada',
+          showConfirmButton: false,
+          timer: 2500
+        })
+      }
+    });
+
+    agregarCaracteristica_editar.addEventListener('click', (event) => {
+      //- event.preventDefault();
+      const caracteristica = JSON.parse(caracteristicaSelect_editar.options[caracteristicaSelect_editar.selectedIndex].getAttribute('target-data'));
+      const caracteristicaIndex = payloadCaracteristica_editar.findIndex((item) => item.id === caracteristica.id);
+      if (caracteristicaIndex === -1) {
+        payloadCaracteristica_editar.push(caracteristica);
+        renderCaracteristicasSelect_editar();
+      } else {
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Caracteristica ya agregada',
+          showConfirmButton: false,
+          timer: 2500
+        })
+      }
+    });
+
+    function editarCaracteristicas(data) {
+      nombre_editar.value = data.nombre;
+      descripcion_editar.value = data.descripcion;
+      precio_editar.value = data.precio;
+      payloadCaracteristica_editar = JSON.parse(data.caracteristicas);
+      renderCaracteristicasSelect_editar();
+      id_editar.value = data.id;
+      $('#editarPaqueteModal').modal('show');
+    }
+
+    function mostrarCaracteristicas(data) {
+      console.log(data.caracteristicas);
+      nombre_mostrar.value = data.nombre;
+      descripcion_mostrar.value = data.descripcion;
+      precio_mostrar.value = data.precio;
+      payloadCaracteristica_mostrar = JSON.parse(data.caracteristicas);
+      renderCaracteristicasSelect_mostrar();
+      $('#mostrarPaqueteModal').modal('show');
+    }

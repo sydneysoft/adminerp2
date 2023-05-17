@@ -1,0 +1,12 @@
+extends ../layout.pug
+
+append contenido 
+  .border-bottom.border-left.border-right.rounded-bottom.p-3
+    .my-3.table-responsive 
+      table#superadmin.table.rounded-lg
+        thead.thead-dark
+        
+  include /superadmin.pug
+
+  script.
+    superadminTableInit ('superadmin', '/admin-tv/directores/empresa')

@@ -1,0 +1,52 @@
+script.
+  const handleStockFactura=(idSearch)=>{
+    let valCantidadActual=$('#stock'+idSearch).val();
+    if(valCantidadActual){
+      valCantidadActual=parseInt(valCantidadActual);
+      let indexSearch = arrayProductsFactura.findIndex(obj => obj.id==idSearch);
+      if(valCantidadActual <= arrayProductsFactura[indexSearch].stock){
+        let subtotalHandled=parseInt(arrayProductsFactura[indexSearch].price);
+        subtotalHandled=subtotalHandled*valCantidadActual;
+        let discountData=parseInt(arrayProductsFactura[indexSearch].descuento);
+        let finalDataHandled=(subtotalHandled*discountData) / 100;
+        finalDataHandled=subtotalHandled-finalDataHandled;
+
+        arrayProductsFactura[indexSearch].subtotal=finalDataHandled;
+        arrayProductsFactura[indexSearch].cantidad=valCantidadActual;
+        $('#valuetotal'+idSearch).val(finalDataHandled);
+      }else{
+        let subtotalHandled=parseInt(arrayProductsFactura[indexSearch].price);
+        let discountData=parseInt(arrayProductsFactura[indexSearch].descuento);
+        let finalDataHandled=(subtotalHandled*discountData) / 100;
+        finalDataHandled=subtotalHandled-finalDataHandled;
+        c[indexSearch].subtotal=finalDataHandled;
+        arrayProductsFactura[indexSearch].cantidad=1;
+        $('#stock'+idSearch).val(1);
+        $('#valuetotal'+idSearch).val(finalDataHandled);
+        Swal.fire({
+          position: 'center',
+          icon: 'info',
+          html: '#{translation.ALERTS.NUMBER_MUST_NOT_INCREASE_AVAILABLE_STOCK}'+arrayProductsFactura[indexSearch].stock+'.',
+          showConfirmButton: false,
+          timer: 2500
+        });  
+      }
+    }else{
+      let indexSearch = arrayProductsFactura.findIndex(obj => obj.id==idSearch);
+      let subtotalHandled=parseInt(arrayProductsFactura[indexSearch].price);
+      let discountData=parseInt(arrayProductsFactura[indexSearch].descuento);
+      let finalDataHandled=(subtotalHandled*discountData) / 100;
+      finalDataHandled=subtotalHandled-finalDataHandled;
+      arrayProductsFactura[indexSearch].subtotal=finalDataHandled;
+      arrayProductsFactura[indexSearch].cantidad=1;
+      $('#stock'+idSearch).val(1);
+      $('#valuetotal'+idSearch).val(finalDataHandled);
+      Swal.fire({
+        position: 'center',
+        icon: 'info',
+        html: '#{translation.ALERTS.MUST_BE_VALID_NUMBER}',
+        showConfirmButton: false,
+        timer: 2500
+      }); 
+    }
+  }

@@ -1,0 +1,168 @@
+extends ../layout.pug
+
+append contenido 
+  .border-bottom.border-left.border-right.rounded-bottom.p-3
+      input#empresa_id(type="number" value=empresa_id hidden)
+      .my-3.row.justify-content-between 
+        .col 
+          button.btn.btn-info(type='button' onclick="window.history.back()") #{translation.BACK}
+        .col.text-right
+          button#createButton.btn.btn-primary(type='button') #{translation.SAVE}
+      .my-3 
+          .row 
+            .col-12.col-md-8 
+              .form-group
+                label(for='nombre') #{translation.FORM.NAME}
+                input#nombre.form-control(type='text' placeholder=translation.FORM.NAME name="nombre" required)
+            .col-12.col-md-4 
+              .form-group
+                label(for='direccion') #{translation.FORM.ADDRESS}
+                input#direccion.form-control(type='text' placeholder=translation.FORM.ADDRESS name="direccion")
+          .row 
+            .col-12.col-md-8
+              .form-group   
+                label(for="descripcion") #{translation.FORM.DESCRIPTION} 
+                textarea#descripcion(placeholder=translation.FORM.DESCRIPTION)
+            .col-12.col-md-4 
+              .row.align-items-end
+                .col-8 
+                  .form-group
+                    label(for='nombre') #{translation.FORM.SCHEDULE}
+                    select#horarios.form-control(name="nombre" data-selected="0")
+                      option(value="0") #{translation.FORM.NO_SCHEDULE}
+                      option(value="siempre_abierto") #{translation.FORM.ALWAYS_OPEN}
+                .col-4 
+                  .form-group 
+                    button#insertar_horario(type="button" class="btn btn-primary btn-block") #{translation.INSERT}
+              .row 
+                .col-12#horarios_insertados
+              
+              .form-group.mt-1
+                label(for='ubicacion') #{translation.FORM.MAP_LINK}
+                input#ubicacion.form-control(type='text' placeholder=translation.FORM.MAP_LINK name="ubicacion")
+              .form-group
+                label(for='correo') #{translation.FORM.EMAIL}
+                input#correo.form-control(type='email' placeholder=translation.FORM.EMAIL name="correo")
+              .form-group
+                label(for='telefono') #{translation.FORM.CELULAR}
+                input#telefono.form-control(type='text' placeholder=translation.FORM.CELULAR name="telefono")
+    
+  script.
+    const editor = CKEDITOR.replace('descripcion');
+
+  script.
+    const nombre = document.getElementById('nombre');
+    const horarios = document.getElementById('horarios');
+    const direccion = document.getElementById('direccion');
+    const ubicacion = document.getElementById('ubicacion');
+    const correo = document.getElementById('correo');
+    const telefono = document.getElementById('telefono');
+
+    const clearForm = () => {
+      nombre.value = '';
+      horarios.value = 0;
+      direccion.value = '';
+      ubicacion.value = '';
+      correo.value = '';
+      telefono.value = ''
+      editor.setData('', '');
+    }
+
+    const getHorarios = () => {
+      $.ajax({
+        method: 'GET',
+        dataType: 'json',
+        url: '/admin-horarios/for',
+        success: (result) => {
+          if(result.data.length > 0) {
+            const  data  = result.data;
+            for(let i = 0; i < data.length; i++) {
+              horarios.appendChild(horarioOption(data[i], horarios.getAttribute('data-selected')));
+            }
+          }
+        }
+      })
+    };
+
+    getHorarios();
+
+
+    const horarioOption = (data, selected = 0) => {
+      const newOption = document.createElement('option');
+      newOption.value = data.id
+      newOption.innerHTML = `${data.dia_de} a ${data.dia_a} de ${data.hora_de} a ${data.hora_a}`
+      if(selected == data.id) {
+        newOption.selected = true
+      }
+      return newOption
+    };
+
+    const horarios_selected = [];
+    let h_insertador = document.getElementById('horarios_insertados');
+
+    function editeHorarioSelected () {
+      const hs = document.getElementById('edite_horarios_selected').getAttribute('data-target');
+      if (typeof hs === 'string') {
+        horarios_selected.push(...JSON.parse(hs));
+      } else if (Array.isArray(hs)) {
+        horarios_selected.push(...hs);
+      }
+      horarios_loop();
+    }
+
+    function horarios_loop () {
+      h_insertador.innerHTML = '';
+      for(let i = 0; i < horarios_selected.length; i++) {
+        h_insertador.innerHTML += `
+        <div class="alert alert-info row justify-content-between" data-target="${horarios_selected[i].id}">
+          <div>
+            ${horarios_selected[i].text}
+          </div>
+          <button id="horario${horarios_selected[i].id}" class="close">x</button>
+        </div>
+        `;
+        document.getElementById(`horario${horarios_selected[i].id}`).addEventListener('click', (event) => {
+          console.log( event.target.parentNode.getAttribute('data-target'), event.target.parentNode)
+          for (let j = 0; j < horarios_selected.length; j++) {
+            if (horarios_selected[j].id == event.target.parentNode.getAttribute('data-target')) {
+              horarios_selected.splice(j, 1);
+            }
+          }
+          horarios_loop();
+        });
+      }
+    }
+
+    function insertar_horario () {
+      if(horarios.value != 0) {
+        for (let i = 0; i < horarios_selected.length; i++) {
+          if (horarios_selected[i].id == horarios.value) return false;
+        }
+        horarios_selected.push({id: horarios.value, text: horarios.options[horarios.selectedIndex].text});
+        horarios_loop();
+      }
+      horarios.selectedIndex = 0;
+    }
+
+  
+  script
+    include ../../../js/modulo-tv/save.js
+
+  script.
+    document.getElementById('createButton').addEventListener('click', (event) => {
+      save('/admin-contactos/contactos', {
+        nombre: nombre.value,
+        descripcion: editor.getData(),
+        direccion: direccion.value,
+        ubicacion: ubicacion.value,
+        correo: correo.value,
+        telefono: telefono.value,
+        horario_id: JSON.stringify(horarios_selected),
+      });
+      horarios_selected.splice(0,horarios_selected.length)
+      horarios_loop();
+    });
+
+    document.getElementById('insertar_horario').addEventListener('click', function () {
+      insertar_horario();
+    });

@@ -1,0 +1,21 @@
+html
+    head
+        meta(charset="utf-8")
+        title Inkalandia
+        script(src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous")
+    body 
+        form(method='post' action='https://sandbox.checkout.payulatam.com/ppp-web-gateway-payu/')
+            input(name='merchantId' type='text' value=merchant_id)
+            input(name='accountId' type='text' value=accountId)
+            input(name='description' type='text' value='Ventas Inkalandia')
+            input(name='referenceCode' type='text' value=referenceCode)
+            input(name='amount' type='text' value=precioData)
+            input(name='tax' type='text' value='0')
+            input(name='taxReturnBase' type='text' value='0')
+            input(name='currency' type='text' value='PEN')
+            input(name='signature' type='text' value=signature)
+            input(name='test' type='text' value='1')
+            input(name='buyerEmail' type='text' value=correo)
+            input(name='responseUrl' type='text' value='https://google.com')
+            input(name='confirmationUrl' type='text' value='http://www.test.com/confirmation')
+            input(name='Submit' type='submit' value='Enviar')

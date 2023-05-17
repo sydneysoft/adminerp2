@@ -1,0 +1,70 @@
+script.
+  //Manejar Datos en el Modal Para editar Marcas
+  const editarPedido = (
+    id
+  ) => {
+    $("#facturacion").empty();
+    $("#envio").empty();
+    $("#pago").empty();
+    $("#resumen").empty();
+    $.ajax({
+      method: "GET",
+      url: `/admin-pedidos/${id}`,
+      dataType: "json",
+      success: function (data) {
+        console.log("DATA", data)
+        if (data.status == "success") {
+          const info = data.data[0]
+          //- const ciudad = data.ciudad[0]
+
+          $("#idItem").val(info.id)
+          //- $("#facturacion").append(`
+          //- <b>Datos Contacto</b>
+          //-   <p>${info.usuario}<p>
+          //-   <p>${info.celular}<p>
+          //- <b>Datos de envio</b>
+          //-   <p>${info.direccion_entrega}<p>
+          //-   <p>${info.direccion_opcional}<p>
+          //-   <p>${info.cod_postal}<p>
+          //-   <p>${ciudad.CiudadNombre},${ciudad.CiudadDistrito} <p>  
+          //- `)
+          $("#facturacion").append(`
+          <b>Datos Contacto</b>
+            <p>${info.usuario}<p>
+            <p>${info.celular}<p>
+          <b>Datos de envio</b>
+            <p>${info.direccion_entrega}<p>
+            <p>${info.direccion_opcional}<p>
+            <p>${info.cod_postal}<p>
+          `)
+
+          $("#pago").append(`
+          <b>Facturación</b>
+            <p>${info.fecha_registro}<p>
+            <p>${info.moneda} ${info.suma_subtotal}<p>
+            <p>${info.tipo_pago} - ${info.payment_id}<p>
+          `)
+
+          $("#envio").append(`
+          <b>#{translation.SHIPPING}</b>
+            <p>${info.valor_env == 0 ? "#{translation.FORM.IN_PERSON}" : "#{translation.FORM.WITH_SHIPPING} "}<p>
+            <p>${info.moneda} ${info.valor_env}<p>
+          `)
+
+          data.productos.map(i => {
+
+            $("#resumen").append(`
+            <p><img width="40px" src=${i.imagen}> ${i.name} </p>
+            <p>#{translation.PRICE}:${i.precio}</p>
+            <p>#{translation.QUANTITY}:${i.cantidad} </p>
+            <br>
+          `)
+
+          })
+        }
+      }
+    })
+    $("#editarPedido").modal("show");
+
+
+  };

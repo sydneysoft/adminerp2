@@ -1,0 +1,50 @@
+extends ./layout.pug
+
+append contenido
+  .container-fluid
+    .row.justify-content-end
+      if empresa_id
+        include /mixins/btn/back.pug
+        input#empresa_id(type="text" value=empresa_id hidden)
+        .col-md-6.col-6
+          +btn-back()
+      .col-md-6.col-6.text-right 
+        button.btn.btn-primary(role="button" data-toggle="modal" data-target="#nuevoTestimonioModal") #{translation.CREATE}
+          i.fas.fa-plus.ml-3
+
+    .row.mt-3
+      .col-md-4.col-6(style="max-width: 400px")
+        label.font-weight-bold.datev-label #{translation.MASSIVE_ACTIONS}
+          .row
+            .col-md-8.col-12
+              select#acciones.form-control
+                option(value=null) #{translation.SELECT}
+                option(value="0") #{translation.DELETE}
+            .col-md-4.col-12
+              button#accionesBoton(class="btn btn-success-2") #{translation.CONFIRM}
+    
+    .row.mt-3
+      .col-12 
+        div.table-responsive 
+          table#tabla-testimonios.w-100.table
+            thead.thead-dark
+            tbody 
+            tfoot 
+
+  include ./modals/crear-testimonio.pug
+  include ./modals/editar-testimonio.pug
+
+
+  script
+    include /js/modulo-tv/delete.js
+  
+  script.
+    
+  
+  include ./save/testimonio.pug
+  include ./update/testimonio.pug
+  include ./delete/testimonio.pug
+  script.
+
+  include ./datatable/testimonios.pug
+

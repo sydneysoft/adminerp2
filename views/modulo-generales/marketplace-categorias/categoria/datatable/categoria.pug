@@ -1,0 +1,44 @@
+script.
+  addEventListener('DOMContentLoaded', () => {
+    tabla = $('#marketplace').DataTable({
+      events: empresas,
+      columns: [
+        { data: 'id', name: 'id', title: 'ID'},
+        { data: 'nombre' },
+        { 
+          data: 'acciones',
+          name: 'acciones',
+          title: '#{translation.FORM.ACTIONS}',
+          render: (data, type, row) => {
+            if (row.categorias) {
+              return `
+                <button class="btn btn-danger btn-sm" onclick='removerEmpresa(${JSON.stringify(row.categorias[0])})'>
+                  #{translation.REMOVE}
+                </button>
+              `;
+            }
+            return `
+              <button class="btn btn-primary btn-sm" onclick="agregarEmpresa({empresa_id: ${row.id}, categoria_id: ${categoria_id.value}})">
+                #{translation.ADD}
+              </button>
+            `;
+          }
+        }
+      ]
+    });
+
+
+    if(Array.isArray(empresa_server) && empresa_server.length > 0) {
+      empresa_server.forEach(empresa => {
+        empresas.push(empresa);
+      });
+      reloadTabla();
+    }
+
+  });
+
+  function reloadTabla () {
+    tabla.clear();
+    tabla.rows.add(empresas);
+    tabla.draw();
+  }

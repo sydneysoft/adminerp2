@@ -1,0 +1,49 @@
+script.
+  addSede.addEventListener('click', () => {
+
+    if (nombre.value != '' && direccion.value != '') {
+      const data = {
+        nombre: nombre.value,
+        direccion: direccion.value,
+        googlemap: googlemap.value,
+        imagen: imagen.value,
+        telefono: telefono.value,
+        //- atencion: atencion.value,
+        horario_atencion: JSON.stringify(horario_atencion),
+        estado: estado.value,
+        activado: activado.value,
+      }
+      if (empresa_id && empresa_id.value != '') {
+        data.empresa_id = empresa_id.value;
+      }
+      const url = '/admin-clinica/sedes/items';
+
+      save(url, data, saveItemSuccess);
+
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Debe llenar todos los campos con *',
+        timer: 2000
+      })
+    }
+  });
+
+  function saveItemSuccess (data) {
+    if (typeof tablaClinicaSedes != "undefined") {
+      tablaClinicaSedes.ajax.reload();
+    }
+    nombre.value = '';
+    direccion.value = '';
+    googlemap.value = '';
+    imagen.value = '';
+    telefono.value = '';
+    atencion.value = '';
+    estado.value = '';
+    activado.value = '';
+  }
+
+  function nuevaSede() {
+    createImageGroup('imagen', 'imagenFile', 'mostrarImagen', 'galeriaImagen');
+  }

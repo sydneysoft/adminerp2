@@ -1,0 +1,15 @@
+.modal.fade#nuevoInsumoModal(tabindex="-1" role="dialog")
+  .modal-dialog.modal-md(role="document")
+    .modal-content
+      .modal-body
+        .row
+          .col-12
+            .form-group
+              label(for="nombre") #{translation.FORM.NAME} *
+              input#nombre.form-control(type="text" placeholder=translation.FORM.NAME)
+          
+      .modal-footer
+        button#guardarInsumo.btn.btn-success.nuevo(type="button" onclick="") #{translation.ADD}
+          i.fas.fa-save.ml-2
+        button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}
+          i.fas.fa-times-circle.ml-2

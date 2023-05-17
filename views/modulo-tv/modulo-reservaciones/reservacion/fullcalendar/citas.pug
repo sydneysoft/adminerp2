@@ -1,0 +1,77 @@
+script.
+  let configuracion = {};
+  let auxConfiguracion = !{JSON.stringify(configuracion)}; // configuracion viene del servidor
+  
+  if (Array.isArray(auxConfiguracion) && auxConfiguracion.length > 0) {
+    configuracion = JSON.parse(auxConfiguracion[0].campos);
+  } 
+  document.addEventListener('DOMContentLoaded', function () {
+    const pacienteSelect2Editar = $("#editarPaciente").select2()
+
+    var calendarEl = document.getElementById('calendario');
+    calendar = new FullCalendar.Calendar(calendarEl, {
+      ...configuracion,
+      locale: 'es',
+      initialView: 'timeGridWeek',
+      // themeSystem: 'bootstrap',
+      headerToolbar: {
+        start: 'title', // will normally be on the left. if RTL, will be on the right
+        center: '',
+        end: 'today prev,next' // will normally be on the right. if RTL, will be on the left
+      },
+      aspectRatio: 2,
+      selectable: true,
+      editable: true,
+      droppable: true,
+      nowIndicator: true,
+      dateClick: function (info) {
+        console.log(info)
+        if(!esHabil(info)) {
+          alertFechaInvalida();
+          return;
+        }
+        start.value = moment(info.date).format('YYYY-MM-DDTHH:mm');
+        end.value = moment(info.date).add(30, 'minutes').format('YYYY-MM-DDTHH:mm');
+        $('#nuevaCita').modal('show');
+      },
+      eventClick: function (info) {
+        if (info.event.extendedProps.data) {
+          const { data } = info.event.extendedProps;
+          nombre_editar.value = data.nombre;
+          email_editar.value = data.correo;
+          telefono_editar.value = data.celular;
+          color_editar.value = data.color;
+          start_editar.value = moment(data.start).format('YYYY-MM-DDTHH:mm');
+          end_editar.value = moment(data.end).format('YYYY-MM-DDTHH:mm');
+          itemId.value = data.id;
+          $('#editarCita').modal('show');
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: #{translation.FORM.CANT_EDIT_THIS_APPOINTMENT}
+          })
+        }
+      },
+      eventDrop: function (info) {
+        if (!esHabilDD(info)) {
+          info.revert()
+          alertFechaInvalida();
+          return;
+        }
+        actualizarFechaCita(info.event.id, info.event.start, info.event.end);
+      },
+      eventResize: function (info) {
+        if (!esHabilDD(info)) {
+          info.revert()
+          alertFechaInvalida();
+          return;
+        }
+        actualizarFechaCita(info.event.id, info.event.start, info.event.end);
+      }
+
+    });
+    calendar.render();
+    getEvents();
+
+  });

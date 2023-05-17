@@ -1,0 +1,152 @@
+extends ../../extends/menu-superior-admin
+block contenido
+    .row
+        .col-12.text-grey(style="margin-bottom:10px;")
+            h1.display-1
+                strong #{translation.SESSION_USERS}
+        
+        if hide==false
+        
+            .col-12.d-md-flex.justify-content-center
+                .col-3.input-group.my-2
+                    label.my-auto.mx-1 #{translation.ITEMS}: 
+                    select.form-select.py-0.my-0
+                        each qty in paginationOp.listItemsPerPage
+                            if qty === paginationOp.selectItemPerPage
+                                option.py-0.my-0(selected, value=qty) #{qty < 0 ? 'todo' : qty}
+                            else 
+                                option.py-0.my-0(value=qty) #{qty < 0 ? 'Todo' : qty}
+                    label.my-auto.mx-1  #{translation.OF}   
+                        b #{paginationOp.total}
+        
+        
+          
+            .col-9.col-md-3.my-1.align-bottom
+                - var search =  paginationOp && paginationOp.search ? paginationOp.search.trim().split(",").join(" ") : "";
+                span.py-0.my-0.mx-1 #{translation.SEARCH} 
+                .col-12.m-0.p-0.input-group
+                    input#searchText.form-control(type="text", value=search, name="search", placeholder="Buscar")
+            .col-5.col-md-5.my-1.input-group
+                - var date =  paginationOp && paginationOp.date ? paginationOp.date : [null, null];
+                .col-6.px-0.mx-0
+                    span.py-0.my-0.mx-2 #{translation.FORM.DATE_FROM}
+                    input#filterDateFrom.form-control.mx-2(type="date", value=date[0],  name="date-from", max=date[1])
+                .col-6.px-0.mx-0
+                    span.py-0.my-0.mx-2 #{translation.FORM.DATE_UNTIL}
+                    input#filterDateUntil.form-control.mx-2(type="date", value=date[1], name="date-until", min=date[0])
+            .col-12.col-md-1.my-1.d-flex.justify-content-center.align-items-end
+                .col-12
+                    button#btnFilterClean.btn.btn-outline-secondary(type="button") 
+                        i.fas.fa-solid.fa-trash
+        .col-12
+            div.table-responsive
+                table.table.table-bordered(style="font-size: 14px;")
+                    thead.thead-dark
+                        tr
+                            th.text-center #{translation.FORM.DATE_TIME}
+                            th.text-center #{translation.FORM.USER}
+                            th.text-center #{translation.FORM.EMAIL}
+                            th.text-center #{translation.FORM.IP_ADDRESS}
+                            th.text-center #{translation.FORM.DEVICE}
+                            th.text-center #{translation.FORM.BROWSER}
+                            th.text-center #{translation.FORM.PLATFORM}
+                            th.text-center #{translation.FORM.STATE}
+
+
+                    tbody(style="font-size: 14px;")
+                        each user, index in dataUsers
+                            tr 
+                                td.text-center=user.ultima_conexion === "Fecha inválida" ? " " : user.ultima_conexion 
+                                - var fullName = user.nombre + " " + user.apellido
+                                td.text-center.align-middle=fullName
+                                td.text-center.align-middle=user.correo
+                                td.text-center.align-middle=user.ip
+                                td.text-center.align-middle=user.device
+                                td.text-center.align-middle=user.browser
+                                td.text-center.align-middle=user.platform
+                                if user.session_status === 'online'
+                                    td.text-center.text-success.align-middle #{translation.FORM.ACTIVE}
+                                else 
+                                    td.text-center.text-danger.align-middle #{translation.FORM.CLOSED}: #{user.session_status}
+            .col-12 
+                ul.pagination.justify-content-center
+                    - var pageNumber = 1;
+                    while pageNumber < paginationOp.pages
+                        if pageNumber === paginationOp.page
+                            li.page-item.disabled
+                                a.page-link(href="#", data="#{pageNumber}") #{pageNumber++} 
+                        else
+                            li.page-item
+                                a.page-link(href=`/admin-sesiones?page=${pageNumber}&items=${paginationOp.selectItemPerPage}`, data="#{pageNumber}") #{pageNumber++}
+    script.
+        let page = #{paginationOp.page};
+        let items = #{paginationOp.selectItemPerPage};
+
+        function getDatesUrl() {
+            let query = `/admin-sesiones`;
+            const date = [];
+            date[0] = $('#filterDateFrom').val();
+            date[1] = $('#filterDateUntil').val();
+            const search = $('#searchText').val();
+
+            if(!date[0] && !date[1]) return null;
+            if(date[0] !== "" && date[1] === "") {
+                query = `${query}?page=1&items=${items}&gt=${date[0]}`;
+            } else if(date[0] === "" && date[1] !== "") {
+                query = `${query}?page=1&items=${items}&lt=${date[1]}`;
+            } else if (date[0] !== "" && date[1] !== "") {
+                query = `${query}?page=1&items=${items}&bt=${date.join("B")}`;
+            }
+            if(search) query = `${query}&search=${search}`;
+            return query;
+        };
+        $('#btnFilterClean').click(function(e) {
+            e.preventDefault();
+            $(location).prop('href', "/admin-sesiones");
+            return;
+        })
+
+        $('#filterDateFrom').change(function(e) {
+            e.preventDefault();
+            const date = $('#filterDateFrom').val();
+            $('#filterDateUntil').attr("min", date);
+            const urlDate = getDatesUrl();
+            if(urlDate) $(location).prop('href', urlDate)
+        });
+
+        $('#filterDateUntil').change(function(e) {
+            e.preventDefault();
+            const date = $('#filterDateUntil').val();
+            $('#filterDateFrom').attr("max", date);
+            const urlDate = getDatesUrl();
+            if(urlDate) $(location).prop('href', urlDate)
+          
+        });
+
+
+        $('select').change(function(e) {
+            e.preventDefault();
+            items = e.target.value;
+            $(location).prop('href',`/admin-sesiones?page=1&items=${items}`)
+        })
+        
+        let typingTimer;                
+        let doneTypingInterval = 1000;   
+        let $input = $('#searchText');
+
+        $input.on('keyup', function () {
+          clearTimeout(typingTimer);
+          typingTimer = setTimeout(searchText, doneTypingInterval);
+        });
+
+        $input.on('keydown', function () {
+          clearTimeout(typingTimer);
+        });
+
+        function searchText () {
+            const tags = $input[0].value.trim().split(" ").join(",").toLowerCase();
+            if(!tags) $(location).prop('href',`/admin-sesiones?page=${page}&items=${items}`);
+            else if(!!getDatesUrl() && !tags) $(location).prop('href',`${getDatesUrl()}`);
+            else if(!!getDatesUrl() && !!tags) $(location).prop('href',`${getDatesUrl()}&search=${tags}`);
+            else $(location).prop('href',`/admin-sesiones?page=${page}&items=${items}&search=${tags}`);
+        }

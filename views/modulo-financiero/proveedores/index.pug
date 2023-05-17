@@ -1,0 +1,88 @@
+extends ../../extends/menu-superior-admin
+block contenido
+  .row
+    if empresa_id
+      input#empresa_id(type="text" value=empresa_id hidden)
+    .col-md-6.col-6.text-grey(style="margin-bottom:10px;")
+      h1.display-1
+        strong #{translation.PROVIDERS} 
+          //- span.light= `${proveedores.length} `
+      p.light #{translation.CREATE_MANAGE_PROVIDERS} 
+
+    .col-md-6.col-6.text-right 
+
+      button.btn.btn-success(type="button" onClick="nueva()")
+        i.fas.fa-plus
+          span   #{translation.NEW_PROVIDER}
+
+    .col-12 
+      div.table-responsive
+      table#tabla-proveedores.table.table-bordered
+        thead.thead-dark
+        //-     tr.table-head
+
+        //-         th.text-center Cód.
+        //-         th.text-left RUC
+        //-         th.text-left Nombre Empresa
+        //-         th.text-left Correo Corporativo
+        //-         th.text-center Dirección 
+        //-         th.text-center Nombre de contacto
+        //-         th.text-center Correo de contacto
+        //-         th.text-center Celular de contacto
+        //-         th.text-center Fecha de creación
+        //-         th.text-center Acción
+        //- tbody
+
+        //-     each data in  proveedores
+
+        //-         tr(id= data.id)
+        //-             td.text-center=data.id
+        //-             td.text-left=data.ruc
+        //-             td.text-left=data.nombre
+        //-             td.text-center=data.email_corporativo                            
+        //-             td.text-left=data.direccion
+        //-             td.text-center=data.nombre_contacto
+        //-             td.text-center=data.email_contacto
+        //-             td.text-center=data.telefono_contacto
+        //-             td.text-center=new Date(data.created_at).toJSON().slice(0,10)
+
+        //-             td(align='center').dropdown
+        //-                 a#dropdownMenuLink4.btn(href='#' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')
+        //-                     i.fas.fa-ellipsis-v
+        //-                 div.dropdown-menu(aria-labelledby='dropdownMenuButton')
+
+        //-                    a.dropdown-item(href='#' onclick="editar('"+data.id+"','"+data.nombre+"','"+data.ruc+"','"+data.razon_social+"','"+data.telefono_corporativo+"','"+data.email_corporativo+"','"+data.direccion+"','"+data.nombre_contacto+"','"+data.telefono_contacto+"','"+data.email_contacto+"')") Editar
+        //-                    a.dropdown-item(href='#' onclick="borrar('"+data.id+"')") Eliminar
+
+        //- tfoot
+        //-     tr.table-head
+        //-         th.text-center Cód.
+        //-         th.text-left RUC
+        //-         th.text-left Nombre Empresa
+        //-         th.text-left Correo Corporativo
+        //-         th.text-center Dirección 
+        //-         th.text-center Nombre de contacto
+        //-         th.text-center Correo de contacto
+        //-         th.text-center Celular de contacto
+        //-         th.text-center Fecha de creación
+        //-         th.text-center Acción
+  script(src="//cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.15/js/intlTelInput.js")
+  script
+    include /js/toast.sweet.js
+    
+  include ./modals/crear-proveedor.pug
+  include ./modals/editar-proveedor.pug
+  include ./styles/proveedores.pug
+
+  include ./save/proveedor.pug
+  include ./update/proveedor.pug
+  include ./delete/proveedor.pug
+
+  script
+    include ./script.js
+
+  include ./datatable/proveedor.pug
+
+
+
+

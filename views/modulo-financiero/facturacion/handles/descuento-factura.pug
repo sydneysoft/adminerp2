@@ -1,0 +1,43 @@
+script.
+  const handleDescuentoFactura=(idHandled)=>{
+    let valueDescount=$('#descuento'+idHandled).val();
+    let indexSearch = arrayProductsFactura.findIndex(obj => obj.id==idHandled);
+    let dataCantidadArray= parseInt(arrayProductsFactura[indexSearch].cantidad);
+    let dataPrecioArray= parseInt(arrayProductsFactura[indexSearch].price);
+    if(valueDescount){
+      valueDescount=parseInt(valueDescount);
+      if(valueDescount>=0 && valueDescount<=100){
+        let dataHandledDiscount=dataCantidadArray*dataPrecioArray;
+        dataHandledDiscount=(dataHandledDiscount*valueDescount)/100;
+        dataHandledDiscount=(dataCantidadArray*dataPrecioArray)-dataHandledDiscount;
+        arrayProductsFactura[indexSearch].descuento=valueDescount;
+        arrayProductsFactura[indexSearch].subtotal=dataHandledDiscount;
+        $('#descuento'+idHandled).val(valueDescount);
+        $('#valuetotal'+idHandled).val(dataHandledDiscount);
+      }else{
+        arrayProductsFactura[indexSearch].subtotal=dataCantidadArray*dataPrecioArray;
+        arrayProductsFactura[indexSearch].descuento=0;
+        $('#descuento'+idHandled).val(0);
+        $('#valuetotal'+idHandled).val(dataCantidadArray*dataPrecioArray);
+        Swal.fire({
+          position: 'center',
+          icon: 'info',
+          html: '#{translation.ALERTS.PERCENTAGE_DISOUNT_GREATER_THAN_0_LESS_100}',
+          showConfirmButton: false,
+          timer: 2500
+        }); 
+      }
+    }else{
+      arrayProductsFactura[indexSearch].subtotal=dataCantidadArray*dataPrecioArray;
+      arrayProductsFactura[indexSearch].descuento=0;
+      $('#descuento'+idHandled).val(0);
+      $('#valuetotal'+idHandled).val(dataCantidadArray*dataPrecioArray);
+      Swal.fire({
+        position: 'center',
+        icon: 'info',
+        html: '#{translation.ALERTS.MUST_BE_VALID_NUMBER}',
+        showConfirmButton: false,
+        timer: 2500
+      }); 
+    }
+  }

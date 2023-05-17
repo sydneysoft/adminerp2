@@ -1,0 +1,77 @@
+extends ../layout.pug
+
+append contenido 
+  .my-3
+    div
+      a.btn.btn-info(href="/admin-video-prime/documentales") 
+        i.fas.fa-arrow-left
+        span.px-3 #{translation.BACK}
+    h1.text-center.mb-5 
+      | #{translation.EDIT_DOCUMENTAL}
+  .my-3 
+    form#editarDocumental(action=`/admin-video-prime/documentales/${data.id}` method="post")
+      input#idItem(type="text" value=data.id hidden)
+      .row
+        .col-12.text-right 
+          button.btn.btn-primary(type="submit") #{translation.SAVE}
+        .col-12.my-3
+        .col-12 
+          .form-group
+            label(for='nombre') #{translation.FORM.NAME}
+            input#nombre.form-control(type='text' aria-describedby='nombreHelp' placeholder #{translation.FORM.NAME} value=data.nombre)
+            small#nombreHelp.form-text.text-muted.d-none #{translation.FORM.WRITE_THE_NAME}
+        .col-12.my-3
+        .col-12.col-md-8 
+          .form-group 
+            label(for="estracto") #{translation.FORM.EXTRACT} 
+            textarea#estracto.form-control(name="estracto" placeholder #{translation.FORM.WRITE_SHORT_DESCRIPTION})
+              |#{data.estracto}
+        .col-12.col-md-4 
+          .form-check
+            if data.external == '1'
+              input#external.form-check-input(type='checkbox' value='' checked)
+            else 
+              input#external.form-check-input(type='checkbox' value='')
+            label.form-check-label(for='external')
+              | #{translation.FORM.EXTERNAL_LINK}
+
+        .col-12.my-3
+        .col-12
+          label(for='thumbnail') #{translation.FORM.THUMBNAIL}
+          input#thumbnail.form-control(type='text'  placeholder #{translation.FORM.THUMBNAIL} value=data.thumbnail)
+        .col-12.my-3
+        .col-12.col-md-6
+          label(for='trailer') #{translation.FORM.TRAILER}
+          input#trailer.form-control(type='text'  placeholder #{translation.FORM.TRAILER} value=data.trailer)
+        .col-12.col-md-6
+          label(for='url') #{translation.FORM.EXTERNAL_LINK}
+          input#url.form-control(type='text'  placeholder #{translation.FORM.EXTERNAL_LINK} value=data.url)
+        .col-12.my-3
+        .col-12
+          .form-group 
+            label(for="body") #{translation.FORM.BODY} 
+            textarea#body(name="body") 
+              | #{data.body}
+
+
+  script.
+    const editor = CKEDITOR.replace('body')
+
+  script 
+    include ./documental.js
+    include ../../../js/modulo-tv/update.js
+
+  script.
+    const idItem = document.getElementById('idItem')
+    document.getElementById('editarDocumental').addEventListener('submit', (event) => {
+      event.preventDefault();
+      updateItem(`/admin-video-prime/documentales/documental/${idItem.value}`, {
+        nombre: nombre.value,
+        estracto: estracto.value,
+        external: externalDocumental.checked ? '1' : '0',
+        thumbnail: thumbnail.value,
+        url: url.value,
+        trailer: trailer.value,
+        body: editor.getData()
+      })
+    });

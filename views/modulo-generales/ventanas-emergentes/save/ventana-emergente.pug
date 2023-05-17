@@ -1,0 +1,63 @@
+script.
+  //Agregar Nueva Ventana Emergenete
+  const AgregarVentanaEmergenteAdmin = () => {
+
+    let imagen = $("#imagen-data-banner").attr("src");
+    let url = $("#urlNuevo-ventanas-admin").val();
+    let estado = $("#activadoNuevo-ventanas-admin").val();
+
+    if (imagen && url && estado) {
+      Swal.showLoading();
+      const auxData =  {
+        imagen: imagen,
+        url: url,
+        estado: estado,
+      }
+      if (typeof empresa_id && !isNaN(empresa_id.value)) {
+        auxData.empresa_id = empresa_id.value
+      }
+      $.ajax({
+        method: "POST",
+        url: "/admin-ventanas-emergentes",
+        dataType: "json",
+        data:auxData,
+        success: function (data) {
+          Swal.close();
+          if (data.ok) {
+            $("#nuevoBannerAdministrador").modal("hide");
+            if (typeof tablaVentanaEmergentes != 'undefined') {
+              tablaVentanaEmergentes.ajax.reload();
+            }
+          } else {
+            Swal.close();
+            Swal.fire({
+              position: "center",
+              icon: "error",
+              html: "<b>No se pudo agregar la Ventana Emergente.</b>",
+              showConfirmButton: false,
+              timer: 3500,
+            });
+          }
+        },
+        error: function () {
+          Swal.close();
+          Swal.fire({
+            position: "center",
+            icon: "error",
+            html: "<b>Ocurrió un error interno inténtalo más tarde.</b>",
+            showConfirmButton: false,
+            timer: 3500,
+          });
+        },
+      });
+    } else {
+      Swal.fire({
+        position: "center",
+        icon: "info",
+        html: "<b>Debes completar el formulario.</b>",
+        showConfirmButton: false,
+        timer: 2500,
+      });
+    }
+  };
+

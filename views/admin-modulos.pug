@@ -1,0 +1,307 @@
+extends extends/menu-superior-admin
+block contenido
+    .row
+        .col-12.text-grey(style="margin-bottom:50px;")
+            h1.display-1
+                strong #{translation.MODULES_LIST}
+        .col-12(style="display:flex;justify-content:center")
+            button.btn.btn-success(style="margin-bottom:10px;", type="button",data-toggle="modal", data-target="#nuevoModuloAdmin")
+                i.fas-fa-plus
+                span #{translation.ADD_MODULES}
+    .container-table.table-responsive(style="margin-top:5px")
+        div.table.table-hover.table-miscitas(style="display:table;width:100%;")
+            div.table-head(style="display:table-row;")
+                div.text-center(style="display:table-cell;vertical-align: bottom;border-bottom: 2px solid #ddd;padding: 8px;line-height: 1.42857143;font-weight:bold;")
+                    span #{translation.FORM.NAME}
+                div.text-center(style="display:table-cell;vertical-align: bottom;border-bottom: 2px solid #ddd;padding: 8px;line-height: 1.42857143;font-weight:bold;")
+                    span #{translation.FORM.ACTIVE}
+                div.text-center(style="display:table-cell;vertical-align: bottom;border-bottom: 2px solid #ddd;padding: 8px;line-height: 1.42857143;font-weight:bold;")
+                    span #{translation.FORM.URL}
+            - var i=0;
+            each book in bookStore.modulos
+                - i++;
+                -var statusModuloAdmin = (book.activo=="0" ? 'Desactivado': 'Activado')
+                div.table-head.tabla-row(style="display:table-row;cursor:pointer;")
+                    div.text-center.notpadding(style="display:table-cell;padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;", data-toggle="modal", data-target="#info"+i)
+                        span=book.name
+                    div.text-center.notpadding(style="display:table-cell;padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;", data-toggle="modal", data-target="#info"+i)
+                        span=statusModuloAdmin
+                    div.text-center.notpadding(style="display:table-cell;padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;", data-toggle="modal", data-target="#info"+i)
+                        span=url_base+book.url
+                    div.text-center(style="display:table-cell;padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;white-space: nowrap;position:relative;")
+                        button.btn.btn-warning(onclick="handleDataEditModulos('"+book.Id+"','"+book.name+"','"+book.url+"','"+book.icono+"','"+book.texto+"','"+book.orden+"','"+book.fuente+"','"+book.roles+"','"+book.activo+"')")
+                            i.fa.fa-edit
+                        button.btn.btn-danger(type="button" onclick="deleteModuloAdminPanel('"+book.Id+"')",style="margin-left:8px")
+                            i.fa.fa-trash
+                
+                .modal.modalnotpadding(tabindex="-1" role="dialog", id="info"+i)
+                    .modal-dialog.modal-lg.margenModal
+                        .modal-content.modalContent
+                            .modal-header 
+                                .row(style="margin:0;")
+                                    .col-md-4.responsive
+                                        div.hei
+                                            div(style="text-align:right;width:100%;font-size:16px;position:relative;")
+                                            
+                                                div(style="display:inline-block;margin:0px 10px;position:relative;")
+                                                    button.EditarPacientes(style="border:none;background:transparent;padding:5px;", onclick="handleDataEditModulos('"+book.Id+"','"+book.name+"','"+book.url+"','"+book.icono+"','"+book.texto+"','"+book.orden+"','"+book.fuente+"','"+book.roles+"','"+book.activo+"')")
+                                                        <span class="glyphicon glyphicon-edit"></span>
+                                                        div.targetEditar 
+                                                            span(style="padding: 2px 7px;color: #fff;background: rgba(0,0,0,0.55);border-radius: 3px;font-size: 12px;") #{translation.EDIT}
+
+                                                div(style="display:inline-block;position:relative;margin:0px 10px;")
+                                                    button.tres.tresPaciente(style="border:none;background:transparent;position:relative;padding:5px;")
+                                                        <span class="glyphicon glyphicon-option-vertical"></span>
+                                                        div.targetTres 
+                                                            span(style="padding: 2px 7px;color: #fff;background: rgba(0,0,0,0.55);border-radius: 3px;font-size: 12px;") #{translation.MORE_ACTIONS}
+                                                    div.campoOculto(style="position:absolute;right:5px;top:30px;background:#fff;;box-shadow: 0 1px 4px rgb(0 0 0 / 50%);width:950%;display:none;z-index:999;padding:10px 0;")
+                                                        div
+                                                            button.subtres(type="button", onclick="printDiv('campo"+i+"')")
+                                                                span.glyphicon.glyphicon-print(style="font-size:13px;")
+                                                                span(style="padding-left:10px;") #{translation.PRINT}
+                                                        div
+                                                            button.subtres(type="button")
+                                                                span.glyphicon.glyphicon-download-alt(style="font-size:13px;")
+                                                                span(style="padding-left:10px;") #{translation.EXPORT}
+                                                        div(style="border-bottom:1px solid rgba(0,0,0,0.12);padding:0 0 10px 0;")
+                                                            button.subtres(type="button")
+                                                                i.fas.fa-trash(style="font-size:13px;")
+                                                                span(style="padding-left:10px;") #{translation.DELETE}
+                                                        div(style="padding:10px 0 0 0;")
+                                                            button.subtres(type="button")
+                                                                span.glyphicon.glyphicon-calendar(style="font-size:13px;")
+                                                                span(style="padding-left:10px;") #{translation.IMPORTED_DATE}
+                                                div(style="display:inline-block;margin:0px 0px 0px 10px;position:relative;  ")
+                                                    button.cerrarPaciente(style="border:none;background:transparent;padding:5px;", data-dismiss="modal", aria-label="close")
+                                                        <span class="glyphicon glyphicon-remove"></span>
+                                                        div.targetCerrar 
+                                                            span(style="padding: 2px 7px;color: #fff;background: rgba(0,0,0,0.55);border-radius: 3px;font-size: 12px;") Cerrar
+                                    .col-md-8 
+                                        .row(style="margin:0 0 0px 0;")
+                                            .col-md-2(style="padding:0;")
+                                                div.imgPaciente
+                                                    div
+                                                        div(style="margin:0px 0;text-align:center;")
+                                                            img(src="images/icono.jpg",style="width:60px;border-radius:50%;")
+                                            .col-md-10(style="padding:0;")
+                                                div.nombrePaciente
+                                                    div
+                                                        h3=book.name
+                                                        div
+                                                            button.importado="Importado el 09/03/2021"
+                                    .col-md-4.notCell
+                                        div(style="height:110px;display:flex;justify-content:right;align-items:center;")
+                                            div(style="text-align:right;width:100%;font-size:16px;position:relative;")
+                                            
+                                                div(style="display:inline-block;margin:0px 10px;position:relative;")
+                                                    button.EditarPacientes(style="border:none;background:transparent;padding:5px;", onclick="handleDataEditModulos('"+book.Id+"','"+book.name+"','"+book.url+"','"+book.icono+"','"+book.texto+"','"+book.orden+"','"+book.fuente+"','"+book.roles+"','"+book.activo+"')")
+                                                        <span class="glyphicon glyphicon-edit"></span>
+                                                        div.targetEditar 
+                                                            span(style="padding: 2px 7px;color: #fff;background: rgba(0,0,0,0.55);border-radius: 3px;font-size: 12px;") #{translation.EDIT}
+
+                                                div(style="display:inline-block;position:relative;margin:0px 10px;")
+                                                    button.tres.tresPaciente(style="border:none;background:transparent;position:relative;padding:5px;")
+                                                        <span class="glyphicon glyphicon-option-vertical"></span>
+                                                        div.targetTres 
+                                                            span(style="padding: 2px 7px;color: #fff;background: rgba(0,0,0,0.55);border-radius: 3px;font-size: 12px;") #{translation.MORE_ACTIONS}
+                                                    div.campoOculto(style="position:absolute;right:5px;top:30px;background:#fff;;box-shadow: 0 1px 4px rgb(0 0 0 / 50%);width:950%;display:none;z-index:999;padding:10px 0;")
+                                                        div
+                                                            button.subtres(type="button", onclick="printDiv('campo"+i+"')")
+                                                                span.glyphicon.glyphicon-print(style="font-size:13px;")
+                                                                span(style="padding-left:10px;") #{translation.PRINT}
+                                                        div
+                                                            button.subtres(type="button")
+                                                                span.glyphicon.glyphicon-download-alt(style="font-size:13px;")
+                                                                span(style="padding-left:10px;") #{translation.EXPORT}
+                                                        div(style="border-bottom:1px solid rgba(0,0,0,0.12);padding:0 0 10px 0;")
+                                                            button.subtres(type="button")
+                                                                i.fas.fa-trash(style="font-size:13px;")
+                                                                span(style="padding-left:10px;") #{translation.DELETE}
+                                                        div(style="padding:10px 0 0 0;")
+                                                            button.subtres(type="button")
+                                                                span.glyphicon.glyphicon-calendar(style="font-size:13px;")
+                                                                span(style="padding-left:10px;") #{translation.IMPORTED_DATE}
+                                                div(style="display:inline-block;margin:0px 0px 0px 10px;position:relative;  ")
+                                                    button.cerrarPaciente(style="border:none;background:transparent;padding:5px;", data-dismiss="modal", aria-label="close")
+                                                        <span class="glyphicon glyphicon-remove"></span>
+                                                        div.targetCerrar 
+                                                            span(style="padding: 2px 7px;color: #fff;background: rgba(0,0,0,0.55);border-radius: 3px;font-size: 12px;") #{translation.CLOSE}
+                                        
+                            .modal-body.borderBottom(id="campo"+i)
+                                .row(style="margin:0;")
+                                    .col-md-12
+                                        h4(style="margin:0 0 10px;") #{translation.DOCTORS_DETAILS}:
+                                    .col-md-12 
+                                        div(style="color:#000;font-size:17px;margin-bottom:10px;")
+                                            span.glyphicon.glyphicon-credit-card(style="margin-right:20px;vertical-align: middle;")
+                                            span=book.name
+                                    .col-md-12 
+                                        div.cellPaciente(style="color:#000;font-size:17px;margin-bottom:10px;position:relative")
+                                            span.glyphicon.glyphicon-phone(style="margin-right:20px;")
+                                            span=statusModuloAdmin
+                                    .col-md-12 
+                                        div.cellPaciente(style="color:#000;font-size:17px;margin-bottom:10px;position:relative")
+                                            span.glyphicon.glyphicon-phone(style="margin-right:20px;")
+                                            span=url_base+book.url
+                                            
+    .modal#nuevoModuloAdmin(tabindex="-1" role="dialog")
+        .modal-dialog(role="document")
+            .modal-content
+                .modal-header
+                    .row(style="margin:0;")
+                        .col-md-12
+                            h3(style="margin:0px 0;") #{translation.ADD_MODULE}
+                .modal-body
+                    form(action="", method="post")
+                        .row
+                            .col-md-6
+                                .form-group
+                                    h5(style="margin:0px;opacity:0;") #{translation.FORM.NAME}
+                                    .controls(style="position:relative;")
+                                        input#nombreNuevo-modulo-admin.inputFormulario(type="text", placeholder #{translation.FORM.NAME})
+                                        h5.tituloInput #{translation.FORM.NAME}:
+                            .col-md-6
+                                .form-group
+                                    h5(style="margin:0px;opacity:0;") #{translation.FORM.URL}
+                                    .controls(style="position:relative;")
+                                        input#urlNuevo-modulo-admin.inputFormulario(type="text", placeholder="URL")
+                                        h5.tituloInput #{translation.FORM.URL}:
+                        .row
+                            .col-md-6
+                                .form-group
+                                    h5(style="margin:0px;opacity:0;") #{translation.FORM.ICON}
+                                    .controls(style="position:relative;")
+                                        input#iconoNuevo-modulo-admin.inputFormulario(type="text", placeholder="Icono")
+                                        h5.tituloInput #{translation.FORM.ICON}:
+                            .col-md-6
+                                .form-group
+                                    h5(style="margin:0px;opacity:0;") #{translation.FORM.TEXT}
+                                    .controls(style="position:relative;")
+                                        input#textoNuevo-modulo-admin.inputFormulario(type="text" placeholder="Texto")
+                                        h5.tituloInput #{translation.FORM.TEXT}:
+                        .row
+                            .col-md-6
+                                .form-group
+                                    h5(style="margin:0px;opacity:0;") #{translation.ORDER}
+                                    .controls(style="position:relative;")
+                                        input#ordenNuevo-modulo-admin.inputFormulario(type="number", placeholder="Orden")
+                                        h5.tituloInput #{translation.ORDER}:
+                            .col-md-6
+                                .form-group
+                                    h5(style="margin:0px;opacity:0;") #{translation.FONT}
+                                    .controls(style="position:relative;")
+                                        input#fuenteNuevo-modulo-admin.inputFormulario(type="text", placeholder="Fuente")
+                                        h5.tituloInput #{translation.FONT}:
+                        .row
+                            .col-md-6
+                                .form-group
+                                    h5(style="font-weight:600;margin: 0 0 5px;") #{translation.ROLES}:
+                                    .controls
+                                        span#rolesNuevo-admin-modulos
+                            .col-md-6
+                                .form-group
+                                    h5(style="margin:0px;opacity:0;") #{translation.FORM.STATUS}
+                                    .controls(style="position:relative;")
+                                        select#activadoNuevo-modulo-admin.inputFormulario(name="activadoNuevo")
+                                            option(value="1") #{translation.FORM.ACTIVE}
+                                            option(value="0") #{translation.FORM.DEACTIVATED}
+                                        h5.tituloInput #{translation.FORM.STATUS}:
+                .modal-footer(style="padding:8px;")
+                    .row(style="margin:0;")
+                        .col-md-12.text-right
+                            button.btn.btn-success.nuevo(type="button", style="margin-left:7px;margin-right:7px;",onClick="agregarModuloAdmin()") #{translation.ADD}
+                            button.btn.btn-danger(type="buton", data-dismiss="modal") #{translation.CLOSE}  
+
+    .modal#editarModuloModalAdmin(tabindex="-1" role="dialog")
+         .modal-dialog(role="document")
+            .modal-content
+                .modal-header
+                    .row(style="margin:0;")
+                        .col-md-12
+                            h3(style="margin:0px 0;") #{translation.EDIT_MODULE}
+                .modal-body
+                        .row
+                            .col-md-6
+                                .form-group
+                                    h5(style="margin:0px;opacity:0;") #{translation.FORM.NAME}
+                                    .controls(style="position:relative;")
+                                        input#idEditar-modulo-admin(type="hidden")
+                                        input#nombreEditar-modulo-admin.inputFormularioEditar(type="text")
+                                        h5.tituloInput #{translation.FORM.NAME}:
+                            .col-md-6
+                                .form-group
+                                    h5(style="margin:0px;opacity:0;") #{translation.FORM.URL}
+                                    .controls(style="position:relative;")
+                                        input#urlEditar-modulo-admin.inputFormularioEditar(type="text")
+                                        h5.tituloInput #{translation.FORM.URL}:
+                            .col-md-6
+                                .form-group
+                                    h5(style="margin:0px;opacity:0;") #{translation.FORM.ICON}
+                                    .controls(style="position:relative;")
+                                        input#iconoEditar-modulo-admin.inputFormularioEditar(type="text")
+                                        h5.tituloInput #{translation.FORM.ICON}:
+                            .col-md-6
+                                .form-group
+                                    h5(style="margin:0px;opacity:0;") #{translation.FORM.TEXT}
+                                    .controls(style="position:relative;")
+                                        input#textoEditar-modulo-admin.inputFormularioEditar(name="", cols="30", rows="5")
+                                        h5.tituloInput #{translation.FORM.TEXT}:
+                            .col-md-6
+                                .form-group
+                                    h5(style="margin:0px;opacity:0;") #{translation.FORM.ORDER}
+                                    .controls(style="position:relative;")
+                                        input#ordenEditar-modulo-admin.inputFormularioEditar(type="number")
+                                        h5.tituloInput #{translation.FORM.ORDER}:
+                            .col-md-6
+                                .form-group
+                                    h5(style="margin:0px;opacity:0;") #{translation.FORM.FONT}
+                                    .controls(style="position:relative;")
+                                        input#fuenteEditar-modulo-admin.inputFormularioEditar(type="text")
+                                        h5.tituloInput #{translation.FORM.FONT}:
+                            .col-md-6
+                                .form-group
+                                    h5(style="font-weight:600;margin: 0 0 5px;") #{translation.FORM.ROLES}:
+                                    input#roleshiddenDataModulos(type="hidden")
+                                    div#controlerEditarModulos.controls
+                                        span#rolesEditar-admin-modulos
+                            .col-md-6
+                                .form-group
+                                    h5(style="margin:0px;opacity:0;") #{translation.FORM.STATUS}
+                                    .controls(style="position:relative;")
+                                        select#activadoEditar-modulo-admin.inputFormularioEditar(name="activadoNuevo")
+                                            option(value="1") #{translation.FORM.ACTIVE}
+                                            option(value="0") #{translation.FORM.DEACTIVATED}
+                                        h5.tituloInput #{translation.FORM.STATUS}:
+
+                .modal-footer(style="padding:8px;")
+                    .row(style="margin:0;")
+                        .col-md-12.text-right
+                            button.btn.btn-success.nuevo(type="button", style="margin-left:7px;margin-right:7px;",onClick="actualizarModulosAdminPanel()") #{translation.UPDATE_DATA}
+                            button.btn.btn-danger(type="buton", data-dismiss="modal") #{translation.CLOSE}           
+    script.
+        var dataFunctional=JSON.parse('!{JSON.stringify(bookStore.roles)}');
+        dataFunctional = dataFunctional.map( item => { 
+                return { label: item.name , value: item._pk_roles.toString()}; 
+        });
+
+        var autocompleteRolesNuevo = new SelectPure("#rolesNuevo-admin-modulos", {
+            options:dataFunctional,
+            multiple: true,
+            autocomplete: true,
+            icon: "fa fa-times",
+            onChange: value => { console.log(value)},
+            classNames: {
+            select: "select-pure__select",
+            dropdownShown: "select-pure__select--opened",
+            multiselect: "select-pure__select--multiple",
+            label: "select-pure__label",
+            placeholder: "select-pure__placeholder",
+            dropdown: "select-pure__options",
+            option: "select-pure__option",
+            autocompleteInput: "select-pure__autocomplete",
+            selectedLabel: "select-pure__selected-label",
+            selectedOption: "select-pure__option--selected",
+            placeholderHidden: "select-pure__placeholder--hidden",
+            optionHidden: "select-pure__option--hidden",
+            }
+        });                                

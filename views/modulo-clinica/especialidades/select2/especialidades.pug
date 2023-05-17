@@ -1,0 +1,64 @@
+script.
+  const select2Especialidades = $("#lista-especialidades, #lista-especialidades-editar, #lista-especialidades-filtro").select2({
+    placeholder: '#{translation.FORM.SEARCH}',
+    templateResult: especialidadesState,
+    allowClear: true
+  })
+  //- .on("select2:open", () => {
+  //-   $(".select2-results:not(:has(a))").append(
+  //-     '<a href="#" style="padding: 6px;height: 20px;display: inline-table;" data-toggle="modal" data-target="#nuevoBannerAdministrador" onclick="closeEspecialidadesSelect2()">Agregar especialidades</a>'
+  //-   );
+  //- }); //- No se debe crear
+
+  //- Funcion para modificar como muestra el select2 las opciones
+  function especialidadesState (state) {
+    if (!state.id) {
+      return state.text;
+    }
+    let $container = $(`
+      <span><strong>${state.id}</strong> | ${state.text}</span>
+    `);
+
+    return $container;
+  }
+
+  function closeEspecialidadesSelect2 () {
+    $("#lista-especialidades, #lista-especialidades-editar").select2('close');
+  }
+
+  //- Funcion para poder obtener los datos de la especialidad con empresa dinamicamente
+  function urlSelect2Especialidades() {
+    let auxUrl = "/admin-especialidades/select2";
+    if (typeof empresa_id != "undefined" && !isNaN(empresa_id.value)) {
+      auxUrl += `/${empresa_id.value}`;
+    }
+    return auxUrl;
+  }
+
+  $.ajax({
+    url: urlSelect2Especialidades(),
+    dataType: 'json',
+    delay: 500,
+    data: {
+      select: ['id', 'nombre']
+    },
+    success: function (data, status) {
+      if (data.ok) {
+        if (Array.isArray(data.data) && data.data.length > 0) {
+          select2Especialidades.empty();
+          select2Especialidades.append(new Option('Seleccionar', '', false, false));
+          data.data.forEach((item) => {
+            let newOption = new Option(item.nombre, item.id, false, false);
+            select2Especialidades.append(newOption);
+          });
+        } else {
+          select2Especialidades.empty();
+          select2Especialidades.append(new Option('Seleccionar', '', false, false));
+        }
+      }
+    }, 
+    error: function (error, statur) {
+      select2Especialidades.empty();
+      select2Especialidades.append(new Option('Seleccionar', '', false, false));
+    }
+  })

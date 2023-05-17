@@ -1,0 +1,39 @@
+extends ../../extends/menu-superior-admin
+block contenido
+    .row
+        .col-8.text-grey(style="margin-bottom:50px;")
+            h1.display-1
+                strong #{translation.BANNERS} 
+                      span.light= `${items.banner.length} `
+      
+                
+        .col-4.text-right
+                button.btn.btn-success(style="margin-bottom:10px", type="button", onClick="openModalNew()")
+                    i.fas-fa-plus
+                    span #{translation.ADD_BANNERS}
+        .col-md-12
+            .row
+                each book in items.banner
+                    .col-12.col-md-6
+                        .container-banner
+                            .row
+                                .col-12.text-center
+                                    img(src=book.imagen, alt=book.name, style="width: 100%; height: 250px;object-fit:cover;border-radius:4px")
+                                .col-12.text-center.mt-3
+                                    button.btn.btn-warning(onClick="handlingEditBannersAdmin('"+book.id+"','"+book.nombre+"','"+book.url+"','"+book.descripcion+"','"+book.imagen+"','"+book.activado+"')")
+                                        i.fas.fa-edit
+                                    button.btn.btn-danger(style="margin-left:10px",onClick="deleteBannersAdminPanel('"+book.id+"')")
+                                        i.fas.fa-trash
+
+    include ./modals/crear-banner.pug
+    include ./modals/editar-banner.pug    
+    
+        include ./../../modulo-generales/galeria-fotos/seleccion-unica-galeria/admin-galeria-modal-simple
+    
+    include ./save/banner.pug
+    include ./update/banner.pug
+    include ./delete/banner.pug
+    
+    script.
+        var typeOperation="1";
+ 

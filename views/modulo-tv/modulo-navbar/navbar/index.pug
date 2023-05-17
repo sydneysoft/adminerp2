@@ -1,0 +1,528 @@
+extends ../layout.pug
+
+append contenido
+  .border-left.border-right.border-bottom.p-3 
+    .container-fluid
+      input#itemId(type="hidden" value=navbar[0].id hidden)
+      .row
+        .col-12.text-right 
+          button#saveNavbar.btn.btn-primary(type="button")  #{translation.SAVE}
+            i.fas.fa-save.ml-2
+      .row.mt-3
+        .col-12.col-md-6
+          .row.align-items-end
+            .col-8
+              .form-group
+                label(for="nombre") #{translation.FORM.NAME}
+                select#nombre.form-control(name="nombre")
+                  option(value="0" selected) #{translation.SELECT}
+                  option(value="link") Link
+            .col-4
+              .form-group
+                button#addPayload.btn.btn-primary.btn-block(type="button")  #{translation.ADD}
+                  i.fas.fa-plus.ml-2
+          .row
+            .col-12 
+              #render_payload_here
+        .col-12.col-md-6 
+          #edit_payload_child
+
+  script
+    include ../../../js/modulo-tv/update.js
+
+  script.
+    const render_payload_selected = document.getElementById('render_payload_here');
+    const edit_payload_child = document.getElementById('edit_payload_child');
+    const addPayload = document.getElementById('addPayload');
+    const nombreInsert = document.getElementById('nombre');
+    const saveNavbar = document.getElementById('saveNavbar');
+    const itemId = document.getElementById('itemId');
+
+    let menuPayload = [
+      {
+        el: 'ul',
+        class: 'navbar-nav mr-auto',
+        'data-name': 'Menu 1',
+        'data-identifier': 'menu-1',
+        children: [
+          //- {
+          //-   el: 'li',
+          //-   class: 'nav-item active',
+          //-   'data-name': 'Home',
+          //-   'data-identifier': 'item-1',
+          //-   children: [
+          //-     {
+          //-       el: 'a',
+          //-       class: 'nav-link',
+          //-       href: '#',
+          //-       text: 'Home',
+          //-       'data-name': 'Home',
+          //-       'data-identifier': 'item-1.link-1',
+          //-       children: [
+          //-         {
+          //-           el: 'span',
+          //-           class: 'sr-only',
+          //-           text: '(current)',
+          //-         }
+          //-       ]
+          //-     }
+          //-   ]
+          //- },
+          //- {
+          //-   el: 'li',
+          //-   class: 'nav-item',
+          //-   'data-name': 'Item',
+          //-   'data-identifier': 'item-1',
+          //-   children: [
+          //-     {
+          //-       el: 'a',
+          //-       class: 'nav-link',
+          //-       href: '#',
+          //-       text: 'Link',
+          //-       'data-name': 'Link',
+          //-       'data-identifier': 'item-1.link-1',
+          //-     }
+          //-   ]
+          //- },
+          //- {
+          //-   el: 'li',
+          //-   class: 'nav-item dropdown',
+          //-   'data-name': 'Dropdown',
+          //-   'data-identifier': 'dropdown-1',
+          //-   children: [
+          //-     {
+          //-       el: 'a',
+          //-       class: 'nav-link dropdown-toggle',
+          //-       href: '#',
+          //-       role: 'button',
+          //-       'data-toggle': 'dropdown',
+          //-       'aria-expanded': 'false',
+          //-       'data-name': 'Dropdown button',
+          //-       'data-identifier': 'dropdown-button-1',
+          //-       text: 'Dropdown'
+          //-     },
+          //-     {
+          //-       el: 'div',
+          //-       class: 'dropdown-menu',
+          //-       'data-name': 'Dropdown Menu',
+          //-       'data-identifier': 'dropdown-menu-1',
+          //-       children: [
+          //-         {
+          //-           el: 'a',
+          //-           class: 'dropdown-item',
+          //-           href: '#',
+          //-           text: 'Action',
+          //-           'data-name': 'Dropdown item 1',
+          //-           'data-identifier': 'dropdown-item-1.link-1',
+          //-         },
+          //-         {
+          //-           el: 'a',
+          //-           class: 'dropdown-item',
+          //-           href: '#',
+          //-           text: 'Another action',
+          //-           'data-name': 'Dropdown item 2',
+          //-           'data-identifier': 'dropdown-item-2.link-2',
+          //-         },
+          //-         {
+          //-           el: 'div',
+          //-           class: 'dropdown-divider',
+          //-           'data-name': 'Dropdown divider 3',
+          //-           'data-identifier': 'dropdown-divider-3',
+          //-         },
+          //-         {
+          //-           el: 'a',
+          //-           class: 'dropdown-item',
+          //-           href: '#',
+          //-           text: 'Something else here',
+          //-           'data-name': 'Dropdown item 4',
+          //-           'data-identifier': 'dropdown-item-4.link-3',
+          //-         }
+          //-       ]
+          //-     }
+          //-   ]
+          //- },
+          //- {
+          //-   el: 'li',
+          //-   class: 'nav-item',
+          //-   'data-name': 'Disabled',
+          //-   'data-identifier': 'disabled-1',
+          //-   children: [
+          //-     {
+          //-       el: 'a',
+          //-       class: 'nav-link disabled',
+          //-       text: 'Disabled',
+          //-       'data-name': 'Disabled',
+          //-       'data-identifier': 'disabled-1.link-1',
+          //-     }
+          //-   ]
+          //- }
+        ]
+      }
+    ]
+
+
+    /**
+    * La siguiente funcion renderiza el menu principal
+    */
+    function renderMenuPayload () {
+      const payload = menuPayload[0];
+      const { el, class: className, children, ...rest } = payload;
+      const listgroup = document.createElement('div');
+      listgroup.className = 'list-group';
+      //- console.log(children);
+      if (children) {
+        children.forEach(child => {
+          const { el, class: className, children, text, ...rest } = child;
+          const linkMatch = /link/gi.test(child['data-identifier']);
+          if (linkMatch) {
+            const listgroupitem = document.createElement('button');
+            listgroupitem.className = 'list-group-item list-group-item-action';
+            listgroupitem.setAttribute('type', 'button');
+            listgroupitem.setAttribute('onclick', 'handleClick(this,' + JSON.stringify(child) + ')');
+            if (text) {
+              listgroupitem.innerText = text;
+            }
+            //- console.log(listgroupitem)
+            listgroup.appendChild(listgroupitem);
+            if (children) {
+              renderChildren(listgroupitem, children);
+            }
+          } else {
+            const listgroupitem = document.createElement('div');
+            listgroupitem.className = 'list-group-item';
+            if (text) {
+              listgroupitem.innerText = text;
+            }
+            listgroup.appendChild(listgroupitem);
+            if (children) {
+              renderChildren(listgroupitem, children);
+            }
+          }
+          //- listgroup.appendChild(listgroupitem);
+        });
+        render_payload_selected.innerHTML = '';
+        render_payload_selected.appendChild(listgroup);
+      }
+      
+    }
+
+    
+    /**
+    * La siguiente funcion renderiza los hijos de un elemento
+    * se aplica recursion por si en futuro se desea agregar mas niveles
+    */
+    function renderChildren(listgroup, children) {
+      children.forEach(child => {
+        const { el, class: className, children, text, ...rest } = child;
+        const linkMatch = /link/gi.test(child['data-identifier']);
+        // Si es un link se crea un boton
+        if (linkMatch) {
+          const listgroupitem = document.createElement('button');
+          listgroupitem.className = 'list-group-item list-group-item-action';
+          listgroupitem.setAttribute('type', 'button');
+          listgroupitem.setAttribute('onclick', 'handleClick(this,' + JSON.stringify(child) + ')');
+          if (text) {
+            listgroupitem.innerText = text;
+          }
+          listgroup.appendChild(listgroupitem);
+          if (children) {
+            renderChildren(listgroupitem, children);
+          }
+        } else {
+          const listgroupitem = document.createElement('div');
+          listgroupitem.className = 'list-group-item';
+          if (text) {
+            listgroupitem.innerText = text;
+          }
+          listgroup.appendChild(listgroupitem);
+          if (children) {
+            renderChildren(listgroupitem, children);
+          }
+        }
+      });
+    }
+
+    function handleClick(event, el) {
+      const listgroupitem = document.querySelectorAll('.list-group-item');
+      listgroupitem.forEach(item => {
+        item.classList.remove('active');
+      });
+      event.classList.add('active');
+      editeFormChild(el);
+    }
+
+
+    /** 
+    * La siguiente funcion recibe un objeto con los datos del elemento seleccionado y estrutura de Node elment
+    * para crear el formulario de edicion
+    */
+    function editeFormChild (data) {
+      console.log(data);
+      const card = document.createElement('div');
+      card.className = 'card';
+      const cardBody = document.createElement('div');
+      cardBody.className = 'card-body';
+      const cardTitle = document.createElement('h5');
+      cardTitle.className = 'card-title';
+      cardTitle.innerText = 'Edit';
+      const cardText = document.createElement('p');
+      cardText.className = 'card-text';
+      cardText.innerText = data['data-name'];
+      //- console.log(data);
+      // crear el formgroup para name
+      const formGroup = document.createElement('div');
+      formGroup.className = 'form-group';
+      const label = document.createElement('label');
+      label.innerText = 'Name';
+      const input = document.createElement('input');
+      input.className = 'form-control';
+      input.setAttribute('type', 'text');
+      input.setAttribute('value', data.text);
+      input.setAttribute('placeholder', 'Name')
+      input.setAttribute('id', 'name')
+      formGroup.appendChild(label);
+      formGroup.appendChild(input);
+
+      // crear el formgroup para link
+      const formGroup2 = document.createElement('div');
+      formGroup2.className = 'form-group';
+      const label2 = document.createElement('label');
+      label2.innerText = 'Link';
+      const input2 = document.createElement('input');
+      input2.className = 'form-control';
+      input2.setAttribute('type', 'text');
+      input2.setAttribute('value', data.href);
+      input2.setAttribute('placeholder', 'Link');
+      input2.setAttribute('id', 'link');
+      formGroup2.appendChild(label2);
+      formGroup2.appendChild(input2);
+
+      // Filas y columna
+      const row = document.createElement('div');
+      row.className = 'row';
+      const col = document.createElement('div');
+      col.className = 'col-12';
+      col.appendChild(formGroup);
+
+      const col2 = document.createElement('div');
+      col2.className = 'col-12';
+      col2.appendChild(formGroup2);
+
+      card.appendChild(cardBody);
+      cardBody.appendChild(cardTitle);
+      cardBody.appendChild(cardText);
+      cardBody.appendChild(row);
+      row.appendChild(col);
+      row.appendChild(col2);
+      const button = document.createElement('button');
+      button.className = 'btn btn-primary';
+      button.innerText = 'Save';
+
+      const buttonDelete = document.createElement('button');
+      buttonDelete.className = 'btn btn-danger ml-1';
+      buttonDelete.innerText = 'Delete';
+      buttonDelete.setAttribute('onclick', 'deleteChild(' + JSON.stringify(data) + ')');
+
+      button.setAttribute('onclick', 'saveChanges(' + JSON.stringify(data) + ')');
+      cardBody.appendChild(button);
+      cardBody.appendChild(buttonDelete);
+
+      edit_payload_child.innerHTML = ''
+      edit_payload_child.appendChild(card);
+    }
+
+    function saveChanges(data) {
+      // Edit menuPayload
+      const name = document.getElementById('name').value;
+      const link = document.getElementById('link').value;
+      if (Array.isArray(menuPayload)) {
+        menuPayload = menuPayload.map(item => {
+          if (item.children) {
+            item.children =  alterChildren(item.children, data, name, link);
+          }
+          //- console.log(item);
+          return item;
+        });
+        console.log(menuPayload);
+        renderMenuPayload();
+      } else {
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong!',
+          showConfirmButton: false,
+          timer: 1500
+        })
+      }
+    }
+
+    function deleteChild (data) {
+      if (Array.isArray(menuPayload)) {
+        menuPayload = menuPayload.map(item => {
+          if (item.children) {
+            item.children =  deleteChildren(item.children, data);
+          }
+          return item;
+        });
+        edit_payload_child.innerHTML = '';
+        renderMenuPayload();
+      } else {
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong!',
+          showConfirmButton: false,
+          timer: 1500
+        })
+      }
+    }
+
+    function deleteChildren(children, data) {
+      return children.filter(child => {
+        if (child.children) {
+          child.children = deleteChildren(child.children, data);
+        } else {
+          if (child['data-identifier'] === data['data-identifier']) {
+            return false;
+          }
+        }
+        return true;
+      });
+    }
+    
+    function alterChildren(children, data, name, link) {
+      return children.map(child => {
+        if (child.children) {
+          alterChildren(child.children, data, name, link);
+        } else {
+          if (child['data-identifier'] === data['data-identifier']) {
+            child.text = name;
+            child.href = link;
+          }
+        }
+        return child;
+      });
+    }
+
+    function insertChildren () {
+      //- const name = document.getElementById('name').value;
+      //- const link = document.getElementById('link').value;
+      const name = 'example';
+      const link = '/example';
+      const mathRandom = Math.floor(Math.random() * 100000) + 10;
+      const data = {
+        el: 'li',
+        class: 'nav-item',
+        'data-name': 'Link',
+        'data-identifier': 'item-' + mathRandom,
+        children: [
+          {
+            el: 'a',
+            class: 'nav-link',
+            href: '/example',
+            text: 'Example',
+            'data-name': 'Link',
+            'data-identifier': 'item-' + mathRandom +'.link-' + (mathRandom - 1)
+          }
+        ]
+      }
+      if (Array.isArray(menuPayload)) {
+        menuPayload = menuPayload.map(item => {
+          if (item.children) {
+            //- item.children =  insertChildrenInArray(item.children, data);
+            item.children.push(data);
+          }
+          //- console.log(item);
+          return item;
+        });
+        renderMenuPayload();
+      } else {
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong!',
+          showConfirmButton: false,
+          timer: 1500
+        })
+      }
+    }
+
+    function insertChildrenDropdown () {
+      const name = document.getElementById('name').value;
+      const link = document.getElementById('link').value;
+      const data = {
+        "el": "a",
+        "class": "dropdown-item",
+        "href": link,
+        "text": name,
+        "data-identifier": "link-" + Math.floor(Math.random() * 1000000),
+        "data-name": name
+      }
+      if (Array.isArray(menuPayload)) {
+        menuPayload = menuPayload.map(item => {
+          if (item.children) {
+            item.children =  insertChildrenInArray(item.children, data);
+          }
+          //- console.log(item);
+          return item;
+        });
+        console.log(menuPayload);
+        renderMenuPayload();
+      } else {
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong!',
+          showConfirmButton: false,
+          timer: 1500
+        })
+      }
+    }
+
+    function insertChildrenInArray (children, data) {
+      return children.map(child => {
+        if (child.children) {
+          insertChildrenInArray(child.children, data);
+        } else {
+          if (child['data-identifier'] === data['data-identifier']) {
+            child.children = [data];
+          }
+        }
+        return child;
+      });
+    }
+    addPayload.addEventListener('click', (event) => {
+      switch (nombreInsert.value) {
+        case 'link':
+          insertChildren();
+          renderMenuPayload();
+          break;
+        case 'dropdown':
+          insertChildrenDropdown();
+          break;
+        default:
+          break;
+      }
+    });
+
+    saveNavbar.addEventListener('click', (event) => {
+      updateItem(`/admin-navbar/items/${itemId.value}`, {
+        campos: JSON.stringify(menuPayload)
+      })
+    });
+
+    menuPayload = JSON.parse(!{JSON.stringify(navbar[0].campos)})
+    //- const nnn = !{navbar[0].campos}
+    //- console.log(nnn);
+    console.log(menuPayload);
+    addEventListener('DOMContentLoaded', () => {
+      renderMenuPayload();
+    });

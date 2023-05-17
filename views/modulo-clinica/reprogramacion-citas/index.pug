@@ -1,0 +1,209 @@
+extends ./layout.pug
+
+append contenido
+  .border-left.border-right.border-bottom.p-3
+    .container-fluid
+      .row.justify-content-end
+        if empresa_id
+          include /mixins/btn/back.pug
+          input#empresa_id(type="text" value=empresa_id hidden)
+          .col-md-6.col-6
+            +btn-back()
+        .col-md-6.col-6.text-right 
+          button#nuevaCitaButton.btn.btn-primary(type="button" data-toggle="modal" data-target="#nuevaCita") #{translation.CREATE}
+            i.fas.fa-save.ml-2
+      .row
+        .col-12 
+          .row.align-items-end
+            .col-12.col-md-3
+              .form-group 
+                label(for="fecha-citas-admin-filtro")="Fecha de Cita"
+                input.form-control(type="date" id="fecha-citas-admin-filtro")
+            .col-12.col-md-3
+              .form-group
+                label(for="fecha-registro-citas-admin-filtro")="Fecha de Registro"
+                input.form-control(type="date" id="fecha-registro-citas-admin-filtro")
+            .col-12.col-md-3 
+              .form-group 
+                label(for="estado-citas-admin-filtro")="Estado"
+                select.form-control(id="estado-citas-admin-filtro")
+                  option(value="0") #{translation.FORM.SELECT_STATUS}
+                  option(value="pendiente") #{translation.FORM.PENDING}
+                  option(value="confirmada") #{translation.FORM.CONFIRMED}
+                  option(value="cancelada") #{translation.FORM.CANCELED}
+                  option(value="atendida") #{translation.FORM.ATTENDED}
+            .col-12.col-md-3 
+              .form-group 
+                label(for="paciente-citas-admin-filtro") #{translation.FORM.PATIENT}
+                select2#lista-pacientes-filtro
+            .col-12.col-md-3 
+              .form-group 
+                select#lista-medicos-filtro
+            .col-12.col-md-3
+              .form-group
+                select#lista-sedes-filtro
+            .col-12.col-md-3
+              .form-group
+                select#lista-especialidades-filtro
+            .col-12.col-md-3
+              .form-group 
+                button.btn.btn-primary(type="button" onClick="resetearFiltros()")
+                  i.fas-fa-plus
+                  span #{translation.RESET}
+
+      .row.mt-3
+        .col-12
+          #data-body-citas-filter.container.table-responsive
+            table#tabla-reprogramacion-citas-medicas.table.w-100
+              thead.thead-dark
+              tbody 
+              tfoot 
+
+  include ./modals/crear-reprogramacion-cita.pug
+  include ./modals/editar-reprogramacion-cita.pug
+
+  script
+    include /js/modulo-tv/delete.js 
+    include /js/modulo-tv/save.js
+    include /js/modulo-tv/update.js                          
+  script.
+    $("#lista-pacientes-filtro").change(function () {
+      if (this.value != "" && typeof tablaCitasMedicas != "undefined") {
+        tablaCitasMedicas.columns([1]).search(this.value).draw();
+      }
+    });
+    $("#lista-medicos-filtro").change(function () {
+      if (this.value != "" && typeof tablaCitasMedicas != "undefined") {
+        tablaCitasMedicas.columns([2]).search(this.value).draw();
+      }
+    });
+    $("#lista-sedes-filtro").change(function () {
+      if (this.value != "" && typeof tablaCitasMedicas != "undefined") {
+        tablaCitasMedicas.columns([3]).search(this.value).draw();
+      }
+    });
+    $("#lista-especialidades-filtro").change(function () {
+      if (this.value != "" && typeof tablaCitasMedicas != "undefined") {
+        tablaCitasMedicas.columns([4]).search(this.value).draw();
+      }
+    })
+    $("#estado-citas-admin-filtro").change(function () {
+      if (this.value != "" && typeof tablaCitasMedicas != "undefined") {
+        tablaCitasMedicas.columns([5]).search(this.value).draw();
+      }
+    });
+    $("#fecha-registro-citas-admin-filtro").change(function () {
+      if (this.value != "" && typeof tablaCitasMedicas != "undefined") {
+        tablaCitasMedicas.columns([6]).search(this.value).draw();
+      }
+    });
+    $("#fecha-citas-admin-filtro").change(function () {
+      if (this.value != "" && typeof tablaCitasMedicas != "undefined") {
+        tablaCitasMedicas.columns([7]).search(this.value).draw();
+      }
+    });
+    const sede = document.getElementById('sedes');
+    const doctor = document.getElementById('doctor');
+    const fecha = document.getElementById('fecha');
+    const estado = document.getElementById('estado');
+    const tipoCita = document.getElementById('tipoCita');
+    const hora = document.getElementById('hora');
+    const colorpicker = document.getElementById('colorpicker');
+    const precio = document.getElementById('precio');
+    const especialidad = document.getElementById('especialidad');
+    const paciente = document.getElementById('paciente');
+    const nota = document.getElementById('nota');
+
+    const idCita = document.getElementById('idCita');
+
+    const sede_editar = document.getElementById('sedes_editar');
+    const doctor_editar = document.getElementById('doctor_editar');
+    const fecha_editar = document.getElementById('fecha_editar');
+    const estado_editar = document.getElementById('estado_editar');
+    const tipoCita_editar = document.getElementById('tipoCita_editar');
+    const hora_editar = document.getElementById('hora_editar');
+    const hora_fin_editar = document.getElementById('hora_fin_editar');
+    const colorpicker_editar = document.getElementById('colorpicker_editar');
+    const precio_editar = document.getElementById('precio_editar');
+    const especialidad_editar = document.getElementById('especialidad_editar');
+    const paciente_editar = document.getElementById('paciente_editar');
+    const nota_editar = document.getElementById('nota_editar');
+
+    const itemId = document.getElementById('itemId');
+
+    const addNewCita = document.getElementById('addNewCita');
+    const empresa_id = document.getElementById('empresa_id');
+    const editarButton = document.getElementById('editarButton');
+    const guardarCita = document.getElementById('guardarCita');
+
+    function citaHandleModal (data) {
+      $('#nombreUsuarioInfoCitas').text(data.paciente.nombre);
+      $('#dataUsuarioNombreCitaEdit').text("Nombre: " + data.paciente.nombre);
+      $('#ubicacionCitaEdit').text("Dirección: " + data.sede.direccion);
+      $('#dataUsuarioCorreo').text("Correo: " + data.paciente.correo)
+      $('#fechaCitasEdit').text("Fecha de cita: " + data.fechaCita);
+      $('#statusCitasEdit').text("Estado: " + data.estado);
+      $('#tipoCitasEdit').text("Hora de la cita " + data.horaInicio);
+      $('#horarioFechaCitaEdit').text(`Documento: ${data.paciente.tipo_documento} : ${data.paciente.numero_documento}`);
+      $('#precioCitaPacienteEdit').text("Precio: " + data.precio);
+      // $('#correoCitaPacienteEdit').text("Correo: ", data.paciente.correo);
+      if (null) {
+        $('#importadoDataEdit').text("No cuenta con fecha de Importación");
+      } else {
+        $('#importadoDataEdit').text("Importado el " + data.fechaRegistro);
+      }
+
+      $('#infoPaciente').modal("show");
+    };
+
+    function nohayregistros() {
+      $('#data-body-citas-filter').empty();
+      $('#data-body-citas-filter').append('<p>No hay registros con esos filtros.</p>');
+    };
+
+
+    function resetearFiltros() {
+      $('#fecha-citas-admin-filtro')[0].value = "";
+      $('#fecha-registro-citas-admin-filtro')[0].value = "";
+      $('#estado-citas-admin-filtro')[0].value = "0";
+    };
+
+    function mostrarCita (data) {
+
+      $("#lista-sedes-editar").val(data.idSede).trigger('change').attr('disabled', 'disabled');
+      $("#lista-pacientes-editar").val(data.idUser).trigger('change').attr('disabled', 'disabled');
+      $("#lista-medicos-editar").val(data.idDoctor).trigger('change').attr('disabled', 'disabled');
+      $("#lista-especialidades-editar").val(data.idEspecialidad).trigger('change').attr('disabled', 'disabled');
+
+      tipoCita_editar.setAttribute('disabled', 'disabled');
+      estado_editar.setAttribute('disabled', 'disabled');
+      fecha_editar.setAttribute('disabled', 'disabled');
+      hora_editar.setAttribute('disabled', 'disabled');
+      precio_editar.setAttribute('disabled', 'disabled');
+      colorpicker_editar.setAttribute('disabled', 'disabled');
+      nota_editar.setAttribute('disabled', 'disabled');
+      hora_fin_editar.setAttribute('disabled', 'disabled');
+      tipoCita_editar.value = data.tipoCita;
+      estado_editar.value = data.estado;
+      fecha_editar.value = moment(data.fechaCita).format('YYYY-MM-DD');
+      hora_editar.value = moment(data.hora, 'HH:mm:ss').format('HH:mm');
+      hora_fin_editar.value = moment(data.horaFin, 'HH:mm:ss').format('HH:mm');
+      precio_editar.value = data.precio;
+      colorpicker_editar.value = data.color;
+      nota_editar.value = data.nota;
+      itemId.value = data.id;
+
+      $("#editarCita").modal("show");
+    }
+
+  include ./save/reprogramacion-cita.pug
+  include ./update/reprogramacion-cita.pug
+  include ./delete/reprogramacion-cita.pug
+
+  include ./datatable/reprogramacion-citas.pug
+  //- OTROS MODULOS
+
+  include /modulo-clinica/especialidades/select2/especialidades.pug
+  include /modulo-clinica/medicos/select2/medicos.pug
+  include /modulo-clinica/pacientes/select2/pacientes.pug
+  include /modulo-clinica/sedes/select2/sedes.pug

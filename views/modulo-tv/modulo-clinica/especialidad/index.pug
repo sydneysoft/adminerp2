@@ -1,0 +1,866 @@
+extends ../layout.pug
+
+append contenido
+  .border-left.border-right.border-bottom.p-3
+    if empresa_id
+      input#empresa_id(type="text" value=empresa_id hidden)
+    else 
+      input#empresa_id(type="text" value="" hidden)
+    .container-fluid 
+      .row
+        .col-12.text-right 
+          button.btn.btn-primary(type="button" data-toggle="modal" onclick="nuevaEspecialidad()" data-target="#nuevoEspecialidadModal") #{translation.ADD}
+            i.fas.fa-plus.ml-2
+    .container-fluid.mt-3
+      .table-responsive
+        table#especialidad.table.table-striped
+          thead.thead-dark
+            tr
+              th(scope='col') ID
+              th(scope='col') #{translation.FORM.NAME}
+              th(scope='col') #{translation.FORM.EXTERNAL_CODE}
+              th(scope='col') #{translation.FORM.IMAGE}
+              th(scope='col') #{translation.FORM.ENABLED}
+              th(scope='col') #{translation.FORM.STATE}
+              th(scope='col') #{translation.FORM.BRANCH}
+              th(scope='col') #{translation.FORM.CATEGORY}
+              th(scope='col') #{translation.FORM.ICON}
+              th(scope='col') #{translation.FORM.ACTIONS}
+          tbody
+
+  //- Modal para agregar especialidad
+  .modal.fade.justify-content-center.align-items-center(tabindex="-1" role="dialog" id="nuevoEspecialidadModal")
+    .modal-dialog.modal-lg
+        .modal-content.modalContent(style="height: 100%;")
+            .modal-header 
+                .row(style="margin:0;")
+                    .col-md-12
+                        h3(style="margin:0px 0;") #{translation.ADD}
+
+            .modal-body.borderBottom
+              .row 
+                .col-12.col-md-9
+                  .form-group 
+                    label(for="nombre") #{translation.FORM.NAME}
+                    input#nombre.form-control(type="text" placeholder=translation.FORM.NAME)
+                .col-12.col-md-3
+                  .form-group
+                    label(for="codigoexterno") #{translation.FORM.EXTERNAL_CODE}
+                    input#codigoexterno.form-control(type="text" placeholder=translation.FORM.EXTERNAL_CODE)
+              .row.mt-3
+                .col-12.col-md-6
+                  .form-group 
+                    label(for="estado") #{translation.FORM.STATE}
+                    //- input#estado.form-control(type="text" placeholder=translation.FORM.STATE)
+                    select#estado.form-control(name="estado")
+                      option(value="1") #{translation.FORM.ACTIVE}
+                      option(value="2") #{translation.FORM.INACTIVE}
+                .col-12.col-md-6 
+                  .form-group
+                    label(for="sede") #{translation.FORM.BRANCH}
+                    select#sede.form-control
+                      option(value="0") #{translation.FORM.NO_BRANCH}
+                      each sede in sedes
+                        option(value=sede.id) #{sede.nombre}
+              .row.mt-3
+                .col-12.col-md-6
+                  .form-group 
+                    label(for="categoria") #{translation.FORM.CATEGORY}
+                    select#categoria.form-control(name="categoria")
+                      //- Categorias medicas
+                      option(value="1") Angiología
+                      option(value="2") Cardiología
+                      option(value="3") Cirugía General
+                      option(value="4") Dermatología
+                      option(value="5") Endocrinología
+                      option(value="6") Gastroenterología
+                      option(value="7") Geriatría
+                      option(value="8") Ginecología
+                      option(value="9") Hematología
+                      option(value="10") Infectología
+                      option(value="11") Medicina Interna
+                      option(value="12") Nefrología
+                      option(value="13") Neurología
+                      option(value="14") Neurocirugía
+                      option(value="15") Nutrición
+                      option(value="16") Oftalmología
+                      option(value="17") Oncología
+                      option(value="18") Otorrinolaringología
+                      option(value="19") Pediatría
+                      option(value="20") Psiquiatría
+                      option(value="21") Reumatología
+                      option(value="22") Traumatología
+                      option(value="23") Urología
+                      option(value="24") Otros
+                      //- Categorias odontologicas
+                      option(value="25") Odontología General
+                      option(value="26") Odontopediatría
+                      option(value="27") Ortodoncia
+                      option(value="28") Periodoncia
+                      option(value="29") Endodoncia
+                      option(value="30") Cirugía Maxilofacial
+                      option(value="31") Prótesis
+                      option(value="32") Implantes
+                      option(value="33") Otros
+                      //- Categorias de laboratorio
+                      option(value="34") Análisis Clínicos
+                      option(value="35") Análisis de Orina
+                      option(value="36") Análisis de Sangre
+                      option(value="37") Análisis de Heces
+                      option(value="38") Otros
+                      //- Categorias de fisioterapia
+                      option(value="39") Fisioterapia General
+                      option(value="40") Fisioterapia Respiratoria
+                      option(value="41") Fisioterapia Neurológica
+                      option(value="42") Fisioterapia Pediátrica
+                      option(value="43") Fisioterapia Deportiva
+                      option(value="44") Fisioterapia Geriátrica
+                      option(value="45") Fisioterapia Oncológica
+                      option(value="46") Fisioterapia Cardiovascular
+                      option(value="47") Fisioterapia Traumatológica
+                      option(value="48") Fisioterapia Uroginecológica
+                      option(value="49") Fisioterapia Estética
+                      option(value="50") Fisioterapia del Suelo Pélvico
+                      option(value="51") Fisioterapia del Trastorno del Espectro Autista
+                      option(value="52") Fisioterapia del Trastorno del Espectro Autista
+                      option(value="53") Fisioterapia del Trastorno del Espectro Autista
+
+                .col-12.col-md-6
+                  .form-group
+                    label(for="icono") #{translation.FORM.ICON}
+                      span#showIcono.ml-1
+                    select#icono.form-control
+                      option(value="0") #{translation.FORM.NO_ICON}
+              .row.mt-3
+                .col-12.col-md-6
+                  .form-group 
+                    label(for="descriptionlarga") #{translation.FORM.LONG_DESCRIPTION}
+                    textarea#descriptionlarga.form-control(placeholder=translation.FORM.LONG_DESCRIPTION)
+                .col-12.col-md-6
+                  .form-group
+                    label(for="descripcioncorta") #{translation.FORM.SHORT_DESCRIPTION}
+                    textarea#descripcioncorta.form-control(placeholder=translation.FORM.SHORT_DESCRIPTION)
+              .row.mt-3 
+                .col-12.col-md-6
+                  .row.mb-3.align-items-end
+                    .col-8
+                      span #{translation.FORM.IMAGE}
+                      br
+                      .btn-group
+                        label.btn.btn-info.m-0(for="galeriaImagen") #{translation.FORM.UPLOAD}
+                          i.fas.fa-upload.ml-2
+                        button#galeriaImagen.btn.btn-primary(type="button" onclick="getImagePagedGaleria(0, 'imagenModal', 'showImagenModal')") De galeria
+                    .col-4
+                      input#imagenFile.form-control-file(type="file" name="" value="" hidden)
+                      input#imagen(type="text" hidden )
+                      #mostrarImagen
+                .col-12.col-md-6
+                  //- Checkbox
+                  .form-check 
+                    input#activado.form-check-input(type="checkbox" value="")
+                    label.form-check-label(for="activado") #{translation.FORM.ENABLED}
+
+            .modal-footer(style="padding:8px;")
+                .row(style="margin:0;")
+                    .col-md-12.text-right
+                        button#addEspecialidad.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;") #{translation.ADD}
+                        button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}
+
+  //- Modal para editar especialidad
+  .modal.fade.justify-content-center.align-items-center(tabindex="-1" role="dialog" id="editarEspecialidadModal")
+    .modal-dialog.modal-lg
+        .modal-content.modalContent(style="height: 100%;")
+            .modal-header 
+                .row(style="margin:0;")
+                    .col-md-12
+                        h3(style="margin:0px 0;") #{translation.EDIT}
+
+            .modal-body.borderBottom
+              .row 
+                .col-12.col-md-9
+                  .form-group 
+                    label(for="nombre_editar") #{translation.FORM.NAME}
+                    input#nombre_editar.form-control(type="text" placeholder=translation.FORM.NAME)
+                .col-12.col-md-3
+                  .form-group
+                    label(for="codigoexterno_editar") #{translation.FORM.EXTERNAL_CODE}
+                    input#codigoexterno_editar.form-control(type="text" placeholder=translation.FORM.EXTERNAL_CODE)
+              .row.mt-3
+                .col-12.col-md-6
+                  .form-group 
+                    label(for="estado_editar") #{translation.FORM.STATE}
+                    //- input#estado.form-control(type="text" placeholder=translation.FORM.STATE)
+                    select#estado_editar.form-control(name="estado")
+                      option(value="1") #{translation.FORM.ACTIVE}
+                      option(value="2") #{translation.FORM.INACTIVE}
+                .col-12.col-md-6 
+                  .form-group
+                    label(for="sede_editar") #{translation.FORM.BRANCH}
+                    select#sede_editar.form-control
+                      option(value="0") #{translation.FORM.NO_BRANCH}
+                      each sede in sedes
+                        option(value=sede.id) #{sede.nombre}
+              .row.mt-3
+                .col-12.col-md-6
+                  .form-group 
+                    label(for="categoria_editar") #{translation.FORM.CATEGORY}
+                    select#categoria_editar.form-control(name="categoria")
+                      //- Categorias medicas
+                      option(value="1") Angiología
+                      option(value="2") Cardiología
+                      option(value="3") Cirugía General
+                      option(value="4") Dermatología
+                      option(value="5") Endocrinología
+                      option(value="6") Gastroenterología
+                      option(value="7") Geriatría
+                      option(value="8") Ginecología
+                      option(value="9") Hematología
+                      option(value="10") Infectología
+                      option(value="11") Medicina Interna
+                      option(value="12") Nefrología
+                      option(value="13") Neurología
+                      option(value="14") Neurocirugía
+                      option(value="15") Nutrición
+                      option(value="16") Oftalmología
+                      option(value="17") Oncología
+                      option(value="18") Otorrinolaringología
+                      option(value="19") Pediatría
+                      option(value="20") Psiquiatría
+                      option(value="21") Reumatología
+                      option(value="22") Traumatología
+                      option(value="23") Urología
+                      option(value="24") Otros
+                      //- Categorias odontologicas
+                      option(value="25") Odontología General
+                      option(value="26") Odontopediatría
+                      option(value="27") Ortodoncia
+                      option(value="28") Periodoncia
+                      option(value="29") Endodoncia
+                      option(value="30") Cirugía Maxilofacial
+                      option(value="31") Prótesis
+                      option(value="32") Implantes
+                      option(value="33") Otros
+                      //- Categorias de laboratorio
+                      option(value="34") Análisis Clínicos
+                      option(value="35") Análisis de Orina
+                      option(value="36") Análisis de Sangre
+                      option(value="37") Análisis de Heces
+                      option(value="38") Otros
+                      //- Categorias de fisioterapia
+                      option(value="39") Fisioterapia General
+                      option(value="40") Fisioterapia Respiratoria
+                      option(value="41") Fisioterapia Neurológica
+                      option(value="42") Fisioterapia Pediátrica
+                      option(value="43") Fisioterapia Deportiva
+                      option(value="44") Fisioterapia Geriátrica
+                      option(value="45") Fisioterapia Oncológica
+                      option(value="46") Fisioterapia Cardiovascular
+                      option(value="47") Fisioterapia Traumatológica
+                      option(value="48") Fisioterapia Uroginecológica
+                      option(value="49") Fisioterapia Estética
+                      option(value="50") Fisioterapia del Suelo Pélvico
+                      option(value="51") Fisioterapia del Trastorno del Espectro Autista
+                      option(value="52") Fisioterapia del Trastorno del Espectro Autista
+                      option(value="53") Fisioterapia del Trastorno del Espectro Autista
+
+                .col-12.col-md-6
+                  .form-group
+                    label(for="icono_editar") #{translation.FORM.ICON}
+                      span#showIcono_editar.ml-1
+                    select#icono_editar.form-control
+                      option(value="0") #{translation.FORM.NO_ICON}
+                 
+              .row.mt-3
+                .col-12.col-md-6
+                  .form-group 
+                    label(for="descriptionlarga_editar") #{translation.FORM.LONG_DESCRIPTION}
+                    textarea#descriptionlarga_editar.form-control(placeholder=translation.FORM.LONG_DESCRIPTION)
+                .col-12.col-md-6
+                  .form-group
+                    label(for="descripcioncorta_editar") #{translation.FORM.SHORT_DESCRIPTION}
+                    textarea#descripcioncorta_editar.form-control(placeholder=translation.FORM.SHORT_DESCRIPTION)
+
+              .row.mt-3 
+                .col-12.col-md-6
+                  .row.mb-3.align-items-end
+                    .col-8
+                      span Imagen
+                      br
+                      .btn-group
+                        label.btn.btn-info.m-0(for="galeriaImagen_editar") Subir
+                          i.fas.fa-upload.ml-2
+                        button#galeriaImagen_editar.btn.btn-primary(type="button" onclick="getImagePagedGaleria(0, 'imagenModal', 'showImagenModal')") De galeria
+                    .col-4
+                      input#imagenFile_editar.form-control-file(type="file" name="" value="" hidden)
+                      input#imagen_editar(type="text" hidden )
+                      #mostrarImagen_editar
+                .col-12.col-md-6
+                  //- Checkbox
+                  .form-check 
+                    input#activado_editar.form-check-input(type="checkbox" value="")
+                    label.form-check-label(for="activado_editar") #{translation.FORM.ENABLED}
+                input#itemId(type="text" value="" hidden)
+            .modal-footer(style="padding:8px;")
+                .row(style="margin:0;")
+                    .col-md-12.text-right
+                        button#editEspecialidad.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;") #{translation.EDIT}
+                        button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}
+  
+  //- Modal para mostrar especialidad
+  .modal.fade.justify-content-center.align-items-center(tabindex="-1" role="dialog" id="mostrarEspecialidadModal")
+    .modal-dialog.modal-lg
+        .modal-content.modalContent(style="height: 100%;")
+            .modal-header 
+                .row(style="margin:0;")
+                    .col-md-12
+                        h3(style="margin:0px 0;") #{translation.SHOW}
+
+            .modal-body.borderBottom
+              .row 
+                .col-12.col-md-9
+                  .form-group 
+                    label(for="nombre_mostrar") #{translation.FORM.NAME}
+                    input#nombre_mostrar.form-control(type="text" placeholder=translation.FORM.NAME readonly)
+                .col-12.col-md-3
+                  .form-group
+                    label(for="codigoexterno_mostrar") #{translation.FORM.EXTERNAL_CODE}
+                    input#codigoexterno_mostrar.form-control(type="text" placeholder=translation.FORM.EXTERNAL_CODE readonly)
+              .row.mt-3
+                .col-12.col-md-6
+                  .form-group 
+                    label(for="estado_mostrar") #{translation.FORM.STATE}
+                    //- input#estado.form-control(type="text" placeholder=translation.FORM.STATE)
+                    select#estado_mostrar.form-control(name="estado" disabled)
+                      option(value="1") #{translation.FORM.ACTIVE}
+                      option(value="2") #{translation.FORM.INACTIVE}
+                .col-12.col-md-6 
+                  .form-group
+                    label(for="sede_mostrar") #{translation.FORM.BRANCH}
+                    select#sede_mostrar.form-control(disabled)
+                      option(value="0") #{translation.FORM.NO_BRANCH}
+                      each sede in sedes
+                        option(value=sede.id) #{sede.nombre}
+              .row.mt-3
+                .col-12.col-md-6
+                  .form-group 
+                    label(for="categoria_mostrar") #{translation.FORM.CATEGORY}
+                    select#categoria_mostrar.form-control(name="categoria" disabled)
+                      //- Categorias medicas
+                      option(value="1") Angiología
+                      option(value="2") Cardiología
+                      option(value="3") Cirugía General
+                      option(value="4") Dermatología
+                      option(value="5") Endocrinología
+                      option(value="6") Gastroenterología
+                      option(value="7") Geriatría
+                      option(value="8") Ginecología
+                      option(value="9") Hematología
+                      option(value="10") Infectología
+                      option(value="11") Medicina Interna
+                      option(value="12") Nefrología
+                      option(value="13") Neurología
+                      option(value="14") Neurocirugía
+                      option(value="15") Nutrición
+                      option(value="16") Oftalmología
+                      option(value="17") Oncología
+                      option(value="18") Otorrinolaringología
+                      option(value="19") Pediatría
+                      option(value="20") Psiquiatría
+                      option(value="21") Reumatología
+                      option(value="22") Traumatología
+                      option(value="23") Urología
+                      option(value="24") Otros
+                      //- Categorias odontologicas
+                      option(value="25") Odontología General
+                      option(value="26") Odontopediatría
+                      option(value="27") Ortodoncia
+                      option(value="28") Periodoncia
+                      option(value="29") Endodoncia
+                      option(value="30") Cirugía Maxilofacial
+                      option(value="31") Prótesis
+                      option(value="32") Implantes
+                      option(value="33") Otros
+                      //- Categorias de laboratorio
+                      option(value="34") Análisis Clínicos
+                      option(value="35") Análisis de Orina
+                      option(value="36") Análisis de Sangre
+                      option(value="37") Análisis de Heces
+                      option(value="38") Otros
+                      //- Categorias de fisioterapia
+                      option(value="39") Fisioterapia General
+                      option(value="40") Fisioterapia Respiratoria
+                      option(value="41") Fisioterapia Neurológica
+                      option(value="42") Fisioterapia Pediátrica
+                      option(value="43") Fisioterapia Deportiva
+                      option(value="44") Fisioterapia Geriátrica
+                      option(value="45") Fisioterapia Oncológica
+                      option(value="46") Fisioterapia Cardiovascular
+                      option(value="47") Fisioterapia Traumatológica
+                      option(value="48") Fisioterapia Uroginecológica
+                      option(value="49") Fisioterapia Estética
+                      option(value="50") Fisioterapia del Suelo Pélvico
+                      option(value="51") Fisioterapia del Trastorno del Espectro Autista
+                      option(value="52") Fisioterapia del Trastorno del Espectro Autista
+                      option(value="53") Fisioterapia del Trastorno del Espectro Autista
+                .col-12.col-md-6
+                  .form-group
+                    label(for="icono_mostrar") #{translation.FORM.ICON}
+                      span#showIcono_mostrar
+                    input#icono_mostrar.form-control(type="text" placeholder=translation.FORM.ICON readonly)
+
+              .row.mt-3
+                .col-12.col-md-6
+                  .form-group 
+                    label(for="descriptionlarga_mostrar") #{translation.FORM.LONG_DESCRIPTION}
+                    textarea#descriptionlarga_mostrar.form-control(placeholder=translation.FORM.LONG_DESCRIPTION readonly)
+                .col-12.col-md-6
+                  .form-group
+                    label(for="descripcioncorta_mostrar") #{translation.FORM.SHORT_DESCRIPTION}
+                    textarea#descripcioncorta_mostrar.form-control(placeholder=translation.FORM.SHORT_DESCRIPTION readonly)
+              
+              .row.mt-3 
+                .col-12.col-md-6
+                  .row.mb-3.align-items-end
+                    .col-8
+                      span #{translation.FORM.IMAGE}
+                      br
+                    .col-4
+                      #mostrarImagen_mostrar
+                .col-12.col-md-6
+                  //- Checkbox
+                  .form-check 
+                    input#activado_mostrar.form-check-input(type="checkbox" value="" disabled)
+                    label.form-check-label(for="activado") #{translation.FORM.ENABLED}
+
+            .modal-footer(style="padding:8px;")
+                .row(style="margin:0;")
+                    .col-md-12.text-right
+                        button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}
+  script.
+    const nombre = document.getElementById('nombre');
+    const codigoexterno = document.getElementById('codigoexterno');
+    const imagen = document.getElementById('imagen');
+    const activado = document.getElementById('activado');
+    const estado = document.getElementById('estado');
+    const sede = document.getElementById('sede');
+    const categoria = document.getElementById('categoria');
+    const descripcioncorta = document.getElementById('descripcioncorta');
+    const descriptionlarga = document.getElementById('descriptionlarga');
+    const icono = document.getElementById('icono');
+
+    const nombre_editar = document.getElementById('nombre_editar');
+    const codigoexterno_editar = document.getElementById('codigoexterno_editar');
+    const imagen_editar = document.getElementById('imagen_editar');
+    const activado_editar = document.getElementById('activado_editar');
+    const estado_editar = document.getElementById('estado_editar');
+    const sede_editar = document.getElementById('sede_editar');
+    const categoria_editar = document.getElementById('categoria_editar');
+    const descripcioncorta_editar = document.getElementById('descripcioncorta_editar');
+    const descriptionlarga_editar = document.getElementById('descriptionlarga_editar');
+    const icono_editar = document.getElementById('icono_editar');
+
+    const nombre_mostrar = document.getElementById('nombre_mostrar');
+    const codigoexterno_mostrar = document.getElementById('codigoexterno_mostrar');
+    const imagen_mostrar = document.getElementById('imagen_mostrar');
+    const activado_mostrar = document.getElementById('activado_mostrar');
+    const estado_mostrar = document.getElementById('estado_mostrar');
+    const sede_mostrar = document.getElementById('sede_mostrar');
+    const categoria_mostrar = document.getElementById('categoria_mostrar');
+    const descripcioncorta_mostrar = document.getElementById('descripcioncorta_mostrar');
+    const descriptionlarga_mostrar = document.getElementById('descriptionlarga_mostrar');
+    const icono_mostrar = document.getElementById('icono_mostrar');
+
+    
+    const addEspecialidad =  document.getElementById('addEspecialidad');
+    const editEspecialidad =  document.getElementById('editEspecialidad');
+    const itemId = document.getElementById('itemId');
+
+    const showIcono = document.getElementById('showIcono');
+    const showIcono_editar = document.getElementById('showIcono_editar');
+    const showIcono_mostrar = document.getElementById('showIcono_mostrar');
+
+  script.
+    let tabla;
+    addEventListener('DOMContentLoaded', () => {
+      const empresa_id = document.querySelector('#empresa_id');
+      let auxAjaxUrl = '/admin-clinica/especialidades/datatable'
+      if (empresa_id && empresa_id.value != '') {
+        auxAjaxUrl = `/admin-clinica/especialidades/datatable/${empresa_id.value}`
+      }
+      tabla = $('#especialidad').DataTable({
+        fnCreatedRow: function (nRow, aData, iDataIndex) {
+          $(nRow).attr('id', `delete${aData.id}`);
+        },
+        processing: true,
+        serverSide: true,
+        ajax: auxAjaxUrl,
+        columns: [
+          { 
+            data: 'id', name: 'id', title: 'ID',
+            searchable: false,
+            orderable: false,
+            visible: false
+          },
+          { 
+            data: 'nombre', name: 'nombre', title: '#{translation.FORM.NAME}',
+            searchable: true,
+            orderable: true,
+          },
+          { 
+            data: 'codigoexterno', name: 'codigoexterno', title: '#{translation.FORM.EXTERNAL_CODE}',
+            searchable: true,
+            orderable: true,
+          },
+          { 
+            data: 'imagen', name: 'imagen', title: '#{translation.FORM.IMAGE}',
+            searchable: false,
+            orderable: false,
+            render: function (data, type, row) {
+              try {
+                new URL(row.imagen);
+                return `<img src="${row.imagen}" alt="imagen" style="width: 50px; height: 50px;">`
+              } catch(e) {
+                return `<img src="/images/image-default.jpg" alt="imagen" style="width: 50px; height: 50px;">`
+              }
+            }
+          },
+          { 
+            data: 'activado', name: 'activado', title: '#{translation.FORM.ENABLED}',
+            searchable: false,
+            orderable: false,
+            render: function (data, type, row) {
+              if (row.activado == 1) {
+                return '<span class="badge badge-success">#{translation.FORM.ACTIVE}</span>'
+              } else {
+                return '<span class="badge badge-danger">#{translation.FORM.INACTIVE}</span>'
+              }
+            }
+          },
+          { 
+            data: 'estado', name: 'estado', title: '#{translation.FORM.STATE}',
+            searchable: false,
+            orderable: false,
+            render: function (data, type, row) {
+              if (row.estado == 1) {
+                return '<span class="badge badge-success">#{translation.FORM.ACTIVE}</span>'
+              } else {
+                return '<span class="badge badge-danger">#{translation.FORM.INACTIVE}</span>'
+              }
+            }
+          },
+          { 
+            data: 'sede', name: 'sede', title: '#{translation.FORM.BRANCH}',
+            searchable: true,
+            orderable: true,
+            render: function (data, type, row) {
+              if (Array.isArray(sedes) && sedes.length > 0) {
+                const sede = sedes.find(sede => sede.id == row.sede)
+                if (sede)
+                  return sede.nombre;
+                else
+                  return '#{translation.FORM.NO_BRANCH}'
+              } else {
+                return '#{translation.FORM.NO_BRANCH}'
+              }
+            }
+          },
+          { 
+            data: 'categoria', name: 'categoria', title: '#{translation.FORM.CATEGORY}',
+            searchable: true,
+            orderable: true,
+          },
+          { 
+            data: 'icono', name: 'icono', title: '#{translation.FORM.ICON}',
+            searchable: false,
+            orderable: false,   
+            render: function (data, type, row) {
+              return `<i class="${row.icono}"></i>`
+            }
+          },
+          { 
+            data: 'actions',
+            name: 'actions',
+            title: '#{translation.FORM.ACTIONS}',
+            searchable: false,
+            orderable: false,
+            render: function (data, type, row) {
+              return `
+                <button class="btn btn-primary btn-sm" onclick='editarEspecialidad(${JSON.stringify(row)})' data-toggle="modal" data-target="#editarEspecialidadModal"><i class="fas fa-edit"></i></button>
+                <button class="btn btn-success btn-sm" onclick='mostrarEspecialidad(${JSON.stringify(row)})' data-toggle="modal" data-target="#mostrarEspecialidadModal"><i class="fas fa-eye"></i></button>
+                <button class="btn btn-danger btn-sm" onclick="beforeDeleteItem('/admin-clinica/especialidades/items/${row.id}', itemDeleteSuccess)"><i class="fas fa-trash"></i></button>
+              `
+            }
+          }
+        ]
+      })
+    });
+    function nuevaEspecialidad() {
+      createImageGroup('imagen', 'imagenFile', 'mostrarImagen', 'galeriaImagen');
+    }
+    function editarEspecialidad(data) {
+
+      nombre_editar.value = data.nombre;
+      codigoexterno_editar.value = data.codigoexterno;
+      imagen_editar.value = data.imagen;
+      activado_editar.checked = data.activado;
+      estado_editar.value = data.estado;
+      sede_editar.value = data.sede;
+      categoria_editar.value = data.categoria;
+      descripcioncorta_editar.value = data.descripcioncorta;
+      descriptionlarga_editar.value = data.descriptionlarga;
+      icono_editar.value = data.icono;
+      $('#showIcono_editar').html(`<i class="${data.icono}"></i>`)
+      try {
+        new URL(data.imagen);
+        $('#mostrarImagen_editar').html(`<img src="${data.imagen}" alt="imagen" style="width: 50px; height: 50px;">`)
+      }catch (e) {
+        $('#mostrarImagen_editar').html(`<img src="/images/image-default.jpg" alt="imagen" style="width: 50px; height: 50px;">`)
+      }
+      itemId.value = data.id;
+      createImageGroup('imagen_editar', 'imagenFile_editar', 'mostrarImagen_editar', 'galeriaImagen_editar');
+    }
+
+    function mostrarEspecialidad(data) {
+      nombre_mostrar.value = data.nombre;
+      codigoexterno_mostrar.value = data.codigoexterno;
+      activado_mostrar.checked = data.activado;
+      estado_mostrar.value = data.estado;
+      sede_mostrar.value = data.sede;
+      categoria_mostrar.value = data.categoria;
+      descripcioncorta_mostrar.value = data.descripcioncorta;
+      descriptionlarga_mostrar.value = data.descriptionlarga;
+      icono_mostrar.value = data.icono;
+      $('#showIcono_mostrar').html(`<i class="${data.icono}"></i>`)
+      try {
+        new URL(data.imagen);
+        $('#mostrarImagen_mostrar').html(`<img src="${data.imagen}" alt="imagen" style="width: 50px; height: 50px;">`)
+      }catch (e) {
+        $('#mostrarImagen_mostrar').html(`<img src="/images/image-default.jpg" alt="imagen" style="width: 50px; height: 50px;">`)
+      }
+    }
+
+  .modal.fade.justify-content-center.align-items-center(tabindex="-1" role="dialog" id="imagenModal" style="height: 100vh;overflow-y: scroll;")
+    .modal-dialog.modal-lg
+      .modal-content.modalContent(style="height: 100%;")
+        .modal-header 
+          .row(style="margin:0;")
+            .col-md-12.text-center
+              h3(style="margin:0px 0;") Galeria
+
+        .modal-body.borderBottom
+          #showImagenModal.row
+          
+        .modal-footer(style="padding:8px;")
+          .row(style="margin:0;")
+            .col-md-12.text-right
+              button.btn.btn-danger(type="buton" onclick="$('#imagenModal').modal('hide');") Cerrar
+  include ../../modulo-general/galeria-fotos/image.pug
+
+  script.
+    // iconos medicos
+    const iconos = [
+      ['fas fa-briefcase-medical', 'Briefcase Medical'],
+      ['fas fa-bone', 'Bone'],
+      ['fas fa-bong', 'Bong'],
+      ['fas fa-briefcase-medical', 'Briefcase Medical'],
+      ['fas fa-burn', 'Burn'],
+      ['fas fa-capsules', 'Capsules'],
+      ['fas fa-clinic-medical', 'Clinic Medical'],
+      ['fas fa-couch', 'Couch'],
+      ['fas fa-diagnoses', 'Diagnoses'],
+      ['fas fa-dna', 'Dna'],
+      ['fas fa-file-medical', 'File Medical'],
+      ['fas fa-file-medical-alt', 'File Medical Alt'],
+      ['fas fa-first-aid', 'First Aid'],
+      ['fas fa-heartbeat', 'Heartbeat'],
+      ['fas fa-hospital', 'Hospital'],
+      ['fas fa-hospital-alt', 'Hospital Alt'],
+      ['fas fa-hospital-symbol', 'Hospital Symbol'],
+      ['fas fa-id-card-alt', 'Id Card Alt'],
+      ['fas fa-laptop-medical', 'Laptop Medical'],
+      ['fas fa-notes-medical', 'Notes Medical'],
+      ['fas fa-pills', 'Pills'],
+      ['fas fa-prescription-bottle', 'Prescription Bottle'],
+      ['fas fa-prescription-bottle-alt', 'Prescription Bottle Alt'],
+      ['fas fa-procedures', 'Procedures'],
+      ['fas fa-stethoscope', 'Stethoscope'],
+      ['fas fa-syringe', 'Syringe'],
+      ['fas fa-tablets', 'Tablets'],
+      ['fas fa-user-md', 'User Md'],
+      ['fas fa-user-nurse', 'User Nurse'],
+      ['fas fa-vial', 'Vial'],
+      ['fas fa-vials', 'Vials'],
+      ['fas fa-x-ray', 'X Ray'],
+      ['fas fa-allergies', 'Allergies'],
+      ['fas fa-band-aid', 'Band Aid'],
+      ['fas fa-biohazard', 'Biohazard'],
+      ['fas fa-bong', 'Bong'],
+      ['fas fa-book-medical', 'Book Medical'],
+      ['fas fa-brain', 'Brain'],
+      ['fas fa-cannabis', 'Cannabis'],
+      ['fas fa-capsules', 'Capsules'],
+      ['fas fa-clinic-medical', 'Clinic Medical'],
+      ['fas fa-couch', 'Couch'],
+      ['fas fa-diagnoses', 'Diagnoses'],
+      ['fas fa-dna', 'Dna'],
+      ['fas fa-file-medical', 'File Medical'],
+      ['fas fa-file-medical-alt', 'File Medical Alt'],
+      ['fas fa-first-aid', 'First Aid'],
+      ['fas fa-heartbeat', 'Heartbeat'],
+      ['fas fa-hospital', 'Hospital'],
+      ['fas fa-hospital-alt', 'Hospital Alt'],
+      ['fas fa-hospital-symbol', 'Hospital Symbol'],
+      ['fas fa-id-card-alt', 'Id Card Alt'],
+      ['fas fa-laptop-medical', 'Laptop Medical'],
+      ['fas fa-notes-medical', 'Notes Medical'],
+      ['fas fa-pills', 'Pills'],
+      ['fas fa-prescription-bottle', 'Prescription Bottle'],
+      ['fas fa-prescription-bottle-alt', 'Prescription Bottle Alt'],
+      ['fas fa-procedures', 'Procedures'],
+      ['fas fa-stethoscope', 'Stethoscope'],
+      ['fas fa-syringe', 'Syringe'],
+      ['fas fa-tablets', 'Tablets'],
+      ['fas fa-user-md', 'User Md'],
+      ['fas fa-user-nurse', 'User Nurse'],
+      ['fas fa-vial', 'Vial'],
+      ['fas fa-vials', 'Vials'],
+      ['fas fa-x-ray', 'X Ray'],
+      ['fas fa-allergies', 'Allergies'],
+      ['fas fa-band-aid', 'Band Aid'],
+      ['fas fa-biohazard', 'Biohazard'],
+      ['fas fa-bong', 'Bong'],
+      ['fas fa-book-medical', 'Book Medical'],
+      ['fas fa-brain', 'Brain'],
+      ['fas fa-cannabis', 'Cannabis'],
+      ['fas fa-capsules', 'Capsules'],
+      ['fas fa-clinic-medical', 'Clinic Medical'],
+      ['fas fa-couch', 'Couch'],
+      ['fas fa-diagnoses', 'Diagnoses'],
+      ['fas fa-dna', 'Dna'],
+      ['fas fa-file-medical', 'File Medical'],
+      ['fas fa-file-medical-alt', 'File Medical Alt'],
+      ['fas fa-first-aid', 'First Aid'],
+      ['fas fa-heartbeat', 'Heartbeat']
+    ]
+
+    iconos.forEach((icon) => {
+      let option = document.createElement('option');
+      option.value = icon[0];
+      option.innerHTML = icon[1];
+      icono.appendChild(option);
+      icono_editar.appendChild(option.cloneNode(true));
+    })
+  script
+    include ../../../js/modulo-tv/save.js
+    include ../../../js/modulo-tv/update.js
+    include ../../../js/modulo-tv/delete.js
+  script.
+    addEspecialidad.addEventListener ('click', (e) => {
+      if (nombre.value != '') {
+        const data = {
+          nombre: nombre.value,
+          codigoexterno: codigoexterno.value,
+          imagen: imagen.value,
+          activado: activado.checked ? 1 : 0,
+          estado: estado.value,
+          sede: sede.value,
+          categoria: categoria.value,
+          descripcioncorta: descripcioncorta.value,
+          descriptionlarga: descriptionlarga.value,
+          icono: icono.value
+        }
+        if (empresa_id && empresa_id.value != '') {
+          data.empresa_id = empresa_id.value
+        }
+        save('/admin-clinica/especialidades/items',data, addItemSuccess)
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'El nombre de la especialidad es requerido',
+          timer: 2000
+        })
+      }
+    });
+
+    editEspecialidad.addEventListener('click', (e) => {
+      if(nombre_editar.value != '') {
+        const data = {
+          nombre: nombre_editar.value,
+          codigoexterno: codigoexterno_editar.value,
+          imagen: imagen_editar.value,
+          activado: activado_editar.checked ? 1 : 0,
+          estado: estado_editar.value,
+          sede: sede_editar.value,
+          categoria: categoria_editar.value,
+          descripcioncorta: descripcioncorta_editar.value,
+          descriptionlarga: descriptionlarga_editar.value,
+          icono: icono_editar.value
+        }
+        updateItem(`/admin-clinica/especialidades/items/${itemId.value}`, data, editItemSuccess)
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'El nombre de la especialidad es requerido',
+          timer: 2000
+        })
+      }
+    })
+
+    function addItemSuccess (data) {
+      tabla.ajax.reload();
+      nombre.value = '';
+      codigoexterno.value = '';
+      imagen.value = '';
+      activado.checked = false;
+      estado.value = '';
+      sede.value = '';
+      categoria.value = '';
+      descripcioncorta.value = '';
+      descriptionlarga.value = '';
+      icono.value = '';
+      showIcono.innerHTML = '';
+      $('#mostrarImagen').html('');
+      $('#nuevoEspecialidadModal').modal('hide');
+    }
+
+    function editItemSuccess (data) {
+      tabla.ajax.reload();
+      nombre_editar.value = '';
+      codigoexterno_editar.value = '';
+      imagen_editar.value = '';
+      activado_editar.value = '';
+      estado_editar.checked = false;
+      sede_editar.value = '';
+      categoria_editar.value = '';
+      descripcioncorta_editar.value = '';
+      descriptionlarga_editar.value = '';
+      icono_editar.value = '';
+      showIcono_editar.innerHTML = '';
+      $('#mostrarImagen_editar').html('');
+      $('#editarEspecialidadModal').modal('hide');
+    }
+    
+    function itemDeleteSuccess (data) {
+      tabla.row($(`#${data.target}`)).remove().draw();
+    }
+
+    function formatState (state) {
+      if (!state.id) { return state.text; }
+          let $state = $(
+            '<span><i class="' +  state.element.value.toLowerCase() + '"> </i> ' + 
+        state.text +     '</span>'
+      );
+      return $state;
+    };
+
+    $("#icono").select2({
+      templateResult: formatState
+    });
+    $("#icono_editar").select2({
+      templateResult: formatState
+    });
+
+  script.
+    const sedes = !{JSON.stringify(sedes)}

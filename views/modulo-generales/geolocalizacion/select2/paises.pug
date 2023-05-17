@@ -1,0 +1,45 @@
+script.
+  const select2Paises = $("#lista-paises, #lista-paises-editar, #lista-paises-filtro").select2({});
+  let countryCode = "";
+  $.ajax({
+    url: "/admin-geolocalizacion/countries",
+    dataType: 'json',
+    success: function (data) {
+      if (Array.isArray(data)) {
+        let options = [{
+          id: '',
+          text: 'Seleccione un país'
+        }];
+        options.push(...data.map((item) => {
+          return {
+            id: item.isoCode,
+            text: item.name,
+          }
+        }));
+        select2Paises.select2({
+            data: options,
+            placeholder: 'Seleccione un país',
+            templateResult: paisesState,
+            allowClear: true
+          });
+      }
+    },
+  });
+
+  function paisesState (state) {
+    if (!state.id) {
+      return state.text;
+    }
+    let $container = $(`
+      <span><strong>${state.id}</strong> | ${state.text}</span>
+    `);
+
+    return $container;
+  }
+
+  $("#lista-paises, #lista-paises-editar").change(function (e) {
+    countryCode = this.value;
+    if (typeof actualizarProvincias == 'function')
+      actualizarProvincias();
+      
+  });

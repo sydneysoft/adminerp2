@@ -1,0 +1,18 @@
+extends ../layout.pug
+
+append contenido 
+  .border-bottom.border-left.border-right.rounded-bottom.p-3
+    .my-3 
+      .text-right 
+        a.btn.btn-primary(href="/admin-footer") #{translation.BACK}
+    .my-3
+      button.btn.btn-primary.btn-block(onclick=`beforeCreateList(${empresa_id})`) #{translation.ADD} 
+        i.fas.fa-plus
+    .my-3 
+      input#empresa_id(type="text" value=empresa_id hidden)
+      #footerMenuList.row
+
+  script 
+    include ./both.js
+    include ../../../js/modulo-tv/save.js
+    include ./admin-usuario.js

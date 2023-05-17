@@ -1,0 +1,249 @@
+extends ../layout.pug
+
+append contenido
+  .container.mt-3
+    .tab-content
+      h2 #{translation.PATIENTS}
+    .row
+      .col-12
+        .text-right 
+          button#nuevoPaciente.btn.btn-primary(role="button") #{translation.FORM.NEW} 
+            i.fas.fa-plus.ml-3
+    .row.mt-3
+      .col-12 
+        div.table-responsive 
+          table#dataTable.w-100.table
+            thead 
+              tr 
+                th ID
+                th #{translation.FORM.NAME} 
+                th #{translation.FORM.LAST_NAME}
+                th #{translation.FORM.MOBILE} 
+                th #{translation.FORM.EMAIL} 
+                th #{translation.FORM.ACTIONS} 
+            tbody
+              if Array.isArray(pacientes) && pacientes.length > 0
+                each paciente in pacientes
+                  tr
+                    td= paciente.id
+                    td= paciente.nombre
+                    td= paciente.apellido_paterno
+                    td= paciente.celular
+                    td= paciente.correo
+                    td= JSON.stringify(paciente)
+  .modal.justify-content-center.align-items-center(tabindex="-1" role="dialog" id="nuevoPacienteModal")
+    .modal-dialog.modal-lg
+        .modal-content.modalContent(style="height: 100%;")
+            .modal-header 
+                .row(style="margin:0;")
+                    .col-md-12.text-center
+                        h3(style="margin:0px 0;") #{translation.FORM.ADD_NEW_PATIENT} 
+
+            .modal-body.borderBottom
+              
+              .row
+                .col-12.col-md-4 
+                  .form-group 
+                    label(for="nombre") #{translation.FORM.NAME} *
+                    input#nombre.form-control(type="text" placeholder=translation.FORM.NAME)
+                .col-12.col-md-4
+                  .form-group 
+                    label(for="apellido_paterno") #{translation.FORM.FATHER_LASTNAME} *
+                    input#apellido_paterno.form-control(type="text" placeholder=translation.FORM.FATHER_LASTNAME)
+                .col-12.col-md-4
+                  .form-group 
+                    label(for="apellido_materno") #{translation.FORM.MOTHER_LASTNAME}
+                    input#apellido_materno.form-control(type="text" placeholder=translation.FORM.MOTHER_LASTNAME)
+              .row.mt-3
+                .col-12.col-md-6
+                  .form-group
+                    label(for="numero_documento") #{translation.FORM.DOCUMENT_NUMBER}
+                    input#numero_documento.form-control(type="number" placeholder=translation.FORM.DOCUMENT_NUMBER)
+                .col-12.col-md-6
+                  .form-group
+                    label(for="tipo_documento") #{translation.FORM.DOCUMENT_TYPE}
+                    select#tipo_documento.form-control
+                      if Array.isArray(tipo_documento) && tipo_documento.length > 0
+                        each tipo in tipo_documento[0].valor
+                          option(value=tipo)
+                            span.text-capitalize #{tipo}
+                      else
+                        option(value="0") #{translation.FORM.NO_DOCUMENT_TYPES}
+              
+              .row.mt-3 
+                .col-12.col-md-4 
+                  .form-group
+                    label(for="sexo") #{translation.FORM.GENRE}
+                    select#sexo.form-control
+                      if Array.isArray(sexo) && sexo.length > 0
+                        each tipo in sexo[0].valor
+                          option(value=tipo)
+                            span.text-capitalize #{tipo}
+                      else
+                        option(value="0") #{translation.FORM.NO_SEX_TYPES} 
+                .col-12.col-md-4 
+                  .form-group
+                    label(for="fecha_nacimiento") #{translation.FORM.BIRTH_DATE}
+                    input#fecha_nacimiento.form-control(type="date" placeholder="Fecha de nacimiento")    
+                .col-12.col-md-4 
+                  .form-group
+                    label(for="estado_civil") #{translation.FORM.CIVIL_STATE}
+                    select#estado_civil.form-control
+                      if Array.isArray(estado_civil) && estado_civil.length > 0
+                        each tipo in sexo[0].valor
+                          option(value=tipo)
+                            span.text-capitalize #{tipo}
+                      else
+                        option(value="0") #{translation.FORM.NO_SEX_TYPES}   
+              .row.mt-3 
+                .col-12.col-md-6 
+                  .form-group
+                    label(for="numero_seguro") #{translation.FORM.INSURANCE_NUMBER}
+                    input#numero_seguro.form-control(type="text" placeholder="Número de seguro")
+                .col-12.col-md-6 
+                  .form-group
+                    label(for="tipo_seguro") #{translation.FORM.INSURANCE_NUMBER}
+                    select#tipo_seguro.form-control
+                      if Array.isArray(tipo_seguro) && tipo_seguro.length > 0
+                        each tipo in tipo_seguro[0].valor
+                          option(value=tipo)
+                            span.text-capitalize #{tipo}
+                      else
+                        option(value="0") #{translation.FORM.NO_INSURANCE_TYPE}
+              .row.mt-3 
+                .col-12.col-md-8 
+                  .row 
+                    .col-12.col-md-6 
+                      label(for="celular") #{translation.FORM.PHONE}
+                      input#celular.form-control(type="text" placeholder="Celular")
+                    .col-12.col-md-6 
+                      label(for="correo") #{translation.FORM.EMAIL}
+                      input#correo.form-control(type="email" placeholder="Correo")
+                  .row 
+                    .col-12 
+                      label(for="direccion") #{translation.FORM.ADDRESS}
+                      input#direccion.form-control(type="text" placeholder="Dirección")
+                .col-12.col-md-4
+                  .form-group
+                    label(for="nota") #{translation.FORM.NOTE}
+                    textarea#nota.form-control.h-100(placeholder="Nota")
+              .row
+                .col-12 
+                  label(for="diagnostico") #{translation.FORM.DIAGNOSTIC} 
+                  textarea#diagnostico.form-control(placeholder="Diagnostico")
+            
+            .modal-footer(style="padding:8px;")
+                .row(style="margin:0;")
+                    .col-md-12.text-right
+                        button#guardarPaciente.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;") #{translation.ADD}
+                        button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE} Cerrar
+
+  .modal.justify-content-center.align-items-center(tabindex="-1" role="dialog" id="editarPacienteModal")
+    .modal-dialog.modal-lg
+        .modal-content.modalContent(style="height: 100%;")
+            .modal-header 
+                .row(style="margin:0;")
+                    .col-md-12
+                        h3(style="margin:0px 0;") #{translation.EDIT_PATIENT}
+
+            .modal-body.borderBottom
+              .row
+                .col-12.col-md-4 
+                  .form-group 
+                    label(for="nombreEditar") #{translation.FORM.NAME} *
+                    input#nombreEditar.form-control(type="text" placeholder="Nombre")
+                .col-12.col-md-4
+                  .form-group 
+                    label(for="apellido_paternoEditar") #{translation.FORM.FATHERS_NAME} *
+                    input#apellido_paternoEditar.form-control(type="text" placeholder="Apellido Paterno")
+                .col-12.col-md-4
+                  .form-group 
+                    label(for="apellido_maternoEditar") #{translation.FORM.MOTHERS_NAME}
+                    input#apellido_maternoEditar.form-control(type="text" placeholder="Apellido Materno")
+              .row.mt-3
+                .col-12.col-md-6
+                  .form-group
+                    label(for="numero_documentoEditar") #{translation.FORM.DOCUMENT_NUMBER}
+                    input#numero_documentoEditar.form-control(type="text" placeholder="Número de documento")
+                .col-12.col-md-6
+                  .form-group
+                    label(for="tipo_documentoEditar") #{translation.FORM.DOCUMENT_TYPE}
+                    select#tipo_documentoEditar.form-control
+                      if Array.isArray(tipo_documento) && tipo_documento.length > 0
+                        each tipo in tipo_documento[0].valor
+                          option(value=tipo)
+                            span.text-capitalize #{tipo}
+                      else
+                        option(value="0") #{translation.FORM.NO_DOCUMENT_TYPES}
+              
+              .row.mt-3 
+                .col-12.col-md-4 
+                  .form-group
+                    label(for="sexoEditar")  #{translation.FORM.SEX}
+                    select#sexoEditar.form-control
+                      if Array.isArray(sexo) && sexo.length > 0
+                        each tipo in sexo[0].valor
+                          option(value=tipo)
+                            span.text-capitalize #{tipo}
+                      else
+                        option(value="0") #{translation.FORM.NO_SEX_TYPES}
+                .col-12.col-md-4 
+                  .form-group
+                    label(for="fecha_nacimientoEditar") #{translation.FORM.BIRTH_DATE}
+                    input#fecha_nacimientoEditar.form-control(type="date" placeholder="Fecha de nacimiento")    
+                .col-12.col-md-4 
+                  .form-group
+                    label(for="estado_civilEditar") #{translation.FORM.CIVIL_STATE}
+                    select#estado_civilEditar.form-control
+                      if Array.isArray(estado_civil) && estado_civil.length > 0
+                        each tipo in sexo[0].valor
+                          option(value=tipo)
+                            span.text-capitalize #{tipo}
+                      else
+                        option(value="0") #{translation.FORM.NO_SEX_TYPES} 
+              .row.mt-3 
+                .col-12.col-md-6 
+                  .form-group
+                    label(for="numero_seguroEditar") #{translation.FORM.INSURANCE_NUMBER} 
+                    input#numero_seguroEditar.form-control(type="text" placeholder="Número de seguro")
+                .col-12.col-md-6 
+                  .form-group
+                    label(for="tipo_seguroEditar") #{translation.FORM.INSURANCE_TYPE}
+                    select#tipo_seguroEditar.form-control
+                      if Array.isArray(tipo_seguro) && tipo_seguro.length > 0
+                        each tipo in tipo_seguro[0].valor
+                          option(value=tipo)
+                            span.text-capitalize #{tipo}
+                      else
+                        option(value="0") #{translation.FORM.NO_INSURANCE_TYPE}
+              .row.mt-3 
+                .col-12.col-md-8 
+                  .row 
+                    .col-12.col-md-6 
+                      label(for="celularEditar") #{translation.FORM.MOBILE}
+                      input#celularEditar.form-control(type="text" placeholder="Celular")
+                    .col-12.col-md-6 
+                      label(for="correoEditar") #{translation.FORM.EMAIL}
+                      input#correoEditar.form-control(type="email" placeholder="Correo")
+                  .row 
+                    .col-12 
+                      label(for="direccionEditar") #{translation.FORM.ADDRESS}
+                      input#direccionEditar.form-control(type="text" placeholder="Dirección")
+                .col-12.col-md-4
+                  .form-group
+                    label(for="notaEditar") #{translation.FORM.NOTE}
+                    textarea#notaEditar.form-control.h-100(placeholder="Nota")
+              .row
+                .col-12 
+                  label(for="diagnosticoEditar") #{translation.FORM.DIAGNOSTIC} 
+                  textarea#diagnosticoEditar.form-control(placeholder="Diagnostico")
+              input#idEditar(type="text" hidden)
+            .modal-footer(style="padding:8px;")
+                .row(style="margin:0;")
+                    .col-md-12.text-right
+                        button#updatePaciente.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;") #{translation.SAVE}
+                        button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}
+  script
+    include ./paciente.js
+    include ../../../js/modulo-tv/delete.js
+  

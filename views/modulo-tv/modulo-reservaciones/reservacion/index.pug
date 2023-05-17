@@ -1,0 +1,18 @@
+extends ../layout.pug
+
+append contenido
+  //- create a toggle nav-tabs with nav content
+  //- ul#reservaciones.nav.nav-tabs(role="tablist")
+  //-   li.nav-item(role="presentation")
+  //-     a#reservaciones-tab.nav-link.active(data-toggle="tab", data-target="#calendario", href="#calendarioTab", role="tab", aria-controls="calendarioTab", aria-selected="true") Calendario 
+  //-   li.nav-item(role="presentation")
+  //-     a#tablelist-tab.nav-link(data-toggle="tab", data-target="#tablelist", href="#tablelist", role="tab", aria-controls="tablelist", aria-selected="true") Lista
+
+  #reservacionesContent.tab-content
+    #calendarioTab.tab-pane.fade.show.active(role="tabpanel", aria-labelledby="reservaciones-tab")
+      .border-left.border-right.border-bottom.p-3 
+        include ./calendario.pug
+
+    #tablelist.tab-pane.fade(role="tabpanel", aria-labelledby="tablelist-tab")
+      h2 #{translation.LIST}
+

@@ -1,0 +1,4 @@
+mixin form-input(target, type, placeholder)
+  .form-group
+    label(for=target) #{placeholder}
+    input.form-control(type=type id=target placeholder=placeholder)

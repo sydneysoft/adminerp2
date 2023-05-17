@@ -1,0 +1,85 @@
+script.
+  let tablaMarcas;
+  $(document).ready( function () {
+    let urlAjaxTablaTutoriales = "/admin-casino/datatable";
+    if (typeof empresa_id != 'undefined' && empresa_id.value != "" && !isNaN(empresa_id.value)) {
+      urlAjaxTablaTutoriales = "/admin-casino/datatable/" + empresa_id.value;
+    }
+
+    tablaMarcas = $('#tabla-categorias').DataTable({
+      "language": {"url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"},
+      order: [[ 0, "desc" ]],
+      searchDelay: 500,
+      processing: true,
+      serverSide: true,
+      ajax: urlAjaxTablaTutoriales,
+      columns: [
+        { data: 'id', name: 'id', title: "ID", orderable: true, searchable: false, visible: false},
+        { 
+          data: 'titulo', name: 'titulo', title: "#{translation.FORM.TITULO}", orderable: true, searchable: true
+        },
+        { 
+          data: 'url', name: 'url', title: "#{translation.FORM.URL_EXTERNA}", orderable: true, searchable: true
+        },
+        { 
+          data: 'video_media', name: 'video_media', title: "#{translation.FORM.URL_INTERNA}", orderable: true, searchable: true
+        },
+        { 
+          data: 'imagen', name: 'imagen', title: "#{translation.FORM.IMAGE}", orderable: false, searchable: false,
+          render: function (data, type, row) {
+            try {
+              new URL(row.imagen)
+              return `<img src="${data}" style="width:50px;height:50px;object-fit:cover">`;
+            } catch (e) {
+              return `<img src="/images/image-default.jpg" style="width:50px;height:50px;object-fit:cover">`;
+            }
+          }
+        },
+        { 
+          data: 'id_categoria', name: 'id_categoria', title: "#{translation.FORM.CATEGORY}", orderable: true, searchable: true,
+          render: function (data, type, row) {
+            let nombre = ""
+            $.ajax({
+              url: "/admin-categorias/" + row.id_categoria,
+              type: "GET",
+              async: false,
+              success: function (response) {
+                if (response.name != "") {
+                  nombre = response.name;
+                }
+              }
+            });
+            return nombre;
+          }
+        },
+                { 
+          data: 'id_subcategoria', name: 'id_subcategoria', title: "#{translation.FORM.SUBCATEGORY}", orderable: true, searchable: true,
+          render: function (data, type, row) {
+            let nombre = ""
+            $.ajax({
+              url: "/admin-subcategorias/" + row.id_subcategoria,
+              type: "GET",
+              async: false,
+              success: function (response) {
+                if (response.nombre != "") {
+                  nombre = response.nombre;
+                }
+              }
+            });
+            return nombre;
+          }
+        },
+        { 
+          data: 'actions', name: 'actions', title: "Acciones", orderable: false, searchable: false,
+          render: function (data, type, row) {
+            let strRow = JSON.stringify(row);
+            return `
+              <button class="btn btn-warning" style="margin-right:7px;" type="button"  data-target="#editarBannerAdministrador" data-toggle="modal" onclick='handleEditTutorial(${strRow})'><i class="fas fa-edit"></i></button>
+              <button class="delete btn btn-danger"  onClick="eliminarTutorialAdmin('${row.id}')"><i class="fas fa-trash"></i></button>
+            `;
+          }  
+        }
+      ]
+    });
+  });
+

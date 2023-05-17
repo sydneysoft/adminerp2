@@ -1,0 +1,64 @@
+script.
+  const select2Medicos = $("#lista-testimonios, #lista-testimonios-editar, #lista-testimonios-filtro").select2({
+    placeholder: '#{translation.FORM.SEARCH}',
+    templateResult: testimoniosState,
+    allowClear: true
+  })
+  //- .on("select2:open", () => {
+  //-   $(".select2-results:not(:has(a))").append(
+  //-     '<a href="#" style="padding: 6px;height: 20px;display: inline-table;" data-toggle="modal" data-target="#nuevoBannerAdministrador" onclick="closeMedicosSelect2()">Agregar testimonios</a>'
+  //-   );
+  //- }); //- No se debe crear
+
+  //- Funcion para modificar como muestra el select2 las opciones
+  function testimoniosState (state) {
+    if (!state.id) {
+      return state.text;
+    }
+    let $container = $(`
+      <span><strong>${state.id}</strong> | ${state.text}</span>
+    `);
+
+    return $container;
+  }
+
+  function closeMedicosSelect2 () {
+    $("#lista-testimonios, #lista-testimonios-editar, #lista-testimonios-filtro").select2('close');
+  }
+
+  //- Funcion para poder obtener los datos de la especialidad con empresa dinamicamente
+  function urlSelect2Medicos() {
+    let auxUrl = "/admin-testimonios/select2";
+    if (typeof empresa_id != "undefined" && !isNaN(empresa_id.value)) {
+      auxUrl += `/${empresa_id.value}`;
+    }
+    return auxUrl;
+  }
+
+  $.ajax({
+    url: urlSelect2Medicos(),
+    dataType: 'json',
+    delay: 500,
+    data: {
+      select: ['id', 'primer_nombre', 'segundo_nombre', 'apellidos']
+    },
+    success: function (data, status) {
+      if (data.ok) {
+        if (Array.isArray(data.data) && data.data.length > 0) {
+          select2Medicos.empty();
+          select2Medicos.append(new Option('Seleccionar', '', false, false));
+          data.data.forEach((item) => {
+            let newOption = new Option(`${item.primer_nombre} ${item.segundo_nombre} ${item.apellidos}`, item.id, false, false);
+            select2Medicos.append(newOption);
+          });
+        } else {
+          select2Medicos.empty();
+          select2Medicos.append(new Option('Seleccionar', '', false, false));
+        }
+      }
+    }, 
+    error: function (error, statur) {
+      select2Medicos.empty();
+      select2Medicos.append(new Option('Seleccionar', '', false, false));
+    }
+  })

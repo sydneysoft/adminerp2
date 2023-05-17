@@ -1,0 +1,153 @@
+extends /extends/menu-superior-admin
+block contenido
+  .row
+    .col-12.text-grey(style="margin-bottom:10px;")
+      h1.display-1
+        strong #{translation.PAYMENT_METHODS}
+
+    .col-12 
+      nav
+        #nav-tab.nav.nav-tabs(role='tablist')
+          a#nav-culqi-tab.nav-item.nav-link.active(data-toggle='tab' href='#nav-culqi' role='tab' aria-controls='nav-culqi' aria-selected='true') Culqi
+          a#nav-mercado-pago-tab.nav-item.nav-link(data-toggle='tab' href='#nav-mercado-pago' role='tab' aria-controls='nav-mercado-pago' aria-selected='false') Mercado Pago
+          a#nav-payu-tab.nav-item.nav-link(data-toggle='tab' href='#nav-payu' role='tab' aria-controls='nav-payu' aria-selected='false') Payu
+          a#nav-pago-efectivo-tab.nav-item.nav-link(data-toggle='tab' href='#nav-pago-efectivo' role='tab' aria-controls='nav-pago-efectivo' aria-selected='false') Pago Efectivo
+          a#nav-paypal-tab.nav-item.nav-link(data-toggle='tab' href='#nav-paypal' role='tab' aria-controls='nav-paypal' aria-selected='false') Paypal
+          a#nav-stripe-tab.nav-item.nav-link(data-toggle='tab' href='#nav-stripe' role='tab' aria-controls='nav-stripe' aria-selected='false') Stripe
+          a#nav-braintree-tab.nav-item.nav-link(data-toggle='tab' href='#nav-braintree' role='tab' aria-controls='nav-braintree' aria-selected='false') Braintree
+      #nav-tabContent.tab-content
+        #nav-culqi.tab-pane.fade.show.active(role='tabpanel' aria-labelledby='nav-culqi-tab' style="margin-top:15px;")
+          .row
+            .col-md-6 
+              .row
+                .col-md-8.col-8
+                  .form-group
+                    label="Llave Pública (Public Key)"
+                    input(class="form-control" id="culqi-key" type="password")
+                .col-mod-8.col-8
+                  input(id="toggle-culqi" type="checkbox" data-toggle="toggle" data-on="Activo" data-off="Desactivado" data-onstyle="success" data-offstyle="danger")
+                .col-12.mt-4
+                  button.btn.btn-info(type="button" onClick=`handlePaymentMethod(1, ${token})`)="Guardar Cambios" 
+            .col-md-6
+              img(style="width:100%;object-fit:contain" src="https://krealo.pe/wp-content/uploads/2020/12/Culqi-original-pa%CC%81gina-web-1-1-e1609190384639.png")
+        #nav-mercado-pago.tab-pane.fade(role='tabpanel' aria-labelledby='#nav-mercado-pago-tab' style="margin-top:15px;padding:0px 20px;")
+          .row 
+            .col-md-6
+              .row
+                .col-md-8.col-8
+                  .form-group
+                    label="Access Token"
+                    input(class="form-control" type="password" id="mercado-pago-key")
+                .col-mod-8.col-8
+                  .form-group
+                    input(id="toggle-mercado-pago" type="checkbox" data-toggle="toggle" data-on="Activo" data-off="Desactivado" data-onstyle="success" data-offstyle="danger")
+                .col-12.mt-4
+                  button.btn.btn-info(type="button" onClick=`handlePaymentMethod(2, ${token})`)="Guardar Cambios" 
+            .col-md-6
+              img(style="width:100%;object-fit:contain" src="https://beguruloreal.vteximg.com.br/arquivos/logo_mercado.png")
+        #nav-payu.tab-pane.fade(role='tabpanel' aria-labelledby='#nav-payu-tab' style="margin-top:15px;padding:0px 20px;")
+          .row 
+            .col-md-6
+              .row
+                .col-md-8.col-8
+                  .form-group
+                    label="API KEY"
+                    input(class="form-control" type="password" id="payu-key")
+                .col-md-8.col-8
+                  .form-group
+                    label="ACCOUNT ID"
+                    input(class="form-control" type="password" id="payu-key-login")
+                .col-md-8.col-8
+                  .form-group
+                    label="MERCHANT ID"
+                    input(class="form-control" id="payu-merchant-id")
+                .col-mod-8.col-8
+                  input(id="toggle-payu" type="checkbox" data-toggle="toggle" data-on="Activo" data-off="Desactivado" data-onstyle="success" data-offstyle="danger")
+                .col-12.mt-4
+                  button.btn.btn-info(type="button" onClick=`handlePaymentMethod(3, ${token})`)="Guardar Cambios" 
+            .col-md-6
+              img(style="width:100%;object-fit:contain" src="https://colombia.payu.com/wp-content/uploads/sites/5/2020/05/PAYU_LOGO_LIME.png")
+        #nav-pago-efectivo.tab-pane.fade(role='tabpanel' aria-labelledby='#nav-pago-efectivo-tab' style="margin-top:15px;padding:0px 20px;")
+          .row 
+            .col-md-6 
+              .row
+                .col-md-8.col-8
+                  .form-group
+                    label="ACCES KEY"
+                    input(class="form-control" type="password" id="pago-efectivo-key")
+                .col-md-8.col-8
+                  .form-group
+                    label="SECRET KEY"
+                    input(class="form-control" type="password" id="pago-efectivo-secret-key")
+                .col-md-8.col-8
+                  .form-group
+                    label="ID COMERCIO"
+                    input(class="form-control" id="pago-efectivo-id-comercio")
+                .col-mod-8.col-8
+                  input(type="checkbox" id="toggle-pago-efectivo" data-toggle="toggle" data-on="Activo" data-off="Desactivado" data-onstyle="success" data-offstyle="danger")
+                .col-12.mt-4
+                  button.btn.btn-info(type="button" onClick=`handlePaymentMethod(4, ${token})`)="Guardar Cambios" 
+            .col-md-6
+              img(style="width:100%;object-fit:contain" src="https://prod.cds.pagoefectivo.g3c.pe/img/general/pagoefectivo-logo.png")
+        #nav-paypal.tab-pane.fade(role='tabpanel' aria-labelledby='#nav-paypal-tab' style="margin-top:15px;padding:0px 20px;")
+          .row 
+            .col-md-6 
+              .row
+                .col-md-8.col-8
+                  .form-group
+                    label="Cliente ID (Client ID)"
+                    input(class="form-control" type="password" id="paypal-key")
+                .col-mod-8.col-8
+                  input(type="checkbox" id="toggle-paypal" data-toggle="toggle" data-on="Activo" data-off="Desactivado" data-onstyle="success" data-offstyle="danger")
+                .col-12.mt-4
+                  button.btn.btn-info(type="button" onClick=`handlePaymentMethod(6, ${token})`)="Guardar Cambios" 
+            .col-md-6
+              img(style="width:100%;object-fit:contain" src="https://logos-marcas.com/wp-content/uploads/2020/04/PayPal-Logo.png")
+        #nav-stripe.tab-pane.fade(role='tabpanel' aria-labelledby='#nav-stripe-tab' style="margin-top:15px;padding:0px 20px;")
+          .row 
+            .col-md-6 
+              .row
+                .col-md-8.col-8
+                  .form-group
+                    label="PUBLIC KEY"
+                    input(class="form-control" id="stripe-public-key" type="password" )
+                .col-md-8.col-8
+                  .form-group
+                    label="SECRET KEY"
+                    input(class="form-control" type="password" id="stripe-secret-key")
+                .col-mod-8.col-8
+                  input(type="checkbox" id="toggle-stripe" data-toggle="toggle" data-on="Activo" data-off="Desactivado" data-onstyle="success" data-offstyle="danger")
+                .col-12.mt-4
+                  button.btn.btn-info(type="button" onClick=`handlePaymentMethod(7, ${token})`)="Guardar Cambios" 
+            .col-md-6
+              img(style="width:100%;object-fit:contain" src="https://upload.wikimedia.org/wikipedia/en/e/eb/Stripe_logo%2C_revised_2016.png")
+        #nav-braintree.tab-pane.fade(role='tabpanel' aria-labelledby='#nav-stripe-tab' style="margin-top:15px;padding:0px 20px;")
+          .row 
+            .col-md-6 
+              .row
+                .col-md-8.col-8
+                  .form-group
+                    label="MERCHANT ID"
+                    input(class="form-control" id="braintree-merchant-id")
+                .col-md-8.col-8
+                  .form-group
+                    label="PUBLIC KEY"
+                    input(class="form-control" type="password" id="braintree-public-key")
+                .col-md-8.col-8
+                  .form-group
+                    label="PRIVATE KEY"
+                    input(class="form-control" type="password" id="braintree-private-key")
+                .col-mod-8.col-8
+                  input(type="checkbox" id="toggle-braintree" data-toggle="toggle" data-on="Activo" data-off="Desactivado" data-onstyle="success" data-offstyle="danger")
+                .col-12.mt-4
+                  button.btn.btn-info(type="button" onClick=`handlePaymentMethod(8, ${token})`)="Guardar Cambios" 
+            .col-md-6
+              img(style="width:100%;object-fit:contain" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvxUZ_5-Yclian0iFQNWP1wN49sVe-nIfU5tJn58XGauVAY0CM24n44wCaa1-rlvYBW4M&usqp=CAU")
+  script
+    //- include  ./js/additionalPayments.js 
+    include ./additionalPayments.js
+
+  script.
+    var dataPayments=JSON.parse('!{JSON.stringify(result)}');
+    initializeMethodPayments();
+

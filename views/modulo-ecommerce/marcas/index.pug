@@ -1,0 +1,43 @@
+extends ../../extends/menu-superior-admin
+block contenido
+  .row
+    if empresa_id
+      input#empresa_id(type="text" value=empresa_id hidden)
+    .col-6.text-grey(style="margin-bottom:10px;")
+      h1.display-1
+        strong  #{translation.BRANDS}
+    .col-md-6.col-6.text-right 
+      button.btn.btn-success(style="margin-bottom:25px;" type="button" onClick="openModalNew()")
+        span #{translation.FORM.ADD_BRAND}
+        i.fas.fa-plus.ml-2
+    .col-12      
+      div.table-responsive
+        table.table.table-bordered#tabla-marcas
+          thead.thead-dark
+
+  script
+    include /js/toast.sweet.js
+
+  include ./modals/crear-marca.pug
+  include ./modals/editar-marca.pug
+
+  include ./../../modulo-generales/galeria-fotos/seleccion-unica-galeria/admin-galeria-modal-simple
+  include ./datatable/marca.pug
+  script.
+    var typeOperation="1";
+  include ./save/marca.pug
+  include ./update/marca.pug
+  include ./delete/marca.pug
+
+  if marketplace
+    include /modulo-administrativo/cotizaciones/select2/empresas.pug
+    script.
+        $('#lista-empresas').change(function(){
+            $("#empresa_id").val(this.value);
+        });
+
+
+    //- Otros modulos
+  include /modulo-ecommerce/categorias/select2/categorias.pug
+  include /modulo-ecommerce/categorias/modals/crear-categoria.pug
+  include /modulo-ecommerce/categorias/save/categoria.pug

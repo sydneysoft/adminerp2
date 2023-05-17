@@ -1,0 +1,12 @@
+.modal.fade#galeriaEditProducto(tabindex="-1" role="dialog")
+  .modal-dialog.modal-lg(role="document")
+    .modal-content
+      .modal-body
+        input#data-id-product(type="hidden")
+        input#data-id-grupo(type="hidden")
+        div.mb-3(style="display:flex;justify-content:center;align-items:center")
+          button.btn.btn-info(onClick="multimediaModalEdit()") #{translation.ADD_PHOTOS}
+        .row#imagesAll(style="padding:15px;")
+      .modal-footer 
+        button.btn.btn-success(onClick="updateDataGalery()") #{translation.UPDATE_GALLERY}
+        button.btn.btn-danger(data-dismiss="modal") #{translation.CANCEL}

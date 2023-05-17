@@ -1,0 +1,115 @@
+script.
+  function initializeMethodPayments() {
+    const culqui = dataPayments.filter(i => i.metodo_id == 1)
+    if (culqui.length) {
+      if (culqui[0].estado != "1") {
+        $("#toggle-culqi").bootstrapToggle("on");
+      }
+      $("#culqi-key").val(culqui[0].api_key);
+    }
+
+    const mercadoPago = dataPayments.filter(i => i.metodo_id == 2)
+    if (mercadoPago.length) {
+      if (mercadoPago[0].estado != "1") {
+        $("#toggle-mercado-pago").bootstrapToggle("on");
+      }
+      if (mercadoPago[0].api_key) {
+        $("#mercado-pago-api").val(mercadoPago[0].api_key);
+      }
+      if (mercadoPago[0].token) {
+        $("#mercado-pago-key").val(mercadoPago[0].token);
+      }
+    }
+
+    const payu = dataPayments.filter(i => i.metodo_id == 3)
+    if (payu.length) {
+      if (payu[0].estado != "1") {
+        $("#toggle-payu").bootstrapToggle("on");
+      }
+      if (payu[0].api_key) {
+        $("#payu-key").val(payu[0].api_key);
+      }
+
+      if (payu[0].token) {
+        $("#payu-key-login").val(payu[0].token);
+      }
+
+      if (payu[0].merchant_id) {
+        $("#payu-merchant-id").val(payu[0].merchant_id);
+      }
+
+    }
+
+
+    const pagoEfectivo = dataPayments.filter(i => i.metodo_id == 4)
+    if (pagoEfectivo.length) {
+
+      if (pagoEfectivo[0].estado != "1") {
+        $("#toggle-pago-efectivo").bootstrapToggle("on");
+      }
+      if (pagoEfectivo[0].api_key) {
+        $("#pago-efectivo-key").val(pagoEfectivo[0].api_key);
+      }
+
+      if (pagoEfectivo[0].token) {
+        $("#pago-efectivo-secret-key").val(pagoEfectivo[0].token);
+      }
+
+      if (pagoEfectivo[0].merchant_id) {
+        $("#pago-efectivo-id-comercio").val(pagoEfectivo[0].merchant_id);
+      }
+
+    }
+
+    const paypal = dataPayments.filter(i => i.metodo_id == 6)
+    if (paypal.length) {
+      if (paypal[0].estado != "1") {
+        $("#toggle-paypal").bootstrapToggle("on");
+      }
+      if (paypal[0].api_key) {
+        $("#paypal-key").val(paypal[0].api_key);
+      }
+
+      if (paypal[0].token) {
+        $("#SecretPaypal").val(paypal[0].token);
+      }
+
+    }
+
+
+    const stripe = dataPayments.filter(i => i.metodo_id == 7)
+    if (stripe.length) {
+      if (stripe[0].estado != "1") {
+        $("#toggle-stripe").bootstrapToggle("on");
+      }
+      if (stripe[0].api_key) {
+        $("#stripe-public-key").val(stripe[0].api_key);
+      }
+
+      if (stripe[0].token) {
+        $("#stripe-secret-key").val(stripe[0].token);
+      }
+
+    }
+
+    const braintree = dataPayments.filter(i => i.metodo_id == 8)
+    if (braintree.length) {
+
+
+      if (braintree[0].estado != "1") {
+        $("#toggle-braintree").bootstrapToggle("on");
+      }
+
+      if (braintree[0].api_key) {
+        $("#braintree-private-key").val(braintree[0].api_key);
+      }
+
+      if (braintree[0].token) {
+        $("#braintree-public-key").val(braintree[0].token);
+      }
+
+      if (braintree[0].merchant_id) {
+        $("#braintree-merchant-id").val(braintree[0].merchant_id);
+      }
+    }
+  }

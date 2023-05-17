@@ -1,0 +1,63 @@
+script.
+  // la variable editarImpuesto viene del id del boton editar moneda */modals/editar-moneda.pug
+  editarImpuesto.addEventListener("click", function (event) {
+    const id = $("#editarImpuestoModal").attr("data-id");
+    const nombre = $("#nombreImpuestoEditar").val(),
+      pais = $("#lista-paises-editar").val(),
+      codigo = $("#codigoImpuestoEditar").val(),
+      tasa = $("#tasaImpuestoEditar").val(),
+      descripcion = $("#descripcionImpuestoEditar").val();
+    if (id > 0) {
+      const auxData = {
+        nombre,
+        pais,
+        codigo,
+        tasa,
+        descripcion,
+      };
+      if (typeof empresa_id != 'undefined' && empresa_id && !isNaN(empresa_id.value)) {
+        auxData.empresa_id = empresa_id.value;
+      }
+      Swal.showLoading();
+      $.ajax({
+        url: "/admin-impuestos/" + id,
+        type: "PUT",
+        data: auxData,
+        success: function (data) {
+          Swal.close();
+          if (data.ok) {
+            if (typeof tablaImpuestos !== 'undefined') {
+              tablaImpuestos.ajax.reload();
+            }
+            $("#editarImpuestoModal").modal("hide");
+            toastSweet('Success', '#{translation.ALERTS.UPDATED}', 'success');
+          } else {
+            toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+          }
+        },
+        error: function (err) {
+          Swal.close();
+          toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+        }
+      })
+    } else {
+      toastSweet('Error', '#{translation.ALERTS.REQUIRED_FIELDS}', 'error');
+    }
+  });
+
+  /**
+   * @description Funcion que carga los datos de la moneda a editar
+   * @param {Object} data
+   */
+  const setDataEditarImpuesto = (data) => {
+    typeOperation = "2";
+    $("#nombreImpuestoEditar").val(data.nombre);
+    $("#lista-paises-editar").val(data.pais).trigger('change');
+    $("#tasaImpuestoEditar").val(data.tasa);
+    $("#codigoImpuestoEditar").val(data.codigo);
+    $("#descripcionImpuestoEditar").val(data.descripcion);
+    setTimeout(() => {
+      $("#lista-estados-editar").val(data.provincia).trigger('change');
+    }, 500);
+    $("#editarImpuestoModal").modal("show").attr("data-id", data.id);
+  };

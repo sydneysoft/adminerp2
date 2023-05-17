@@ -1,0 +1,77 @@
+script.
+  //Agregar Filtros Data
+  const handleFilterData = () => {
+    let typeActionData = $("#type-action-values").val();
+    //- let dataCategory = $("#category-data-filtros").val();
+    let dataCategory = $("#lista-categorias").val();
+    let idGrupoFiltros = parseInt($("#id-grupoFiltros-values").val());
+    let values = [];
+    let valuesEdit = [];
+    $("input[name='filtros[]']").each(function () {
+      if ($(this).attr("edit")) {
+        if ($(this).val() != "") {
+          valuesEdit.push([parseInt($(this).attr("edit")), $(this).val()]);
+        }
+      } else {
+        if ($(this).val() != "") {
+          values.push([idGrupoFiltros, $(this).val(), dataCategory]);
+        }
+      }
+    });
+
+    if (typeActionData == "1") {
+      if (values.length > 0 || valuesEdit.length > 0) {
+        Swal.showLoading();
+        $.ajax({
+          method: "POST",
+          url: "/add-values-filter",
+          dataType: "json",
+          data: {
+            valuesPost: values,
+            valuesEdit: valuesEdit,
+            valuesDelete: deleteArray,
+          },
+          success: function (data) {
+            if (data.status === "success") {
+              Swal.close();
+              window.location.reload(true);
+            } else {
+              Swal.close();
+              toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+            }
+          },
+          error: function () {
+            Swal.close();
+            toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+          },
+        });
+      } else {
+        toastSweet('Error', '#{translation.ALERTS.MIN_ERROR_DATA}', 'error');
+      }
+    } else {
+      if (values.length > 0) {
+        Swal.showLoading();
+        $.ajax({
+          method: "POST",
+          url: "/add-values-filter",
+          dataType: "json",
+          data: { valuesPost: values, valuesEdit: [] },
+          success: function (data) {
+            if (data.status === "success") {
+              Swal.close();
+              window.location.reload(true);
+            } else {
+              Swal.close();
+              toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+            }
+          },
+          error: function () {
+            Swal.close();
+            toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+          },
+        });
+      } else {
+        toastSweet('Error', '#{translation.ALERTS.MIN_ERROR_DATA}', 'error');
+      }
+    }
+  };

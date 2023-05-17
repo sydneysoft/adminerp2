@@ -1,0 +1,86 @@
+extends ./layout.pug
+
+append contenido
+  .container-fluid
+    .row.justify-content-end
+      if empresa_id
+        include /mixins/btn/back.pug
+        input#empresa_id(type="text" value=empresa_id hidden)
+        .col-md-6.col-6
+          +btn-back()
+      .col-md-6.col-6.text-right 
+        button#nuevoTratamiento.btn.btn-primary(role="button") #{translation.NEW} 
+          i.fas.fa-plus.ml-3
+    .row.mt-3
+      .col-md-4.col-6(style="max-width: 400px")
+
+        label.font-weight-bold.datev-label #{translation.MASSIVE_ACTIONS}
+          .row
+            .col-md-8.col-12
+              select#acciones.form-control
+                option(value=null) #{translation.SELECT}
+                option(value="0") #{translation.DELETE}
+            .col-md-4.col-12
+              button#accionesBoton(class="btn btn-success-2") #{translation.CONFIRM}
+
+    .row.mt-3
+      .col-12
+        //- Filtros
+    .row.mt-3
+      .col-12 
+        div.table-responsive 
+          table#tabla-tratamientos.table.w-100
+            thead.thead-dark
+            tbody
+            tfoot
+
+  include ./modals/crear-tratamiento.pug
+  include ./modals/editar-tratamiento.pug
+  
+  include /modulo-tv/modulo-general/galeria-fotos/partial-modal-galeria.pug
+
+  script.
+    const paciente = document.getElementById('paciente');
+    const nombre = document.getElementById('nombre');
+    const dosis = document.getElementById('dosis');
+    const inicio_tratamiento = document.getElementById('inicio_tratamiento');
+    const fin_tratamiento = document.getElementById('fin_tratamiento');
+    const descripcion_corta = document.getElementById('descripcion_corta');
+    const costo_tratamiento = document.getElementById('costo_tratamiento');
+    const duracion = document.getElementById('duracion');
+    const codigoexterno = document.getElementById('codigoexterno');
+    const descripcion_larga = document.getElementById('descripcion_larga');
+    const resultado = document.getElementById('resultado');
+    const imagen = document.getElementById('imagen'); // Se paso a la vista de subir imagen
+    const sede = document.getElementById('sede');
+    const sintomas = document.getElementById('sintomas');
+    const estado = document.getElementById('estado');
+
+    const pacienteEditar = document.getElementById('pacienteEditar');
+    const nombreEditar = document.getElementById('nombreEditar');
+    const dosisEditar = document.getElementById('dosisEditar');
+    const inicio_tratamientoEditar = document.getElementById('inicio_tratamientoEditar');
+    const fin_tratamientoEditar = document.getElementById('fin_tratamientoEditar');
+    const descripcion_cortaEditar = document.getElementById('descripcion_cortaEditar');
+    const costo_tratamientoEditar = document.getElementById('costo_tratamientoEditar');
+    const duracionEditar = document.getElementById('duracionEditar');
+    const codigoexternoEditar = document.getElementById('codigoexternoEditar');
+    const descripcion_largaEditar = document.getElementById('descripcion_largaEditar');
+    const resultadoEditar = document.getElementById('resultadoEditar');
+    const imagenEditar = document.getElementById('imagenEditar'); // Se paso a la vista de subir imagen
+    const sedeEditar = document.getElementById('sedeEditar');
+    const sintomasEditar = document.getElementById('sintomasEditar');
+    const idTratamiento = document.getElementById('idTratamiento');
+    const estadoEditar = document.getElementById('estadoEditar');
+
+  script
+    include /js/modulo-tv/delete.js
+    include /modulo-tv/modulo-general/galeria-fotos/modal-galeria.js
+
+  include ./save/tratamiento.pug
+  include ./update/tratamiento.pug
+  include ./delete/tratamiento.pug
+
+  include ./datatable/tratamientos.pug
+
+  //- OTROS MODULOS

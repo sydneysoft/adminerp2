@@ -1,0 +1,92 @@
+script.
+  //Manejar datos del admin en el modal Editar
+  const handleEditUsuario = (
+    id,
+    tipo_documento,
+    numero_documento,
+    nombre,
+    apellido,
+    celular,
+    correo
+  ) => {
+    $("#id-user-editar").val(id);
+    $("#tipo_documento_user_editar").val(tipo_documento);
+    $("#numero_documento_user_editar").val(numero_documento);
+    $("#nombres_user_editar").val(nombre);
+    $("#apellidos_user_editar").val(apellido);
+    $("#correo_user_editar").val(correo);
+    itiEditar.setNumber(celular);
+
+    $("#editarUsuarioAdministrador").modal("show");
+  };
+
+  const updateUserAdmin = () => {
+    let id_update = $("#id-user-editar").val();
+    let tipo_documento = $("#tipo_documento_user_editar").val();
+    let numero_documento = $("#numero_documento_user_editar").val();
+    let nombres = $("#nombres_user_editar").val();
+    let apellidos = $("#apellidos_user_editar").val();
+    let telefono = itiEditar.getNumber();
+
+    if (
+      id_update &&
+      tipo_documento &&
+      numero_documento &&
+      nombres &&
+      apellidos &&
+      telefono
+
+    ) {
+      Swal.showLoading();
+      $.ajax({
+        method: "GET",
+        url: "/editar",
+        dataType: "json",
+        data: {
+          nombretabla: "usuarios",
+          nombreid: "id",
+          id: id_update,
+          tipo_documento: tipo_documento,
+          numero_documento: numero_documento,
+          nombre: nombres,
+          apellido: apellidos,
+          celular: telefono
+
+        },
+        success: function (data) {
+          if (data.status === "success") {
+            Swal.close();
+            window.location.reload(true);
+          } else {
+            Swal.close();
+            Swal.fire({
+              position: "center",
+              icon: "error",
+              html: "<b>Ocurrió un error interno inténtalo más tarde.</b>",
+              showConfirmButton: false,
+              timer: 2500,
+            });
+          }
+        },
+        error: function () {
+          Swal.close();
+          Swal.fire({
+            position: "center",
+            icon: "error",
+            html: "<b>Ocurrió un error interno inténtalo más tarde.</b>",
+            showConfirmButton: false,
+            timer: 2500,
+          });
+        },
+      });
+    } else {
+      Swal.close();
+      Swal.fire({
+        position: "center",
+        icon: "info",
+        html: "<b>Debes ingresar los datos requeridos para actualizar un administrador.</b>",
+        showConfirmButton: false,
+        timer: 3500,
+      });
+    }
+  };

@@ -1,0 +1,82 @@
+extends ../layout.pug
+
+append contenido 
+  .border-bottom.border-left.border-right.p-3 
+    .my-3
+    script.
+      let faviconExist = null;
+    if Array.isArray(data) && data.length === 1
+      script.
+        faviconExist = '#{data[0].favicon}';
+      .d-grid
+        button#createWeb.btn.btn-primary.btn-block(type='button' data-empresa=data[0].empresa_id) #{translation.SAVE} 
+      .row.mt-5
+        .col-12.col-md-8 
+          .form-group 
+            input#idItem(type="text" value=data[0].id hidden)
+            label.label-text(for="nombre") #{translation.FORM.NAME} *
+            input#nombre.form-control(type="text" name="" placeholder="Nombre" value=data[0].nombre)
+        .col-12.col-md-4 
+          include ../../modulo-general/galeria-fotos/favicon.pug
+        .col-12.col-md-8 
+          .form-group 
+            label.label-text(for="nombre") #{translation.FORM.CELULAR_DESCRIPTION}
+            input#descripcion_telefono.form-control(type="text" name="" placeholder=`${translation.FORM.CELULAR_DESCRIPTION}` value=data[0].descripcion_telefono)
+        .col-12.col-md-4
+        .col-12.col-md-4
+          .form-group 
+            label.label-text(for="telefono") #{translation.FORM.CELULAR}
+            input#telefono.form-control(type="text" name="" placeholder=translation.FORM.CELULAR value=data[0].telefono)
+        .form-group 
+            label.label-text(for="link_telefono") #{translation.FORM.CELULAR_LINK}
+            input#link_telefono.form-control(type="text" name="" placeholder=translation.FORM.CELULAR_LINK value=data[0].link_telefono)
+        .col-12.col-md-4 
+          .form-group 
+            label.label-text(for="tipo") #{translation.TYPE}
+            select#tipo.form-control(name="tipo")
+              if data[0].tipo_telefono == 'local'
+                option(value="local" selected="true") #{translation.FORM.CELULAR}
+              else 
+                option(value="local") #{translation.FORM.PHONE}
+              if data[0].tipo_telefono == 'whatsapp'
+                option(value="whatsapp" selected="true") Whatsapp 
+              else
+                option(value="whatsapp") Whatsapp 
+              if data[0].tipo_telefono == 'telegram'
+                option(value="telegram" selected="true") Telegram
+              else
+                option(value="telegram") Telegram
+        .col-12.col-md-6 
+          .form-group 
+            label.label-text(for="eslogan") #{translation.FORM.SLOGAN} *
+            textarea#eslogan.form-control(name="", cols="30", rows="10" placeholder=translation.FORM.SLOGAN) #{data[0].eslogan}
+        .col-12.col-md-6 
+          label(for="logotipo") #{translation.FORM.LOGO} *
+          input#urlImagen(type="text" value=data[0].logo hidden)
+          include ../../modulo-general/galeria-fotos/modal-galeria.pug
+          include ../../modulo-general/galeria-fotos/partial-modal-galeria.pug
+        script.
+          const idItem = document.getElementById('idItem');
+          document.getElementById('createWeb').addEventListener('click', (event) => {
+              userBeforeUpdate(idItem.value)
+          });
+          addEventListener('DOMContentLoaded', () => {
+            imagen.value = document.getElementById('urlImagen').value;
+            $(".imagen_").empty();
+            if (imagen.value !== '') {
+              $(".imagen_").append(`<img src="${imagen.value}" class="img-fluid" alt="Responsive image">`);
+            }
+          });
+    else 
+      .alert.alert-info.text-center.mt-3 
+        | #{translation.ALERTS.ERROR_CONTACT_ADMIN}
+  script 
+    include ../../../js/modulo-tv/template.js
+    include ../../../js/modulo-tv/update.js
+    include ./web.js
+    include ../../modulo-general/galeria-fotos/modal-galeria.js
+  script.
+    if (faviconExist) {
+      favicon.value = faviconExist;
+      showFavicon.innerHTML = `<img src="${faviconExist}" class="img-fluid" alt="Responsive image">`;
+    }

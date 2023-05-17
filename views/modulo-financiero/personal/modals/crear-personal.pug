@@ -1,0 +1,29 @@
+.modal.fade#nuevoPersonalModal(tabindex="-1" role="dialog")
+  .modal-dialog.modal-md(role="document")
+    .modal-content
+      .modal-body
+        .row
+          .col-12
+            .form-group
+              label(for="nombre") #{translation.FORM.NAME} *
+              input#nombre.form-control(type="text" placeholder=translation.FORM.NAME)
+          .col-12.col-md-6
+            .form-group
+              label(for="tipo-documento") #{translation.FORM.DOCUMENT_TYPE} *
+              select#tipo-documento.form-control
+                option(value="") #{translation.FORM.DOCUMENT_TYPE} 
+                option(value #{translation.FORM.DOCUMENT_NUMBER}) #{translation.DOCUMENT_NUMBER}
+                option(value #{translation.FORM.FOREIGNER_CARD}) 	#{translation.FOREIGNER_CARD}
+                option(value #{translation.FORM.UNIQUE_REGISTRATION_NUMBER}) #{translation.UNIQUE_REGISTRATION_NUMBER}
+                option(value #{translation.FORM.PASSPORT}) #{translation.PASSPORT}
+                option(value #{translation.FORM.BIRTH_DATE}) #{translation.BIRTH_DATE}
+                option(value="OTROS") #{translation.OTHERS}
+          .col-12.col-md-6
+            .form-group
+              label(for="nro-documento") #{translation.FORM.DOCUMENT_NUMBER} *
+              input#nro-documento.form-control(type="number" placeholder=translation.FORM.DOCUMENT_NUMBER)
+      .modal-footer
+        button#guardarPersonal.btn.btn-success.nuevo(type="button" onclick="") #{translation.ADD}
+          i.fas.fa-save.ml-2
+        button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}
+          i.fas.fa-times-circle.ml-2

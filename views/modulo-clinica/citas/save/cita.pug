@@ -1,0 +1,79 @@
+script.
+  addNewCita.addEventListener('click', (event) => {
+    let auxData = {
+      //- doctor: doctor.value,
+      //- paciente: paciente.value,
+      //- sede: sede.value,
+      //- especialidad: especialidad.value,
+      idProfesional: $("#lista-medicos").val(),
+      idUser: $("#lista-pacientes").val(),
+      idEspecialidad: $("#lista-especialidades").val(),
+      idSede: $("#lista-sedes").val(),
+
+      tipoCita: tipoCita.value,
+      estado: estado.value,
+      fecha: fecha.value,
+      hora: hora.value,
+      precio: precio.value,
+      color: colorpicker.value,
+      nota: nota.value
+    }
+    if (auxData.idUser != '' && auxData.idProfesional != '' && auxData.idSede != '' && fecha.value != '') {
+
+      if (typeof empresa_id && !isNaN(empresa_id.value)) {
+        auxData.empresa_id = empresa_id.value;
+      }
+
+      save('/admin-citas-medicas/citas', auxData, createItemSuccess)
+    } else {
+      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        icon: 'error',
+        title: '#{translation.FORM.REQUIRED_FIELDS}',
+        showConfirmButton: false,
+        timer: 2500
+      });
+    }
+  });
+
+  guardarCita.addEventListener('click', (event) => {
+    if (paciente_editar.value != '' && doctor_editar.value != '' && sede_editar.value != '' && fecha_editar.value != '') {
+
+      let auxData = {
+        //- sede: sede_editar.value,
+        id: itemId.value,
+        idProfesional: $("#lista-medicos").val(),
+        idUser: $("#lista-pacientes").val(),
+        idEspecialidad: $("#lista-especialidades").val(),
+        idSede: $("#lista-sedes").val(),
+        tipoCita: tipoCita_editar.value,
+        estado: estado_editar.value,
+        fecha: fecha_editar.value,
+        hora: hora_editar.value,
+        precio: precio_editar.value,
+        color: colorpicker_editar.value,
+        nota: nota_editar.value,
+        horaFin: hora_fin_editar.value
+      }
+
+      updateItem('/admin-clinica/allcita', auxData, updateItemSuccess)
+    } else {
+      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        icon: 'error',
+        title: '#{translation.FORM.REQUIRED_FIELDS}',
+        showConfirmButton: false,
+        timer: 2500
+      });
+    }
+  });
+
+  function createItemSuccess(data) {
+    if (typeof tablaCitasMedicas != "undefined") {
+      tablaCitasMedicas.ajax.reload();
+    }
+    //- console.log(data);
+    //- getCitas();
+  }

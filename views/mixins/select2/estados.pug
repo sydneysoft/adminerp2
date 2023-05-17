@@ -1,0 +1,19 @@
+script.
+  const select2Estados = $("#lista-estados-filtro").select2({
+    data: [
+      {
+        id: '',
+        text: 'Todos',
+      },
+      {
+        id: '1',
+        text: 'Activado',
+        selected: false
+      },
+      {
+        id: '0',
+        text: 'Desactivado',
+        selected: false
+      }
+    ],
+  })

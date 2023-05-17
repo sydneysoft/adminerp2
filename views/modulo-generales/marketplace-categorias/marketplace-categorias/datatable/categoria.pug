@@ -1,0 +1,86 @@
+script.
+  let tabla;
+  addEventListener('DOMContentLoaded', () => {
+    //- nombre	logo	favicon eslogan	telefono	
+    tabla = $('#marketplace').DataTable({
+      fnCreatedRow: function (nRow, aData, iDataIndex) {
+        $(nRow).attr('id', `delete${aData.id}`);
+      },
+      searchDelay: 500,
+      processing: true,
+      serverSide: true,
+      ajax: "/admin-marketplace-categorias/datatable",
+      order: [[0, 'desc']],
+      columns: [
+        { data: 'id', name: 'id', title: 'ID', visible: false, orderable: false, searchable: false },
+        {
+          data: 'nombre',
+          name: 'nombre',
+          title: "#{translation.FORM.NAME}",
+        },
+        {
+          data: 'logo',
+          name: 'logo',
+          title: "#{translation.FORM.LOGO}",
+          render: function (data, type, row) { 
+            try {
+              new URL(data);
+              return `<img src="${data}" alt="${row.nombre}" class="img-fluid" style="max-width: 100px;" />`
+            }catch (e) {
+              return `<img src="/images/image-default.jpg" alt="${row.nombre}" class="img-fluid" style="max-width: 100px;" />`
+            }
+          },
+          orderable: false,
+          searchable: false
+        },
+        {
+          data: 'favicon',
+          name: 'favicon',
+          title: "#{translation.FORM.FAVICON}",
+          render: function (data, type, row) {
+            try {
+              new URL(data);
+              return `<img src="${data}" alt="${row.nombre}" class="img-fluid" style="max-width: 100px;" />`
+            }catch (e) {
+              return `<img src="/images/image-default.jpg" alt="${row.nombre}" class="img-fluid" style="max-width: 100px;" />`
+            }
+          },
+          orderable: false,
+          searchable: false
+        },
+        {
+          data: 'eslogan',
+          name: 'eslogan',
+          title: "#{translation.FORM.SLOGAN}",
+          render: function (data, type, row) {
+            if (data.length > 50)
+              return `<p>${data.substring(0, 50)}...</p>`
+            else
+              return `<p>${data}</p>`
+          },
+          orederable: false,
+          searchable: false
+        },
+        {
+          data: 'telefono',
+          name: 'telefono',
+          title: "#{translation.FORM.PHONE}",
+        },
+        {
+          data: 'id',
+          name: 'id',
+          title: "#{translation.FORM.ACTIONS}",
+          render: function (data, type, row) {
+            let strRow = JSON.stringify(row);
+            return `<a href="/admin-marketplace-categorias/${row.id}" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></a>
+            <button class="btn btn-info btn-sm" onclick='mostrarItem(${strRow})'><i class="fas fa-eye"></i></button>
+            <a class="btn btn-warning btn-sm" href="/admin-marketplace-categorias/categoria/${row.id}">Attach</a>
+            <button class="btn btn-danger btn-sm" onclick="beforeDeleteItem('/admin-marketplace-categorias/items/${row.id}', deleteItemSuccess)"><i class="fas fa-trash"></i></button>`
+          },
+          orderable: false,
+          searchable: false
+        }
+      ],
+
+    });
+  });

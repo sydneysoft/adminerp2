@@ -1,0 +1,30 @@
+.modal.fade#editarPersonalModal(tabindex="-1" role="dialog")
+  .modal-dialog.modal-md(role="document")
+    .modal-content
+      .modal-body
+        .row
+          .col-12
+            .form-group
+              label(for="nombre-editar") #{translation.FORM.NAME} *
+              input#nombre-editar.form-control(type="text" placeholder=translation.FORM.NAME)
+          .col-12.col-md-6
+            .form-group
+              label(for="tipo-documento-editar") #{translation.FORM.DOCUMENT_TYPE} *
+              select#tipo-documento-editar.form-control
+                option(value="L.E / DNI") #{translation.FORM.DOCUMENT_NUMBER}
+                option(value="CARNET DE EXTRANJERIA") 	#{translation.FORM.FOREIGNER_CARD}
+                option(value="REG. UNICO DE CONTRIBUYENTES") #{translation.FORM.UNIQUE_REGISTRATION_NUMBER}
+                option(value="PASAPORTE") #{translation.FORM.PASSPORT}
+                option(value="PART. DE NACIMIENTO") #{translation.FORM.BIRTH_REGISTRATION} 
+                option(value="OTROS") #{translation.FORM.OTHERS} 
+
+          .col-12.col-md-6
+            .form-group
+              label(for="nro-documento-editar") #{translation.FORM.DOCUMENT_NUMBER} *
+              input#nro-documento-editar.form-control(type="number" placeholder=translation.FORM.DOCUMENT_NUMBER)
+          input#itemId(type="text" value="" hidden)
+      .modal-footer
+        button#actualizarPersonal.btn.btn-success.nuevo(type="button" onclick="") #{translation.ADD}
+          i.fas.fa-save.ml-2
+        button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}
+          i.fas.fa-times-circle.ml-2

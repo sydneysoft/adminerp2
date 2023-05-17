@@ -1,0 +1,59 @@
+script.
+  const select2Estados = $("#lista-estados, #lista-estados-editar, #lista-estados-filtro").select2({});
+  let stateCode = "";
+  function actualizarProvincias () {
+    select2Estados.empty();
+    $.ajax({
+      url: urlSelect2Estados(),
+      dataType: 'json',
+      success: function (data) {
+        if (Array.isArray(data)) {
+          let options = [{
+            id: '',
+            text: 'Seleccione un Estado'
+          }];
+          options.push(...data.map((item) => {
+            return {
+              id: item.isoCode,
+              text: item.name,
+            }
+          }));
+          select2Estados.select2({
+              data: options,
+              placeholder: 'Seleccione un Estado',
+              templateResult: estadosState,
+              allowClear: true
+            });
+        }
+      },
+    });
+  }
+
+  function estadosState (state) {
+    if (!state.id) {
+      return state.text;
+    }
+    let $container = $(`
+      <span><strong>${state.id}</strong> | ${state.text}</span>
+    `);
+    return $container;
+  }
+
+  $("#lista-estados, #lista-estados-editar").change(function (e) {
+    stateCode = this.value;
+  });
+
+  function urlSelect2Estados () {
+    if (typeof countryCode != 'undefined' && countryCode != null && countryCode != "")
+      return "/admin-geolocalizacion/countries/" + countryCode + "/states";
+    else
+      return "/admin-geolocalizacion/states";
+  }
+
+  actualizarProvincias();
+
+  $("#lista-estados, #lista-estados-editar").change( function () {
+    stateCode = this.value;
+    if (typeof actualizarCiudades == 'function')
+      actualizarCiudades();
+  }); 

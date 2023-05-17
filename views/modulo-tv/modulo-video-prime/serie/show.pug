@@ -1,0 +1,46 @@
+extends ../layout.pug
+
+append contenido
+  .my-3
+    div
+      a.btn.btn-primary(href="/admin-video-prime/series") 
+        i.fas.fa-arrow-left
+        span.px-3 Atras
+
+    h1.text-center.mb-5 
+      | #{data.nombre}
+
+    .my-3.text-right 
+      a.btn.btn-primary(href=`/admin-video-prime/series/editar/${data.id}`) Editar
+    .card   
+      .card-body 
+        .table-responsive 
+          table.table 
+            thead
+              tr
+                th(scope='col') Nombre
+                th(scope='col') Descripción
+
+            tbody
+              tr
+                th(scope='row') ID
+                td #{data.id}
+              tr
+                th(scope='row') Nombre
+                td #{data.nombre}
+              tr
+                th(scope='row') Imagen miniatura
+                td 
+                  img(src=data.thumbnail)
+              tr
+                th(scope='row') Trailer
+                td #{data.trailer}
+              tr
+                th(scope='row') Url
+                td #{data.url}
+              tr
+                th(scope='row') Estracto
+                td #{data.estracto}
+              tr
+                th(scope='row') Body
+                td!= data.body

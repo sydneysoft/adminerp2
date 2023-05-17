@@ -1,0 +1,95 @@
+extends ../../extends/menu-superior-admin
+block contenido
+    .row
+        .col-12.text-grey(style="margin-bottom:10px;")
+            h1.display-1
+                strong #{translation.FORM.SHIPPING_METHODS}
+                   span.light=items.metodos.length
+
+        .col-12
+            button.btn.btn-success(style="margin-bottom:25px;", type="button", data-toggle="modal" data-target="#nuevoMetodoAdministrador")
+                i.fas-fa-plus
+                span #{translation.FORM.NEW_METHOD}
+
+
+            a.gestionarBtn.btn(href='/admin-regiones' role='button' )   #{translation.FORM.REGIONS}
+                 
+        .col-12
+            div.table-responsive
+                table.table.table-bordered#tabla-shipping
+                    thead.thead-dark
+                        tr  
+                            th.text-center Id
+                            th.text-center #{translation.FORM.NAME}
+                            th.text-center #{translation.FORM.STATE}
+                            th.text-center #{translation.FORM.ACTIONS} 
+                    tbody
+                        each book in items.metodos
+                            -var finalStatusMetodo = (book.activado=="0" ? '#{translation.FORM.DEACTIVATED}': '#{translation.FORM.ACTIVATED}')
+                            tr
+                                td.text-center=book.id
+                                td.text-center=book.nombre
+                                td.text-center=finalStatusMetodo
+                                td.text-center.col-right
+                                    button.btn.btn-info(style="margin-right:7px;",type="button",onClick="handleVinculosMetodos('"+book.id+"')")
+                                        i.fas.fa-plus
+                                    button.btn.btn-warning(style="margin-right:7px;", type="button",onclick="handleEditMetodo('"+book.id+"','"+book.nombre+"','"+book.activado+"')")
+                                        i.fas.fa-edit
+                                    button.delete.btn.btn-danger(onClick="handleDeleteMetodo('"+book.id+"')")
+                                        i.fas.fa-trash
+    
+    include ./modals/crear-metodo-envio.pug
+    include ./modals/editar-metodo-envio.pug
+    include ./modals/vinculos-admin.pug
+
+
+    include ./save/metodo-envio.pug
+    include ./update/metodo-envio.pug
+    include ./delete/metodo-envio.pug
+
+    script.
+        var deleteArray=[];
+        $(document).ready( function () {
+            $('#tabla-shipping').DataTable({
+                "language": {"url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"}
+            });
+        });
+        var dataSelect="<select class='form-control' name='regiones[]'>";
+        var finalArrayHandled='';
+        var dataRegionAll;
+        $.ajax({
+            method: "GET",
+            url: "/admin-regiones/envio",
+            dataType:"json",
+            success: function(data){
+
+                dataRegionAll=data.items.regiones;
+                if(dataRegionAll.length>0){
+                    for(xs=0;xs<dataRegionAll.length;xs++){
+                        finalArrayHandled += "<option value='"+dataRegionAll[xs].id+"'>"+dataRegionAll[xs].nombre+"</option>"
+                    }  
+                    dataSelect=dataSelect+finalArrayHandled+"</select>";
+                }
+            },error: function(e){
+                console.log(e);
+            },
+        });
+
+        $(document).on('click', '#removeRowDynamicMetodo', function () {
+            if($(this).closest('#inputFormRow4').attr("edit")){
+                deleteArray.push(parseInt($(this).closest('#inputFormRow4').attr("edit"))); 
+            }
+            let dataHandledStack=$(this).closest('#inputFormRow4');
+            dataHandledStack.prev('#inputFormRow3').remove();
+            dataHandledStack.prev('#inputFormRow2').remove();
+            dataHandledStack.prev('#inputFormRow1').remove();
+            dataHandledStack.remove();
+        });
+
+    style.
+
+      .gestionarBtn{
+            background: #e2e2e2;
+            margin-bottom: 25px;
+            margin-left:10px
+        }

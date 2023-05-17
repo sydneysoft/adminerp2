@@ -1,0 +1,103 @@
+extends ../layout.pug
+
+append contenido
+  .border-left.border-right.border-bottom.rounded-bottom.p-3
+    .container-fluid
+      .row
+        .col-6.text-left
+        .col-6.text-right
+          button#nuevoItem.btn.btn-primary(type="button" data-toggle="modal" data-target="#crearModal") #{translation.CREATE}
+            i.fas.fa-plus-circle.ml-2
+      .row.mt-3
+        .col-12
+          .table-responsive
+            table#marketplace.table
+              thead.thead-dark
+
+  include ./modals/crear-categoria.pug
+  include ./modals/editar-categoria.pug
+  include ./modals/mostrar-categoria.pug
+  
+  script 
+    include /js/modulo-tv/save.js
+    include /js/modulo-tv/delete.js
+  script.
+    const nombre = document.getElementById('nombre');
+    const telefono = document.getElementById('telefono');
+    const eslogan = document.getElementById('eslogan');
+
+    const nombre_mostrar = document.getElementById('nombre_mostrar');
+    const telefono_mostrar = document.getElementById('telefono_mostrar');
+    const eslogan_mostrar = document.getElementById('eslogan_mostrar');
+
+    const addItem = document.getElementById('addItem');
+
+  include ./datatable/categoria.pug
+
+  script.
+
+    function generarNewToken () {
+      $.ajax({
+        url: '/generate-token',
+        type: 'GET',
+        success: function (data) {
+          if (data.token) {
+            document.getElementById('token').value = data.token;
+          }
+        }
+      })
+    }
+
+    generarNewToken();
+
+    addItem.addEventListener('click', () => {
+      if (nombre.value != '') {
+        const auxData = {
+          nombre: nombre.value,
+          telefono: telefono.value,
+          eslogan: eslogan.value,
+          token: token.value,
+          repository: repository.value
+        }
+        save('/admin-marketplace-categorias/items', auxData, createItemSuccess)
+      } else {
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'error',
+          title: '#{translation.ERROR}',
+          text: '#{translation.FORM.NAME} #{translation.FORM.REQUIRED}',
+          showConfirmButton: false,
+          timer: 3000
+        })
+      }
+    });
+
+    function createItemSuccess(data) {
+      generarNewToken();
+      tabla.ajax.reload();
+    }
+
+    function deleteItemSuccess (data) {
+      tabla.row($(`#${data.target}`)).remove().draw();
+    }
+
+    function clearForm () {
+      nombre.value = '';
+      telefono.value = '';
+      eslogan.value = '';
+    }
+
+    function mostrarItem(data) {
+      nombre_mostrar.value = data.nombre;
+      telefono_mostrar.value = data.telefono;
+      eslogan_mostrar.value = data.eslogan;
+      token_mostrar.value = data.token;
+      repository_mostrar.value = data.repository;
+      nombre_mostrar.setAttribute('disabled', 'disabled');
+      telefono_mostrar.setAttribute('disabled', 'disabled');
+      eslogan_mostrar.setAttribute('disabled', 'disabled');
+      token_mostrar.setAttribute('disabled', 'disabled');
+      repository_mostrar.setAttribute('disabled', 'disabled');
+      $('#mostrarModal').modal('show');
+    }

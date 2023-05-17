@@ -1,0 +1,104 @@
+script.
+  document.getElementById('nuevoMedico').addEventListener('click', (e) => {
+    $('#nuevoMedicoModal').modal('show');
+  });
+
+  document.getElementById('addMedico').addEventListener('click', (e) => {
+    if (primer_nombre.value != '' && surnames.value != ''  && numero_documento.value !== '' && celular.value !== '') {
+      const data = {
+        primer_nombre: primer_nombre.value,
+        segundo_nombre: segundo_nombre.value,
+        apellidos: surnames.value,
+        cv_path: cv.value,
+        especialidad: $("#lista-especialidades").val(),
+        numero_documento: numero_documento.value,
+        tipo_documento: $("#lista-documentos").val(),
+        celular: celular.value,
+        correo: correo.value,
+        tiempo_consulta: tiempo_cita.value * 60 * 1000,
+        horarios_atencion: JSON.stringify(horarios)
+      };
+
+      if(empresa_id != '') {
+        data.empresa_id = empresa_id.value;
+      }
+
+      fetch('/admin-medicos/medicos', {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(res => res.json())
+        .then(data => {
+          if (data.ok) {
+            $('#nuevoMedicoModal').modal('hide');
+            Swal.fire({
+              icon: 'success',
+              title: 'Medico registrado',
+              text: 'El medico se registro correctamente',
+              timer: 2000
+            });
+            tablaMedicos.ajax.reload();
+            //- tablaMedicos.rows.add([
+            //-   {
+            //-     "id": data.id,
+            //-     "nombre": nombre.value,
+            //-     "especialidad": especialidad.value,
+            //-     "celular": celular.value,
+            //-     "correo": correo.value,
+            //-     "acciones": JSON.stringify({
+            //-       id: data.id,
+            //-       nombre: nombre.value,
+            //-       especialidad: especialidad.value,
+            //-       numero_documento: numero_documento.value,
+            //-       tipo_documento: tipo_documento.value,
+            //-       celular: celular.value,
+            //-       correo: correo.value,
+            //-       tiempo_consulta: tiempo_cita.value * 60 * 1000,
+            //-       horarios_atencion: JSON.stringify(horarios)
+            //-     })
+            //-   }
+            //- ]).draw()
+          } else {
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: '#{translation.ALERTS.DOCTOR_ERROR}',
+              timer: 2000
+            });
+          }
+        })
+        .catch(err => {
+          console.log(err);
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: '#{translation.ALERTS.DOCTOR_ERROR}',
+            timer: 2000
+          });
+        });
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: '#{translation.FORM.REQUIRED_FIELDS}!',
+        timer: 2000
+      });
+    }
+  });
+  function clearForm() {
+    primer_nombre.value = '';
+    segundo_nombre.value = '';
+    surnames.value = '';
+    //- especialidad.value = '';
+    $("#lista-especialidades").val("").trigger("change");
+    //- numero_documento.value = '';
+    $("#lista-documentos").val("").trigger("change");
+    tipo_documento.value = '';
+    celular.value = '';
+    correo.value = '';
+    tiempo_cita.value = '';
+    horarios = [];
+  }

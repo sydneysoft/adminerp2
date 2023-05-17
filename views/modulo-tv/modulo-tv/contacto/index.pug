@@ -1,0 +1,43 @@
+extends ../layout.pug
+
+append contenido 
+  
+  .my-3
+    .d-grid
+      a#aCrear.btn.btn-primary.btn-block(type='button' href="/admin-tv/sliders/crear") Crear nuevo 
+        span#spanCrear Slider
+  if data && data.length > 0
+    .table-responsive
+      table#items.table
+        thead#headTable 
+          tr 
+            th ID 
+            th Url
+            th #{translation.FORM.ALTERNATIVE_TEXT}
+            th #{translation.FORM.ACTIONS} 
+        tbody
+          each item, key in data 
+            tr 
+              td #{item.id}
+              td #{item.imagen}
+              td #{item.alt}
+              td 
+                .btn-group
+                  a.btn.btn-primary(href=`/admin-tv/sliders/edite/${item.id}`)
+                    i.fas.fa-pen
+                  a.btn.btn-info(href=`/admin-tv/sliders/show/${item.id}`)
+                    i.fas.fa-eye
+                  button.btn.btn-danger(onclick=`beforeDeleteItem('/admin-tv/sliders/${item.id}')`)
+                    i.fas.fa-trash
+  else 
+    .alert.alert-primary(role='alert')
+      | #{translation.ALERT.NO_DATA}
+
+
+  script
+    include ../delete.js
+  
+  script.
+    $(document).ready( function () {
+      $('#items').DataTable();
+    });

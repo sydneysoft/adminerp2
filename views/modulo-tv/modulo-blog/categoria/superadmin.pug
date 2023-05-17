@@ -1,0 +1,72 @@
+extends ../layout.pug
+
+append contenido 
+  .border-bottom.border-left.border-right.rounded-bottom.p-3
+    .my-3.table-responsive 
+      table#superadmin.table.rounded-lg
+        thead.thead-dark
+          tr
+            th(scope='col') ID
+            th(scope='col') #{translation.FORM.NAME}
+            th(scope='col') #{translation.FORM.ADDRESS}
+            th(scope='col') #{translation.FORM.SOCIAL_REASON}
+            th(scope='col') #{translation.FORM.COMPANY_EMAIL}
+            th(scope='col') #{translation.FORM.CONTACT_EMAIL}
+            th(scope='col') #{translation.FORM.CONTACT_PHONE}
+            th(scope='col') #{translation.FORM.CONTACT_NAME}
+            th(scope='col') #{translation.FORM.ACTIONS}
+        tbody
+  script.
+    let tablaSocial;
+    addEventListener('DOMContentLoaded', () => {
+      tablaSocial = $('#superadmin').DataTable({
+        fnCreatedRow: function (nRow, aData, iDataIndex) {
+          $(nRow).attr('data-id', `delete${aData.id}`);
+        },
+        columns: [
+          { data: 'id', name: 'id', title: "ID" },
+          { data: 'nombre', name: 'nombre' },
+          { data: 'direccion', name: 'direccion'},
+          { data: 'razon_social', name: 'razon_social'},
+          { data: 'email_corporativo', name: 'email_corporativo'},
+          { data: 'email_contacto', name: 'email_contacto'},
+          { data: 'celular_contacto', name: 'celular_contacto' },
+          { data: 'nombre_contacto', name: 'nombre_contacto'},
+          { 
+            data: 'Acciones',
+            render: function (data, type, row) {
+              return `<a class="btn btn-info btn-sm" data-id="${row.id}" href="/admin-blog/categorias/${row.id}">#{translation.EDIT}</a>`;
+            }
+          }
+        ]
+      });
+      obtenerDatos()
+    });
+
+    function obtenerDatos() {
+      $.ajax({
+        url: '/admin-empresa-datatable',
+        method: 'GET',
+        success: function (data) {
+
+          if (data.ok && Array.isArray(data.data)) {
+            tablaSocial.clear();
+            tablaSocial.rows.add(data.data);
+            tablaSocial.draw();
+          } else {
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: '#{translation.ALERTS.ERROR_DATA}'
+            })
+          }
+        },
+        error: function (err) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: '#{translation.ALERTS.ERROR_DATA}'
+          })
+        }
+      });
+    }

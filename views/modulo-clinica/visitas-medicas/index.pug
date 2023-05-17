@@ -1,0 +1,59 @@
+extends ./layout.pug
+
+append contenido
+  .border-left.border-right.border-bottom.p-3
+    .container-fluid 
+      .row.justify-content-end
+        if empresa_id
+          include /mixins/btn/back.pug
+          input#empresa_id(type="text" value=empresa_id hidden)
+          .col-md-6.col-6
+            +btn-back()
+        .col-md-6.col-6.text-right 
+          button.btn.btn-primary(type="button" data-toggle="modal" data-target="#nuevoVisitaMedicaModal") #{translation.ADD}
+            i.fas.fa-plus.ml-2
+
+      .row.mt-3
+        .col-md-4.col-6(style="max-width: 400px")
+
+          label.font-weight-bold.datev-label #{translation.MASSIVE_ACTIONS}
+            .row
+              .col-md-8.col-12
+                select#acciones.form-control
+                  option(value=null) #{translation.SELECT}
+                  option(value="0") #{translation.DELETE}
+              .col-md-4.col-12
+                button#accionesBoton(class="btn btn-success-2") #{translation.CONFIRM}
+  
+    .container-fluid.mt-3
+      .table-responsive
+        table#tabla-visitas-medicas.table.table-striped
+          thead.thead-dark
+          tbody
+          tfoot
+
+  include ./modals/crear-visita-medica.pug
+  include ./modals/editar-visita-medica.pug
+  include ./modals/mostrar-visita-medica.pug
+
+  include /modulo-tv//modulo-general/galeria-fotos/image.pug
+  script
+    include /js/modulo-tv/save.js
+    include /js/modulo-tv/update.js
+    include /js/modulo-tv/delete.js
+
+  script.
+    $("#estado, #estado-editar").select2();
+
+  include ./save/visita-medica.pug
+  include ./update/visita-medica.pug
+  include ./delete/visita-medica.pug
+
+  script.
+
+  include ./datatable/visitas-medicas.pug
+
+  //- Otros modulos
+  include /modulo-clinica/sedes/select2/sedes.pug
+  include /modulo-clinica/pacientes/select2/pacientes.pug
+  include /modulo-clinica/medicos/select2/medicos.pug

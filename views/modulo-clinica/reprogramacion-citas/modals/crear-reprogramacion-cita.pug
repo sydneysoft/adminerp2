@@ -1,0 +1,109 @@
+//- Modal para crear cita
+.modal.fade.justify-content-center.align-items-center(tabindex="-1" role="dialog" id="nuevaCita")
+  .modal-dialog.modal-lg
+    .modal-content.modalContent
+      .modal-header 
+        .row(style="margin:0;")
+          .col-md-12
+            h3(style="margin:0px 0;") #{translation.ADD}
+
+      .modal-body.borderBottom
+        .row
+          .col-md-2.col-xs-2
+            div.text-center
+              img(src="http://ssl.gstatic.com/s2/oz/images/sge/grey_silhouette.png" style="width:47px;border-radius:50%;")
+          .col-md-10.col-xs-10
+            .row
+              .col-md-6
+                .form-group
+                  label(for="doctor") Doctor
+                  select#lista-medicos
+                  //- select#doctor.form-control(name="doctor")
+                    option(value="0" selected) -#{translation.FORM.DOCTOR}-
+                    if Array.isArray(medicos) && medicos.length > 0
+                      each item in medicos
+                        option(value=`${item.id}`) #{item.nombre} #{item.apellido}
+                    else
+                      option(value="0") -#{translation.FORM.NO_DOCTORS}- 
+
+              .col-md-6
+                .form-group
+                  label(for="sedes") Sedes
+                  select#lista-sedes
+                  //- select#sedes.form-control(name="sedes")
+                    option(value="0" selected) -#{translation.FORM.BRANCH}-
+                    if Array.isArray(sedes) && sedes.length > 0
+                      each item in sedes
+                        option(value=`${item.id}`) #{item.nombre} - #{item.direccion}
+                    else
+                      option(value="0") -#{translation.FORM.NO_BRANCHES}-
+
+        .row
+          .col-12.col-md-4
+            .form-group
+              label(for="fecha") #{translation.FORM.DATE}
+              input#fecha.form-control(type="date" placeholder=translation.FORM.DATE)
+          .col-12.col-md-4
+            .form-group
+              label(for="estado") #{translation.FORM.STATUS} 
+              select#estado.form-control
+                option(value="pendiente" selected) #{translation.FORM.PENDING}
+                option(value="confirmada") #{translation.FORM.CONFIRMED}
+                option(value="cancelada") #{translation.FORM.CANCELED}
+                option(value="atendida") #{translation.FORM.ATTENDED}
+
+          .col-12.col-md-4
+            .form-group
+              label(for="tipoCita") #{translation.FORM.APPOINTMENT_TYPE}
+              select#tipoCita.form-control
+                option(value="virtual") #{translation.FORM.VIRTUAL}
+                option(value="presencial") #{translation.FORM.FACE_TO_FACE}
+
+        .row
+          .col-12.col-md-2
+            .form-group
+              label(for="hora") #{translation.FORM.START_TIME}
+              input#hora.form-control(type="time")
+          .col-12.col-md-2
+            .form-group
+              label(for="colorpicker") #{translation.FORM.COLOR}
+              input#colorpicker.form-control(type="color" value="#0000ff")
+              input#idCita(type="text" hidden)
+          .col-12.col-md-4
+            .form-group
+              label(for="precio") #{translation.FORM.PRICE} 
+              input#precio.form-control(type="number" placeholder=translation.FORM.PRICE)
+          .col-12.col-md-4 
+            .form-group 
+              label(for="especialidad") #{translation.FORM.SPECIALTY} 
+              select#lista-especialidades(name="especialidades") 
+              //- select#especialidad.form-control
+                if Array.isArray(especialidades) && especialidades.length > 0
+                  each item in especialidades
+                    option(value=`${item.id}`) #{item.nombre}
+                else
+                  option(value="0") -#{translation.FORM.NO_SPECIALTIES}-
+        .row 
+          .col-12 
+            .form-group 
+              label(for="paciente") #{translation.FORM.PATIENT} 
+              select#lista-pacientes(name="pacientes") 
+              //- select#paciente.form-control
+                option(value="0") -#{translation.FORM.SELECT_PATIENT}-
+                if Array.isArray(pacientes) && pacientes.length > 0
+                  each item in pacientes
+                    option(value=`${item.id}`) #{item.nombre} #{item.apellido_paterno} #{item.apellido_materno}
+                else
+                  option(value="0") -#{translation.FORM.NO_PATIENTS}-
+          .col-12
+            .form-group
+              label(for="nota") #{translation.FORM.NOTE} 
+              textarea#nota.form-control(name="" cols="30" rows="10" placeholder=translation.FORM.NOTE)  
+
+      .modal-footer(style="padding:8px;")
+        .row(style="margin:0;")
+          .col-md-12.text-right
+            button#addNewCita.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;") #{translation.ADD}
+              i.fas.fa-save.ml-2
+            button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}
+              i.fas.fa-times.ml-2

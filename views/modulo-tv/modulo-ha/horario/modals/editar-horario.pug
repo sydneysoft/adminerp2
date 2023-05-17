@@ -1,0 +1,56 @@
+//- Modal para crear una nuevo faq
+.modal.fade.justify-content-center.align-items-center(tabindex="-1" role="dialog" id="updateModal")
+  .modal-dialog.modal-md
+    .modal-content.modalContent(style="height: 100%;")
+      .modal-header 
+        .row(style="margin:0;")
+          .col-md-12
+            h3(style="margin:0px 0;") #{translation.ADD}
+
+      .modal-body.borderBottom
+        .row 
+          .col-12
+            .form-group
+              label.text-label(for='nombre_editar') #{translation.FORM.NAME}
+              input#nombre_editar.form-control(value="" placeholder=translation.FORM.NAME name='nombre')
+            .form-group.mt-3
+              label.text-label(for='descripcion_editar') #{translation.FORM.DESCRIPTION}
+              textarea#descripcion_editar.form-control(placeholder=translation.FORM.DESCRIPTION name='descripcion')
+          .col-6
+            .form-group.mt-3
+              label.text-label(for="diaDe_editar") #{translation.FROM}
+              select#diaDe_editar.form-control(name="diaDe")
+                option(value="1") #{translation.DAYS.MONDAY}
+                option(value="2") #{translation.DAYS.TUESDAY}
+                option(value="3") #{translation.DAYS.WEDNESDAY}
+                option(value="4") #{translation.DAYS.THURSDAY}
+                option(value="5") #{translation.DAYS.FRIDAY}
+                option(value="6") #{translation.DAYS.SATURDAY}
+                option(value="0") #{translation.DAYS.SUNDAY}
+          .col-6
+            .form-group.mt-3
+              label.text-label(for="diaA_editar") #{translation.TO}
+              select#diaA_editar.form-control(name="diaA")
+                option(value="1") #{translation.DAYS.MONDAY}
+                option(value="2") #{translation.DAYS.TUESDAY}
+                option(value="3") #{translation.DAYS.WEDNESDAY}
+                option(value="4") #{translation.DAYS.THURSDAY}
+                option(value="5") #{translation.DAYS.FRIDAY}
+                option(value="6") #{translation.DAYS.SATURDAY}
+                option(value="0") #{translation.DAYS.SUNDAY}
+          .col-6
+            .form-group
+              label.text-label(for='horaDe_editar') #{translation.FROM}
+              input#horaDe_editar.form-control(value='' type='time')
+          .col-6
+            .form-group
+              label.text-label(for='horaA_editar') #{translation.TO}
+              input#horaA_editar.form-control(value='' type='time')
+
+          input#itemId(type="text" value="" hidden)
+      .modal-footer(style="padding:8px;")
+        .row(style="margin:0;")
+          .col-md-12.text-right
+            button#updateItem.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;") #{translation.SAVE}
+              i.fas.fa-plus.ml-3
+            button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}

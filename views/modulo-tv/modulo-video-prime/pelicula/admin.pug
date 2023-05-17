@@ -1,0 +1,37 @@
+extends ../layout.pug
+
+append contenido 
+  .border-bottom.border-left.border-right.rounded-bottom.p-3
+    .my-3 
+      if empresas  && empresas.length > 0
+        .my-3.table-responsive   
+          table#dataTable.table.rounded-lg.overflow-hidden
+            thead.thead-dark
+              tr
+                th(scope='col') ID
+                th(scope='col') #{translation.FORM.NAME}
+                th(scope='col') #{translation.FORM.EMAIL}
+                th(scope='col') #{translation.FORM.PHONE}
+                th(scope='col') #{translation.FORM.ACTIONS}
+            tbody
+              each item in empresas 
+                tr
+                  th(scope='row') #{item.id}
+                  td #{item.nombre}
+                  td #{item.correo}
+                  th #{item.telefono}
+                  td 
+                    .btn-group(role='group' aria-label='Basic example')
+                      a.btn.btn-primary(type='button' href=`/admin-video-prime/peliculas/empresa/${item.id}`)
+                        i.fas.fa-pen(aria-hidden='true')
+
+
+        script.
+          $(document).ready( function () {
+            $('#dataTable').DataTable();
+          });
+      else 
+        .alert.alert-info(role="alert")
+          | #{translation.ALERTS.NO_DATA_YET}
+
+  //- script

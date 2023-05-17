@@ -1,0 +1,38 @@
+extends ../../extends/menu-superior-admin
+block contenido
+  .row.justify-content-end
+    if empresa_id
+      include /mixins/btn/back.pug
+      input#empresa_id(type="text" value=empresa_id hidden)
+      .col-6 
+        +btn-back()
+    .col-6.text-right 
+      //- button.btn.btn-success(style="margin-bottom:25px;" type="button" onClick="openModalNew()")
+      //-   i.fas-fa-plus
+      //-   span #{translation.ADD_ORDER}
+  .row.mt-3
+    .col-6.text-grey(style="margin-bottom:10px;")
+      h1.display-1
+        strong  #{translation.ORDERS}    
+          //- span.light= data.length
+
+    .col-12
+      div.table-responsive
+        table.table.table-bordered#tabla-pedidos
+          thead.thead-dark
+
+  include ./styles/pedidos.pug
+  script
+    include /js/toast.sweet.js
+
+  script.
+    $(document).ready( function () {
+      $('#tabla-categorias').DataTable({
+        "language": {"url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"}
+      });
+    });
+
+    var typeOperation="1";
+
+  include ./datatable/pedidos-pendientes.pug
+  include ./select2/pedidos-pendientes.pug

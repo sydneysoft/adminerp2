@@ -1,0 +1,19 @@
+script.
+  const editarEmpresa = (data) => {
+    $("#nombreEmpresaNuevo").val(data.nombre);
+    $("#razonSocialNuevo").val(data.razon_social);
+    whatsapp_corporativo_obt.setNumber(data.whatsapp_corporativo);
+
+    $("#facebookNuevo").val(data.facebook_corporativo);
+    $("#youtubeNuevo").val(data.youtube_corporativo);
+    $("#twitterNuevo").val(data.twitter_corporativo);
+    $("#instagramNuevo").val(data.instagram_corporativo);
+    $("#correoCorporativoNuevo").val(data.email_corporativo);
+    $("#direccionNueva").val(data.direccion);
+    $("#nombreContactoNuevo").val(data.nombre_contacto);
+    celular_contacto_obt.setNumber(data.celular_contacto);
+
+    $("#emailContactoNuevo").val(data.email_contacto);
+
+    $("#guardarEmpresa").modal("show").attr("data-id", data.id);
+  };

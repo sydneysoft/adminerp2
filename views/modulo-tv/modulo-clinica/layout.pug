@@ -1,0 +1,32 @@
+extends ../../extends/menu-superior-admin
+
+block contenido
+  ul#myTab.nav.nav-tabs(role='tablist')
+    li.nav-item(role="citas")
+      a#home-tab.nav-link.active(href="/admin-clinica")  #{translation.MODULE_CALENDAR}
+    li.nav-item(role="button")
+      a.nav-link(href="/admin-clinica/citas-medicas") #{translation.MODULE_APPOINTMENTS} 
+    //- li.nav-item(role='presentation')
+    //-   button#home-tab.nav-link.active(data-toggle='tab' data-target='#home' type='button' role='tab' aria-controls='home' aria-selected='true') Citas
+    //- li.nav-item(role='presentation')
+    //-   button#profile-tab.nav-link(data-toggle='tab' data-target='#profile' type='button' role='tab' aria-controls='profile' aria-selected='false') Calendario
+    li.nav-item(role='citas')
+      a#profile-tab.nav-link(href="/admin-clinica/tratamientos") #{translation.MODULE_TREATMENTS}
+    li.nav-item(role="button")
+      a.nav-link(href="/admin-clinica/pacientes") #{translation.PATIENTS}
+    li.nav-item(role="button")
+      a.nav-link(href="/admin-clinica/medicos") #{translation.DOCTORS}
+    li.nav-link(role="button")
+      a.nav-item(href="/admin-clinica/especialidades") #{translation.SPECIALITIES}
+    li.nav-link(role="button")
+      a.nav-item(href="/admin-clinica/sedes") #{translation.BRANCHES}
+  script.
+    const currentPath = window.location.pathname
+    const navLinks = $(".nav .nav-link");
+    $.each(navLinks, function (index, value) {
+      if(currentPath == value.getAttribute('href')) {
+        value.classList.toggle('active')
+      } else {
+        value.classList.remove('active')
+      }
+    });

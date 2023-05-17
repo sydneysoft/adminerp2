@@ -1,0 +1,62 @@
+script.
+  async function agregarPago(token) {
+    //- let nro_documento;
+    let personal;
+    //- let tipo_documento;
+    personal = $("#lista-personal").val();
+    let tipo_de_pago = $("#nuevoTipoPago").val();
+    let monto = $("#nuevoMonto").val();
+
+    const auxData = {
+      tipo_de_pago,
+      monto
+    }
+
+    let dataPersonal;
+    $.ajax({
+      url: '/admin-personal/' + personal,
+      type: 'GET',
+      dataType: 'json',
+      async: false,
+      success: function (data) {
+        dataPersonal = data;
+      }
+    })
+  
+
+    if ((personal, monto, tipo_de_pago, dataPersonal.nombre, dataPersonal.tipo_documento)) {
+      Swal.showLoading();
+      if (typeof empresa_id != "undefined" && empresa_id && !isNaN(empresa_id.value)) {
+        auxData.empresa_id = empresa_id_select;
+      }
+      auxData.nombre = dataPersonal.nombre;
+      auxData.tipo_documento = dataPersonal.tipo_documento;
+      auxData.nro_documento = dataPersonal.nro_documento;
+      await fetch(`/admin-pago-personal`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(auxData),
+        })
+        .then((data) => {
+          Swal.close();
+          if (data.ok) {
+            if (typeof tablaPagoPersonal != "undefined") {
+              tablaPagoPersonal.ajax.reload();
+            }
+
+            toastSweet('Success', '#{translation.ALERTS.CREATED}', 'success');
+            $("#nuevo").modal('hide');
+            
+          } else {
+            toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+          }
+        })
+
+        .catch(() => {
+          Swal.close();
+          toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+        });
+    } else {
+      toastSweet('Error', '#{translation.ALERTS.REQUIRED_FIELDS}', 'error');
+    }
+  }

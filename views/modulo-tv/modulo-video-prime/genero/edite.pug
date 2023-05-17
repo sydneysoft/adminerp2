@@ -1,0 +1,42 @@
+extends ../../extends/menu-superior-admin
+
+block contenido
+  .my-3
+    div
+      a.btn.btn-primary(href="/admin-video-prime/generos") 
+        i.fas.fa-arrow-left
+        span.px-3 #{translation.BACK}
+
+    h1.text-center.mb-5 
+      | #{translation.EDIT_GENRE}
+  .card.card-body 
+    form#editar-genero-forms
+      input#idItem(value=data.id hidden)
+      .row.g-3 
+        .col-12.mb-3.text-right 
+            button.btn.btn-primary(type="submit") #{translation.SAVE}
+        .col-12 
+          label.form-label(for='nombre') #{translation.FORM.GENRE_NAME}
+          input#nombre.form-control(type='text' value=data.nombre required='' placeholder #{translation.FORM.GENRE_NAME} name="nombre")
+          .valid-feedback
+            | #{translation.FORM.NAME}
+        .col-12
+          label.form-label(for='estracto') #{translation.FORM.SHORT_DESCRIPTION}
+          textarea#estracto.form-control(required placeholder #{translation.FORM.SHORT_DESCRIPTION} name="estracto")
+            | #{data.estracto}
+          .valid-feedback
+            | #{translation.FORM.NAME}
+
+  script 
+    include ./genero.js
+    include ../../../js/modulo-tv/update.js
+  
+  script.
+    const idItem = document.getElementById('idItem');
+    document.getElementById('editar-genero-forms').addEventListener('submit', (event) => {
+      event.preventDefault()
+      updateItem(`/admin-video-prime/generos/genero/${idItem.value}`, {
+        nombre: nombreGenero.value,
+        estracto: estractoGenero.value
+      })
+    });

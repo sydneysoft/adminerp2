@@ -1,0 +1,66 @@
+//- Este archivo depende de /modulo-ecommerce/sedes/modals/crear-tienda-admin.pug
+//- Y el anterior depende de /
+script.
+  const select2Horarios = $("#lista-horarios, #lista-horarios-editar").select2({
+    ajax: {
+      url:function () {
+        return urlSelect2Horarios();
+      },
+      dataType: 'json',
+      delay: 500,
+      data: function (params) {
+        return {
+          term: params.term,
+          select: ['id', 'nombre', 'dia_de', 'dia_a', 'hora_de', 'hora_a'],
+          page: params.page
+        }
+      },
+      processResults: function (data, params) {
+        return {
+          results: $.map(data.data, (item) => {
+            return {
+              id: item.id,
+              text: `${parseDay(item.dia_de)} - ${parseDay(item.dia_a)}, ${item.hora_de} - ${item.hora_a}`,
+              dia_de: item.dia_de,
+              dia_a: item.dia_a,
+              hora_de: item.hora_de,
+              hora_a: item.hora_a
+            }
+          })
+        }
+      },
+      cache: true
+    },
+    placeholder: 'Search',
+    templateResult: horariosState,
+    width: "100%"
+  }).on("select2:open", () => {
+    $(".select2-results:not(:has(a))").append(
+      '<a href="#" style="padding: 6px;height: 20px;display: inline-table;" data-toggle="modal" data-target="#saveModalHorario" onclick="closeHorariosSelect2()">Agregar horario</a>'
+    );
+  });
+
+  function horariosState (state) {
+    if (!state.id) {
+      return state.text;
+    }
+    let $container = $(`
+      <span><strong>${state.id}</strong> |  ${parseDay(state.dia_de)} - ${parseDay(state.dia_a)}, ${state.hora_de} - ${state.hora_a}</span>
+    `);
+
+    return $container;
+  }
+
+  function closeHorariosSelect2 () {
+    $("#lista-horarios, #lista-horarios-editar").select2('close');
+  }
+
+  function urlSelect2Horarios() {
+    if (typeof empresa_id != 'undefined' && empresa_id && !isNaN(empresa_id.value)) {
+      return `/admin-horarios/select2/${empresa_id.value}`;
+    } else {
+      return "/admin-horarios/select2/select2"
+    }
+  }
+
+include /pugjs/parse-dates.pug

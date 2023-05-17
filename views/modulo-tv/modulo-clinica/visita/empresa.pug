@@ -1,0 +1,56 @@
+extends ../layout.pug
+
+append contenido 
+  .border-bottom.border-left.border-right.rounded-bottom.p-3
+    .my-3 
+      a.btn.btn-primary.btn-lg.btn-block(type='button' href="/admin-contactos/contacto/crear") Crear contacto
+      input#empresa_id(type="number" value=empresa_id hidden)
+      .my-3.table-responsive   
+        table#dataTable.table.rounded-lg.overflow-hidden
+          thead.thead-dark
+            tr
+              th(scope='col') ID
+              th(scope='col') Nombre
+              th(scope='col') Apellidos
+              th(scope='col') Dirección
+              th(scope='col') Fecha nacimiento
+              th(scope='col') Acciones
+          tbody
+            if Array.isArray(data) && data.length > 0
+              each item in data 
+                tr(id=`delete${item.id}`)
+                  th(scope='row') #{item.id}
+                  td #{item.nombre}
+                  td #{item.apellido_paterno} #{item.apellido_materno}
+                  td #{item.direccion}
+                  td #{item.fecha_nacimiento}
+                  td #{item.id}
+      script.
+        const empresa_id = document.getElementById('empresa_id');
+        $(document).ready( function () {
+          $('#dataTable').DataTable({
+            fnCreatedRow: (nRow, aData, iDataIndex) => {
+              $(nRow).attr('id', `delete${aData[0]}`);
+            },
+            columns: [
+              { data: 'ID' },
+              { data: 'Nombre' },
+              { data: 'Apellidos' },
+              { data: 'Dirección' },
+              { data: 'Fecha nacimiento' },
+              { 
+                data: 'Acciones',
+                render: function (data, type, row) {
+                  return `
+                    <div class="btn-group" role="group" aria-label="Acciones groups">
+                      <a class="btn btn-primary" href="/admin-clinica/visitas/empresa/${empresa_id.value}/paciente/${data}"><i class="fas fa-pen" aria-hidden="true"></i></a>
+                    </div>
+                  `;
+                }
+              }
+            ]
+          });
+        });
+
+  script 
+    include ../../../js/modulo-tv/delete.js

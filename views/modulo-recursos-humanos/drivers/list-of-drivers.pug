@@ -1,0 +1,177 @@
+extends ../../extends/menu-superior-admin
+block contenido
+    style.
+        .hidden {
+            display: none;
+        }
+    .row
+        .col-8.text-grey(style="margin-bottom:10px;")
+            h1.display-1
+                strong #{translation.LIST_OF_DRIVERS}
+        .col-4.text-right
+            button.btn.btn-success(type="button" data-toggle="modal" data-target="#guardarChoferAdmin" data-action="new")
+                i.fas-fa-plus
+                span #{translation.ADD_DRIVERS}
+
+        .col-12(style="margin-top: 20px;")
+            div.table-responsive
+                table#tabla-drivers.table.table-bordered
+                    thead.thead-dark
+                        tr.table-head
+                            th.text-center id
+                            th.text-center #{translation.FORM.FIRST_NAME}
+                            th.text-center #{translation.FORM.SECOND_NAME}
+                            th.text-center #{translation.FORM.LAST_NAME}
+                            th.text-center #{translation.FORM.MOTHERS_NAME}
+                            th.text-center #{translation.FORM.DOCUMENT_TYPE}
+                            th.text-center #{translation.FORM.DOCUMENT_NUMBER}
+                            th.text-center #{translation.FORM.DOCUMENT_PHOTO_FRONT}
+                            th.text-center #{translation.FORM.DOCUMENT_PHOTO_BACK}
+                            th.text-center #{translation.FORM.LICENCE_TYPE}
+                            th.text-center #{translation.FORM.LICENCE_NUMBER}
+                            th.text-center #{translation.FORM.PHOTO_LICENCE_FRONT}
+                            th.text-center #{translation.FORM.PHOTO_LICENCE_BACK}
+                            th.text-center #{translation.FORM.HIRED_DATE}
+                            th.text-center #{translation.FORM.STATE}
+                            th.text-center #{translation.FORM.FIRED_DATE}
+                            th.text-center #{translation.FORM.OBSERVATIONS}
+                            th.text-center #{translation.FORM.TYPE_VEHICLE}
+                            th.text-center #{translation.FORM.ACTIONS}
+                    tbody
+
+                        each book in bookStore
+                            tr
+                                td.text-center=book.id
+                                td.text-center=book.primer_nombre
+                                td.text-center=book.segundo_nombre
+                                td.text-center=book.apellido_paterno
+                                td.text-center=book.apellido_materno
+                                td.text-center=book.tipo_de_documento
+                                td.text-center=book.numero_de_documento
+                                td.text-center
+                                    a(href="admin-trabajadores/files/" + book.foto_de_documento_cara_frontal + "" target="_blank")=book.foto_de_documento_cara_frontal
+                                td.text-center
+                                    a(href="admin-trabajadores/files/" + book.foto_de_documento_cara_trasera + "" target="_blank")=book.foto_de_documento_cara_trasera
+                                td.text-center=book.tipo_de_licencia
+                                td.text-center=book.numero_de_licencia
+                                td.text-center
+                                    a(href="admin-trabajadores/files/" + book.foto_de_licencia_cara_frontal + "" target="_blank")=book.foto_de_licencia_cara_frontal
+                                td.text-center
+                                    a(href="admin-trabajadores/files/" + book.foto_de_licencia_cara_trasera + "" target="_blank")=book.foto_de_licencia_cara_trasera
+                                td.text-center=book.fecha_de_contratacion
+                                td.text-center=book.estado
+                                td.text-center=book.fecha_de_despido
+                                td.text-center=book.observaciones
+                                td.text-center=book.tipo_de_vehiculo
+                                td.text-center
+                                    button.btn.btn-info(type="button" data-action="duplicate" data-id="" + book.id + "")
+                                        i.fa.fa-camera 
+                                    button.btn.btn-warning(type="button" data-action="edit" data-id="" + book.id + "")
+                                        i.fa.fa-edit
+                                    button.btn.btn-danger(type="button" style="margin-left:8px" data-id="" + book.id + "")
+                                        i.fa.fa-trash 
+    .modal#guardarChoferAdmin(tabindex="-1" role="dialog")
+        .modal-dialog.modal-lg(role="document")
+            .modal-content
+                .modal-body
+                    form
+                        #step-one.step.step-active
+                            .row
+                                .col-md-6.mb-3
+                                    label.form-label(for='primer_nombre' ) #{translation.FORM.FIRST_NAME}
+                                    input.form-control(type='text' name='primer_nombre' id='primer_nombre' )
+                                .col-md-6.mb-3
+                                    label.form-label(for='segundo_nombre') #{translation.FORM.SECOND_NAME}
+                                    input.form-control(type='text' name='segundo_nombre' id='segundo_nombre' )
+                            .row
+                                .col-md-6.mb-3
+                                    label.form-label(for='apellido_paterno') #{translation.FORM.FATHERS_NAME}
+                                    input.form-control(type='text' name='apellido_paterno' id='apellido_paterno' )
+                                .col-md-6.mb-3
+                                    label.form-label(for='apellido_materno') #{translation.FORM.MOTHERS_NAME}
+                                    input.form-control(type='text' name='apellido_materno' id='apellido_materno' )
+
+                            .row
+                                .col-md-6.mb-3
+                                    label.form-label(for='tipo_de_documento') #{translation.FORM.DOCUMENT_TYPE}
+                                    select.form-control(name='tipo_de_documento' id='tipo_de_documento' )
+                                        option(value="") #{translation.FORM.SELECT_OPTION}
+                                        option(value="DNI") #{translation.FORM.DOCUMENT_NUMBER}
+                                        option(value="Carnet de Extranjería") #{translation.FORM.FOREIGN_CARD}
+                                        option(value="Pasaporte") #{translation.FORM.PASSPORT}
+                                .col-md-6.mb-3
+                                    label.form-label(for='numero_de_documento') #{translation.FORM.DOCUMENT_NUMBER}
+                                    input.form-control(type='text' name='numero_de_documento' id='numero_de_documento' )
+                            .row
+                                .col-md-6.mb-3
+                                    label.form-label(for='foto_de_documento_cara_frontal') #{translation.FORM.DOCUMENT_PHOTO_FRONT}
+                                    input.form-control(type='file' name='foto_de_documento_cara_frontal' id='foto_de_documento_cara_frontal' )
+                                .col-md-6.mb-3
+                                    label.form-label(for='foto_de_documento_cara_trasera') #{translation.FORM.DOCUMENT_PHOTO_BACK}
+                                    input.form-control(type='file' name='foto_de_documento_cara_trasera' id='foto_de_documento_cara_trasera' )
+
+                            .row.justify-content-end.mt-3
+                                .col-md-3
+                                    button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CANCEL}
+                                .col-md-3
+                                    button.btn.btn-primary(data-action='change-step' type="button") #{translation.NEXT}
+                        #step-two.step.hidden
+                            .row
+                                .col-md-6.mb-3
+                                    label.form-label(for='numero_de_licencia') #{translation.FORM.LICENCE_NUMBER}
+                                    input.form-control(type='text' name='numero_de_licencia' id='numero_de_licencia')
+                                .col-md-6.mb-3
+                                    label.form-label(for='tipo_de_licencia') #{translation.FORM.LICENCE_TYPE}
+                                    select.form-control( name='tipo_de_licencia' id='tipo_de_licencia')
+                                        option(value="tipo 1") #{translation.FORM.TYPE1}
+                                        option(value="tipo 2") #{translation.FORM.TYPE2}
+                                        option(value="tipo 3") #{translation.FORM.TYPE3}
+                            .row
+                                .col-md-6.mb-3
+                                    label.form-label(for='foto_de_licencia_cara_trasera') #{translation.FORM.PHOTO_LICENCE_FRONT}
+                                    input.form-control(type='file' name='foto_de_licencia_cara_frontal' id='foto_de_licencia_cara_frontal')
+                                .col-md-6.mb-3
+                                    label.form-label(for='foto_de_licencia_cara_trasera') #{translation.FORM.PHOTO_LICENCE_BACK}
+                                    input.form-control(type='file' name='foto_de_licencia_cara_trasera' id='foto_de_licencia_cara_trasera')
+                            .row
+                                .col-md-6.mb-3
+                                    label.form-label(for='observaciones') #{translation.FORM.OBSERVATIONS}
+                                    input.form-control(type='text' name='observaciones' id='observaciones')
+                                .col-md-6.mb-3
+                                    label.form-label(for='estado') #{translation.FORM.OBSERVATIONS}#{translation.FORM.STATE}
+                                    select.form-control( name='estado' id='estado')
+                                        option(value="ACTIVO") #{translation.FORM.ACTIVE} 
+                                        option(value="SUSPENDIDO") #{translation.FORM.SUSPENDED} 
+                                        option(value="DESPEDIDO") #{translation.FORM.FIRED} 
+                                        option(value="RENUNCIA") #{translation.FORM.QUIT} 
+
+                            .row
+                                .col-md-6.mb-3
+                                    label.form-label(for='fecha_de_contratacion' ) #{translation.FORM.HIRED_DATE}
+                                    input.form-control.date-picker(type='text'  name='fecha_de_contratacion' id='fecha_de_contratacion' data-provide="datepicker" data-date-language="es")
+                                .col-md-6.mb-3
+                                    label.form-label(for='fecha_de_despido' ) #{translation.FORM.FIRED_DATE}
+                                    input.form-control.date-picker(type='text' name='fecha_de_despido' id='fecha_de_despido' data-provide="datepicker" data-date-language="es")
+
+                            .row 
+                                .col-md-6.mb-3
+                                    label.form-label(for='estado') #{translation.FORM.VEHICLE_TYPE}
+                                    select.form-control( name='tipo_de_vehiculo' id='estado')
+                                        option(value="tipo 1") #{translation.FORM.TYPE1} 
+                                        option(value="tipo 2") #{translation.FORM.TYPE2} 
+                                        option(value="tipo 3") #{translation.FORM.TYPE3} 
+
+                            .row.justify-content-end.mt-3
+                                .col-md-3
+                                    button.btn.btn-primary(data-action='change-step' type="button") #{translation.BACK}
+                                .col-md-3
+                                    button.btn.btn-success(type='submit') #{translation.SAVE} 
+
+            .modal-footer      
+
+                button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE} 
+
+    script(src='//cdn.jsdelivr.net/npm/sweetalert2@11')
+
+    script 
+        include ./script.js

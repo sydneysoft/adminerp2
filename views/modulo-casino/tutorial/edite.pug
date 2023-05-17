@@ -1,0 +1,58 @@
+extends ../../extends/menu-superior-admin
+
+block contenido
+  .my-3
+    div
+      a.btn.btn-primary(href="/admin-configuraciones/empresa") 
+        i.fas.fa-arrow-left
+        span.px-3 Atras
+
+    h1.text-center.mb-5 
+      | Editar ajustes de empresa
+    
+    .card 
+      .card-body 
+        form#editar-forms
+          input#idActor(type="text" value=data.id hidden)
+          .row.g-3 
+            .col-12.mb-3.text-right 
+              button.btn.btn-primary(type="submit") Guardar
+            .col-12.col-md-8
+              label.form-label(for='nombre') Nombre de la empresa
+              input#nombre.form-control(type='text' value=data.nombre required='' placeholder="Nombre de la empresa" name="nombre")
+              .valid-feedback
+                | Nombre
+            .col-12.col-md-4 
+              label.form-label(for="esloganEmpresa") Eslogan de la empresa 
+              input#nacionalidad.form-control(type="text" value=data.esloganEmpresa placeholder="Eslogan de la empresa" name="esloganEmpresa" required)
+            .col-12.my-3 
+            .col-12.col-md-6 
+              label.form-label(form="telefonoEmpresa") Telefono de la Empresa 
+              input#telefonoEmpresa.form-control(type="text" placeholder="Telefono de la Empresa")
+                | #{data.telefonoEmpresa} 
+            .col-12.col-md-3 
+              label.form-label(form="telefonoEmpresa") Telefono de la Empresa 
+              textarea#telefonoEmpresa.form-control(type="text" placeholder="Telefono de la Empresa")
+                | #{data.telefonoEmpresa} 
+            .col-12.col-md-3 
+              label.form-label(form="mensaje1Empresa") Mensaje1 de la Empresa 
+              textarea#mensaje1Empresa.form-control(type="text" placeholder="Mensaje1 de la Empresa")
+                | #{data.mensaje1Empresa} 
+            .col-12.col-md-3 
+              label.form-label(form="mensaje2Empresa") Mensaje2 de la Empresa
+              textarea#mensaje2Empresa.form-control(type="text" placeholder="Mensaje2 de la Empresa")
+                | #{data.mensaje2Empresa} 
+            .col-12.col-md-3 
+              label.form-label(form="mensaje3Empresa") Mensaje3 de la Empresa 
+              textarea#mensaje3Empresa.form-control(type="text" placeholder="Mensaje3 de la Empresa")
+                | #{data.mensaje3Empresa} 
+
+  script 
+    include ./empresa.js
+    include ./update.js
+
+  script.
+    document.getElementById('editar-forms').addEventListener('submit', (event) => { 
+      event.preventDefault()
+      actualizar()
+    })

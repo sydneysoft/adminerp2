@@ -1,0 +1,75 @@
+script.
+
+  //Manejar datos de actualizacion a modal
+  const handleEditarCategoriaModulo = (data) => {
+
+    $("#idItem-categoria").val(data.id);
+    $("#nombreCategoria-editar").val(data.nombre);
+
+    $("#editarCategoriaModal").modal("show");
+  };
+
+  //Actualizar Datos
+  const actualizarCategoriaModuloAdminPanel = () => {
+    let idCategoria = $("#idItem-categoria").val();
+    let nombreCategoria = $("#nombreCategoria-editar").val();
+
+    if (
+      idCategoria &&
+      nombreCategoria 
+    ) {
+      Swal.showLoading();
+      $.ajax({
+        method: "PUT",
+        url: "/admin-modulos/categorias/" + idCategoria,
+        dataType: "json",
+        data: {
+          nombre: nombreCategoria
+        },
+        success: function (data) {
+          if (data.ok) {
+            $("#editarCategoriaModal").modal("hide");
+            Swal.close();
+            Swal.fire({
+              position: "center",
+              icon: "success",
+              title: "Se edito el módulo exitósamente.",
+              showConfirmButton: false,
+              timer: 2500,
+            });
+            if (typeof tablaCategorias != "undefined") {
+              tablaCategorias.ajax.reload();
+            }
+          } else {
+            Swal.close();
+            Swal.fire({
+              position: "center",
+              icon: "error",
+              title:
+                "No se pudo editar el módulo, inténtalo nuevamente  por favor.",
+              showConfirmButton: false,
+              timer: 2500,
+            });
+          }
+        },
+        error: function () {
+          Swal.close();
+          Swal.fire({
+            position: "center",
+            icon: "error",
+            title: "Ocurrió un error interno inténtalo más tarde.",
+            showConfirmButton: false,
+            timer: 2500,
+          });
+        },
+      });
+    } else {
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: "Debes completar el formulario.",
+        showConfirmButton: false,
+        timer: 2500,
+      });
+    }
+  };

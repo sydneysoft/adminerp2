@@ -1,0 +1,37 @@
+.modal.fade#nuevoCatalogoPDFAdministrador(tabindex="-1" role="dialog")
+  .modal-dialog(role="document")
+    .modal-content
+      .modal-body
+        .row(style="padding:10px;margin-bottom:8px;")
+          .col-md-12.col-12.text-center
+            .form-group(style="display:flex;justify-content:center;")
+              input#file-pdf-new.inputfile(type='file' name='file' accept='application/pdf' multiple='false')
+              label#label-pdf-new(for='file-pdf-new')
+                i.fas.fa-upload
+                b(style="margin-left:5px")="Sube un PDF"
+            span#data-route-file-new(style="font-size:13px;margin-bottom:8px;max-width:70%;max-height:30px;display:inline-block;overflow:hidden")
+          .col-md-6.col-12
+            .form-group
+              label #{translation.FORM.TITLE}:
+              .controls
+                input#titulo-catalogo-new.form-control(type="text")
+          .col-md-6.col-12
+            .form-group
+              label #{translation.FORM.STATUS}:
+              .controls
+                select#estado-catalogo-new.form-control
+                  option(value="1") #{translation.FORM.ACTIVE}
+                  option(value="0") #{translation.FORM.DEACTIVATED}
+          .col-md-6.col-12
+            .form-group
+              label #{translation.FORM.BEGIN_DATE}:
+              .controls
+                input#estado-fecha-inicio-new.form-control(type="date")
+          .col-md-6.col-12
+            .form-group
+              label #{translation.FORM.END_DATE}:
+              .controls
+                input#estado-fecha-final-new.form-control(type="date")
+      .modal-footer
+        button.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;" onClick="AgregarNuevoCatalogoAdmin()") #{translation.ADD}
+        button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}

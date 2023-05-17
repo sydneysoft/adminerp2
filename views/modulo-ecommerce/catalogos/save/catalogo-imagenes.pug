@@ -1,0 +1,57 @@
+script.
+  //Agregar Nuevo Catálogo por imágenes subidas del usuario
+  const AgregarNuevoCatalogoAdminImagenes = async () => {
+    let titulo = $("#titulo-catalogo-new-imagenes").val();
+    let estado = $("#estado-catalogo-new-imagenes").val();
+    let fecha_inicio = $("#estado-fecha-inicio-new-imagenes").val();
+    let fecha_final = $("#estado-fecha-final-new-imagenes").val();
+    let images_data = myDropzone.files.length;
+    if (titulo && estado && fecha_inicio && fecha_final && images_data > 0) {
+      Swal.showLoading();
+      var dataForm = new FormData();
+      myDropzone.files.forEach((file) => {
+        dataForm.append("multimedia", file);
+      });
+      dataForm.append("titulo", titulo);
+      dataForm.append("estado", estado);
+      dataForm.append("fecha_inicio", fecha_inicio);
+      dataForm.append("fecha_final", fecha_final);
+
+      try {
+        let url = "/crear-catalogo-imagenes";
+        let data = dataForm;
+        let head = { "Content-Type": "multipart/form-data" };
+        const dataFilesUpload = await axios.post(url, data, head);
+        if (dataFilesUpload.data.status == "success") {
+          Swal.close();
+          window.location.reload(true);
+        } else {
+          Swal.close();
+          Swal.fire({
+            position: "center",
+            icon: "error",
+            title: "Ocurrió un error interno inténtalo nuevamente.",
+            showConfirmButton: false,
+            timer: 2500,
+          });
+        }
+      } catch (e) {
+        Swal.close();
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "Ocurrió un error interno inténtalo nuevamente.",
+          showConfirmButton: false,
+          timer: 2500,
+        });
+      }
+    } else {
+      Swal.fire({
+        position: "center",
+        icon: "info",
+        html: "<b>Debes ingresar los datos requeridos para crear el catálogo.</b>",
+        showConfirmButton: false,
+        timer: 3500,
+      });
+    }
+  };

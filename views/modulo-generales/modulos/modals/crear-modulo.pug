@@ -1,0 +1,84 @@
+.modal.fade#nuevoModuloAdmin(tabindex="-1" role="dialog")
+  .modal-dialog(role="document")
+    .modal-content
+      .modal-header
+        .row(style="margin:0;")
+          .col-md-12
+            h3(style="margin:0px 0;") #{translation.ADD_MODULE}
+      .modal-body
+        form(action="" method="post")
+          .row
+            .col-md-6
+              .form-group
+                label(for="nombreNuevo-modulo-admin") #{translation.FORM.NAME}
+                input#nombreNuevo-modulo-admin.form-control(type="text" placeholder="Nombre" name="nombre")
+            .col-md-6
+              .form-group
+                label(for="urlNuevo-modulo-admin") #{translation.FORM.URL}
+                input#urlNuevo-modulo-admin.form-control(type="text" placeholder="URL" name="url")
+          .row
+            .col-md-6
+              .form-group
+                label(for="iconoNuevo-modulo-admin") #{translation.FORM.ICON}
+                input#iconoNuevo-modulo-admin.form-control(type="text" placeholder="Icono" name="icono")
+            .col-md-6
+              .form-group
+                label(for="textoNuevo-modulo-admin") #{translation.FORM.TEXT}
+                input#textoNuevo-modulo-admin.form-control(type="text" placeholder="Texto" name="texto")
+          .row
+            .col-md-6
+              .form-group
+                label(for="ordenNuevo-modulo-admin") #{translation.FORM.ORDER}
+                input#ordenNuevo-modulo-admin.form-control(type="number" placeholder="Orden" name="orden")
+            .col-md-6
+              .form-group
+                label(for="fuenteNuevo-modulo-admin") #{translation.FORM.FONT}
+                select#fuenteNuevo-modulo-admin.form-control(name="fuente")
+                  option(value="Roboto Condensed, sans-serif") Roboto Condensed, sans-serif
+                  option(value="Roboto, sans-serif") Roboto, sans-serif
+                  option(value="Open Sans, sans-serif") Open Sans, sans-serif
+                  option(value="Lato, sans-serif") Lato, sans-serif
+                  option(value="Oswald, sans-serif") Oswald, sans-serif
+                  option(value="Raleway, sans-serif") Raleway, sans-serif
+                  option(value="Ubuntu, sans-serif") Ubuntu, sans-serif
+                  option(value="Montserrat, sans-serif") Montserrat, sans-serif
+                  option(value="Lora, serif") Lora, serif
+                  option(value="Merriweather, serif") Merriweather, serif
+                  option(value="Playfair Display, serif") Playfair Display, serif
+                  option(value="PT Serif, serif") PT Serif, serif
+                  option(value="Source Serif Pro, serif") Source Serif Pro, serif
+                  option(value="Noto Serif, serif") Noto Serif, serif
+                  option(value="Crimson Text, serif") Crimson Text, serif
+                  option(value="Libre Baskerville, serif") Libre Baskerville, serif
+                  option(value="Georgia, serif") Georgia, serif
+                  option(value="Times New Roman, serif") Times New Roman, serif
+                  option(value="Arial, sans-serif") Arial, sans-serif
+                  option(value="Helvetica, sans-serif") Helvetica, sans-serif
+                  option(value="Verdana, sans-serif") Verdana, sans-serif
+                  option(value="Tahoma, sans-serif") Tahoma, sans-serif
+                  option(value="Trebuchet MS, sans-serif") Trebuchet MS, sans-serif
+                  option(value="Courier New, monospace") Courier New, monospace
+                  option(value="Lucida Console, monospace") Lucida Console, monospace
+                  option(value="Comic Sans MS, cursive") Comic Sans MS, cursive 
+          .row
+            .col-md-6
+              .form-group
+                label(for="rolesNuevo-admin-modulos") #{translation.FORM.ROLES}
+                span#rolesNuevo-admin-modulos(name="rolesNuevo")
+            .col-md-6
+              .form-group
+                label(for="activadoNuevo-modulo-admin") #{translation.FORM.STATUS}
+                select#activadoNuevo-modulo-admin.form-control(name="activadoNuevo")
+                  option(value="1") #{translation.FORM.ACTIVE}
+                  option(value="0") #{translation.FORM.DEACTIVATED}
+          .row
+            .col-md-6
+              .form-group
+                label(for="lista-modulo-categorias") #{translation.CATEGORY}
+                select#lista-modulo-categorias.form-control
+
+      .modal-footer(style="padding:8px;")
+        .row(style="margin:0;")
+          .col-md-12.text-right
+            button.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;" onClick="agregarModuloAdmin()") #{translation.ADD}
+            button.btn.btn-danger.ml-2(type="buton" data-dismiss="modal") #{translation.CLOSE}  

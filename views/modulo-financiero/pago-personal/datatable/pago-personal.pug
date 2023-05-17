@@ -1,0 +1,76 @@
+script.
+  let tablaPagoPersonal;
+  $(document).ready( function () {
+    let urlAjaxTablaPagoPersonal = "/admin-pago-personal/datatable";
+    if (typeof empresa_id != 'undefined' && empresa_id.value != "" && !isNaN(empresa_id.value)) {
+      urlAjaxTablaPagoPersonal = "/admin-pago-personal/datatable/" + empresa_id.value;
+    }
+
+    tablaPagoPersonal = $('#tabla-pago-personal').DataTable({
+      "language": {"url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"},
+      fnCreatedRow: function (nRow, aData, iDataIndex) {
+        $(nRow).attr('id', aData.id);
+      },
+      columnDefs: [
+        {
+          orderable: false,
+          className: "select-checkbox",
+          targets: 0,
+        },
+      ],
+
+      select: {
+        style: "multi",
+        selector: "td:first-child",
+      },
+      rowId: 'id',
+      dom: "Bfrtip",
+      buttons: ["selectAll", "selectNone"],
+      order: [[ 0, "desc" ]],
+      searchDelay: 500,
+      processing: true,
+      serverSide: true,
+      ajax: urlAjaxTablaPagoPersonal,
+      columns: [
+        { data: 'id', name: 'id', title: "ID", searchable: false,checkboxes: {'selectRow':true }, render: function () { return ""} },
+        { 
+          data: 'nombre', name: 'nombre', title: "#{translation.FORM.NAME}", orderable: true, searchable: true
+        },
+        {
+          data: 'tipo_documento', name: 'tipo_documento', title: "#{translation.FORM.DOCUMENT_TYPE}", orderable: true, searchable: true,
+        },
+        {
+          data: 'nro_documento', name: 'nro_documento', title: "#{translation.FORM.DOCUMENT_NUMBER}", orderable: true, searchable: true,
+        },
+        {
+          data: 'tipo_de_pago', name: 'tipo_de_pago', title: "#{translation.FORM.PAYMENT_TYPE}", orderable: true, searchable: true,
+        },
+        {
+          data: 'monto', name: 'monto', title: "#{translation.FORM.AMOUNT}", orderable: true, searchable: true,
+        },
+        {
+          data: 'created_at', name: 'created_at', title: "#{translation.FORM.CREATED_AT}", orderable: false, searchable: true,
+          render: function (data, type, row) {
+            return moment(data).format('DD/MM/YYYY');
+          }
+        },
+        //- {
+        //-   data: 'updated_at', name: 'updated_at', title: "#{translation.FORM.UPDATED_AT}", orderable: true, searchable: false,
+        //-   render: function (data, type, row) {
+        //-     return moment(data).format('DD/MM/YYYY');
+        //-   }
+        //- },
+        { 
+          data: 'actions', name: 'actions', title: #{translation.ACTIONS}, orderable: false, searchable: false,
+          render: function (data, type, row) {
+            let strRow = JSON.stringify(row);
+            return `
+              <button class="btn btn-warning" style="margin-right:7px;" type="button" data-toggle="modal" data-target="#editarPersonalModal" onclick='handleEditarPagoPersonal(${strRow})'><i class="fas fa-edit"></i></button>
+              <button class="delete btn btn-danger" onClick="eliminarPagoPersonalAdmin('${row.id}')"><i class="fas fa-trash"></i></button>
+            `;
+          }  
+        }
+      ]
+    });
+  });
+

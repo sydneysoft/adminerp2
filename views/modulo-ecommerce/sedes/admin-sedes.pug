@@ -1,0 +1,45 @@
+extends ../../extends/menu-superior-admin
+block contenido
+    .row
+        .col-6.text-grey(style="margin-bottom:10px;")
+            h1.display-1
+                strong  #{translation.BRANCH}
+        .col-md-6.col-6.text-right 
+                button.btn.btn-success(type="button", onClick="openNewHandleModalTienda()")
+                    i.fas-fa-plus
+                    span  #{translation.ADD_BRANCH}
+        .col-12(style="margin-top: 20px;")
+            div.table-responsive
+                table#tabla-sedes.table.table-bordered
+                    thead.thead-dark
+                    
+    include ./modals/crear-tienda-admin.pug
+    include ./modals/editar-tienda-admin.pug
+
+    include /modulo-generales/galeria-fotos/seleccion-unica-galeria/admin-galeria-modal-simple.pug
+    
+    script
+        include /js/toast.sweet.js
+
+    include ./delete/tiendas-admin-panel.pug
+    include ./save/tienda-admin.pug
+    include ./update/actualizar-tienda.pug
+
+    script.
+        const empresa_id = document.getElementById('empresa_id');
+        var typeUpdate=1;
+        var typeAction=1;
+        var typeOperation="1";
+
+        //Abrir Modal Tienda para crear una nueva
+        const openNewHandleModalTienda = () => {
+            typeOperation = "1";
+            $("#nuevoTiendaAdmin").modal("show");
+        };
+        
+    include ./datatable/sedes.pug
+
+    //- Otros modulos
+    include /modulo-tv/modulo-ha/horario/modals/crear-horario.pug
+    include /modulo-tv/modulo-ha/horario/select2/horario.pug
+    include /modulo-tv/modulo-ha/horario/save/horario.pug

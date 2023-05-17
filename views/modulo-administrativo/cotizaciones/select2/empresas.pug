@@ -1,0 +1,42 @@
+script.
+  let select2Empresas;
+  addEventListener('DOMContentLoaded', () => {
+    select2Empresas = $("#empresa, #empresaImpuesto, #empresaServicio, #empresaCliente, #lista-empresas, #lista-empresas-editar, #empresas").select2({
+      ajax: {
+        url: "/cotizaciones/empresas/select2",
+        dataType: 'json',
+        delay: 500,
+        data: function (params) {
+          return {
+            term: params.term,
+            select: ['id', 'nombre'],
+            page: params.page
+          }
+        },
+        processResults: function (data, params) {
+          return {
+            results: $.map(data.data, (item) => {
+              return {
+                id: item.id,
+                text: item.nombre
+              }
+            })
+          }
+        },
+        cache: true
+      },
+      placeholder: '#{translation.SEARCH}',
+      templateResult: empresaState,
+      allowClear: true
+    });
+  });
+  function empresaState (state) {
+    if (!state.id) {
+      return state.text;
+    }
+    let $container = $(`
+      <span>${state.text}</span>
+    `);
+
+    return $container;
+  }

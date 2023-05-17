@@ -1,0 +1,12 @@
+nav
+  #nav-tab.nav.nav-tabs(role='tablist')
+    a#nav-programas-tab.nav-link.active(href="/admin-tv#nav-programas-tab") #{translation.PROGRAMS}
+    a#nav-generos-tab.nav-link(href="/admin-tv#nav-generos-tab") #{translation.GENRES}
+    a#nav-directores-tab.nav-link(href="/admin-tv#nav-directores-tab") #{translation.DIRECTORS}
+    a#nav-productores-tab.nav-link(href="/admin-tv#nav-productores-tab") #{translation.PRODUCTORS}
+#nav-tabContent.tab-content.border.p-3
+  #nav-programas.tab-pane.fade.show.active(role='tabpanel' aria-labelledby='nav-programas-tab' tabindex='0') 
+    include ../includes/table.pug
+  #nav-generos.tab-pane.fade(role='tabpanel' aria-labelledby='nav-generos-tab' tabindex='0') #{translation.GENRES}
+  #nav-directores.tab-pane.fade(role='tabpanel' aria-labelledby='nav-directores-tab' tabindex='0') #{translation.DIRECTORS}
+  #nav-productores.tab-pane.fade(role='tabpanel' aria-labelledby='nav-productores-tab' tabindex='0') #{translation.PRODUCTORS}

@@ -1,0 +1,30 @@
+script.
+  //- Variables
+  const API_URL = '';
+
+  let table = null;
+  let action = '';
+
+  //- $(document).ready(function () {
+  //-   table = $('#tabla-trabajadores').DataTable({
+  //-     "language": { "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json" }
+  //-   });
+  //- });
+
+
+  /**EventListeners*/
+
+  //- CHANGE STEP 
+  $('button[data-action="change-step"]').click(function (e) {
+
+    const steps = Array.from(document.querySelectorAll('.step'));
+
+    const [stepActive] = steps.filter(step => step.classList.contains('step-active'));
+    const [stepHidden] = steps.filter(step => step.classList.contains('hidden'));
+
+    stepActive.classList.remove('step-active');
+    stepActive.classList.add('hidden');
+
+    stepHidden.classList.remove('hidden');
+    stepHidden.classList.add('step-active');
+  })

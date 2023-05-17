@@ -1,0 +1,23 @@
+extends ./layout.pug
+
+append contenido
+  .row.justify-content-end
+    if empresa_id
+      include /mixins/btn/back.pug
+      input#empresa_id(type="hidden" value=empresa_id)
+      .col-6
+        +btn-back()
+    .col-6.text-right
+      button.btn.btn-success(onClick=`handleSaveStyles()`) #{translation.FORM.SAVE_CHANGES}
+
+  .row.mt-3
+    .col-12.text-grey(style="margin-bottom:10px;")
+      h1.display-1
+        strong 
+
+    .col-12.mt-6 
+      textarea.form-control#data-text-area(placeholder="Ingresa los estilos que deseas agregar" name="textara-style" cols="30" rows="20")=css[0].style
+  script.
+    const itemId = !{css[0].id};
+
+  include ./update/estilos.pug

@@ -1,0 +1,50 @@
+extends ../layout.pug
+
+
+append contenido 
+  .my-3
+    div
+      a.btn.btn-info(href="/admin-tv/services") 
+        i.fas.fa-arrow-left
+        span.px-3 #{translation.BACK}
+    h1.text-center.mb-5 
+      | #{translation.EDIT_SERVICE}
+  .my-3 
+    form#editarServicio(action=`/admin-tv/pages/index` method="post")
+      input#idServicio(type="text" value=data.id hidden)
+      .row
+        .col-12.text-right 
+          button.btn.btn-primary(type="submit") #{translation.SAVE}
+        .col-12.my-3
+        .col-12 
+          .form-group
+            label(for='nombre') #{translation.FORM.NAME}
+            input#nombre.form-control(type='text' aria-describedby='nombreHelp' placeholder="Nombre del servicio." name="nombre" value=data.nombre)
+            small#nombreHelp.form-text.text-muted.d-none #{translation.FORM.WRITE_THE_NAME}
+        .col-12.my-3
+        .col-12.col-md-8
+          label(for='thumbnail') #{translation.FORM.THUMBNAIL}
+          input#thumbnail.form-control(type='text'  placeholder="Imagen miniatura" name="thumbnail" value=data.thumbnail) 
+        .col-12.col-md-4
+          label(for='icono') #{translation.FORM.ICON_FA})
+          input#icono.form-control(type='text'  placeholder="Icono" name="icono" value=data.icono)
+        .col-12.my-3
+        .col-12
+          .form-group 
+            label(for="body") #{translation.FORM.EXTRACT}  
+            textarea#estracto(name="body")
+              | #{data.estracto}
+
+
+  script.
+    const editor = CKEDITOR.replace('estracto')
+
+  script 
+    include ./service.js
+    include ./update.js
+  
+  script.
+    document.getElementById('editarServicio').addEventListener('submit', function(event) {
+      event.preventDefault();
+      actualizarServicio();
+    });

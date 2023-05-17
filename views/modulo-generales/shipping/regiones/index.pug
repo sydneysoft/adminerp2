@@ -1,0 +1,75 @@
+extends ../layout.pug
+append contenido
+  .row.justify-content-end
+    if empresa_id
+      include /mixins/btn/back.pug
+      input#empresa_id(type="hidden" value=empresa_id)
+      .col-6
+        +btn-back()
+    .col-6.text-right
+      button.btn.btn-success(style="margin-bottom:25px;" type="button" onClick="openModalNewRegion()")
+        i.fas-fa-plus
+        span #{translation.FORM.ADD_REGION} 
+  .row.mt-3
+    .col-12.text-grey(style="margin-bottom:10px;")
+      h1.display-1
+        strong #{translation.REGION_LIST} 
+          span.light=items.regiones.length
+    .col-12
+      div.table-responsive
+        table.table.table-bordered#tabla-regiones
+          thead.thead-dark
+            tr
+              th.text-center #{translation.FORM.NAME}
+              th.text-center #{translation.FORM.COUNTRY}
+              th.text-center #{translation.FORM.CITY}
+              th.text-center #{translation.FORM.ACTIONS} 
+          tbody
+            each book in items.regiones
+              tr
+                td.text-center=book.nombre
+                td.text-center=book.pais
+                td.text-center
+                  each mod in items.grupos.filter(item=>item.id_grupo==book.id_grupo)
+                    span(class="est" data=mod.CiudadNombre).modulo=mod.CiudadNombre
+
+                td.text-center.col-right
+                  button.btn.btn-warning(style="margin-right:7px;" type="button" onclick="handleEditRegion('"+book.id+"','"+book.nombre+"','"+book.pais+"','"+book.id_grupo+"')")
+                    i.fas.fa-edit
+                  button.delete.btn.btn-danger(onClick="eliminarRegionAdmin('"+book.id+"')")
+                    i.fas.fa-trash
+
+
+  include ./modals/crear-region.pug
+  include ./modals/editar-region.pug
+
+  include ./save/region.pug
+  include ./update/region.pug
+  include ./delete/region.pug
+  include ./script.pug
+
+  script.
+    $(document).ready( function () {
+      $('#tabla-regiones').DataTable({
+        "language": {"url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"}
+      });
+
+      $(".seleccionar").select2({
+        language: {
+        noResults: function () {
+          return "No se han encontrado resultados";
+            },
+          },
+      });
+
+    });
+
+  style.
+    .est {
+      display: inline-block;
+      text-transform: capitalize;
+      padding: 8px 20px;
+      background: #f0f0f0;
+      font-weight: 600;
+      margin: 5px;
+    }  

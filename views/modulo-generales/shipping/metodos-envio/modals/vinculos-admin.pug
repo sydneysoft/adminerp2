@@ -1,0 +1,23 @@
+.modal.fade#VinculosModalAdmin(tabindex="-1" role="dialog")
+  .modal-dialog.modal-lg(role="document")
+    .modal-content
+      .modal-body
+        input#idHandledEditar(type="hidden")
+        input#type-action-values(type="hidden")
+        .row 
+          .col-md-4
+            label 
+              b #{translation.FORM.REGION}
+          .col-md-3
+            label 
+              b #{translation.FORM.PRICE}
+          .col-md-3
+            label 
+              b #{translation.FORM.TIME}
+          .col-md-2
+        .row(style="padding:10px;margin-bottom:8px;" id="handledVinculos")
+
+
+      .modal-footer
+        button.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;",onClick=`addValuesMethod()`)  #{translation.FORM.SAVE}
+        button.btn.btn-danger(type="buton" data-dismiss="modal")  #{translation.FORM.CLOSE}

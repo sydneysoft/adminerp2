@@ -1,0 +1,17 @@
+extends /extends/menu-superior-admin
+
+block contenido
+  h1 #{translation.BRANCHES}
+  //- ul.nav.nav-tabs
+  //-   li.nav-item
+  //-     a.nav-link(href='/admin-ceredes') Redes
+
+  script.
+    const currentPath = window.location.pathname
+    const navLinks = $(".nav .nav-link");
+    $.each(navLinks, function (index, value) {
+      if(currentPath.startsWith(value.getAttribute('href'))) {
+        value.classList.toggle('active')
+      }
+    });
+   

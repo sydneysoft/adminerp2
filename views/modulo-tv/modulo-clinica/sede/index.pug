@@ -1,0 +1,675 @@
+extends ../layout.pug
+
+append contenido
+  .border-left.border-right.border-bottom.p-3
+    if empresa_id
+      input#empresa_id(type="text" value=empresa_id hidden)
+    else 
+      input#empresa_id(type="text" value="" hidden)
+    .container-fluid 
+      .row
+        .col-12.text-right 
+          button.btn.btn-primary(type="button" onclick="nuevaSede()" data-toggle="modal" data-target="#nuevoSedeModal") #{translation.ADD}
+            i.fas.fa-plus.ml-2
+    .container-fluid.mt-3
+      .table-responsive
+        table#sede.table.table-striped
+          thead.thead-dark
+            tr
+              
+              th(scope='col') ID
+              th(scope='col') #{translation.FORM.NAME}
+              th(scope='col') #{translation.FORM.ADDRESS}
+              th(scope='col') #{translation.FORM.IMAGE}
+              th(scope='col') #{translation.FORM.PHONE}
+              th(scope='col') #{translation.FORM.ATTENTION}
+              th(scope='col') #{translation.FORM.STATUS}
+              th(scope='col') #{translation.FORM.ACTIVATED}
+              th(scope='col') #{translation.FORM.ACTIONS}
+          tbody
+
+
+
+
+
+  //- Modal para agregar sede
+  .modal.fade.justify-content-center.align-items-center(tabindex="-1" role="dialog" id="nuevoSedeModal")
+    .modal-dialog.modal-lg
+        .modal-content.modalContent(style="height: 100%;")
+            .modal-header 
+                .row(style="margin:0;")
+                    .col-md-12
+                        h3(style="margin:0px 0;") #{translation.ADD}
+
+            .modal-body.borderBottom
+              //- nombre	direccion	googlemap	imagen	telefono	atencion 	estado	activado
+              .row
+                .col-md-6
+                  .form-group
+                    label(for="nombre") #{translation.FORM.NAME}
+                    input#nombre.form-control(type="text" placeholder=translation.FORM.NAME)
+                .col-md-6
+                  .form-group
+                    label(for="direccion") #{translation.FORM.ADDRESS}
+                    input#direccion.form-control(type="text" placeholder=translation.FORM.ADDRESS)
+              .row.mt-3 
+                .col-md-6
+                  .form-group
+                    label(for="googlemap") #{translation.FORM.GOOGLEMAP}
+                    textarea#googlemap.form-control(placeholder=translation.FORM.GOOGLEMAP)
+                .col-md-6
+                  //- .form-group
+                    //- label(for="imagen") #{translation.FORM.IMAGE}
+                    //- input#imagen.form-control(type="text" placeholder="#{translation.FORM.IMAGE}")
+                  .row.mb-3.align-items-end
+                    .col-8
+                      span #{translation.FORM.IMAGE}
+                      br
+                      .btn-group
+                        label.btn.btn-info.m-0(for="preFavicon") #{translation.UPLOAD}
+                          i.fas.fa-upload.ml-2
+                        button#galeriaImagen.btn.btn-primary(type="button" onclick="getImagePagedGaleria(0, 'imagenModal', 'showImagenModal')") De galeria
+                    .col-4
+                      input#imagenFile.form-control-file(type="file" name="" value="" hidden)
+                      input#imagen(type="text" hidden )
+                      #mostrarImagen
+    
+              .row.mt-3 
+                .col-md-6
+                  .form-group
+                    label(for="telefono") #{translation.FORM.PHONE}
+                    input#telefono.form-control(type="text" placeholder=translation.FORM.PHONE)
+                .col-md-6
+                  .form-group
+                    label(for="activado") #{translation.FORM.ACTIVATED}
+                    select#activado.form-control
+                      option(value="1") #{translation.FORM.ACTIVE}
+                      option(value="0") #{translation.FORM.INACTIVE}
+             
+              .row.mt-3
+                .col-md-4
+                  .form-group
+                    label(for="estado") #{translation.FORM.STATUS}
+                    select#estado.form-control
+                      option(value="1") #{translation.FORM.ACTIVE}
+                      option(value="0") #{translation.FORM.INACTIVE}
+                
+                .col-md-8
+                  .row.align-items-end 
+                    .col-8
+                      .form-group
+                        label(for="atencion") #{translation.FORM.ATTENTION}
+                        //- input#atencion.form-control(type="text" placeholder=translation.FORM.ATTENTION)
+                        select#atencion.form-control
+                          each item in horarios
+                            option(value=item.id) #{item.text}
+                    .col-4
+                      .form-group
+                        button#agregarHorarioAtencion.btn.btn-primary.btn-block(type="button") #{translation.ADD}
+                          i.fas.fa-plus.ml-2
+                  .row 
+                    .col-12 
+                      #showHorarioAtencion.mt-3
+
+            .modal-footer(style="padding:8px;")
+                .row(style="margin:0;")
+                    .col-md-12.text-right
+                        button#addSede.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;") #{translation.ADD}
+                        button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}
+
+  //- Modal para editar sede
+  .modal.fade.justify-content-center.align-items-center(tabindex="-1" role="dialog" id="editarSedeModal")
+    .modal-dialog.modal-lg
+        .modal-content.modalContent(style="height: 100%;")
+            .modal-header 
+                .row(style="margin:0;")
+                    .col-md-12
+                        h3(style="margin:0px 0;") #{translation.EDIT}
+
+            .modal-body.borderBottom
+              .row
+                .col-md-6
+                  .form-group
+                    label(for="nombre_editar") #{translation.FORM.NAME}
+                    input#nombre_editar.form-control(type="text" placeholder=translation.FORM.NAME)
+                .col-md-6
+                  .form-group
+                    label(for="direccion_editar") #{translation.FORM.ADDRESS}
+                    input#direccion_editar.form-control(type="text" placeholder=translation.FORM.ADDRESS)
+              .row.mt-3
+                .col-md-6
+                  .form-group
+                    label(for="googlemap_editar") #{translation.FORM.GOOGLEMAP}
+                    textarea#googlemap_editar.form-control(placeholder=translation.FORM.GOOGLEMAP)
+                .col-md-6
+                  //- .form-group
+                  //-   label(for="imagen_editar") #{translation.FORM.IMAGE}
+                  //-   input#imagen_editar.form-control(type="text" placeholder="#{translation.FORM.IMAGE}")
+                  .row.mb-3.align-items-end
+                    .col-8
+                      span #{translation.FORM.IMAGE}
+                      br
+                      .btn-group
+                        label.btn.btn-info.m-0(for="preFavicon") #{translation.UPLOAD}
+                          i.fas.fa-upload.ml-2
+                        button#galeriaImagen_editar.btn.btn-primary(type="button" onclick="getImagePagedGaleria(0, 'imagenModal', 'showImagenModal')") De galeria
+                    .col-4
+                      input#imagenFile_editar.form-control-file(type="file" name="" value="" hidden)
+                      input#imagen_editar(type="text" hidden )
+                      #mostrarImagen_editar
+              .row.mt-3 
+                .col-md-6
+                  .form-group
+                    label(for="telefono_editar") #{translation.FORM.PHONE}
+                    input#telefono_editar.form-control(type="text" placeholder=translation.FORM.PHONE)
+                .col-md-6
+                  .form-group
+                    label(for="activado_editar") #{translation.FORM.ACTIVATED}
+                    select#activado_editar.form-control
+                      option(value="1") #{translation.FORM.ACTIVE}
+                      option(value="0") #{translation.FORM.INACTIVE}
+              .row.mt-3
+                .col-md-4
+                  .form-group
+                    label(for="estado_editar") #{translation.FORM.STATUS}
+                    select#estado_editar.form-control
+                      option(value="1") #{translation.FORM.ACTIVE}
+                      option(value="0") #{translation.FORM.INACTIVE}
+                
+                .col-md-8
+                  .row.align-items-end
+                    .col-8 
+                      .form-group
+                        label(for="atencion_editar") #{translation.FORM.ATTENTION}
+                        //- input#atencion_editar.form-control(type="text" placeholder=translation.FORM.ATTENTION)
+                        select#atencion_editar.form-crontrol(type="text" placeholder=translation.FORM.ATTENTION)
+                          each item in horarios
+                            option(value=item.id) #{item.text}
+                    .col-4 
+                      .form-group 
+                        button#agregar_atencion_editar.btn.btn-primary.btn-block(type="button") #{translation.ADD}
+                          i.fas.fa-plus.ml-1
+                  .row 
+                    .col-12 
+                      #showHorarioAtencionEditar.mt-3 
+                input#itemId(type="text" value="" hidden)
+
+            .modal-footer(style="padding:8px;")
+                .row(style="margin:0;")
+                    .col-md-12.text-right
+                        button#editSede.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;") #{translation.EDIT}
+                        button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}
+  
+  //- Modal para mostrar sede
+  .modal.fade.justify-content-center.align-items-center(tabindex="-1" role="dialog" id="mostrarSedeModal")
+    .modal-dialog.modal-lg
+        .modal-content.modalContent(style="height: 100%;")
+            .modal-header 
+                .row(style="margin:0;")
+                    .col-md-12
+                        h3(style="margin:0px 0;") #{translation.SHOW}
+
+            .modal-body.borderBottom
+              .row
+                .col-md-6
+                  .form-group
+                    label(for="nombre_mostrar") #{translation.FORM.NAME}
+                    input#nombre_mostrar.form-control(type="text" placeholder=translation.FORM.NAME)
+                .col-md-6
+                  .form-group
+                    label(for="direccion_mostrar") #{translation.FORM.ADDRESS}
+                    input#direccion_mostrar.form-control(type="text" placeholder=translation.FORM.ADDRESS)
+              .row.mt-3 
+                .col-md-6
+                  .form-group
+                    label(for="googlemap_mostrar") #{translation.FORM.GOOGLEMAP}
+                    textarea#googlemap_mostrar.form-control(placeholder=translation.FORM.GOOGLEMAP)
+                .col-md-6
+                  //- .form-group
+                  //-   label(for="imagen_mostrar") #{translation.FORM.IMAGE}
+                  //-   input#imagen_mostrar.form-control(type="text" placeholder="#{translation.FORM.IMAGE}")
+                  .row.mb-3.align-items-end
+                    .col-8
+                    .col-4
+                      #mostrarImagen_mostrar
+              .row.mt-3 
+                .col-md-6
+                  .form-group
+                    label(for="telefono_mostrar") #{translation.FORM.PHONE}
+                    input#telefono_mostrar.form-control(type="text" placeholder=translation.FORM.PHONE)
+                .col-md-6
+                  .form-group
+                    label(for="activado_mostrar") #{translation.FORM.ACTIVATED}
+                    select#activado_mostrar.form-control
+                      option(value="1") #{translation.FORM.ACTIVE}
+                      option(value="0") #{translation.FORM.INACTIVE}
+              .row.mt-3
+                .col-md-6
+                  .form-group
+                    label(for="estado_mostrar") #{translation.FORM.STATUS}
+                    select#estado_mostrar.form-control
+                      option(value="1") #{translation.FORM.ACTIVE}
+                      option(value="0") #{translation.FORM.INACTIVE}
+                .col-md-6
+                  .row.align-items-end 
+                    .col-8 
+                    .col-4 
+                      #showHorarioAtencionMostrar.mt-3
+
+            .modal-footer(style="padding:8px;")
+                .row(style="margin:0;")
+                    .col-md-12.text-right
+                        button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}
+  
+  
+  include ../../modulo-general/galeria-fotos/image.pug
+  script
+    include ../../../js/modulo-tv/save.js
+    include ../../../js/modulo-tv/update.js
+    include ../../../js/modulo-tv/delete.js
+  script.
+    const nombre = document.getElementById('nombre');
+    const direccion = document.getElementById('direccion');
+    const googlemap = document.getElementById('googlemap');
+    const imagen = document.getElementById('imagen');
+    const telefono = document.getElementById('telefono');
+    const atencion = document.getElementById('atencion');
+    const estado = document.getElementById('estado');
+    const activado = document.getElementById('activado');
+    let horario_atencion = [];
+    const agregarHorarioAtencion = document.getElementById('agregarHorarioAtencion');
+    const showHorarioAtencion = document.getElementById('showHorarioAtencion');
+
+    const nombre_editar = document.getElementById('nombre_editar');
+    const direccion_editar = document.getElementById('direccion_editar');
+    const googlemap_editar = document.getElementById('googlemap_editar');
+    const imagen_editar = document.getElementById('imagen_editar');
+    const telefono_editar = document.getElementById('telefono_editar');
+    const atencion_editar = document.getElementById('atencion_editar');
+    const estado_editar = document.getElementById('estado_editar');
+    const activado_editar = document.getElementById('activado_editar');
+    let horario_atencion_editar = [];
+    const agregar_atencion_editar = document.getElementById('agregar_atencion_editar');
+    const showHorarioAtencionEditar = document.getElementById('showHorarioAtencionEditar');
+
+    const nombre_mostrar = document.getElementById('nombre_mostrar');
+    const direccion_mostrar = document.getElementById('direccion_mostrar');
+    const googlemap_mostrar = document.getElementById('googlemap_mostrar');
+    const imagen_mostrar = document.getElementById('imagen_mostrar');
+    const telefono_mostrar = document.getElementById('telefono_mostrar');
+    //- const atencion_mostrar = document.getElementById('atencion_mostrar');
+    const estado_mostrar = document.getElementById('estado_mostrar');
+    const activado_mostrar = document.getElementById('activado_mostrar');
+    let horario_atencion_mostrar = [];
+    const showHorarioAtencionMostrar = document.getElementById('showHorarioAtencionMostrar');
+
+    const addSede = document.getElementById('addSede');
+    const editSede = document.getElementById('editSede');
+    const itemId = document.getElementById('itemId');
+
+  script.
+    let tabla;
+    addEventListener('DOMContentLoaded', () => {
+      const empresa_id = document.querySelector('#empresa_id');
+      let auxAjaxUrl = '/admin-clinica/sedes/datatable'
+      if (empresa_id && empresa_id.value != '') {
+        auxAjaxUrl = `/admin-clinica/sedes/datatable/${empresa_id.value}`
+      }
+      table = $('#sede').DataTable({
+        fnCreatedRow: function (nRow, aData, iDataIndex) {
+          $(nRow).attr('id', `delete${aData.id}`);
+        },
+        processing: true,
+        serverSide: true,
+        ajax: auxAjaxUrl,
+        columns: [
+          { 
+            data: 'id', name: 'id', title: 'ID',
+            searchable: false,
+            orderable: false,
+          },
+          { 
+            data: 'nombre', name: 'nombre', title: '#{translation.FORM.NAME}',
+            searchable: true,
+            orderable: true,
+          },
+          { 
+            data: 'direccion', name: 'direccion', title: '#{translation.FORM.ADDRESS}',
+            searchable: true,
+            orderable: true,
+          },
+          { 
+            data: 'imagen', name: 'imagen', title: '#{translation.FORM.IMAGE}',
+            searchable: true,
+            orderable: true,
+            render: function (data, type, row) {
+              try {
+                new URL(row.imagen);
+                return `<img src="${row.imagen}" alt="imagen" style="width: 50px; height: 50px;">`
+              } catch(e) {
+                return `<img src="/images/image-default.jpg" alt="imagen" style="width: 50px; height: 50px;">`
+              }
+            }
+          },
+          { 
+            data: 'telefono', name: 'telefono', title: '#{translation.FORM.PHONE}',
+            searchable: true,
+            orderable: true,
+          },
+          { 
+            data: 'atencion', name: 'atencion', title: '#{translation.FORM.ATTENTION}',
+            searchable: false,
+            orderable: false,
+          },
+          { 
+            data: 'estado', name: 'estado', title: '#{translation.FORM.STATUS}',
+            searchable: false,
+            orderable: false,
+          },
+          { 
+            data: 'activado', name: 'activado', title: '#{translation.FORM.ACTIVATED}',
+            searchable: false,
+            orderable: false,
+          },
+          { 
+            data: 'actions',
+            name: 'actions',
+            title: '#{translation.FORM.ACTIONS}',
+            searchable: false,
+            orderable: false,
+            render: function (data, type, row) {
+              //- console.log(row);
+              return `
+                <button class="btn btn-primary btn-sm" onclick='editarSede(${JSON.stringify(row)})' data-toggle="modal" data-target="#editarSedeModal"><i class="fas fa-edit"></i></button>
+                <button class="btn btn-success btn-sm" onclick='mostrarSede(${JSON.stringify(row)})' data-toggle="modal" data-target="#mostrarSedeModal"><i class="fas fa-eye"></i></button>
+                <button class="btn btn-danger btn-sm" onclick="beforeDeleteItem('/admin-clinica/sedes/items/${row.id}', deleteItemSuccess)"><i class="fas fa-trash"></i></button>
+              `
+            }
+          }
+        ]
+      })
+    });
+
+    function editarSede (data) {
+      nombre_editar.value = data.nombre;
+      direccion_editar.value = data.direccion;
+      googlemap_editar.value = data.googlemap;
+      imagen_editar.value = data.imagen;
+      telefono_editar.value = data.telefono;
+      //- atencion_editar.value = data.atencion;
+      if (data.horario_atencion == null) {
+        horario_atencion_editar = [];
+      } else {
+        horario_atencion_editar = JSON.parse(data.horario_atencion);
+      }
+      estado_editar.value = data.estado;
+      activado_editar.value = data.activado;
+      editSede.setAttribute('data-id', data.id);
+      try {
+        new URL(data.imagen);
+        $('#mostrarImagen_editar').html(`<img src="${data.imagen}" alt="imagen" style="width: 50px; height: 50px;">`);
+      }catch (e) {
+        $('#mostrarImagen_editar').html(`<img src="/images/image-default.jpg" alt="imagen" style="width: 50px; height: 50px;">`);
+      }
+      itemId.value = data.id;
+      createImageGroup('imagen_editar', 'imagenFile_editar', 'mostrarImagen_editar', 'galeriaImagen_editar');
+      renderHorarioAtencionEditar()
+    }
+
+    function mostrarSede (data) {
+      nombre_mostrar.value = data.nombre;
+      direccion_mostrar.value = data.direccion;
+      googlemap_mostrar.value = data.googlemap;
+      telefono_mostrar.value = data.telefono;
+      //- atencion_mostrar.value = data.atencion;
+      horario_atencion_mostrar = JSON.parse(data.horario_atencion);
+      try {
+        new URL(data.imagen);
+        $('#mostrarImagen_mostrar').html(`<img src="${data.imagen}" alt="imagen" style="width: 50px; height: 50px;">`);
+      }catch (e) {
+        $('#mostrarImagen_mostrar').html(`<img src="/images/image-default.jpg" alt="imagen" style="width: 50px; height: 50px;">`);
+      }
+      estado_mostrar.value = data.estado;
+      activado_mostrar.value = data.activado;
+
+    }
+
+    function deleteItemSuccess (data) {
+      $(`#${data.target}`).remove().draw();
+    }
+
+    editSede.addEventListener('click', () => {
+      if (nombre_editar.value != '' && direccion_editar.value != '') {
+        
+        const data = {
+          nombre: nombre_editar.value,
+          direccion: direccion_editar.value,
+          googlemap: googlemap_editar.value,
+          imagen: imagen_editar.value,
+          telefono: telefono_editar.value,
+          //- atencion: atencion_editar.value,
+          horario_atencion: JSON.stringify(horario_atencion_editar),
+          estado: estado_editar.value,
+          activado: activado_editar.value,
+        }
+        const url = `/admin-clinica/sedes/items/${itemId.value}`;
+        updateItem(url, data, updateItemSuccess);
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Debe llenar todos los campos con *',
+          timer: 2000
+        })
+      }
+    });
+
+    addSede.addEventListener('click', () => {
+
+      if (nombre.value != '' && direccion.value != '') {
+        const data = {
+          nombre: nombre.value,
+          direccion: direccion.value,
+          googlemap: googlemap.value,
+          imagen: imagen.value,
+          telefono: telefono.value,
+          //- atencion: atencion.value,
+          horario_atencion: JSON.stringify(horario_atencion),
+          estado: estado.value,
+          activado: activado.value,
+        }
+        if (empresa_id && empresa_id.value != '') {
+          data.empresa_id = empresa_id.value;
+        }
+        const url = '/admin-clinica/sedes/items';
+
+        save(url, data, saveItemSuccess);
+
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Debe llenar todos los campos con *',
+          timer: 2000
+        })
+      }
+    });
+
+    function saveItemSuccess (data) {
+      table.ajax.reload();
+      nombre.value = '';
+      direccion.value = '';
+      googlemap.value = '';
+      imagen.value = '';
+      telefono.value = '';
+      atencion.value = '';
+      estado.value = '';
+      activado.value = '';
+    }
+
+    function updateItemSuccess (data) {
+      table.ajax.reload();
+    }
+
+    function nuevaSede() {
+      createImageGroup('imagen', 'imagenFile', 'mostrarImagen', 'galeriaImagen');
+    }
+
+    //- function formatState (state) {
+    //-   if (!state.id) { return state.text; }
+    //-       let $state = $(
+    //-         '<span><i class="' +  state.element.value.toLowerCase() + '"> </i> ' + 
+    //-     decodeHorarioAtencion(state.text) +'</span>'
+    //-   );
+    //-   return $state;
+    //- };
+
+    //- function decodeHorarioAtencion (text) {
+    //-   let data = JSON.parse(text);
+    //-   return data.dia_de +'-'+ data.dia_a + ', ' + data.hora_de + '-'+ data.hora_a;
+    //- }
+
+    //- $("#icono").select2({
+    //-   templateResult: formatState
+    //- });
+    $("#atencion_editar").select2();
+
+  script.
+    agregar_atencion_editar.addEventListener('click', (event) => {
+      console.log(event);
+      // comprobar si existe
+      if (!Array.isArray(horario_atencion_editar)) {
+        horario_atencion_editar = [];
+      }
+      let exites = horario_atencion_editar.filter((item) => {
+        return item.id == atencion_editar.value;
+      });
+      if (exites.length > 0) {
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'error',
+          title: 'Oops...',
+          text: '#{translation.ALERTS.SCHEDULE_EXISTS}',
+          timer: 2000,
+          showConfirmButton: false,
+        })
+        return;
+      }
+      if(atencion_editar.value != '') {
+        horario_atencion_editar.push({
+          id: atencion_editar.value,
+          text: atencion_editar.options[atencion_editar.selectedIndex].text
+        })
+        renderHorarioAtencionEditar();
+      }
+    });
+
+    agregarHorarioAtencion.addEventListener('click', (event) => {
+      console.log(event);
+      // comprobar si existe
+      if (!Array.isArray(horario_atencion)) {
+        horario_atencion = [];
+      }
+      let exites = horario_atencion.filter((item) => {
+        return item.id == atencion.value;
+      });
+      if (exites.length > 0) {
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'error',
+          title: 'Oops...',
+          text: '#{translation.ALERTS.SCHEDULE_EXISTS}',
+          timer: 2000,
+          showConfirmButton: false,
+        })
+        return;
+      }
+      if (atencion.value != '') {
+        horario_atencion.push({
+          id: atencion.value,
+          text: atencion.options[atencion.selectedIndex].text
+        })
+        renderHorarioAtencion();
+      }
+    });
+
+    function renderHorarioAtencionEditar () {
+      if (horario_atencion_editar) {
+        let html = '';
+        horario_atencion_editar.forEach((item) => {
+          console.log(item)
+          html += `<div class="row mt-1" style="margin:0;">
+            <div class="col-md-10">
+              <input type="text" class="form-control" value="${item.text}" readonly>
+            </div>
+            <div class="col-md-2">
+              <button type="button" class="btn btn-danger" onclick="deleteHorarioAtencionEditar('${item.id}')">#{translation.DELETE}</button>
+            </div>
+          </div>`;
+        });
+        $('#showHorarioAtencionEditar').html(html);
+      }
+    }
+
+    function renderHorarioAtencion () {
+      if (horario_atencion) {
+        let html = '';
+        horario_atencion.forEach((item) => {
+          html += `<div class="row mt-1" style="margin:0;">
+            <div class="col-md-10">
+              <input type="text" class="form-control" value="${item.text}" readonly>
+            </div>
+            <div class="col-md-2">
+              <button type="button" class="btn btn-danger" onclick="deleteHorarioAtencion('${item.id}')">#{translation.DELETE}</button>
+            </div>
+          </div>`;
+        })
+        $('#showHorarioAtencion').html(html);
+      }
+    }
+
+    function renderHorarioAtencionMostrar () {
+      if (horario_atencion_mostrar) {
+        let html = '';
+        horario_atencion.forEach((item) => {
+          html += `<div class="row mt-1" style="margin:0;">
+            <div class="col-12">
+              <input type="text" class="form-control" value="${item.text}" readonly>
+            </div>
+          </div>`;
+        })
+        $('#showHorarioAtencionMostrar').html(html);
+      }
+    }
+
+    function deleteHorarioAtencionEditar (id) {
+      horario_atencion_editar = horario_atencion_editar.filter((item) => {
+        return item.id != id;
+      });
+      renderHorarioAtencionEditar();
+    }
+
+    function deleteHorarioAtencion (id) {
+      horario_atencion = horario_atencion.filter((item) => {
+        return item.id != id;
+      });
+      renderHorarioAtencion();
+    }
+
+  .modal.fade.justify-content-center.align-items-center(tabindex="-1" role="dialog" id="imagenModal" style="height: 100vh;overflow-y: scroll;")
+    .modal-dialog.modal-lg
+      .modal-content.modalContent(style="height: 100%;")
+        .modal-header 
+          .row(style="margin:0;")
+            .col-md-12.text-center
+              h3(style="margin:0px 0;") Galeria
+
+        .modal-body.borderBottom
+          #showImagenModal.row
+          
+        .modal-footer(style="padding:8px;")
+          .row(style="margin:0;")
+            .col-md-12.text-right
+              button.btn.btn-danger(type="buton" onclick="$('#imagenModal').modal('hide');") #{translation.CLOSE}

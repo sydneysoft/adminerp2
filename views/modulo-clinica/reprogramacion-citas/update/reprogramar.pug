@@ -1,0 +1,24 @@
+script.
+  function reprogramarCita (id) {
+    const auxData = {
+      fechaCita: $("#fecha_reprogramar").val(),
+      tipoCita: $("#tipoCita_reprogramar").val(),
+      horaInicio: $("#hora_reprogramar").val(),
+      horaFin: $("#hora_fin_reprogramar").val(),
+      color: $("#colorpicker_reprogramar").val(),
+      nota: $("#nota_reprogramar").val(),
+    };
+    if (!isNaN(id) && id > 0) {
+      $.ajax({
+        url: "/admin-reprogramacion-citas/" + id,
+        type: "PUT",
+        data: auxData,
+        success: function (data, status) {
+          console.log(data);
+        }, 
+        error: function (error, status) {
+          console.log(error);
+        }
+      })
+    }
+  }

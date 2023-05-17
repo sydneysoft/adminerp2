@@ -1,0 +1,48 @@
+extends ../layout.pug
+
+
+append contenido 
+  .my-3
+    div
+      a.btn.btn-info(href="/admin-tv/services") 
+        i.fas.fa-arrow-left
+        span.px-3 #{translation.BACK}
+    h1.text-center.mb-5 
+      | #{translation.CREATE_NEW_SERVICE}
+  .my-3 
+    form#nuevoServicio(action=`/admin-tv/services/index` method="post")
+      .row
+        .col-12.text-right 
+          button.btn.btn-primary(type="submit") #{translation.SAVE}
+        .col-12.my-3
+        .col-12 
+          .form-group
+            label(for='nombre') #{translation.FORM.NAME}
+            input#nombre.form-control(type='text' aria-describedby='nombreHelp' placeholder="Nombre de la página." name="nombre")
+            small#nombreHelp.form-text.text-muted.d-none #{translation.FORM.WRITE_THE_NAME}
+        .col-12.my-3
+        .col-12.col-md-8
+          label(for='thumbnail') #{translation.FORM.THUMBNAIL}
+          input#thumbnail.form-control(type='text'  placeholder="Imagen miniatura" name="thumbnail")
+        .col-12.col-md-4
+          label(for='icono') #{translation.FORM.ICON_FA}
+          input#icono.form-control(type='text'  placeholder="Icono" name="icono")
+        .col-12.my-3
+        .col-12
+          .form-group 
+            label(for="body") #{translation.FORM.EXTRACT} 
+            textarea#estracto(name="body") 
+
+
+  script.
+    const editor = CKEDITOR.replace('estracto')
+
+  script 
+    include ./service.js
+    include ./save.js
+  
+  script.
+    document.getElementById('nuevoServicio').addEventListener('submit', function(event) {
+      event.preventDefault();
+      guardarServicio();
+    });

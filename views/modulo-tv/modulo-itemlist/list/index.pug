@@ -1,0 +1,226 @@
+extends ../layout.pug
+
+
+append contenido 
+  .border-left.border-right.border-bottom.p-3 
+    .container-fluid 
+      .row 
+        .col-12.text-right 
+          button#guardarItemList.btn.btn-primary(type="button" ) #{translation.SAVE}
+            i.fas.fa-save.ml-2
+      .row.mt-3 
+        .col-12.col-md-6
+          .card 
+            .card-body 
+              .row.align-items-end
+                .col-10 
+                  .form-group
+                    label(for="perfil_canal") #{translation.CHANNEL_PROFILE}
+                    input#perfil_canal.form-control(type="text" name="nombre" placeholder="Perfil del canal" )
+                .col-2 
+                  .form-group
+                    button#agregar_perfil_canal.btn.btn-primary.btn-block(type="button") 
+                      i.fas.fa-plus
+                input#itemId(type="text" value=itemlists[0].id hidden)
+              #showPerfil_canal.row
+         
+        .col-12.col-md-6
+          .card 
+            .card-body 
+              .row.align-items-end
+                .col-10 
+                  .form-group
+                    label(for="publico_objetivo") #{translation.PUBLIC_OBJECTIVE}
+                    input#publico_objetivo.form-control(type="text" name="nombre" placeholder="Publico objetivo" )
+                .col-2 
+                  .form-group
+                    button#agregar_publico_objetivo.btn.btn-primary.btn-block(type="button") 
+                      i.fas.fa-plus
+          
+              #showPublico_objetivo.row
+  script 
+    include ../../../js/modulo-tv/update.js
+  //- script cons las variables a utilizar
+  script.
+    const guardarItemList = document.getElementById('guardarItemList');
+    const itemId = document.getElementById('itemId');
+    const agregarPerfilCanal = document.getElementById('agregar_perfil_canal');
+    const perfilCanal = document.getElementById('perfil_canal');
+    const showPerfilCanal = document.getElementById('showPerfil_canal');
+
+    const agregarPublicoObjetivo = document.getElementById('agregar_publico_objetivo');
+    const publicoObjetivo = document.getElementById('publico_objetivo');
+    const showPublicoObjetivo = document.getElementById('showPublico_objetivo');
+  script.
+    let auxCampos = !{itemlists[0].campos}
+
+  
+  //- script con los payloads
+  script.
+    let campos = [
+      {
+        identificador: 'perfil_canal',
+        nombre: 'Perfil del canal',
+        items: []
+      },
+      {
+        identificador: 'publico_objetivo',
+        nombre: 'Publico objectivo',
+        items: []
+      }
+    ]
+
+
+  //- script con funciones y listener
+  script.
+    agregarPerfilCanal.addEventListener('click', (event) => {
+      if (Array.isArray(campos)) {
+        campos.forEach((campo) => {
+          if (campo.identificador === 'perfil_canal') {
+            campo.items.push("");
+            renderPerfilCanal();
+          }
+        })
+      }
+    });
+
+    agregarPublicoObjetivo.addEventListener('click', (event) => {
+      if (Array.isArray(campos)) {
+        campos.forEach((campo) => {
+          if (campo.identificador === 'publico_objetivo') {
+            campo.items.push("");
+            renderPublicoObjetivo();
+          }
+        })
+      }
+    });
+
+    function renderPerfilCanal () {
+      let html = '';
+      campos.forEach((campo, index) => {
+        if (campo.identificador === 'perfil_canal') {
+          perfilCanal.value = campo.nombre
+          campo.items.forEach((item, i) => {
+            html += renderInputPerfilCanal(campo.identificador, item, 'text', i);
+          })
+        }
+      })
+      showPerfilCanal.innerHTML = html;
+    } 
+
+    function renderPublicoObjetivo () {
+      let html = '';
+      campos.forEach((campo, index) => {
+        if (campo.identificador === 'publico_objetivo') {
+          publicoObjetivo.value = campo.nombre
+          campo.items.forEach((item, i) => {
+            html += renderInputPublicoObjetivo(campo.identificador, item, 'text', i);
+          })
+        }
+      })
+      showPublicoObjetivo.innerHTML = html;
+    }
+
+    function renderInputPerfilCanal (name, value, type, index) {
+      return `
+        <div id="perfilCanal${index}" class="col-12">
+          <div class="row mt-3">
+            <div class="col-10">
+              <div class="form-group">
+                <input type="${type}" name="${name}" value="${value}" class="form-control" data-index="${index}" onkeyup="bindValuePerfilCanal(this)"/>
+              </div>
+            </div>
+            <div class="col-2">
+              <div class="form-group">
+                <button class="btn btn-danger" data-index="${index}" onclick="removeItemPerfilCanal(this)"><i class="fas fa-times"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `
+    }
+
+    function renderInputPublicoObjetivo (name, value, type, index) {
+      return `
+        <div id="publicoObjetivo${index}" class="col-12">
+          <div class="row mt-3">
+            <div class="col-10">
+              <div class="form-group">
+                <input type="${type}" name="${name}" value="${value}" class="form-control" data-index="${index}" onkeyup="bindValuePublicoObjetivo(this)"/>
+              </div>
+            </div>
+            <div class="col-2">
+              <div class="form-group">
+                <button class="btn btn-danger" data-index="${index}" onclick="removeItemPublicoObjetivo(this)"><i class="fas fa-times"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function removeItemPerfilCanal (event) {
+      const index = event.getAttribute('data-index');
+      campos.forEach((campo) => {
+        if (campo.identificador === 'perfil_canal') {
+          campo.items.splice(index, 1);
+          $('#perfilCanal' + index).remove();
+        }
+      })
+    }
+
+    function removeItemPublicoObjetivo (event) {
+      const index = event.getAttribute('data-index');
+      campos.forEach((campo) => {
+        if (campo.identificador === 'publico_objetivo') {
+          campo.items.splice(index, 1);
+          $('#publicoObjetivo' + index).remove();
+        }
+      })
+    }
+
+    function bindValuePerfilCanal(event) {
+      const index = event.getAttribute('data-index');
+      const value = event.value;
+      campos.forEach((campo) => {
+        if (campo.identificador === 'perfil_canal') {
+          campo.items[index] = value;
+        }
+      });
+    }
+
+    function bindValuePublicoObjetivo(event) {
+      const index = event.getAttribute('data-index');
+      const value = event.value;
+      campos.forEach((campo) => {
+        if (campo.identificador === 'publico_objetivo') {
+          campo.items[index] = value;
+        }
+      });
+    }
+
+    function hashIdentificador () {
+      const abc = 'abcdefghijklmnopqrstuvwxyz';
+      let hash = '';
+      for (let i = 0; i < 25; i++) {
+        hash += abc[Math.floor(Math.random() * abc.length)];
+      }
+      return hash;
+    }
+
+    guardarItemList.addEventListener ('click', (event) => {
+      const hash = hashIdentificador();
+      const id = itemId.value;
+      const data = {
+        campos: JSON.stringify(campos)
+      }
+      updateItem(`/admin-itemlist/items/${id}`, data);
+    });
+
+    addEventListener('DOMContentLoaded', () => {
+       if (Array.isArray(auxCampos) && auxCampos.length > 0) {
+        campos = auxCampos;
+        renderPerfilCanal();
+        renderPublicoObjetivo();
+      }
+    });

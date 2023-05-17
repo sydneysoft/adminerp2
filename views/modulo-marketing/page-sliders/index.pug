@@ -1,0 +1,32 @@
+extends ./layout.pug
+
+append contenido 
+  if empresa_id
+    input#empresa_id(type="text" value=empresa_id hidden)
+  .border-bottom.border-left.border-right.rounded-bottom.p-3
+    .container-fluid
+      .row
+        .col-6.text-left
+          if empresa_id
+            include /mixins/btn/back.pug
+            +btn-back()
+        .col-6.text-right
+          if empresa_id
+            a.btn.btn-primary(type='button' href=`/admin-sliders/empresa/${empresa_id}/crear`) #{translation.ADD}
+              i.fas.fa-plus.ml-2
+          else
+            a.btn.btn-primary(type='button' href="/admin-sliders/slider/crear") #{translation.ADD}
+              i.fas.fa-plus.ml-2
+    .my-3 
+      
+    .my-3.table-responsive   
+      table#tabla-sliders.table.rounded-lg.overflow-hidden
+        thead.thead-dark
+        tbody
+        tfoot
+                
+  script.
+    const empresa_id = document.getElementById('empresa_id');
+  include ./datatable/slider.pug
+  script 
+    include /js/modulo-tv/delete.js

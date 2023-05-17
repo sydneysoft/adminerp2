@@ -1,0 +1,57 @@
+script.
+  function editarSede (data) {
+    nombre_editar.value = data.nombre;
+    direccion_editar.value = data.direccion;
+    googlemap_editar.value = data.googlemap;
+    imagen_editar.value = data.imagen;
+    telefono_editar.value = data.telefono;
+    //- atencion_editar.value = data.atencion;
+    if (data.horario_atencion == null) {
+      horario_atencion_editar = [];
+    } else {
+      horario_atencion_editar = JSON.parse(data.horario_atencion);
+    }
+    estado_editar.value = data.estado;
+    activado_editar.value = data.activado;
+    editSede.setAttribute('data-id', data.id);
+    try {
+      new URL(data.imagen);
+      $('#mostrarImagen_editar').html(`<img src="${data.imagen}" alt="imagen" style="width: 50px; height: 50px;">`);
+    }catch (e) {
+      $('#mostrarImagen_editar').html(`<img src="/images/image-default.jpg" alt="imagen" style="width: 50px; height: 50px;">`);
+    }
+    itemId.value = data.id;
+    createImageGroup('imagen_editar', 'imagenFile_editar', 'mostrarImagen_editar', 'galeriaImagen_editar');
+    renderHorarioAtencionEditar()
+  }
+
+  editSede.addEventListener('click', () => {
+    if (nombre_editar.value != '' && direccion_editar.value != '') {
+
+      const data = {
+        nombre: nombre_editar.value,
+        direccion: direccion_editar.value,
+        googlemap: googlemap_editar.value,
+        imagen: imagen_editar.value,
+        telefono: telefono_editar.value,
+        //- atencion: atencion_editar.value,
+        horario_atencion: JSON.stringify(horario_atencion_editar),
+        estado: estado_editar.value,
+        activado: activado_editar.value,
+      }
+      const url = `/admin-clinica/sedes/items/${itemId.value}`;
+      updateItem(url, data, updateItemSuccess);
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Debe llenar todos los campos con *',
+        timer: 2000
+      })
+    }
+  });
+  function updateItemSuccess (data) {
+    if (typeof tablaClinicaSedess != "undefined") {
+      tablaClinicaSedes.ajax.reload();
+    }
+  }

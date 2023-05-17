@@ -1,0 +1,39 @@
+script.
+  let tablGestionarPersonal;
+  $(document).ready( function () {
+    let urlAjaxTablaPersonales = "/admin-personal/datatable";
+    if (typeof empresa_id != 'undefined' && empresa_id.value != "" && !isNaN(empresa_id.value)) {
+      urlAjaxTablaPersonales = "/admin-personal/datatable/" + empresa_id.value;
+    }
+
+    tablGestionarPersonal = $('#tabla-gestionar-personal').DataTable({
+      "language": {"url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"},
+      order: [[ 0, "desc" ]],
+      searchDelay: 500,
+      processing: true,
+      serverSide: true,
+      ajax: urlAjaxTablaPersonales,
+      columns: [
+        { data: 'id', name: 'id', title: "ID", orderable: true, searchable: false, visible: false},
+        { 
+          data: 'nombre', name: 'nombre', title: "#{translation.FORM.NAME}", orderable: true, searchable: true
+        },
+        {
+          data: 'tipo_documento', name: 'tipo_documento', title: "#{translation.FORM.DOCUMENT_TYPE}", orderable: true, searchable: true,
+        },
+        {
+          data: 'nro_documento', name: 'nro_documento', title: "#{translation.FORM.DOCUMENT_NUMBER}", orderable: true, searchable: true,
+        },
+        { 
+          data: 'actions', name: 'actions', title: "Acciones", orderable: false, searchable: false,
+          render: function (data, type, row) {
+            let strRow = JSON.stringify(row);
+            return `
+              <button class="delete btn btn-danger" onClick="eliminarPersonalesAdmin('${row.id}')"><i class="fas fa-trash"></i></button>
+            `;
+          }  
+        }
+      ]
+    });
+  });
+

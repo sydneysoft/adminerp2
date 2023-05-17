@@ -1,0 +1,66 @@
+script.
+  const iconos = [
+    ['fab fa-facebook', 'Facebook'],
+    ['fab fa-twitter', 'Twitter'],
+    ['fab fa-instagram', 'Instagram'],
+    ['fab fa-youtube', 'Youtube'],
+    ['fab fa-linkedin', 'Linkedin'],
+    ['fab fa-whatsapp', 'Whatsapp'],
+    ['fab fa-pinterest', 'Pinterest'],
+    ['fab fa-google-plus', 'Google Plus'],
+    ['fab fa-tumblr', 'Tumblr'],
+    ['fab fa-vimeo', 'Vimeo'],
+    ['fab fa-yelp', 'Yelp'],
+    ['fab fa-tripadvisor', 'Tripadvisor'],
+    ['fab fa-foursquare', 'Foursquare'],
+    ['fab fa-github', 'Github'],
+    ['fab fa-snapchat', 'Snapchat'],
+    ['fab fa-skype', 'Skype'],
+    ['fab fa-slack', 'Slack'],
+    ['fab fa-soundcloud', 'Soundcloud'],
+    ['fab fa-spotify', 'Spotify'],
+    ['fab fa-vine', 'Vine'],
+    ['fab fa-vk', 'Vk'],
+    ['fab fa-weibo', 'Weibo'],
+    ['fab fa-weixin', 'Weixin'],
+    ['fab fa-wordpress', 'Wordpress'],
+    ['fab fa-xing', 'Xing'],
+    ['fab fa-yahoo', 'Yahoo'],
+    ['fab fa-y-combinator', 'Y-combinator'],
+    ['fab fa-500px', '500px'],
+    ['fab fa-amazon', 'Amazon'],
+    ['fab fa-android', 'Android'],
+    ['fab fa-angellist', 'Angellist'],
+    ['fab fa-apple', 'Apple'],
+    ['fab fa-behance', 'Behance'],
+    ['fab fa-behance-square', 'Behance Square'],
+    ['fab fa-bitbucket', 'Bitbucket'],
+    ['fab fa-bitcoin', 'Bitcoin'],
+    ['fab fa-btc', 'Btc'],
+    ['fab fa-buysellads', 'Buysellads'],
+    ['fab fa-cc-amex', 'Cc Amex'],
+    ['fab fa-cc-diners-club', 'Cc Diners Club'],
+    ['fab fa-cc-discover', 'Cc Discover'],
+    ['fab fa-cc-jcb', 'Cc Jcb'],
+    ['fab fa-cc-mastercard', 'Cc Mastercard'],
+  ];
+
+  iconos.forEach((icono) => {
+    const option = document.createElement('option');
+    option.value = icono[0];
+    option.innerHTML = icono[1];
+    icono_select.appendChild(option);
+    icono_select_edit.appendChild(option.cloneNode(true));
+    icono_select_mostrar.appendChild(option.cloneNode(true));
+    //- options += `<option value="${icono[0]}">${icono[1]}</option>`
+  });
+
+  $('#icono').select2({
+    height: 400,
+    templateResult: iconState
+  });
+
+  $('#icono_edit').select2({
+    height: 400,
+    templateResult: iconState
+  });

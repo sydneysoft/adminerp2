@@ -1,0 +1,24 @@
+.modal.fade#editarBannerAdministrador(tabindex="-1" role="dialog")
+  .modal-dialog(role="document")
+    .modal-content
+      .modal-body
+        .row(style="padding:10px;margin-bottom:8px;")
+          .col-md-12
+            .form-group
+              img(id="imagen-data-banner-editar" src="https://www.cuba.travel/images/noimage.png" class="content-img-banner" onClick="handleModalMultimediaEdit()")
+          .col-6
+            .form-group
+              label Url:
+              .controls
+                input#data-id-ventanas(type="hidden")
+                input#urlEditar-ventantas-admin.form-control(type="text")
+          .col-md-6
+            .form-group
+              label Estatus:
+              .controls
+                select#activadoEditar-ventanas-admin.form-control
+                  option(value="1") #{translation.FORM.ACTIVE}
+                  option(value="0") #{translation.FORM.DEACTIVATED}
+          .col-md-12.text-center
+            button.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;",onClick=`updateVentanaAdmin()`) #{translation.UPDAE_DATA}
+            button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}

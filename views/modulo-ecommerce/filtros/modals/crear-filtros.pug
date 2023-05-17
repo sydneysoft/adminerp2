@@ -1,0 +1,36 @@
+.modal.fade#nuevoModalFiltros(tabindex="-1" role="dialog")
+  .modal-dialog(role="document")
+    .modal-content
+      .modal-body
+        .row(style="padding:10px;margin-bottom:8px;")
+          //- if items.marketplace==1
+            .col-md-12.col-12
+              .form-group          
+              h5  #{translation.FORM.BUSINESS}:
+                select#empresaNuevaFiltros.form-control.seleccionar(onChange="cambiarCategoriaPorEmpresaNuevo()")
+                  option(disabled selected value=0)  #{translation.FORM.SELECT_BUSINESS}   
+                  option(value=0)  #{translation.FORM.UNASSIGNED}
+                    each item in items.empresas
+                      option(value=item.id)= item.nombre
+          .col-md-6.col-12
+            .form-group
+              h5 #{translation.FORM.NAME}:
+              .controls
+                input#nombreNuevo-filtros.form-control(type="text")
+          .col-md-6.col-12
+            .form-group
+              h5 #{translation.FORM.CATEGORY}:
+              select#lista-categorias
+              //- .controls
+                if items.marketplace==1
+                  select#categoriaNuevo-filtros.form-control(disabled)
+                else
+                  select#categoriaNuevo-filtros.form-control 
+                    option(value=0 disabled)  #{translation.FORM.SELECT_CATEGORY}
+                    each  categoria in items.categorias
+                      option(value= categoria.id)= categoria.name
+
+
+      .modal-footer
+        button.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;", onClick=`AddGroupFilter(${token})`)  #{translation.FORM.ADD}
+        button.btn.btn-danger(type="buton" data-dismiss="modal") Cerrar

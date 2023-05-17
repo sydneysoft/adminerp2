@@ -1,0 +1,112 @@
+.ajaxLoading{
+    width: 100%;
+    height: 335px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.image-loader{
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
+}
+
+.image-loading-spinner{
+    width: 100%;
+    height: 150px;
+    object-fit: contain;
+}
+
+.btn-warning{
+    color:#fff !important;
+}
+
+.content-img-banner{
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.inputfile {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+.inputfile + label {
+    font-size: 15px;
+    font-weight: 700;
+    color: white;
+    background-color: #101010;
+    display: inline-block;
+    padding:16px;
+}
+
+.inputfile:focus + label,
+.inputfile + label:hover {
+    background-color: #202020;
+}
+
+.inputfile + label {
+	cursor: pointer; /* "hand" cursor */
+}
+
+.inputfile:focus + label {
+	outline: 1px dotted #000;
+	outline: -webkit-focus-ring-color auto 5px;
+}
+
+.toggle{
+    width: 128px !important;
+}
+
+.imagen-data-producto{
+    width: 80%;
+    height: 230px;
+    border-radius: 50%;
+    object-fit:cover;
+}
+
+#nuevoProductoAdmin .modal-body {
+    height:600px;
+    overflow-y: scroll;     /*give auto it will take based in content */
+}
+
+#editarProductoAdmin .modal-body {
+    height:600px;
+    overflow-y: scroll;     /*give auto it will take based in content */
+}
+@media (min-width: 769px)  {
+    #nuevoProductoAdmin .modal-body {
+        height:650px;
+    }
+
+    #editarProductoAdmin .modal-body {
+        height:650px;
+    }
+    
+    .imagen-data-producto{
+        width: 35%;
+        height: 230px;
+        border-radius: 50%;
+    }
+
+    .ajaxLoading{
+        height: 735px;
+    }
+
+    .image-loader{
+        width: 250px;
+        height: 250px;
+    }
+    
+    .image-loading-spinner{
+        width: 100%;
+        height: 350px;
+    } 
+}
+    

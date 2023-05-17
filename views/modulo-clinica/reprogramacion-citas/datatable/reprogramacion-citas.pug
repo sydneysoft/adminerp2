@@ -1,0 +1,149 @@
+script.
+  let tablaReprogramacionCitasMedica;
+  $(document).ready(function () {
+    let urlAjaxTablaReprogramacionCitasMedica = "/admin-reprogramacion-citas-medicas/datatable"
+    if (typeof empresa_id != 'undefined' && !isNaN(empresa_id.value)) {
+      urlAjaxTablaReprogramacionCitasMedica += `/${empresa_id.value}`;
+    }
+    tablaReprogramacionCitasMedica = $("#tabla-reprogramacion-citas-medicas").DataTable({
+      columnDefs: [
+        {
+          orderable: false,
+          className: "select-checkbox",
+          targets: 0,
+        },
+      ],
+      select: {
+        style: "multi",
+        selector: "td:first-child",
+      },
+      dom: "Bfrtip",
+      buttons: ["selectAll", "selectNone"],
+      order: [[1, "asc"]],
+      language: {
+        buttons: {
+          selectAll: '#{translation.FORM.SELECT_EVERYTHING}',
+          selectNone: '#{translation.FORM.ERASE_SELECTION}',
+        },
+        url: "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json",
+        select: {
+          rows: "%d filas seleccionadas",
+        },
+      },
+      responsive: true,
+      searchDelay: 500,
+      processing: true,
+      serverSide: true,
+      ajax: urlAjaxTablaReprogramacionCitasMedica,
+      rowId: 'id',
+      columns: [
+        { 
+          data: 'id', name: 'id', title: 'ID', orderable: false, searchable: false,
+          render: function (data, type, row) {
+            return ``;
+          }
+        },       
+        { 
+          data: 'idUser',
+          name: 'idUser',
+          title: '#{translation.FORM.PATIENT}'
+        },
+        { 
+          data: 'idProfesional', 
+          name: 'idProfesional', 
+          title:  '#{translation.FORM.DOCTOR}'
+        },
+        { 
+          data: 'idSede', 
+          name: 'idSede', 
+          title: '#{translation.FORM.BRANCH}'
+        },
+        {
+          data: 'idEspecialidad',
+          name: 'idEspecialidad',
+          title: '#{translation.FORM.SPECIALTY}',
+          visible: false
+        },  
+        { 
+          data: 'estado', 
+          name: 'estado', 
+          title: '#{translation.FORM.STATUS}',
+          render: function (data, type, row) {
+            console.log(data);
+            if (data == 'cancelada') {
+              return `<span class="badge badge-danger">${data}</span>`
+            } else if (data == 'pendiente') {
+              return `<span class="badge badge-primary">${data}</span>`
+            } else if (data == 'confirmada') {
+              return `<span class="badge badge-secondary">${data}</span>`
+            } else if( data == 'atendida') {
+              return `<span class="badge badge-info">${data}</span>`
+            } else if (data == 'reprogramada') {
+              return `<span class="badge badge-warning">${data}</span>`
+            } else if (data == 'pagado') {
+              return `<span class="badge badge-success">${data}</span>`
+            } else {
+              return `<span class="badge badge-secondary">#{translation.FORM.STATUS}</span>`
+            }
+
+          }
+        },
+        {
+          data: 'tipoCita', name: 'tipoCita', title: '#{translation.FORM.APPOINTMENT_TYPE}',  orderable: false
+        },
+        {
+          data: 'fechaRegistro', name: 'fechaRegistro', title: '#{translation.FORM.REGISTRATION_DATE}', visible: false, orderable: false
+        },
+        { 
+          data: 'fechaCita',
+          name: 'fechaCita',
+          title: '#{translation.FORM.APPOINTMENT_DATE}',
+          render: function (data, type, row) {
+            return moment(data).format('DD/MM/YYYY')
+          }
+        },
+        {
+          data: 'acciones',
+          name: 'acciones',
+          title: '#{translation.ACTIONS}',
+          render: function (data, type, row) {
+            let strRow = JSON.stringify(row);
+            return `
+                <div class="btn-group">
+                    <button class="btn btn-info btn-sm" onclick='mostrarCita(${strRow})'>
+                        <i class="fas fa-eye"></i>
+                    </button>
+                    <a class="btn btn-secondary btn-sm" href="/admin-reprogramacion-citas-medicas/reprogramar/${row.id}">Reprogramar</a>
+                    <button class="btn btn-danger btn-sm" onclick="beforeDeleteItem('/admin-reprogramacion-citas-medicas/citas/${row.id}', ${row.id})">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+              `
+          },
+          orderable: false,
+          searchable: false
+        },
+      ],
+      initComplete: function (settings) {
+        //- clone thead to tfoot
+        $("#tabla-reprogramacion-citas-medicas thead tr").clone().appendTo($("#tabla-reprogramacion-citas-medicas tfoot"));
+      }
+    });
+
+
+    $("#accionesBoton").click(function () {
+      const valorSeleccionado = $("#acciones").val();
+      const selected_rows = tablaReprogramacionCitasMedica
+        .rows({
+          selected: true,
+        })
+        .ids();
+
+      const arraySeleccion = $.makeArray(selected_rows);
+      switch (valorSeleccionado) {
+        case "0":
+          eliminarProductos(arraySeleccion, "citas");
+          break;
+      }
+    });
+  });

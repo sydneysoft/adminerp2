@@ -1,0 +1,87 @@
+extends ../../../extends/menu-superior-admin
+
+block contenido
+  .my-3
+    div
+      button.btn.btn-primary(onclick="window.history.back()") 
+        i.fas.fa-arrow-left
+        span.px-3 #{translation.BACK}
+    h1.text-center.mb-5 
+      | #{translation.EDIT_TV_SHOW}
+    if data
+      .card.card-body 
+        form#editar-programas-forms(method="post" action="/admin-tv/programas")
+          input#idProgramaEditar(value=data.id hidden)
+          .row.g-3 
+            .col-12.mb-3.text-right 
+              button.btn.btn-primary(type="submit") #{translation.SAVE}
+            .col-12.col-md-8
+              label.form-label(for='nombre') #{translation.FORM.TV_SHOW_NAME}
+              input#nombre.form-control(type='text' value=data.nombre required='' placeholder="Nombre del programa" name="nombre")
+              .valid-feedback
+                | #{translation.FORM.NAME}
+
+            .col-12.col-md-4
+              label.form-label(for='numero_temporadas') #{translation.FORM.NUMBER_SEASONS}
+              input#numero_temporadas.form-control(type='number' value=data.num_temporadas required='' placeholder="numero de temporada" name="num_temporadas")
+              .valid-feedback
+                | #{translation.FORM.NUMBER_SEASONS}
+              
+            .col-12.my-3
+            .col-12.col-md-6 
+              label.form-label(for='slogan') #{translation.FORM.SLOGAN}
+              input#slogan.form-control(type='text' value=data.slogan required='' placeholder="Eslogan" name="slogan")
+              .valid-feedback
+                | #{translation.FORM.SLOGAN}
+            .col-12.col-md-6 
+              label.form-label(for='slogan') #{translation.FORM.SHORT_DESCRIPTION}
+              textarea#estracto.form-control(required='' placeholder="Descripcion corta" name="estracto")
+                | #{data.estracto}
+              .valid-feedback
+                | #{translation.FORM.SLOGAN}
+            .col-12.my-3 
+
+            .col-12.col-md-8
+              label.form-label(for='portada') #{translation.FORM.BACKGROUND_PHOTO}
+              input#portada.form-control(type='text' value=data.foto_portada required='' placeholder="Nombre del programa" name="foto_portada")
+              .valid-feedback
+                | #{translation.FORM.BACKGROUND_PHOTO}
+
+            .col-12.col-md-4
+              label.form-label(for='lanzamiento') #{translation.FORM.RELEASE_DATE}
+              input#lanzamiento.form-control(type='text' value=data.fecha_lanzamiento required='' placeholder="Fecha de lanzamiento")
+              .valid-feedback
+                | #{translation.FORM.RELEASE_DATE}
+          
+            .col-12.my-3
+
+            .col-12.col-md-4
+                label.form-label(for='genero') #{translation.FORM.GENRE} 
+                textarea#genero.form-control(name="genero", cols="30", rows="10" placeholder="Generos ejemplo: ciencia ficcion, comedia") #{data.genero}
+            .col-12.col-md-4
+              label.form-label() #{translation.FORM.DIRECTOR} 
+              textarea#director.form-control(name="director", cols="30", rows="10" placeholder="Directores ejemplo: Juan, Sofia") #{data.director}
+            .col-12.col-md-4
+              label.form-label() #{translation.FORM.PRODUCER} 
+              textarea#productor.form-control(name="productor", cols="30", rows="10" placeholder="Productor ejemplo: Elena, Pablo") #{data.productor}
+
+      script 
+        include ./programa.js
+        include ../../../js/modulo-tv/update.js
+      
+      script.
+        const idProgramaEditar = document.getElementById('idProgramaEditar')
+        document.getElementById('editar-programas-forms').addEventListener('submit', (event) => {
+          event.preventDefault()
+          updateItem(`/admin-tv/programas/${idProgramaEditar.value}`, {
+            nombre: nombrePrograma.value,
+            slogan: sloganPrograma.value,
+            estracto: estractoPrograma.value,
+            foto_portada: portadaPrograma.value,
+            num_temporadas: num_temporadas.value,
+            productor: productor.value,
+            genero: genero.value,
+            director: director.value,
+            fecha_lanzamiento: lanzamiento.value
+          })
+        })

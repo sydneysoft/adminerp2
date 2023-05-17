@@ -1,0 +1,16 @@
+.modal.fade#SelectImageFrame(tabindex="-1" role="dialog")
+  .modal-dialog.modal-lg(role="document")
+    .modal-content
+      .modal-body
+        div(class='row' style='padding:8px;')
+          div(class='col-md-12')
+            input#selected-img-data-editar(type="hidden")
+            input#selected-img-data(type="hidden")
+            div#dataRowListMultimedia(class='row m-0 mt-4')
+            div#loadingDataAjax(class='row m-0 mt-4 ajaxLoading')
+              img(class="image-loader" src="https://ceisantagema.com/wp-content/plugins/gallery-by-supsystic/src/GridGallery/Galleries/assets/img/loading.gif")
+            div(style="width:100%;display:flex;justify-content:center;align-items:center")
+              div(id="data-paginate-images" data-take='16')
+      .modal-footer 
+        button.btn.btn-success(disabled id="choice-image-banner" onClick="choiceImgSingle()")="Elegir Imagen" 
+        button.btn.btn-danger(onClicK="handleCancelImagenSelect()")="Cancelar"

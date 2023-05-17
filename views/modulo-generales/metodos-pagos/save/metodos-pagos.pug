@@ -1,0 +1,173 @@
+script.
+  function handlePaymentMethod(val) {
+    let estado = null
+    let api_key = null
+    let token = null
+    let merchant_id = null
+    let nombre = null
+
+    const auxData = {
+      metodo_id: val
+    }
+
+    switch (val) {
+
+      case 1:
+        nombre = "Culqui"
+        estado = document.getElementById("toggle-culqi").checked;
+        api_key = $("#culqi-key").val();
+
+        if (checkIfChangeKeys(1, "api_key", api_key)) {
+          auxData.api_key = api_key
+        }
+        if (checkIfChangeKeys(1, "token", token)) {
+          auxData.token = token
+        }
+        break;
+      case 2:
+        nombre = "MercadoPago"
+        token = $("#mercado-pago-key").val();
+        api_key = $("#mercado-pago-api").val();
+        estado = document.getElementById("toggle-mercado-pago").checked;
+
+        if (checkIfChangeKeys(2, "api_key", api_key)) {
+          auxData.api_key = api_key
+        }
+        if (checkIfChangeKeys(2, "token", token)) {
+          auxData.token = token
+        }
+        break;
+      case 3:
+        nombre = "Payu"
+        api_key = $("#payu-key").val();
+        token = $("#payu-key-login").val();
+        merchant_id = $("#payu-merchant-id").val();
+        estado = document.getElementById("toggle-payu").checked;
+        console.log(checkIfChangeKeys(3, "api_key", api_key));
+        if (checkIfChangeKeys(3, "api_key", api_key)) {
+          auxData.api_key = api_key
+        }
+        if (checkIfChangeKeys(3, "token", token)) {
+          auxData.token = token
+        }
+        break;
+      case 4:
+        nombre = "PagoEfectivo"
+        api_key = $("#pago-efectivo-key").val();
+        token = $("#pago-efectivo-secret-key").val();
+        merchant_id = $("#pago-efectivo-id-comercio").val();
+        estado = document.getElementById("toggle-pago-efectivo").checked;
+        if (checkIfChangeKeys(4, "api_key", api_key)) {
+          auxData.api_key = api_key
+        }
+        if (checkIfChangeKeys(4, "token", token)) {
+          auxData.token = token
+        }
+        break;
+      case 6:
+        nombre = "Paypal"
+        api_key = $("#paypal-key").val();
+        token = $("#SecretPaypal").val();
+        estado = document.getElementById("toggle-paypal").checked;
+        if (checkIfChangeKeys(6, "api_key", api_key)) {
+          auxData.api_key = api_key
+        }
+        if (checkIfChangeKeys(6, "token", token)) {
+          auxData.token = token
+        }
+        console.log(auxData);
+        break;
+      case 7:
+        nombre = "Stripe"
+        api_key = $("#stripe-public-key").val();
+        token = $("#stripe-secret-key").val();
+        estado = document.getElementById("toggle-stripe").checked;
+        if (checkIfChangeKeys(7, "api_key", api_key)) {
+          auxData.api_key = api_key
+        }
+        if (checkIfChangeKeys(7, "token", token)) {
+          auxData.token = token
+        }
+        break;
+      case 8:
+        nombre = "Braintree"
+        api_key = $("#braintree-private-key").val();
+        token = $("#braintree-public-key").val();
+        estado = document.getElementById("toggle-braintree").checked;
+        merchant_id = $("#braintree-merchant-id").val();
+        if (checkIfChangeKeys(8, "api_key", api_key)) {
+          auxData.api_key = api_key
+        }
+        if (checkIfChangeKeys(8, "token", token)) {
+          auxData.token = token
+        }
+        break;
+
+    }
+    estado == true ? estado = "2" : estado = "1"
+    Swal.showLoading();
+    let urlAjaxMetodoPago = "/admin-metodos-pago";
+    if (typeof empresa_id !== "undefined" && !isNaN(empresa_id.value)) {
+      urlAjaxMetodoPago = "/admin-metodos-pago/" + empresa_id.value;
+    }
+    auxData.estado = estado;
+    auxData.merchant_id = merchant_id;
+    auxData.nombre = nombre;
+    
+    $.ajax({
+      method: "POST",
+      url: urlAjaxMetodoPago,
+      dataType: "json",
+      data: auxData,
+      success: function (data) {
+        if (data.ok) {
+          Swal.close();
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            html: "<b>#{translation.ALERTS.CREDENTIALS_SUCCESS_UPDATE}</b>",
+            showConfirmButton: false,
+            timer: 2500,
+          });
+          getPaymentsMethods();
+        } else {
+          Swal.close();
+          Swal.fire({
+            position: "center",
+            icon: "error",
+            title: "#{translation.ALERTS.WRONG}",  
+            showConfirmButton: false,
+            timer: 2500,
+          });
+        }
+      },
+      error: function (e) {
+        Swal.close();
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "#{translation.ALERTS.WRONG}",
+          showConfirmButton: false,
+          timer: 2500,
+        });
+      },
+    });
+  }
+
+  //- Comprueba si se ha cambiado la key de un metodo de pago
+  function checkIfChangeKeys (method, target, key) {
+    let result = false
+    if (dataPayments.length == 0)
+      return true
+    
+    dataPayments.forEach(element => {
+      if (element.metodo_id == method) {
+        if (element[target] != key) {
+          result = true
+        }
+      } else {
+        result = true
+      }
+    });
+    return result;
+  }

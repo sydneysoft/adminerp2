@@ -1,0 +1,17 @@
+extends ../extends/menu-superior-admin
+
+block contenido
+  ul#myTab.nav.nav-tabs(role='tablist')
+    li.nav-item(role="citas")
+      a#home-tab.nav-link.active(href="/admin-roles-permisos") #{translation.ROLES_PERMISSIONS}
+
+  script.
+    const currentPath = window.location.pathname
+    const navLinks = $(".nav .nav-link");
+    $.each(navLinks, function (index, value) {
+      if(currentPath == value.getAttribute('href')) {
+        value.classList.toggle('active')
+      } else {
+        value.classList.remove('active')
+      }
+    });

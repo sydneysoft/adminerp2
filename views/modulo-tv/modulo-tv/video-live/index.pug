@@ -1,0 +1,74 @@
+extends ../layout.pug
+
+append contenido 
+  
+  .border-bottom.border-left.border-right.p-3 
+    .container
+      .row
+        .col-12.my-3
+          button#crearLive.btn.btn-primary.btn-block(data-empresa=data[0].empresa_id) #{translation.SAVE}
+        .col-12 
+          #embedAlert
+        .col-12
+          .row
+            .col-12.col-md-8
+              .form-group 
+                input#idItem(type="text" value=data[0].id hidden readonly)
+            .col-12.col-md-8 
+              .form-group 
+                label.form-label(for="embed") #{translation.HLS} 
+                textarea#embed.form-control(name="hls" style="height:300px") #{data[0].hls}
+            .col-12.col-md-8 
+              .form-group 
+                label.form-label(for="embed") #{translation.FORM.EMBED} 
+                textarea#embed.form-control(name="embed" style="height:300px") #{data[0].embed}
+            .col-12.col-md-4 
+              .form-group.mt-4 
+                .form-check
+                  if data[0].seleccionado == 1
+                    input#seleccionado.form-check-input(type='checkbox' checked="true")
+                  else 
+                    input#seleccionado.form-check-input(type='checkbox')
+                  label.form-check-label(for='seleccionado')
+                    | #{translation.ENABLE}
+    script.
+      const beforeUpdate = (id, empresa_id = 0) => {
+        updateVideo(empresa_id, id);
+      };
+
+      const updateVideo = (empresa_id, id) => {
+        let selected = 0;
+        let src = ''
+        if(seleccionado.checked) {
+          selected = 1;
+        }
+
+        updateItem(`/admin-tv/video-live/${id}`, {
+          recurso: 'embed',
+          embed: embed.value,
+          seleccionado: selected,
+          empresa_id
+        });
+      };
+
+    script 
+      include ../../../js/modulo-tv/update.js
+
+    script.
+      const idItem = document.getElementById('idItem');
+      document.getElementById('crearLive').addEventListener('click', (event) => {
+        console.log(event)
+        const empresa_id = parseInt(event.target.getAttribute('data-empresa'));
+        if(empresa_id && typeof empresa_id == 'number') {
+          beforeUpdate(idItem.value, empresa_id)
+        }
+      });
+
+
+  script.
+    const recurso = document.getElementById('recurso');
+    const embedAlert = document.getElementById('embedAlert');
+    const urlVideo = document.getElementById('url');
+    const embed = document.getElementById('embed');
+    const seleccionado = document.getElementById('seleccionado');
+    const clearForm = () => {};

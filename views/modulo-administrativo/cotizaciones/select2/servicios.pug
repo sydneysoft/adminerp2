@@ -1,0 +1,57 @@
+script.
+
+  let serviciosUrlAjaxSelect2 = "/cotizaciones/clientes/select2";
+  $('#empresa').on('change', (e) => {
+    const empresa = parseInt($('#empresa').val());
+    if (!isNaN(empresa) ) {
+      serviciosUrlAjaxSelect2 = `/cotizaciones/clientes/select2/${empresa}`;
+      initClientesSelect2();
+    }
+
+  });
+
+  initServicioSelect2() {
+    if (empresa_id && empresa_id.value != "") {
+      impuestosUrlAjaxSelect2 = `/cotizaciones/impuestos/select2/${empresa_id.value}`;
+    }
+    $('.servicios').select2({
+      ajax: {
+        url: serviciosUrlAjaxSelect2,
+        dataType: 'json',
+        delay: 500,
+        data: function (params) {
+          return {
+            term: params.term,
+            select: ['id', 'nombre'],
+            page: params.page
+          }
+        },
+        processResults: function (data, params) {
+          return {
+            results: $.map(data.data, (item) => {
+              return {
+                id: item.id,
+                text: item.nombre
+              }
+            })
+          }
+        },
+        cache: true
+      },
+      placeholder: '#{translation.SEARCH}',
+      templateResult: servicioState
+    });
+
+    function servicioState (state) {
+      if (!state.id) {
+        return repo.text;
+      }
+      let $container = $(`
+        <span>${state.text}</span>
+      `)
+
+      return $container;
+    }
+  }
+
+  initServicioSelect2();

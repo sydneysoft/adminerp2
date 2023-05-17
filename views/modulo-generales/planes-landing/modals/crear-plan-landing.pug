@@ -1,0 +1,25 @@
+.modal.fade#guardarPlan(tabindex="-1" role="dialog")
+  .modal-dialog.modal-lg(role="document")
+    .modal-content
+      .modal-body
+        form
+          .row
+            .col-md-12.mb-3
+              label.form-label(for='nombre') #{translation.FORM.NAME}
+              input.form-control(type='text' name='nombre' id='nombre' required)
+            .col-md-12.mb-3
+              label.form-label(for='precio') #{translation.FORM.PRICE}
+              input.form-control(type='number' name='precio' id='precio' step=".01" required)
+
+            .col-md-12.mb-3
+              label.form-label(for='frecuencia_de_pago') #{translation.FORM.PAYMENT_FREQUENCY}
+              select.form-control(name='frecuencia_del_pago' id='frecuencia_del_pago' required)
+                option(value="") --         
+                option(value="MENSUAL") #{translation.FORM.MONTHLY}         
+                option(value="ANUAL") #{translation.FORM.YEARLY}         
+
+
+          .row.mt-3
+
+            .col-md-3
+              button.btn.btn-success(type='submit') #{translation.SAVE}

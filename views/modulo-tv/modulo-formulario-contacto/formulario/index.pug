@@ -1,0 +1,297 @@
+extends ../layout.pug
+
+append contenido
+  .boder-left.border-right.border-bottom.p-3 
+    .container-fluid 
+      .row
+        .col-12.col-md-6
+          .row 
+            .col-12.text-right 
+              button#actualizar.btn.btn-info(type="button") #{translation.UPDATE}
+          .row.mt-3 
+            .col-12 
+              input#itemId(type="hidden" value=data[0].id)
+              .form-group 
+                label(for="titulo") #{translation.FORM.TITLE}
+                input#titulo.form-control(type="text" placeholder=`${translation.FORM.TITLE}` value=data[0].nombre)
+                //- input#titulo.form-control(type="text" value="Texto de ejemplo")
+              .form-group
+                label(for="descripcion") #{translation.FORM.DESCRIPTION}
+                textarea#descripcion.form-control(type="text" placeholder=`${translation.FORM.DESCRIPTION}`) #{data[0].descripcion}
+                //- textarea#descripcion.form-control(type="text") Texto de ejemplo
+              .row 
+                .col-6.col-md-4 
+                  //- checkbox
+                  label.form-check.p-3.border.rounded-lg.d-flex.justify-content-between(for="nombreCheck")
+                    div 
+                      span #{translation.FORM.NAME}
+                    div
+                      input#nombreCheck.form-check-input(type="checkbox")
+                .col-6.col-md-4
+                  //- checkbox
+                  label.form-check.p-3.border.rounded-lg.d-flex.justify-content-between(for="telefonoCheck")
+                    div 
+                      span #{translation.FORM.PHONE}
+                    div
+                      input#telefonoCheck.form-check-input(type="checkbox")
+                .col-6.col-md-4
+                  //- checkbox
+                  label.form-check.p-3.border.rounded-lg.d-flex.justify-content-between(for="companiaCheck")
+                    div 
+                      span #{translation.FORM.COMPANY}
+                    div
+                      input#companiaCheck.form-check-input(type="checkbox")
+                .col-6.col-md-4
+                  //- checkbox
+                  label.form-check.p-3.border.rounded-lg.d-flex.justify-content-between(for="emailCheck")
+                    div 
+                      span #{translation.FORM.EMAIL}
+                    div
+                      input#emailCheck.form-check-input(type="checkbox")
+                .col-6.col-md-4
+                  //- checkbox
+                  label.form-check.p-3.border.rounded-lg.d-flex.justify-content-between(for="mensajeCheck")
+                    div 
+                      span #{translation.FORM.MESSAGE}
+                    div
+                      input#mensajeCheck.form-check-input(type="checkbox")
+                .col-6.col-md-4 
+                  //- checkbox
+                  label.form-check.p-3.border.rounded-lg.d-flex.justify-content-between(for="terminosCheck")
+                    div 
+                      span Cookies y Ter...
+                    div
+                      input#terminosCheck.form-check-input(type="checkbox")
+                .col-12 
+                    label.form-check.p-3.border.rounded-lg.d-flex.justify-content-between(for="mostrarFormulario")
+                      div 
+                        span #{translation.SHOW_FORM}
+                      div
+                        input#mostrarFormulario.form-check-input(type="checkbox" checked=data[0].estado == 1 ? true: null)
+        .col-12.col-md-6
+          .card 
+            .card-body 
+              h1#tituloContacto
+              p#descripcionContacto
+              #formsSelected
+              button.btn.btn-primary #{translation.SAVE}
+
+  script 
+    include ../../../js/modulo-tv/update.js    
+  script.
+    let dataPayload = [
+      {
+        el: 'input',
+        type: 'text',
+        placeholder: '#{translation.FORM.NAME}',
+        name: 'nombre',
+        value: '',
+        estado: false
+      },
+      {
+        el: 'input',
+        type: 'text',
+        placeholder: '#{translation.FORM.PHONE}',
+        name: 'telefono',
+        value: '',
+        estado: false
+      },
+      {
+        el: 'input',
+        type: 'text',
+        placeholder: '#{translation.FORM.COMPANY}',
+        name: 'compania',
+        value: '',
+        estado: false
+      },
+      {
+        el: 'input',
+        type: 'email',
+        placeholder: '#{translation.FORM.EMAIL}',
+        name: 'email',
+        value: '',
+        estado: false
+      },
+      {
+        el: 'textarea',
+        type: 'text',
+        placeholder: '#{translation.FORM.MESSAGE}',
+        name: 'mensaje',
+        value: '#{translation.FORM.ACCEPT_PRIVACY_COOKIE_POLICY}',
+        estado: false
+      },
+      {
+        el: 'input',
+        type: 'checkbox',
+        placeholder: '',
+        name: 'politica',
+        value: '',
+        estado: false
+      }
+    ];
+    const formsSelected = document.getElementById('formsSelected');
+    const nombreCheck = document.getElementById('nombreCheck');
+    const telefonoCheck = document.getElementById('telefonoCheck');
+    const companiaCheck = document.getElementById('companiaCheck');
+    const emailCheck = document.getElementById('emailCheck');
+    const mensajeCheck = document.getElementById('mensajeCheck');
+    const terminosCheck = document.getElementById('terminosCheck');
+    const mostrarFormulario = document.getElementById('mostrarFormulario');
+    const itemId = document.getElementById('itemId');
+
+    let campos = !{data[0].campos}
+
+    addEventListener('DOMContentLoaded', () => {
+      const titulo = document.getElementById('titulo');
+      const descripcion = document.getElementById('descripcion');
+      tituloContacto.innerHTML = titulo.value;
+      descripcionContacto.innerHTML = descripcion.value;
+      titulo.addEventListener('keyup', () => {
+        tituloContacto.innerHTML = titulo.value;
+      });
+      descripcion.addEventListener('keyup', () => {
+        descripcionContacto.innerHTML = descripcion.value;
+      });
+
+      // El formulario guardado
+      if (Array.isArray(campos)) {
+        let formDatabase = campos;
+
+        formDatabase = formDatabase.map((item, index) => {
+          if (item.estado) {
+            switch(item.name) {
+              case 'nombre':
+                nombreCheck.checked = true;
+                break;
+              case 'telefono':
+                telefonoCheck.checked = true;
+                break;
+              case 'compania':
+                companiaCheck.checked = true;
+                break;
+              case 'email':
+                emailCheck.checked = true;
+                break;
+              case 'mensaje':
+                mensajeCheck.checked = true;
+                break;
+              case 'politica':
+                terminosCheck.checked = true;
+                break;
+            }
+          }
+          return item;
+        });
+
+        dataPayload = formDatabase;
+        renderForms();
+      }
+
+      actualizar.addEventListener('click', () => {
+        const data = {
+          nombre: titulo.value,
+          descripcion: descripcion.value,
+          campos: JSON.stringify(dataPayload),
+          estado: false
+        }
+
+        if (mostrarFormulario.checked) {
+          data.estado = 1;
+        } else {
+          data.estado = 0;
+        }
+
+        updateItem(`/admin-formulario-contactos/forms/${itemId.value}`, data)
+
+      });
+    });
+
+    nombreCheck.addEventListener('change', () => {
+      if (nombreCheck.checked) {
+        dataPayload[0].estado = true;
+      } else {
+        dataPayload[0].estado = false;
+      }
+      renderForms();
+    });
+    telefonoCheck.addEventListener('change', () => {
+      if (telefonoCheck.checked) {
+        dataPayload[1].estado = true;
+      } else {
+        dataPayload[1].estado = false;
+      }
+      renderForms();
+    });
+    companiaCheck.addEventListener('change', () => {
+      if (companiaCheck.checked) {
+        dataPayload[2].estado = true;
+      } else {
+        dataPayload[2].estado = false;
+      }
+      renderForms();
+    });
+    emailCheck.addEventListener('change', () => {
+      if (emailCheck.checked) {
+        dataPayload[3].estado = true;
+      } else {
+        dataPayload[3].estado = false;
+      }
+      renderForms();
+    });
+    mensajeCheck.addEventListener('change', () => {
+      if (mensajeCheck.checked) {
+        dataPayload[4].estado = true;
+      } else {
+        dataPayload[4].estado = false;
+      }
+      renderForms();
+    });
+    terminosCheck.addEventListener('change', () => {
+      if (terminosCheck.checked) {
+        dataPayload[5].estado = true;
+      } else {
+        dataPayload[5].estado = false;
+      }
+      renderForms();
+    });
+
+    function renderForms() {
+      formsSelected.innerHTML = '';
+      dataPayload.forEach((data) => {
+        if (data.estado) {
+          if (data.type == 'checkbox') {
+            const div = document.createElement('div');
+            div.classList.add('form-check');
+            const input = document.createElement(data.el);
+            input.classList.add('form-check-input');
+            input.setAttribute('type', data.type);
+            input.setAttribute('name', data.name);
+            input.setAttribute('value', data.value);
+            input.setAttribute('disabled', true)
+            const label = document.createElement('label');
+            label.classList.add('form-check-label');
+            label.setAttribute('for', data.name);
+            label.innerHTML = data.placeholder;
+            div.appendChild(input);
+            div.appendChild(label);
+            formsSelected.appendChild(div);
+            return;
+          }
+          const div = document.createElement('div');
+          div.classList.add('form-group');
+          const label = document.createElement('label');
+          label.setAttribute('for', data.name);
+          label.innerHTML = data.placeholder;
+          const input = document.createElement(data.el);
+          input.classList.add('form-control');
+          input.setAttribute('type', data.type);
+          input.setAttribute('placeholder', data.placeholder);
+          input.setAttribute('name', data.name);
+          input.setAttribute('value', data.value);
+          input.setAttribute('readonly','')
+          div.appendChild(label);
+          div.appendChild(input);
+          formsSelected.appendChild(div);
+        }
+      });
+    }

@@ -1,0 +1,64 @@
+script.
+  let tablaTratamientos;
+  addEventListener("DOMContentLoaded", () => {
+    let urlAjaxTratamientos = "/admin-tratamientos/datatable";
+    if (typeof empresa_id != 'undefined' && empresa_id && !isNaN(empresa_id.value)) {
+      urlAjaxTratamientos += `/${empresa_id.value}`;
+    }
+    tablaTratamientos = $("#tabla-tratamientos").DataTable({
+      //- "language": {"url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"},
+      responsive: true,
+      searchDelay: 500,
+      processing: true,
+      serverSide: true,
+      ajax: urlAjaxTratamientos,
+      columns: [
+        { data: 'id', name: 'id', title: 'ID', orderable: false, searchable: true, visible: false},
+        { 
+          data: 'imagen', name: 'imagen', title: '#{translation.FORM.IMAGE}',
+          render: function (data, type, row) {
+            try {
+              new URL(row.imagen)
+              return `<img src="${data}" style="width:50px;height:50px;object-fit:cover">`;
+            } catch (e) {
+              return `<img src="/images/image-default.jpg" style="width:50px;height:50px;object-fit:cover">`;
+            }
+          },
+          orderable: false, searchable: false,
+        },
+        {
+          data: 'nombre', name: 'nombre', title: "#{translation.FORM.NAME}", orderable: true, searchable: true,
+        },
+        {
+          data: 'descripcion_corta', name: 'descripcion_corta', title: "#{translation.FORM.SHORT_DESCRIPTION}", orderable: true, searchable: true,
+        },
+        {
+          data: 'activado', name: 'activado', title: "#{translation.FORM.STATUS}",
+          render: function (data, type, row) {
+            console.log(data == "0")
+            return (data == "0" ? '#{translation.FORM.DISABLED}': '#{translation.FORM.ENABLED}');
+          },
+          orderable: true, searchable: true,
+        },
+        {
+          data: 'acciones', name: 'acciones', title: '#{translation.FORM.ACTIONS}',
+          render: function (data, type, row) {
+            let strRow = JSON.stringify(row);
+            return `
+              <button class="btn btn-warning" style="margin-right:7px;" type="button" onclick='handleEditTratamiento(${strRow})'>
+                <i class="fas fa-edit"></i>
+              </button>
+              <button class="delete btn btn-danger" onclick="eliminarTratamientoAdmin('${row.id}')">
+                <i class="fas fa-trash"></i>
+              </button>
+            `;
+          },
+           orderable: false, searchable: false
+        }
+      ],
+      initComplete: function (settings) {
+        //- clone thead to tfoot
+        $("#tabla-tratamientos thead tr").clone().appendTo($("#tabla-tratamientos tfoot"));
+      }
+    });
+  })

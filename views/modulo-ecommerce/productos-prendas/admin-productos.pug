@@ -1,0 +1,144 @@
+extends ../../extends/menu-superior-admin
+block contenido
+    .row
+        //- input#token(type="text" hiden value=token)
+        .col-md-6.col-6.text-grey(style="margin-bottom:10px;")
+            h1.display-1
+                strong   #{translation.ORDERS} 
+                       
+
+        .col-md-6.col-6.text-right 
+            button.btn.btn-success( type="button" onClick="openNewHandleModalProduct()")
+                i.fas.fa-plus
+                    span  #{translation.PRODUCT} 
+
+        if items.marketplace==true       
+            .col-md-4.col-6
+                div(style="display: inline-flex")
+                    .form-group
+                        label.font-weight-bold.datev-label #{translation.BUSINESS} 
+                            select#filtroEmpresa.form-control.seleccionar(onChange="asignarFiltros()")
+                                option(value=null data-id="") #{translation.SELECT} 
+                                option(value="-" data-id=0) #{translation.UNASGINED} 
+                                    each empresa in items.empresas
+                                        option(value= empresa.id data-id= empresa_id)= empresa.nombre
+       
+       
+        .col-md-4.col-6
+            div(style="display: inline-flex")
+                .form-group
+                    label.font-weight-bold.datev-label #{translation.CATEGORY} 
+                        if items.marketplace==false  
+                            select#filtroCategoria.form-control 
+                                option(value=0) #{translation.SELECT} 
+                                    each categoria in items.categorias
+                                        option(value= categoria.name)= categoria.name
+    
+                        else
+                            select#filtroCategoria.form-control(disabled)
+                                 option(value=0) #{translation.SELECT} 
+                                                        
+
+        .col-md-4.col-6
+            div(style="display: inline-flex")
+                .form-group
+                    label.font-weight-bold.datev-label #{translation.FORM.STORAGE} 
+                      if items.marketplace==false 
+                        select#filtroAlmacen.form-control
+                            option(value=0) #{translation.FORM.SELECT_STORAGE} 
+                                each almacen in items.almacenes
+                                    option(value= almacen.id)= almacen.nombre
+                      else
+                         select#filtroAlmacen.form-control(disabled)
+                               option(value=0) #{translation.FORM.SELECT} 
+        .col-md-4.col-12(style="max-width: 400px")
+            label.font-weight-bold.datev-label #{translation.MASSIVE_ACTIONS} 
+                .row
+                    .col-7
+                        select#acciones.form-control
+                            option(value=null) #{translation.FORM.SELECT} 
+                            option(value="0") #{translation.DELETE} 
+                            option(value="1") #{translation.PUBLISH} 
+                            option(value="2") #{translation.SAVE_AS_DRAFT} 
+                    .col-2
+                        button#accionesBoton(class="btn btn-success-2") #{translation.CONFIRM}  
+
+        div.table-responsive
+            table#tabla-productos.table.table-bordered
+                thead.thead-dark
+                    tr.table-head
+                        th.text-center  
+                        th.text-center #{translation.FORM.IMAGE} 
+                        th.text-left #{translation.FORM.NAME} 
+                        th.text-center #{translation.FORM.STOCK} 
+                        th.text-center #{translation.FORM.CATEGORY} 
+                        th.text-center #{translation.FORM.PRICE} 
+                        th.text-center #{translation.FORM.DISCOUNT_PRICE} 
+                        th.text-center #{translation.FORM.DATE}  
+                        th.text-center #{translation.FORM.STATE}  
+                        th.text-center #{translation.FORM.STORAGE} 
+                        if items.marketplace==true 
+                            th.text-center  #{translation.BUSINESS}   
+                        th.text-center  #{translation.ACTION} 
+                tbody
+
+                    each data in items.productos
+                        tr(id= data.id)
+                            td.text-center
+                            td.text-center
+                                img(src=data.imagen,style="width:50px;height:50px;object-fit:cover")
+                            td.text-left(style="width:30%")=data.name
+                            td.text-center=data.stock
+                            td.text-center=items.categorias.filter(x => x.id === data.categoria).map(filteredObj => filteredObj.name) 
+                            td.text-center="$ "+data.precio 
+                            td.text-center=(data.oferta_porcentaje>1)?"$ " + Math.round(data.precio*(((100-data.oferta_porcentaje)/100)),2):"-" 
+                            td.text-left=new Date(data.z_timestamp_create).toJSON().slice(0,10)
+                            td.text-center=data.activado == 1?  "Activo": "Desactivado" 
+                            td.text-center=items.stock.filter((item) => item.producto_id == data.id).map(i=>i.almacen_id)
+                            if items.marketplace==true 
+                                 td.text-center=data.empresa_id==0?"-":items.empresas.filter((item) => item.empresa_id == data.empresa_id).map(i=>i.nombre)
+                            
+                            td.text-center
+                              div(style="display:inline-flex")
+                                button.btn.btn-clonar( onclick="clonarProducto('"+data.id+"')")
+                                    i.fa.fa-copy
+                                button.btn.btn-info(type="button" style="margin-right:8px" onClick=`handleImageGalery(${data.galeriaFotos},${data.id})`)
+                                    i.fa.fa-camera 
+                                button.btn.btn-warning(onclick="handleProductoAdmin('"+data.id+"')")
+                                    i.fa.fa-edit
+                                button.btn.btn-danger(type="button" onclick="deleteProductosAdminPanel('"+data.id+"')" style="margin-left:8px")
+                                    i.fa.fa-trash  
+         
+
+    include ./modals/crear-producto.pug
+    include ./modals/editar-producto.pug
+    include ./modals/galeria-editar-producto.pug
+    include ./styles/producto.pug
+    script
+        include /js/toast.sweet.js
+    include ./../../modulo-generales/galeria-fotos/seleccion-multiple-galeria/admin-galeria-modal-multiple
+ 
+    script 
+        include ./additionalProducts.js   
+ 
+    script.
+
+ 
+        var oldFiltersArray=[];
+        var deleteFiltrosArray=[];
+        var typeUpdate=1;
+        var typeAction=1;
+        CKEDITOR.replace('ckeditorarea');
+        CKEDITOR.replace('ckeditorareaEditar');
+        //Manejar Imagen Principal del Producto
+       
+        var typeOperation="1"; 
+       
+       
+       
+       
+        
+
+   
+
+       

@@ -1,0 +1,357 @@
+ 
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap");
+h1,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--White);
+}
+
+a,
+a:hover,
+a:focus,
+a:active {
+  text-decoration: none;
+  outline: none;
+}
+
+img {
+  width: 100%;
+}
+
+.carousel-caption {
+
+  top: 150px;
+  bottom: 0px
+}
+
+div#slider-home .carousel-item::before {
+  background: #0000005c;
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+#slider-home h3 {
+  text-transform: capitalize;
+  font-size: 50px;
+}
+
+#slider-home p {
+  font-size: 23px;
+}
+
+#slider-home .btn {
+  background: var(--Red);
+  color: var(--White);
+  padding: 12px 30px !important;
+  font-size: 18px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 10px;
+  margin-bottom: 30px;
+}
+body {
+ 
+  font-family: "Roboto", sans-serif;
+ 
+}
+#slider-home .btn:hover {
+  background: var(--White);
+  color: var(--Red);
+}
+
+.carousel-inner {
+
+  max-height: 500px;
+}
+
+.carousel-caption {
+
+  text-align: left;
+  max-width: 600px;
+}
+
+@media (max-width:768px) {
+  .header-top {
+    display: none !important
+  }
+
+  .carousel {
+    position: relative;
+
+    overflow: hidden;
+  }
+
+  .carousel-inner,
+  .carousel-item {
+
+    height: 400px;
+
+  }
+
+  img {
+    height: 100%;
+  }
+
+  .carousel-caption {
+    top: auto;
+
+  }
+}
+
+/*Membresias */
+
+section.pricing-section {
+  width: 100%;
+  height: 100vh;
+}
+
+section.pricing-section .pricing {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+
+
+section.pricing-section .pricing .pricing-header p {
+  font-weight: 300;
+}
+
+
+
+section.pricing-section .pricing .pricing-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 25px;
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+section.pricing-section .pricing .pricing-body .pricing-body-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  row-gap: 15px;
+}
+
+section.pricing-section .pricing .pricing-body .pricing-body-header h2 {
+  font-weight: 500;
+}
+
+section.pricing-section .pricing .pricing-body .pricing-body-header .pricing-checkbox {
+  display: flex;
+  column-gap: 10px;
+  align-items: center;
+}
+
+section.pricing-section .pricing .pricing-body .pricing-body-header .pricing-checkbox span {
+  font-size: 14px;
+  color: var(--Black)
+}
+
+section.pricing-section .pricing .pricing-body .pricing-body-header .pricing-checkbox>div {
+  width: 45px;
+  background: var(--Red);
+  height: 24px;
+  border-radius: 15px;
+  position: relative;
+  cursor: pointer;
+} 
+
+section.pricing-section .pricing .pricing-body .pricing-body-header .pricing-checkbox>div div {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  background-color: #fff;
+  top: 50%;
+  left: 3px;
+  transform: translateY(-50%);
+  border-radius: 50%;
+} 
+section.pricing-section .pricing .pricing-body .pricing-body-header .pricing-checkbox>div.anually div {
+  left: unset;
+  right: 3px;
+}
+
+section.pricing-section .pricing .pricing-body .pricing-body-plans>div {
+  display: none;
+}
+
+section.pricing-section .pricing .pricing-body .pricing-body-plans>div>div {
+  display: flex;
+  column-gap: 17px;
+}
+
+section.pricing-section .pricing .pricing-body .pricing-body-plans>div>div .card {
+  background-color:rgba(0, 0, 0, .03);
+  padding: 25px;
+  border-radius: 8px;
+  width: 270px;
+  position: relative;
+}
+.card-header {
+
+  background-color: rgba(0, 0, 0, .00);}
+section.pricing-section .pricing .pricing-body .pricing-body-plans>div>div .card .card-header {
+  display: flex;
+  flex-direction: column;
+  row-gap: 8px;
+  justify-content: center;
+  align-items: center;
+}
+
+section.pricing-section .pricing .pricing-body .pricing-body-plans>div>div .card .card-header .card-title {
+  font-weight: 400;
+  font-size: 14px;
+}
+
+section.pricing-section .pricing .pricing-body .pricing-body-plans>div>div .card .card-header .card-price {
+  font-size: 26px;
+}
+
+section.pricing-section .pricing .pricing-body .pricing-body-plans>div>div .card .card-header .card-users input {
+  width: 100%;
+  background: transparent;
+  border: 1px solid #35393e;
+  padding: 10px;
+  color: #b5b6b8;
+  text-align: center;
+  outline: none;
+}
+
+section.pricing-section .pricing .pricing-body .pricing-body-plans>div>div .card .card-header .card-users span {
+  font-size: 12px;
+  color:var(--Red)
+}
+
+section.pricing-section .pricing .pricing-body .pricing-body-plans>div>div .card .card-body {
+  margin-top: 30px;
+}
+
+section.pricing-section .pricing .pricing-body .pricing-body-plans>div>div .card .card-body ul {
+  list-style-type: none;
+  margin-left: 20px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 8px;
+}
+
+section.pricing-section .pricing .pricing-body .pricing-body-plans>div>div .card .card-body ul li {
+  color: var(--Black);
+  position: relative;
+  font-size: 15px;
+}
+
+section.pricing-section .pricing .pricing-body .pricing-body-plans>div>div .card .card-body ul li::before {
+  content: "•";
+  color:   var(--Red);
+  font-weight: bold;
+  width: 20px;
+  margin-left: -18px;
+  font-size: 25px;
+  position: absolute;
+  top: 40%;
+  transform: translateY(-50%);
+}
+
+section.pricing-section .pricing .pricing-body .pricing-body-plans>div>div .card .card-footer {
+  margin-top: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+section.pricing-section .pricing .pricing-body .pricing-body-plans>div>div .card .card-footer button {
+  border: 1px solid var(--Red);
+  padding: 10px 25px;
+  cursor: pointer;
+}
+
+section.pricing-section .pricing .pricing-body .pricing-body-plans>div>div .card .card-footer button:hover {
+  background:var(--Black);
+  color:var(--White)
+}
+
+section.pricing-section .pricing .pricing-body .pricing-body-plans>div>div .card:nth-of-type(2) .card-footer button {
+  background:var(--Red);
+  color: #fff;
+}
+
+section.pricing-section .pricing .pricing-body .pricing-body-plans>div>div .card:nth-of-type(2) .card-footer button:hover {
+  background:var(--Black);
+  color: #b5b6b8;
+}
+
+section.pricing-section .pricing .pricing-body .pricing-body-plans>div.active {
+  display: block;
+}
+.card-footer {
+
+  background-color: #fcfcfc;
+  border-top: 0;}
+@media screen and (max-width: 900px) {
+  #slider-home h3 {
+      font-size: 40px
+    }
+  section.pricing-section {
+    width: 100%;
+    height: auto;
+  }
+
+  section.pricing-section .pricing .pricing-header {
+    width: 60%;
+    padding: 20px 50px;
+  }
+
+  section.pricing-section .pricing .pricing-body {
+    margin-top: 780px;
+    padding-bottom: 50px;
+  }
+
+  section.pricing-section .pricing .pricing-body .pricing-body-plans>div>div {
+    flex-direction: column;
+    row-gap: 17px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+#slider-home h3 {
+  font-size:30px
+}
+section.pricing-section .pricing .pricing-body .pricing-body-header h2 {
+ 
+  font-size: 20px;
+}
+  section.pricing-section .pricing .pricing-header {
+    width: 100%;
+    padding: 20px 50px;
+    position: unset;
+    top: unset;
+    left: unset;
+    transform: unset;
+  }
+
+  section.pricing-section .pricing .pricing-header p {
+    font-size: 14px;
+  }
+
+  section.pricing-section .pricing .pricing-header h3 {
+    font-size: 18px;
+  }
+
+  section.pricing-section .pricing .pricing-body {
+    margin-top: 50px;
+    position: unset;
+    top: unset;
+    left: unset;
+    transform: unset;
+  }
+}

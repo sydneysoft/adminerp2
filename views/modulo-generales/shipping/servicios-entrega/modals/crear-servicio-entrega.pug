@@ -1,0 +1,22 @@
+.modal#nuevoServicioAdministrador(tabindex="-1" role="dialog")
+  .modal-dialog(role="document")
+    .modal-content
+      .modal-body
+        .row(style="padding:10px;margin-bottom:8px;")
+          .col-md-6.col-12
+            .form-group
+              label #{translation.FORM.NAME}:
+              .controls
+                input#nombreNuevo-servicio.form-control(type="text")
+          .col-md-6.col-12
+            .form-group
+              label #{translation.FORM.PHONE}:
+              .controls
+                input#telefonoNuevo-servicio.form-control(type="text")
+          .col-md-12.col-12
+            label #{translation.FORM.SHIPPING_METHODS}
+            .controls
+              span#metodosNuevo-servicio-modulos
+      .modal-footer
+        button.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;",onClick=`AgregarServicioAdmin()`) #{translation.ADD}
+        button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}

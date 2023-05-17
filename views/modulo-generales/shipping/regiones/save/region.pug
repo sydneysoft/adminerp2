@@ -1,0 +1,57 @@
+script.
+  const AgregarRegionAdmin = () => {
+      let nombreRegion = $("#nuevo-nombre-regiones").val();
+      let ciudad = $("#nuevo-ciudad-regiones").val();
+
+      let pais = $("#nuevo-pais-regiones").val();
+      if (nombreRegion && pais) {
+          const auxData =  {
+              nombre: nombreRegion,
+              states: ciudad,
+              pais: pais,
+          }
+          if (typeof empresa_id !== "undefined" && !isNaN(empresa_id.value)) {
+              auxData.empresa_id = empresa_id.value;
+          }
+          Swal.showLoading();
+          $.ajax({
+              method: "POST",
+              url: "/admin-shipping/regiones",
+              dataType: "json",
+              data: auxData,
+              success: function (data) {
+                  if (data.status == "success") {
+                      Swal.close();
+                      window.location.reload(true);
+                  } else {
+                      Swal.close();
+                      Swal.fire({
+                          position: "center",
+                          icon: "error",
+                          title: "#{translation.ALERTS.WRONG}",
+                          showConfirmButton: false,
+                          timer: 2500,
+                      });
+                  }
+              },
+              error: function (e) {
+                  Swal.close();
+                  Swal.fire({
+                      position: "center",
+                      icon: "error",
+                      title: "#{translation.ALERTS.WRONG}",
+                      showConfirmButton: false,
+                      timer: 2500,
+                  });
+              },
+          });
+      } else {
+          Swal.fire({
+              position: "center",
+              icon: "info",
+              html: "<b>#{translation.ALERTS.MUST_COMPLETE_DATA_REQUIRED_ADD_SERVICES}</b>", 
+              showConfirmButton: false,
+              timer: 2500,
+          });
+      }
+  };

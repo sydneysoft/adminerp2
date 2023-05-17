@@ -1,0 +1,55 @@
+script.
+  const select2ModuloCategorias = $("#lista-modulo-categorias, #lista-modulo-categorias-editar").select2({
+    ajax: {
+      url: function () {
+        return urlSelect2ModuloCategoria ()
+      },
+      dataType: 'json',
+      delay: 500,
+      data: function (params) {
+        return {
+          term: params.term,
+          select: ['id', 'nombre'],
+          page: params.page
+        }
+      },
+      processResults: function (data, params) {
+        return {
+          results: $.map(data.data, (item) => {
+            return {
+              id: item.id,
+              text: item.nombre,
+            }
+          })
+        }
+      },
+      cache: true
+    },
+    placeholder: 'Search',
+    templateResult: moduloCategoriasState,
+    allowClear: true
+  })
+  //- .on("select2:open", () => {
+  //-   $(".select2-results:not(:has(a))").append(
+  //-     '<a href="#" style="padding: 6px;height: 20px;display: inline-table;" data-toggle="modal" data-target="#nuevoInsumoModal" onclick="closeModuloCategoriasSelect2()">#{translation.ADD_INGREDIENTS}</a>'
+  //-   );
+  //- }); 
+
+  function moduloCategoriasState (state) {
+    if (!state.id) {
+      return state.text;
+    }
+    let $container = $(`
+      <span><strong>${state.id}</strong> | ${state.text} </span>
+    `);
+
+    return $container;
+  }
+
+  function closeModuloCategoriasSelect2 () {
+    $("#lista-modulo-categorias, #lista-modulo-categorias-editar").select2('close');
+  }
+
+  function urlSelect2ModuloCategoria () {
+    return "/admin-modulos/categorias/select2"
+  }

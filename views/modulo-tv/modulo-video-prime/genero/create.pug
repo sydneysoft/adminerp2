@@ -1,0 +1,41 @@
+extends ../../extends/menu-superior-admin
+
+block contenido
+  .my-3
+    div
+      a.btn.btn-primary(href="/admin-video-prime/generos") 
+        i.fas.fa-arrow-left
+        span.px-3 #{translation.BACK}
+
+    h1.text-center.mb-5 
+      | #{translation.FORM.CREATE_MOVIE_GENRE}
+  .card.card-body 
+    form#genero-forms
+      input#idGeneroEditar(value='' hidden)
+      .row.g-3 
+        .col-12.mb-3.text-right 
+            button.btn.btn-primary(type="submit") #{translation.SAVE}
+        .col-12 
+          label.form-label(for='nombre') #{translation.FORM.GENRE_NAME}
+          input#nombre.form-control(type='text' value='' required='' placeholder #{translation.FORM.GENRE_NAME} name="nombre")
+          .valid-feedback
+            | #{translation.FORM.NAME}
+        .col-12
+          label.form-label(for='estracto') #{translation.FORM.SHORT_DESCRIPTION}
+          textarea#estracto.form-control(required placeholder #{translation.FORM.SHORT_DESCRIPTION} name="estracto")
+            |
+          .valid-feedback
+            | #{translation.FORM.NAME}
+
+  script 
+    include ./genero.js
+    include ../../../js/modulo-tv/save.js
+  
+  script.
+    document.getElementById('genero-forms').addEventListener('submit', (event) => {
+      event.preventDefault();
+      save('/admin-video-prime/generos', {
+        nombre: nombreGenero.value,
+        estracto: estractoGenero.value
+      })
+    })

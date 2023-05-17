@@ -1,0 +1,87 @@
+script.
+
+  //Actualizar Datos de la tienda
+  function updateDataTienda () {
+    let idTienda = $("#dataIdTienda").val();
+    let nombreTienda = $("#nombreEditar-tienda-admin").val();
+    let telefonoTienda = $("#telefonoEditar-tienda-admin").val();
+    let celularTienda = $("#celularEditar-tienda-admin").val();
+
+    let correoTienda = $("#correoEditar-tienda-admin").val();
+    let estadoTienda = $("#statusEditar-tienda-admin").val();
+
+    //- let horarioTienda = $("#horarioEditar-tienda-admin").val();
+    let horarioTienda = $("#lista-horarios-editar option:selected").text();
+    let direccionTienda = $("#direccionEditar-tienda-admin").val();
+    let urlFotoPrincipal = $("#imagen-data-banner-editar").attr("src");
+
+    if (!nombreTienda) {
+      toastSweet('Error', '#{translation.ALERTS.NO_STORE_NAME}', 'error');
+      return;
+    }
+
+    if (!correoTienda) {
+      toastSweet('Error', '#{translation.ALERTS.NO_STORE_EMAIL}', 'error');
+      return;
+    }
+    if (
+      nombreTienda &&
+      correoTienda
+    ) {
+      Swal.showLoading();
+      const auxData = {
+        id: idTienda,
+        nombre: nombreTienda,
+        telefono: telefonoTienda,
+        celular: celularTienda,
+        correo: correoTienda,
+        estado: estadoTienda,
+        direccion: direccionTienda,
+        imagen: urlFotoPrincipal,
+      }
+      if (typeof empresa_id != 'undefined' && empresa_id && !isNaN(empresa_id.value)) {
+        auxData.empresa_id = empresa_id.value
+      }
+      if (horarioTienda != null && horarioTienda != "") {
+        auxData.horario = horarioTienda;
+      }
+      $.ajax({
+        method: "PUT",
+        url: "/admin-sedes/" + idTienda,
+        dataType: "json",
+        data: auxData,
+        success: function (data) {
+          Swal.close();
+          if (data.ok) {
+            toastSweet('Success', '#{translation.ALERTS.CAMPUS_UPDATED}', 'success');
+            tablaSedes.ajax.reload();
+            $("#editarTiendaAdmin").modal('hide');
+          } else {
+            toastSweet('Error', '#{translation.ALERTS.REGISTER_CANNOT_UPDATE}', 'error');
+          }
+        },
+        error: function () {
+          Swal.close();
+          toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+        },
+      });
+    } else {
+      toastSweet('Error', '#{translation.ALERTS.REQUIRED_FIELDS_STORE}', 'error');
+    }
+  }
+
+  function handleTiendaAdmin(data) {
+    $("#nombreEditar-tienda-admin").val(data.nombre);
+    $("#telefonoEditar-tienda-admin").val(data.telefono);
+    $("#celularEditar-tienda-admin").val(data.celular);
+    $("#correoEditar-tienda-admin").val(data.correo);
+    $("#statusEditar-tienda-admin").val(data.estado);
+    //- $("#horarioEditar-tienda-admin").val(data.horario);
+    $("#lista-horarios-editar").select2("val", "");
+    $("#lista-horarios-editar").val("").trigger('change')
+    $("#lista-horarios-editar ~ .select2 .select2-selection__placeholder").html(data.horario);
+    $("#direccionEditar-tienda-admin").val(data.direccion);
+    $("#imagen-data-banner-editar").attr("src", data.imagen);
+    $("#dataIdTienda").val(data.id);
+    $("#editarTiendaAdmin").modal("show");
+  }

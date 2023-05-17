@@ -1,0 +1,219 @@
+extends ../../extends/menu-superior-admin
+block contenido
+    .row
+        .col-md-6.col-6.text-grey(style="margin-bottom:10px;")
+            h1.display-1
+                strong #{translation.CLOTHES}  
+                     span.light= items.prendas.length
+ 
+        .col-md-6.col-6.text-right 
+            button.btn.btn-success(type="button" onClick="openNewHandleModalProduct()")
+                i.fas.fa-plus
+                    span #{translation.CLOTHES} 
+
+        if items.marketplace==true
+            .col-md-4.col-6
+                div(style="display: inline-flex")
+                    .form-group
+                        label.font-weight-bold.datev-label #{translation.BUSINESS} 
+                            select#filtroEmpresa.form-control.seleccionar(onChange="asignarFiltros()")
+                                option(value="-" data-id="") #{translation.SELECT} 
+                                option(value="-" data-id="0") #{translation.UNASIGNED} 
+                                    each empresa in items.empresas
+                                        option(value= empresa.nombre data-id=empresa.id)= empresa.nombre
+       
+        .col-md-4.col-6
+            div(style="display: inline-flex")
+                .form-group
+                    label.font-weight-bold.datev-label #{translation.CATEGORY} 
+                        if items.marketplace==false
+                            select#filtroCategoria.form-control 
+                                option(value=0) #{translation.SELECT_CATEGORY} 
+                                each subcategoria in items.subcategorias
+                                        option(value= subcategoria.nombre)= subcategoria.nombre
+                        
+                        else
+                            //- disabled
+                             select#filtroCategoria.form-control() 
+                                   option(value=0)  -- Seleccione --  
+
+        .col-md-4.col-6  
+            div(style="display: inline-flex")
+                .form-group
+                    label.font-weight-bold.datev-label  #{translation.STORAGE} 
+                    
+                        if items.marketplace==false
+                                select#filtroAlmacen.form-control
+                                    option(value=0) #{translation.SELECT_STORAGE}
+                                        each almacen in items.almacenes
+                                            option(value= almacen.id)= almacen.nombre
+                        else
+                               select#filtroAlmacen.form-control(disabled)
+                                    option(value=0) #{translation.SELECT} 
+
+
+        .col-md-3.col-6
+            label.font-weight-bold.datev-label #{translation.MASSIVE_ACTIONS} 
+                     .row
+                        .col-7
+                            select#acciones.form-control
+                                    option(value=null)  #{translation.SELECT}
+                                    option(value="0")  #{translation.DELETE}
+                                    option(value="1")  #{translation.PUBLISH}
+                                    option(value="2")  #{translation.SAVE_AS_DRAFT}
+                        .col-2
+                            button#accionesBoton(class="btn btn-success-2")  #{translation.CONFIRM} 
+
+        .col-12(style="margin-top: 20px;")
+            div.table-responsive
+                table#tabla-productos.table.table-bordered
+                    thead.thead-dark
+                        tr.table-head
+                            th.text-center  
+                            th.text-center #{translation.IMAGE}
+                            th.text-center #{translation.NAME}
+                            th.text-center #{translation.STOCK}
+                            th.text-center #{translation.CATEGORY}
+                            th.text-center #{translation.PRICE}
+                            th.text-center #{translation.DISCOUNT_PRICE}
+                            th.text-center #{translation.DATE} 
+                            th.text-center #{translation.STATE} 
+                            th.text-center #{translation.STORAGES} 
+                            if items.marketplace==true
+                                th.text-center #{translation.BUSINESS}  
+                            th.text-center #{translation.ACTION}
+                    tbody
+                        each prenda in items.prendas
+                            tr(id= prenda.id)
+                                td.text-center
+                                td.text-center
+                                    img(src=prenda.imagen,style="width:50px;height:50px;object-fit:cover")
+                                td.text-center=prenda.name
+                                td.text-center=prenda.stock
+                                td.text-center=items.subcategorias.filter(x => x.id === prenda.subcategoria).map(filteredObj => filteredObj.nombre) 
+                                td.text-center="$ "+prenda.precio
+                                td.text-center=(prenda.oferta_porcentaje>1)?"$ " + Math.round(prenda.precio*(((100-prenda.oferta_porcentaje)/100)),2):"-"
+                                td.text-left=new Date(prenda.z_timestamp_create).toJSON().slice(0,10)
+                                td.text-center=prenda.activado == 1?  "Activo": "Desactivado" 
+                                td.text-center=items.stock.filter((item) => item.producto_id == prenda.id).map(i=>i.almacen_id)
+                                if items.marketplace==true
+                                      td.text-center=prenda.empresa_id==0?"-":items.empresas.filter((item) => item.empresa_id == prenda.empresa_id).map(i=>i.nombre)
+                            
+                              
+                                td.text-center
+                                    div(style="display:inline-flex")
+                                        button.btn.btn-clonar( onclick="clonarProducto('"+prenda.id+"')")
+                                            i.fa.fa-copy
+                                        button.btn.btn-info(type="button" style="margin-right:8px" onClick=`handleImageGalery(${prenda.galeriaFotos},${prenda.id})`)
+                                             i.fa.fa-camera 
+                                        button.btn.btn-warning(onclick="handleProductoAdmin('"+prenda.id+"')")
+                                            i.fa.fa-edit
+                                        button.btn.btn-danger(type="button" onclick="deleteProductosAdminPanel('"+prenda.id+"')" style="margin-left:8px")
+                                            i.fa.fa-trash  
+ 
+    include ./modals/crear-prenda.pug
+    include ./modals/editar-prenda.pug
+    include ./modals/galeria-editar-prenda.pug
+
+
+        
+    include ./styles/prendas.pug
+    script
+        include /js/toast.sweet.js
+    
+    include /modulo-generales/galeria-fotos/seleccion-multiple-galeria/admin-galeria-modal-multiple.pug
+    
+    script 
+        include ./additionalProducts.js
+        include ./additionalClothes.js    
+    
+    script.
+ 
+        var oldFiltersArray=[];
+        var deleteFiltrosArray=[];
+        var typeUpdate=1;
+        var typeAction=1;
+        CKEDITOR.replace('ckeditorarea');
+        CKEDITOR.replace('ckeditorareaEditar');
+        var typeOperation="1"; 
+
+        handleChangeCategoria()
+        $(document).ready(function () {
+
+            const inputElmEditar = document.querySelector(
+                "input[name=tags-regular-tallas-editar]"
+            );
+            const inputElmNuevo = document.querySelector(
+                "input[name=tags-regular-tallas-nuevo]"
+            );
+            const inputElmNuevoCol = document.querySelector(
+                "input[name=tags-regular-colores-nuevo]"
+            );
+            const inputElmEditarCol = document.querySelector(
+                "input[name=tags-regular-colores-editar]"
+            );
+
+            const allInputs = [
+                {
+                    name: "tagify1",
+                    field: inputElmEditar,
+                    list: ["S", "M", "L", "XL", "XXL"],
+                    default: ["S", "M", "L"],
+                },
+                {
+                    name: "tagify2",
+                    field: inputElmNuevo,
+                    list: ["S", "M", "L", "XL", "XXL"],
+                    default: ["S", "M", "L"],
+                },
+                {
+                    name: "tagify3",
+                    field: inputElmNuevoCol,
+                    list: ["Blanco", "Negro", "Amarillo", "Rosado", "Gris", "Celeste"],
+                    default: ["Blanco", "Negro"],
+                },
+                {
+                    name: "tagify4",
+                    field: inputElmEditarCol,
+                    list: ["Blanco", "Negro", "Amarillo", "Rosado", "Gris", "Celeste"],
+                    default: ["Blanco", "Negro"],
+                },
+            ];
+
+            allInputs.forEach((item) => {
+                let tagify = new Tagify(item.field, {
+                    whitelist: item.list,
+                    tagTextProp: "name",
+                    editTags: {
+                        clicks: 2,
+                    },
+                    transformTag: (tagData, originalData) => {
+                        tagData.title = tagData.value;
+                    },
+                    keepInvalidTags: true,
+                    dropdown: {
+                        enabled: 0,
+                        sortby: "startsWith",
+                    },
+                    templates: {
+                        dropdownItemNoMatch: function (data) {
+                            return '<div class='${this.settings.classNames.dropdownItem}' value="noMatch" tabindex="0" role="option">' #{translation.NO_SUGGESTIONS_FOR}: <strong>${data.value}</strong>
+                                                            </div>`;
+                        },
+                    },
+                });
+                tagify.on('edit:updated', ({ detail: { tagify } }) => {
+                    tagify.DOM.input.focus()
+                });
+
+                setTimeout(() => {
+                    tagify.loadOriginalValues(item.default)
+
+                }, 500);
+
+
+            });
+        });
+
+ 
+       

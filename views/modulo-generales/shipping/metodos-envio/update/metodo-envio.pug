@@ -1,0 +1,68 @@
+script.
+  //Manejar datos de Método de Envío
+  const handleEditMetodo = (data) => {
+    $("#idEditarMetodo").val(data.id);
+    $("#nombreEditarMetodo").val(data.nombre);
+    $("#estadoEditarMetodo").val(data.estado);
+    $("#editarMetodoAdministrador").modal("show");
+  };
+
+  //Actualizar Método de Envío
+  const ActualizarMetodoEnvio = () => {
+    let id = $("#idEditarMetodo").val();
+    let nombre = $("#nombreEditarMetodo").val();
+    let estado = $("#estadoEditarMetodo").val();
+
+    const auxData = {
+      nombre: nombre,
+      activado: estado,
+    }
+
+    if (typeof empresa_id != 'undefined' && !isNaN(empresa_id.value)) {
+      auxData.empresa_id = empresa_id.value
+    }
+
+    if (id && nombre && estado) {
+      Swal.showLoading();
+      $.ajax({
+        method: "PUT",
+        url: "/admin-shipping/metodos-envio/" + id,
+        dataType: "json",
+        data: auxData,
+        success: function (data) {
+          if (data.status === "success") {
+            $("#editarMetodoAdministrador").modal("hide");
+            Swal.close();
+            window.location.reload(true);
+          } else {
+            Swal.close();
+            Swal.fire({
+              position: "center",
+              icon: "error",
+              title: "#{translation.ALERTS.DELIVERY_METHOD_COULD_NOT_BE_ADDED}",
+              showConfirmButton: false,
+              timer: 2500,
+            });
+          }
+        },
+        error: function () {
+          Swal.close();
+          Swal.fire({
+            position: "center",
+            icon: "error",
+            title: "#{translation.ALERTS.WRONG}",
+            showConfirmButton: false,
+            timer: 2500,
+          });
+        },
+      });
+    } else {
+      Swal.fire({
+        position: "center",
+        icon: "info",
+        html: "<b>#{translation.ALERTS.MUST_COMPLETE_DATA_TO_UPDATE_DELIVERY_SERVICE}</b>", 
+        showConfirmButton: false,
+        timer: 2500,
+      });
+    }
+  };

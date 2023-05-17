@@ -1,0 +1,60 @@
+script.
+  const select2PagoPersonal = $("#lista-pago-personal, #lista-pago-personal-editar").select2({
+    ajax: {
+      url: function () {
+        return urlSelect2PagoPersonal()
+      },
+      dataType: 'json',
+      delay: 500,
+      data: function (params) {
+        return {
+          term: params.term,
+          select: ['id', 'nombre', 'nro_documento'],
+          page: params.page
+        }
+      },
+      processResults: function (data, params) {
+        return {
+          results: $.map(data.data, (item) => {
+            return {
+              id: item.id,
+              text: item.nombre,
+              nro_documento: item.nro_documento
+            }
+          })
+        }
+      },
+      cache: true
+    },
+    placeholder: 'Search',
+    templateResult: pagoPersonalState,
+    allowClear: true
+  })
+  .on("select2:open", () => {
+    $(".select2-results:not(:has(a))").append(
+      '<a href="#" style="padding: 6px;height: 20px;display: inline-table;" data-toggle="modal" data-target="#nuevoPersonalModal" onclick="closePagoPersonalSelect2()">Agregar pago a personal</a>'
+    );
+  }); //- No se debe crear
+
+  function pagoPersonalState (state) {
+    if (!state.id) {
+      return state.text;
+    }
+    let $container = $(`
+      <span><strong>${state.id}</strong> | ${state.text} | ${state.nro_documento}</span>
+    `);
+
+    return $container;
+  }
+
+  function closePagoPersonalSelect2 () {
+    $("#lista-pago-personal, #lista-pago-personal-editar").select2('close');
+  }
+
+  function urlSelect2PagoPersonal () {
+    if (typeof empresa_id !== 'undefined' && empresa_id && !isNaN(empresa_id.value)) {
+      return `/admin-pago-personal/select2/${empresa_id.value}`
+    } else {
+      return "/admin-pago-personal/select2"
+    }
+  }

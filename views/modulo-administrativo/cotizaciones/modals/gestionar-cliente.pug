@@ -1,0 +1,33 @@
+.modal.fade#gestionarCliente(tabindex="-1" role="dialog" )
+  .modal-dialog.modal-lg(role="document")
+
+    .modal-content
+      form#agregarClienteModal
+        .modal-header 
+          .row 
+            .col-12
+              h5.strong(style="font-size:1rem;") Crear nuevo cliente
+
+        .modal-body
+          .col-12
+            if activo_marketplace===1
+              .form-group
+              label.form-label(style="display:block") Empresa   
+                select#empresaCliente.form-control.seleccionar(onChange="seleccionaProductoEditar()")
+            else 
+              input#empresaCliente.text-center.form-control(type="text" style="display:none" value=`${token}`)
+            .form-group
+              label Nombre
+                .controls
+                  input#nombreCliente.text-center.form-control(type="text" minlength="3")
+
+            .form-group
+              label Email
+                .controls
+                  input#emailCliente.text-center.form-control(type="email")
+
+        .modal-footer      
+          button.btn.btn-danger(type="buton" data-dismiss="modal") Cerrar
+          button.btn.btn-success.nuevo(type="submit" style="margin-left:7px;margin-right:7px;" id="add-customer-modal-btn") Guardar
+          div.error_message 
+

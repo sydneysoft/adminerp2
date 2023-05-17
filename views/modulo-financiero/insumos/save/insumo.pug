@@ -1,0 +1,39 @@
+script.
+  const guardar_insumo = document.getElementById("guardarInsumo");
+  guardar_insumo.addEventListener("click", (event) => {
+    const nombre = document.getElementById("nombre").value;
+    const data = {
+      insumo: nombre
+    };
+
+    if (typeof empresa_id != 'undefined' && empresa_id && !isNaN(empresa_id.value)) {
+      data.empresa_id = empresa_id.value;
+    }
+
+    if (nombre != "") {
+      $.ajax({
+        url: "/admin-insumos",
+        type: "POST",
+        data: data,
+        success: function (data) {
+          if (data.ok) {
+            if (typeof tablaInsumos != 'undefined' && tablaInsumos) {
+              tablaInsumos.ajax.reload();
+            }
+            if (typeof tablaGestionarInsumos != 'undefined' && tablaGestionarInsumos) {
+              tablaGestionarInsumos.ajax.reload();
+            }
+            toastSweet('Exito', "#{translation.ALERTS.CREATED}", 'success');
+            $("#nuevoInsumoModal").modal("hide");
+          } else {
+            toastSweet('Error', "#{translation.ALERTS.WRONG}", 'error');
+          }
+        },
+        error: function (data) {
+          toastSweet('Error', "#{translation.ALERTS.WRONG}", 'error');
+        }
+      });
+    } else {
+      toastSweet('Error', "#{translation.ALERTS.REQUIRED_FIELDS}", 'error');
+    }
+  });

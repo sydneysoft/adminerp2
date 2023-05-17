@@ -1,0 +1,111 @@
+script.
+  const openInsumos = () => {
+    $("#gestionar").modal("show");
+  };
+  const openInsumosAgregar = () => {
+    $("#gestionarAgregar").modal("show");
+  };
+  const openNewPayment = () => {
+    $("#nuevo").modal("show");
+  };
+
+  const handleEditarPagoProveedores = async (data) => {
+    $("#lista-insumos-editar ~ .select2 .select2-selection__placeholder").html(data.insumo);
+    $("#cuitEditar").val(data.cuit);
+    $("#montoEditar").val(data.monto);
+    $("#editar").modal("show").attr("data-id", data.id);
+
+  };
+
+  //- $(document).ready(function () {
+  //-   $('#empresaEditar')[0].setAttribute("onchange", "seleccionaInsumos(1)");
+
+  //- })
+
+  const seleccionaInsumos = async (val) => {
+
+    let valorEmpresa;
+    let valorInsumo
+
+    if (val) {
+      valorEmpresa = $("#empresaEditar")
+      valorInsumo = $("#insumoEditar")
+    } else {
+      valorEmpresa = $("#nuevaEmpresa")
+      valorInsumo = $('.agregarInsumo')
+
+    }
+
+    //- const empresa_id = valorEmpresa.select2().val();
+
+
+    $.ajax({
+      method: "GET",
+      url: `/admin-insumos/${empresa_id}`,
+      dataType: "json",
+
+      success: function (data) {
+
+        if (data.ok == true) {
+          valorInsumo.append(
+            '<option option(value = "otros")>+ AGREGAR</option>'
+
+          );
+          valorInsumo.empty();
+          for (i = 0; i < data.result.length; i++) {
+
+            valorInsumo.append('<option value="' + data.result[i].insumo + '">' + data.result[i].insumo + '</option>');
+          }
+          valorInsumo.attr("disabled", false);
+
+        } else {
+          valorInsumo.append(
+
+            '<option option(value = "otros")>+ AGREGAR</option>' +
+            '<option value="">Sin resultados</option>'
+          );
+          valorInsumo.attr("disabled", false);
+        }
+      },
+      error: function (e) {
+        Swal.close();
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: '#{translation.ALERTS.WRONG}',
+          showConfirmButton: false,
+          timer: 2500,
+        });
+      },
+    })
+
+  }
+
+  $(document).ready(function () {
+
+    $("#accionesBoton").click(function () {
+      const valorSeleccionado = $("#acciones").val();
+      const selected_rows = tablaPagoProveedores
+        .rows({
+          selected: true,
+        })
+        .ids();
+
+      const arraySeleccion = $.makeArray(selected_rows);
+
+      switch (valorSeleccionado) {
+        case "0":
+          eliminarProductos(arraySeleccion, "pago_proveedores");
+          break;
+      }
+    });
+
+    $("#nuevoInsumo").change(function () {
+      if ($(this).val() !== "otros") {
+        $("#nuevoMaterial").hide();
+      } else {
+        $("#nuevoMaterial").show();
+      }
+    });
+
+  });

@@ -1,0 +1,120 @@
+.row.mb-3.align-items-end
+  .col-8
+    span Favicon 
+    br
+    .btn-group
+      label.btn.btn-info.m-0(for="preFavicon") #{translation.FORM.UPLOAD}
+        i.fas.fa-upload.ml-2
+      button#deGaleria.btn.btn-primary(type="button" onclick="getFaviconPagedGaleria(0)") #{translation.FROM_GALLERY}
+  .col-4
+    input#preFavicon.form-control-file(type="file" name="" value="" hidden)
+    input#favicon(type="text" hidden )
+    #showFavicon
+    
+.modal.fade.justify-content-center.align-items-center(tabindex="-1" role="dialog" id="modalFavicon" style="height: 100vh;overflow-y: scroll;")
+  .modal-dialog.modal-lg
+    .modal-content.modalContent(style="height: 100%;")
+      .modal-header 
+        .row(style="margin:0;")
+          .col-md-12.text-center
+            h3(style="margin:0px 0;") #{translation.GALLERY}
+
+      .modal-body.borderBottom
+        #dataFavicon.row
+        
+      .modal-footer(style="padding:8px;")
+        .row(style="margin:0;")
+          .col-md-12.text-right
+            button.btn.btn-danger(type="buton" onclick="$('#modalFavicon').modal('hide');") #{translation.CLOSE}
+
+script.
+
+
+  const preFavicon = document.getElementById('preFavicon');
+  const favicon = document.getElementById('favicon');
+  const showFavicon = document.getElementById('showFavicon');
+  const deGaleria = document.getElementById('deGaleria');
+
+  preFavicon.addEventListener('change', async (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    // test icon extension
+    const extension = file.name.split('.').pop();
+    if (extension !== 'ico') {
+      Swal.fire({
+        toast: false,
+        position: 'top-end',
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Solo se permiten archivos .ico',
+        showConfirmButton: false,
+        timer: 2000
+      });
+      preFavicon.value = '';
+      return;
+    }
+    reader.onload = (event) => {
+      showFavicon.innerHTML = `<img src="${event.target.result}" class="img-fluid" alt="Responsive image">`;
+    };
+    reader.readAsDataURL(file);
+    let dataForms = new FormData();
+    dataForms.append('multimedia', file);
+    Swal.showLoading();
+    $.ajax({
+      url: '/admin-galeria',
+      type: 'POST',
+      data: dataForms,
+      contentType: false,
+      processData: false,
+      success: (data) => {
+        Swal.close();
+        if (data.status == 'success') {
+          console.log(data);
+          favicon.value = data.images[0].url;
+        }
+      },
+      error: (error) => {
+        console.log(error);
+      }
+    })
+  });
+
+  const getFaviconPagedGaleria = async (dataPage) => {
+    $("#dataFavicon").empty();
+    $("#dataFavicon").hide();
+    $("#loadingDataAjax").show();
+    try {
+      let url = "/admin-galeria/selectImages/" + dataPage;
+      let data = null;
+      let head = { "Content-Type": "application/json" };
+      const dataFilesUpload = await axios.get(url, data, head);
+      if (dataFilesUpload.data) {
+        for (let i = 0; dataFilesUpload.data.length > i; i++) {
+          if (dataFilesUpload.data[i].tipo == 'ico') {
+            $("#dataFavicon").append(
+              '<div id="mediaPhoto' +
+              dataFilesUpload.data[i].id +
+              '" class="col-6 col-md-3 mb-4 text-center">' +
+              '<div onclick="' +
+              'insertarFavicon(\'' + dataFilesUpload.data[i].url + '\')' +
+              '" class="selectImg position-relative"><img class="image-item-galeria-photo" src="' +
+              dataFilesUpload.data[i].url +
+              '"/></div>' +
+              "</div>"
+            );
+          }
+        }
+        $("#loadingDataAjax").hide();
+        $("#dataFavicon").show();
+        $('#modalFavicon').modal('show');
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  function insertarFavicon (url) {
+    favicon.value = url;
+    showFavicon.innerHTML = `<img src="${url}" class="img-fluid" alt="Responsive image">`;
+    $('#modalFavicon').modal('hide');
+  }

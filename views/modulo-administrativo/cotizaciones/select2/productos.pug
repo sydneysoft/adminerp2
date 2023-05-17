@@ -1,0 +1,39 @@
+script.
+  $('#empresa').select2({
+    ajax: {
+      url: "/cotizaciones/productos/select2",
+      dataType: 'json',
+      delay: 500,
+      data: function (params) {
+        return {
+          term: params.term,
+          select: ['id', 'nombre'],
+          page: params.page
+        }
+      },
+      processResults: function (data, params) {
+        return {
+          results: $.map(data.data, (item) => {
+            return {
+              id: item.id,
+              text: item.nombre
+            }
+          })
+        }
+      },
+      cache: true
+    },
+    placeholder: '#{translation.SEARCH}',
+    templateResult: productoState
+  });
+
+  function productoState (state) {
+    if (!state.id) {
+      return state.text;
+    }
+    let $container = $(`
+      <span>${state.text}</span>
+    `)
+
+    return $container;
+  }

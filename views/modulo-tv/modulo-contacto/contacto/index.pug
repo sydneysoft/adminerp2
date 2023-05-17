@@ -1,0 +1,170 @@
+extends ../layout.pug
+
+append contenido 
+  .border-bottom.border-left.border-right.rounded-bottom.p-3
+    .my-3 
+      a.btn.btn-primary.btn-lg.btn-block(type='button' href="/admin-contactos/contacto/crear") #{translation.CREATE_CONTACT}
+      .my-3.table-responsive   
+        table#dataTable.table.rounded-lg.overflow-hidden
+          thead.thead-dark
+            tr
+              th(scope='col') ID
+              th(scope='col') Nombre
+              th(scope='col') Dirección
+              th(scope='col') Correo
+              th(scope='col') Telefono
+              th(scope='col') Horarios
+              th(scope='col') Actions
+          tbody
+            if Array.isArray(data) && data.length > 0
+              each item in data 
+                tr
+                  th(scope='row') #{item.id}
+                  td #{item.nombre}
+                  td #{item.direccion}
+                  td #{item.correo}
+                  td #{item.telefono}
+                  td #{item.horario_id} 
+                  td #{item.horario_id}
+      script.
+        let tablaContacto;
+        $(document).ready( function () {
+          tablaContacto = $('#dataTable').DataTable({
+            fnCreatedRow: function (nRow, aData, iDataIndex) {
+              $(nRow).attr('id', `delete${aData.ID}`);
+            },
+            columns: [
+              {
+                data: 'id',
+                name: 'id',
+                title: "ID",
+                orderable: false,
+                searchable: false
+              },
+              {
+                data: 'nombre',
+                name: 'nombre',
+                title: #{translation.FORM.NAME},
+                orderable: true,
+                searchable: true
+              },
+              {
+                data: 'direccion',
+                name: 'direccion',
+                title: #{translation.FORM.ADDRESS},
+                orderable: true,
+                searchable: true
+              },
+              {
+                data: 'correo',
+                name: 'correo',
+                title: #{translation.FORM.EMAIL},
+                orderable: true,
+                searchable: true
+              },
+              {
+                data: 'telefono',
+                name: 'telefono',
+                title: #{translation.FORM.PHONE},
+                orderable: true,
+                searchable: true
+              },
+              {
+                data: 'horario_id',
+                name: 'horario_id',
+                title: #{translation.FORM.SCHEDULES},
+                orderable: false,
+                searchable: false,
+                render: function (data, type, row) {
+                  return `
+                    <div class="d-flex flex-wrap">
+                      ${horariosParse(data)}
+                    </div>
+                  `
+                }
+              },
+              { 
+                data: 'actions',
+                name: 'actions',
+                title: #{translation.FORM.ACTIONS},
+                orderable: false,
+                searchable: false,
+                render: function (data, type, row) {
+                   return `
+                    <div class="btn-group" role="group" aria-label="Actions group">
+                      <a class="btn btn-primary" type="button" href="/admin-contactos/contacto/editar/${row.id}">
+                        <i class="fas fa-pen" aria-hidden="true"></i>
+                      </a>
+                      <a class="btn btn-info" type="button" href="/admin-contactos/contacto/${row.id}">
+                        <i class="fas fa-eye"></i>
+                      </a>
+                      <a class="btn btn-danger" type="button" onClick="beforeDeleteItem('/admin-contactos/contactos/${row.id}', deleteItemSuccess)">
+                        <i class="fas fa-trash" aria-hidden="true"></i>
+                      </a>
+                    </div>
+                  `
+                }
+              }
+            ]
+          });
+        });
+        function deleteContactoSuccess (data) {
+          if (data.target) {
+            tablaContacto.row(`#${data.target}`).remove().draw();
+          }
+        }
+
+  script 
+    include ../../../js/modulo-tv/delete.js
+  script.
+    function horariosParse (str) {
+      const horarios = JSON.parse(str);
+      if (Array.isArray(horarios) && horarios.length > 0) {
+        let horariosParsed = ''
+        horarios.forEach((horario,j) => {
+          let auxHorario = horario.text.split(' ');
+          auxHorario = auxHorario.map((item, index) => {
+            switch (item) {
+              case 'lunes':
+                return 'Mon'
+              case 'martes':
+                return 'Tue'
+              case 'miercoles':
+                return 'Wed'
+              case 'jueves':
+                return 'Thu'
+              case 'viernes':
+                return 'Fri'
+              case 'sabado':
+                return 'Sat'
+              case 'domingo':
+                return 'Sun'
+              case 'a':
+                return '-'
+              case 'de':
+                return ','
+              default:
+                return item
+            }
+          });
+          auxHorario = auxHorario.join(' ').replace(' ,', ',');
+          if (j == 1) {
+            horariosParsed += `<span class="col-12 mt-1 badge badge-primary" style="max-width: 150px">${horarios.length - (j)} mores...</span>`;
+            return
+          }
+          if (j > 0) return;
+          horariosParsed += `
+            <span class="col-12 mt-1 badge badge-primary" style="max-width: 150px">${auxHorario}</span>
+          `
+        })
+        return horariosParsed
+      } else {
+        return `
+          <span class="badge badge-danger">`#{translation.NO_SCHEDULES}`</span`>
+        `
+      }
+    }
+
+    function deleteItemSuccess(data) {
+      tablaDatos.row(`#${data.target}`).remove().draw();
+    }

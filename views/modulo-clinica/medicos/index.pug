@@ -1,0 +1,349 @@
+extends ./layout.pug
+
+append contenido
+  .container-fluid
+    .row.justify-content-end
+      if empresa_id
+        include /mixins/btn/back.pug
+        input#empresa_id(type="text" value=empresa_id hidden)
+        .col-md-6.col-6
+          +btn-back()
+      .col-md-6.col-6.text-right 
+        button#nuevoMedico.btn.btn-primary(role="button") #{translation.CREATE}
+          i.fas.fa-plus.ml-3
+
+    .row.mt-3
+      .col-md-4.col-6(style="max-width: 400px")
+        label.font-weight-bold.datev-label #{translation.MASSIVE_ACTIONS}
+          .row
+            .col-md-8.col-12
+              select#acciones.form-control
+                option(value=null) #{translation.SELECT}
+                option(value="0") #{translation.DELETE}
+            .col-md-4.col-12
+              button#accionesBoton(class="btn btn-success-2") #{translation.CONFIRM}
+    
+    .row.mt-3
+      .col-12 
+        div.table-responsive 
+          table#tabla-medicos.w-100.table
+            thead.thead-dark
+            tbody 
+            tfoot 
+
+  include ./modals/crear-medico.pug
+  include ./modals/editar-medico.pug
+
+
+  script
+    include /js/modulo-tv/delete.js
+  
+  script.
+    //- const nombre = document.getElementById('nombre');
+    let especialidades_server = [];
+    const primer_nombre = document.getElementById('first_name');
+    const segundo_nombre = document.getElementById('middle_name');
+    const surnames = document.getElementById('surnames');
+
+    const especialidad = document.getElementById('especialidad');
+    const numero_documento = document.getElementById('numero_documento');
+    const tipo_documento = document.getElementById('tipo_documento');
+    const celular = document.getElementById('celular');
+    const correo = document.getElementById('correo');
+    const tiempo_cita = document.getElementById('tiempo_cita');
+    const cv = document.getElementById('cv');
+
+
+    //- const nombreEditar = document.getElementById('nombreEditar');
+    const primer_nombreEditar = document.getElementById('first_nameEditar');
+    const segundo_nombreEditar = document.getElementById('middle_nameEditar');
+    const surnamesEditar = document.getElementById('surnamesEditar');
+    const especialidadEditar = document.getElementById('especialidadEditar');
+    const numero_documentoEditar = document.getElementById('numero_documentoEditar');
+    const tipo_documentoEditar = document.getElementById('tipo_documentoEditar');
+    const celularEditar = document.getElementById('celularEditar');
+    const correoEditar = document.getElementById('correoEditar');
+    const idEditar = document.getElementById('idEditar');
+    const tiempo_citaEditar = document.getElementById('tiempo_citaEditar');
+
+    const empresa_id = document.getElementById('empresa_id');
+    const show_horarios = document.getElementById('show_horarios');
+    const show_horarios_editar = document.getElementById('show_horarios_editar');
+
+    let horarios = []
+    const dia_de = document.getElementById('dia_de');
+    const dia_a = document.getElementById('dia_a');
+    const hora_de = document.getElementById('hora_de');
+    const hora_a = document.getElementById('hora_a');
+
+
+    let horarios_editar = []
+    const dia_de_editar = document.getElementById('dia_de_editar');
+    const dia_a_editar = document.getElementById('dia_a_editar');
+    const hora_de_editar = document.getElementById('hora_de_editar');
+    const hora_a_editar = document.getElementById('hora_a_editar');
+
+    const upload_cv = document.getElementById('upload_cv');
+    const subir_archivo = document.getElementById('subir_archivo');
+
+    const upload_cvEditar = document.getElementById('upload_cvEditar');
+    const subir_archivoEditar = document.getElementById('subir_archivoEditar');
+    const showLinkEditar = document.getElementById('showLinkEditar');
+
+    const linkCv = document.getElementById('linkCv');
+    const showLink = document.getElementById('showLink');
+  
+  include ./save/medico.pug
+  include ./update/medico.pug
+  include ./delete/medico.pug
+  script.
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.localStorage.getItem('cv')) {
+        cv.value = window.localStorage.getItem('cv');
+        let urlCv = '\\' + cv.value;
+        linkCv.href = urlCv;
+        linkCv.setAttribute('aria-disabled', false);
+        showLink.classList.remove('disabled');
+      }
+    });
+
+    function agregar_horario () {
+      let horario = {
+        dia_de: dia_de.value,
+        dia_a: dia_a.value,
+        hora_de: hora_de.value,
+        hora_a: hora_a.value,
+        identificador: generate_identificador()
+      };
+
+      horarios.push(horario);
+      loop_horarios();
+    }
+
+    function agregar_horario_editar () {
+      let horario = {
+        dia_de: dia_de_editar.value,
+        dia_a: dia_a_editar.value,
+        hora_de: hora_de_editar.value,
+        hora_a: hora_a_editar.value,
+        identificador: generate_identificador()
+      };
+
+      horarios_editar.push(horario);
+      loop_horarios_editar();
+    }
+
+    function eliminar_horario (identificador) {
+      let index = horarios.findIndex((horario) => horario.identificador === identificador);
+      horarios.splice(index, 1);
+      loop_horarios();
+    }
+
+    function eliminar_horario_editar (identificador) {
+      let index = horarios_editar.findIndex((horario) => horario.identificador === identificador);
+      horarios_editar.splice(index, 1);
+      loop_horarios_editar();
+    }
+
+    function generate_identificador () {
+      let aux = Math.random().toString(36);
+      return aux.replace('0.','');
+    }
+
+    function loop_horarios () {
+      show_horarios.innerHTML = '';
+      if (Array.isArray(horarios) && horarios.length > 0) {
+        let horarios_html = '';
+        horarios.forEach((horario) => {
+          horarios_html += `
+            <div id="delete${horario.identificador}" class="alert alert-info alert-dismissible fade show mt-1">
+              <span class="text-capitalize">#{translation.FROM} ${horario.dia_de} #{translation.TO} ${horario.dia_a} / ${horario.hora_de} ${horario.hora_a}</span>
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="eliminar_horario('${horario.identificador}')">
+                <span aria-hidden="true">×</span>
+            </div>
+          `;
+        });
+        show_horarios.innerHTML = horarios_html;
+      }
+    }
+
+    function loop_horarios_editar () {
+      show_horarios_editar.innerHTML = '';
+      if (Array.isArray(horarios_editar) && horarios_editar.length > 0) {
+        let horarios_html = '';
+        horarios_editar.forEach((horario) => {
+          horarios_html += `
+            <div id="delete${horario.identificador}" class="alert alert-info alert-dismissible fade show mt-1">
+              <span class="text-capitalize">#{translation.FROM} ${horario.dia_de} #{translation.TO} ${horario.dia_a} / ${horario.hora_de} ${horario.hora_a}</span>
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="eliminar_horario_editar('${horario.identificador}')">
+                <span aria-hidden="true">×</span>
+            </div>
+          `;
+        });
+        show_horarios_editar.innerHTML = horarios_html;
+      }
+    }
+
+    document.getElementById('agregar_horario').addEventListener('click', function () {
+      if(dia_de.value != '' && dia_a.value != '' && hora_de.value != '' && hora_a.value != '') {
+        agregar_horario();
+      } else {  
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'error',
+          title: 'Oops...',
+          text: '#{translation.ALERTS.SCHEDULE_ERROR}',
+          timer: 2000
+        });
+      }
+    });
+
+    document.getElementById('agregar_horario_editar').addEventListener('click', function () {
+      if (dia_de_editar.value != '' && dia_a_editar.value != '' && hora_de_editar.value != '' && hora_a_editar.value != '') {
+        agregar_horario_editar();
+      } else {
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'error',
+          title: 'Oops...',
+          text: '#{translation.ALERTS.SCHEDULE_ERROR}',
+          timer: 2000
+        });
+      }
+    });
+
+    subir_archivo.addEventListener('change', (event) => {
+      const file = subir_archivo.files[0];
+      showLink.innerHTML = file.name;
+    });
+
+    subir_archivoEditar.addEventListener('change', (event) => {
+      const file = subir_archivoEditar.files[0];
+      showLinkEditar.innerHTML = file.name;
+    });
+
+    upload_cv.addEventListener('click', (event) => {
+      //- const file = event.target.files[0];
+      if (subir_archivo.files.length == 0) {
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'error',
+          title: 'Oops...',
+          text: '#{translation.ALERTS.CV_ERROR}',
+          timer: 2000
+        });
+        return;
+      }
+      const file = subir_archivo.files[0];
+      //- const reader = new FileReader();
+      // Extension images match and test
+      //- const extension = file.name.split('.').pop();
+      let dataForms = new FormData();
+      dataForms.append('cv', file);                      
+      console.log(dataForms);
+      let params = '';
+      if(empresa_id.value != '') {
+        params = `?empresa_id=${empresa_id.value}`;
+      }
+      
+      Swal.showLoading();
+      $.ajax({
+        url: '/admin-clinica/medicos/upload' + params,
+        type: 'POST',
+        data: dataForms,
+        contentType: false,
+        processData: false,
+        success: function (data) {
+          Swal.close();
+          if (data.ok) {
+            // save in localstorage data.data.file
+            window.localStorage.setItem('cv', data.data.file);
+            Swal.fire({
+              toast: true,
+              position: 'top-end',
+              icon: 'success',
+              title: 'CV subido',
+              text: '#{translation.ALERTS.CV_UPLOADED}',
+              timer: 2000
+            });
+            cvEditar = data.data.file
+
+            showLink.innerHTML = ''; 
+          }
+        },
+        error: function (error) {
+          Swal.close();
+          console.log(error);
+        }
+      })
+    });
+
+    upload_cvEditar.addEventListener('click', (event) => {
+      //- const file = event.target.files[0];
+      if (subir_archivoEditar.files.length == 0) {
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'error',
+          title: 'Oops...',
+          text: '#{translation.ALERTS.CV_ERROR}',
+          timer: 2000
+        });
+        return;
+      }
+      const file = subir_archivoEditar.files[0];
+      //- const reader = new FileReader();
+      // Extension images match and test
+      //- const extension = file.name.split('.').pop();
+      let dataForms = new FormData();
+      dataForms.append('cv', file);                      
+      console.log(dataForms);
+      let params = '';
+      if(empresa_id.value != '') {
+        params = `?empresa_id=${empresa_id.value}`;
+      }
+      
+      Swal.showLoading();
+      $.ajax({
+        url: '/admin-clinica/medicos/upload' + params,
+        type: 'POST',
+        data: dataForms,
+        contentType: false,
+        processData: false,
+        success: function (data) {
+          Swal.close();
+          if (data.ok) {
+            // save in localstorage data.data.file
+            //- window.localStorage.setItem('cv', data.data.file);
+            Swal.fire({
+              toast: true,
+              position: 'top-end',
+              icon: 'success',
+              title: 'CV subido',
+              text: '#{translation.ALERTS.CV_UPLOADED}',
+              timer: 2000
+            });
+             showLinkEditar.innerHTML = ''; 
+             cvEditar.value = data.data.file;
+             linkCvEditar.href = data.data.file;
+             linkCvEditar.setAttribute('aria-disabled', false);
+             linkCvEditar.classList.remove('disabled');
+          }
+        },
+        error: function (error) {
+          Swal.close();
+          console.log(error);
+        }
+      })
+    });
+
+    especialidades_server = !{JSON.stringify(especialidades)}
+    
+  include ./datatable/medicos.pug
+
+  //- OTROS MODULOS
+  include /modulo-clinica/especialidades/select2/especialidades.pug
+  include /modulo-generales/configuracion/documentos/select2/documentos.pug

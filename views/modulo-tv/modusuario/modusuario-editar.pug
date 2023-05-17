@@ -1,0 +1,47 @@
+extends ./layout.pug
+
+append contenido 
+  .border-bottom.border-left.border-right.rounded-bottom.p-3
+    .my-3 
+      button.btn.btn-info(onclick="window.history.back()") Atrás
+    if modulos 
+      .container 
+        .row 
+          .col
+            h1.text-center.h2.mb-3 Modulos asignados a la empresa #{empresa.nombre}
+            input#empresaId(type="text" value=empresa.id hidden)
+        .row.mt-3
+          .col.text-right
+            button#update_mod.btn.btn-primary Guardar
+        .row.mt-3
+          each item in modulos 
+            .col-4.col-md-3.col-lg-3 
+              label.d-block.p-2.btn.btn-info.text-left(for=`modulo${item.id}`)
+                .form-check
+                  if JSON.parse(JSON.stringify(empresa.modulos)) && JSON.parse(empresa.modulos).find(e => e == item.id) !== undefined 
+                    input(id=`modulo${item.id}` name="modulos[]" class="form-check-input" type="checkbox" value=item.id checked)
+                  else 
+                    input(id=`modulo${item.id}` name="modulos[]" class="form-check-input" type="checkbox" value=item.id)
+                  span.form-check-label #{item.nombre}
+      script 
+        include ../../../js/modulo-tv/update.js
+      script.
+        const mods = document.getElementsByName('modulos[]');
+        const empresaId = document.getElementById('empresaId');
+        document.getElementById('update_mod').addEventListener('click', (event) => {
+          event.preventDefault();
+          const modsVal =[]
+          mods.forEach(etiqueta => {
+            if(etiqueta.checked) {
+              modsVal.push(parseInt(etiqueta.value));
+            }
+          })
+          updateItem(`/admin-modusuarios/${empresaId.value}`, {
+            modulos: modsVal
+          })
+        
+        }) 
+    else 
+      .alert.alert-info.text-center.mt-3 
+        | No hay modulos
+    

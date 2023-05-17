@@ -1,0 +1,95 @@
+#section-20.section-20.visible.scrollLateralAdmin(style="height: calc(100vh - 96px);top:auto;")
+    ul#admin-list-menu-charging
+        li(style="padding: 10px 0;")
+            a#logout(href=url_base+"cerrarSesion")
+                i.nav-icon.fas.fa-sign-out-alt
+                span Salir
+    script.
+        var dataUserVerify=JSON.parse('!{JSON.stringify(dataSession)}');
+
+        $.ajax({
+            method: "GET",
+            url: `/get-sidebar-data`,
+            dataType:"json",
+            success: function({ data }){
+                
+
+                data.reverse().forEach(category => {
+                    
+                    let modulos =  `
+                        <ul class="d-none submenu">
+                            `;
+
+                            category.items.forEach(item => {
+
+                                modulos += `
+                                    <li>
+                                        <a href="/${item.url}"> 
+                                            <i class="nav-icon fas fa-minus-square"></i> 
+                                            <span>${item.nombre}</span>
+                                        </a>
+                                    </li>
+                                    `;
+                            })
+                            
+                    modulos += `
+                        </ul>
+                    `;
+                    
+
+                    $('#admin-list-menu-charging').prepend(`
+                    
+                        <li style="padding: 10px 0;">
+                            <a href="javascript:void(0);">
+                                <i class="nav-icon fas fa-folder"></i>
+                                <span>${category.nombre}</span>
+                                ${modulos}
+                            </a>
+                        </li>
+                    
+                    `);
+                
+                    $('#admin-list-menu-charging-mobile')
+                        .prepend(`
+                    
+                        <li style="padding: 10px 0;">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <a href="javascript:void(0);">
+                                        <i class="nav-icon fas fa-folder"></i>
+                                        <span>${category.nombre}</span>
+                                        ${modulos}
+                                    </a>
+                                </div>
+                            </div>
+                        </li>
+                    `)
+                })
+
+                $('#admin-list-menu-charging > li, #admin-list-menu-charging-mobile > li').click(function () {
+
+                    $(this).find('.nav-icon').each(function() {
+
+                        if ($(this).hasClass('fa-folder')) {
+                            $(this).removeClass('fa-folder')
+                            $(this).addClass('fa-folder-open')
+                        } else {
+
+                            $(this).addClass('fa-folder')
+                            $(this).removeClass('fa-folder-open')
+                        }
+                           
+                    })
+
+                    $(this).find('.submenu').each(function() {
+                        $(this).hasClass('d-none')
+                            ? $(this).removeClass('d-none')
+                            : $(this).addClass('d-none')
+                    })
+                }); 
+
+            },error: function(e){
+                console.log(e);
+            },
+        });
+

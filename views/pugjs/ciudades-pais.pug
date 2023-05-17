@@ -1,0 +1,50 @@
+script.
+  const select2CiudadesPais = $("#lista-ciudades-pais, #lista-ciudades-pais-editar, #ciudades-pais").select2({
+    ajax: {
+      url: function () {
+        return urlCiudadesPorPais();
+      },
+      dataType: "json",
+      delay: 500,
+      data: function (params) {
+        console.log(params)
+        return {
+          q: params.term, // search term
+          page: params.page,
+        }
+      },
+      processResults: function (data, params) {
+        console.log(data);
+        return {
+          results: $.map(data, (i) => {
+            return {
+              id: i.isoCode,
+              text: i.name,
+            };
+          })
+        }
+      },
+      cache: true,
+    },
+    templateResult: stateCiudadesPais,
+    placeholder: "Seleccione un país",
+    allowClear: true,
+  });
+
+  function stateCiudadesPais (state) {
+    console.log(state);
+    if (state.loading) {
+      return state.text;
+    }
+    var baseUrl = "/img/flags";
+    var $state = $(`<span>${state.id}</strong> | ${state.text}</span>`);
+    return $state;
+  }
+
+  function urlCiudadesPorPais() {
+    if (paisIsoCode != '') {
+      return `/admin-geolocalizacion/countries/${paisIsoCode}/cities`;
+    } else {
+      return '/admin-geolocalizacion/cities'
+    }
+  }

@@ -1,0 +1,50 @@
+extends ../../extends/menu-superior-admin
+block contenido
+    .row
+        .col-12
+            select#lista-tratamientos
+            include ./select2/tratamiento.pug
+        .col-6.text-grey(style="margin-bottom:10px;")
+            h1.display-1
+                strong #{translation.TREATMENTS} 
+        .col-md-6.col-6.text-right 
+            button.btn.btn-success(style="margin-bottom:25px;", type="button",onClick="openModalNew()")
+                i.fas-fa-plus
+                span #{translation.ADD_TREATMENT} 
+        .col-12
+            div.table-responsive
+                table.table.table-bordered#tabla-tratamientos
+                    thead.thead-dark
+    
+    include ./modals/crear-banner-admin.pug
+    include ./modals/editar-banner-admin.pug
+
+    include /modulo-generales/galeria-fotos/seleccion-unica-galeria/admin-galeria-modal-simple
+
+    script
+        include /js/toast.sweet.js
+        
+    include ./delete/tratamiento.pug
+    include ./update/tratamiento.pug
+    include ./save/tratamiento.pug
+
+    script(src="/js/bootstrap-iconpicker.bundle.min.js") 
+    script.
+        const empresa_id = document.getElementById('empresa_id');
+       
+        var typeUpdate=1;
+        var typeAction=1; 
+        var typeOperation="2";
+
+        CKEDITOR.replace('ckeditorarea');
+        CKEDITOR.replace('ckeditorareaEditar');
+        $('#nuevoBannerAdministrador').on('shown.bs.modal', function (e) { $(document).off('focusin.modal'); });
+        $('#editarBannerAdministrador').on('shown.bs.modal', function (e) { $(document).off('focusin.modal'); });
+
+    include ./datatable/tratamiento.pug
+
+    //- includes de otros modulos
+    //- $(`td .servicios:eq(${i}) ~ .select2 .select2-selection__placeholder`).html(data.detalle[i].producto);
+    include /modulo-ecommerce/sedes/modals/crear-tienda-admin.pug
+    include /modulo-ecommerce/sedes/select2/sedes.pug
+    include /modulo-ecommerce/sedes/save/tienda-admin.pug

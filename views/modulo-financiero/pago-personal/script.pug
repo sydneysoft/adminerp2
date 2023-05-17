@@ -1,0 +1,126 @@
+script.
+  const openNewPaymentModal = () => {
+    typeOperation = "1";
+    $("#nuevo").modal("show");
+  };
+  const openNewPersonal = () => {
+    typeOperation = "1";
+    $("#gestionar").modal("show");
+  };
+
+
+  const handleEditarPagoPersonal = (data) => {
+    typeOperation = "2";
+    $("#editarTipoDoc").val(data.tipo_documento);
+    $("#editarNroDocumento").val(data.nro_documento);
+    $("#editarTipoPago").val(data.tipo_de_pago);
+    $("#editarMonto").val(data.monto);
+    $("#editarNombre").val(data.nombre);
+    if (data.tipo_de_pago !== "sueldo") {
+      $('#editarMonto').prop("disabled", true);
+    }
+    $("#itemId").val(data.id)
+    $("#editar").modal("show");
+  };
+
+  $("#editarTipoPago").change(function () {
+    if (this.value !== 'sueldo') {
+      $('#editarMonto').prop("disabled", true);
+    } else {
+      $('#editarMonto').prop("disabled", false);
+    }
+  })
+
+
+  $(document).ready(function () {
+    $(".seleccionar").select2({
+      language: {
+        noResults: function () {
+          return #{translation.NO_RESULTS_FOUND}
+        },
+      },
+    });
+
+    $("#tabla-pers").DataTable({
+      columnDefs: [
+        {
+          orderable: false,
+          className: "select-checkbox",
+          targets: 0,
+        },
+      ],
+
+      select: {
+        style: "multi",
+        selector: "td:first-child",
+      },
+      dom: "Bfrtip",
+      buttons: ["selectAll", "selectNone"],
+
+      order: [[1, "asc"]],
+      language: {
+        buttons: {
+          selectAll: "Seleccionar todos",
+          selectNone: "Borrar Selección",
+        },
+        url: "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json",
+        select: {
+          rows: "%d filas seleccionadas",
+        },
+      },
+    });
+
+    var table2 = $("#tabla-gestionar").DataTable({
+      language: {
+        url: "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json",
+      },
+    });
+    var table = $("#tabla-pers").DataTable();
+
+    var tableFilter = $("#tabla-pers").dataTable();
+
+    //filtro
+    $("select#filtroNombre").change(function () {
+      if (this.value != 0) {
+        tableFilter.fnFilter(this.value, 2);
+      } else {
+        tableFilter.fnFilter("", 2);
+        tableFilter.fnFilter("");
+      }
+    });
+
+    $("select#filtroDocumento").change(function () {
+      if (this.value != 0) {
+        tableFilter.fnFilter(this.value, 4);
+      } else {
+        tableFilter.fnFilter("", 4);
+        tableFilter.fnFilter("");
+      }
+    });
+    $("input#dateFrom").change(function () {
+      if (this.value != 0) {
+        tableFilter.fnFilter(this.value, 1);
+      } else {
+        tableFilter.fnFilter("", 1);
+        tableFilter.fnFilter("");
+      }
+    });
+
+    $("#accionesBoton").click(function () {
+      const valorSeleccionado = $("#acciones").val();
+      const selected_rows = tablaPagoPersonal
+        .rows({
+          selected: true,
+        })
+        .ids();
+
+      const arraySeleccion = $.makeArray(selected_rows);
+
+      switch (valorSeleccionado) {
+        case "0":
+          eliminarProductos(arraySeleccion, "pago_personal");
+          break;
+      }
+    });
+  });
+

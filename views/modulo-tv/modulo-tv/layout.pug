@@ -1,0 +1,28 @@
+extends ../../extends/menu-superior-admin
+
+block contenido
+  h1 #{translation.MODULE_TV}
+  ul.nav.nav-tabs
+    li.nav-item
+      a.nav-link(href='/admin-tv/video-live') #{translation.VIDEO_LIVE}
+    li.nav-item
+      a.nav-link(href='/admin-tv/programas') #{translation.TV_SHOWS}
+    li.nav-item
+      a.nav-link(href='/admin-tv/actores') #{translation.ACTORS}
+    li.nav-item
+      a.nav-link(href="/admin-tv/directores") #{translation.DIRECTORS}
+    li.nav-item
+      a.nav-link(href="/admin-tv/productores") #{translation.PRODUCERS}
+    li.nav-item
+      a.nav-link(href="/admin-tv/generos") #{translation.GENRES}
+
+
+  script.
+    const currentPath = window.location.pathname
+    const navLinks = $(".nav .nav-link");
+    $.each(navLinks, function (index, value) {
+      if(currentPath.startsWith(value.getAttribute('href'))) {
+        value.classList.toggle('active')
+      }
+    });
+   

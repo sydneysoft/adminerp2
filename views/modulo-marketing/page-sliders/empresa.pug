@@ -1,0 +1,93 @@
+extends ./layout.pug
+
+append contenido 
+  .border-bottom.border-left.border-right.rounded-bottom.p-3
+    .row 
+      .col
+          button.btn.btn-info(role="button" onclick="window.history.back()") #{translation.BACK}
+      .col.text-right 
+        a.btn.btn-primary(type='button' href=`/admin-sliders/empresa/${empresa_id}/crear`) #{translation.CREATE}
+          i.fas.fa-plus.ml-2
+    .my-3.table-responsive 
+      input#emid(type="text" value=empresa_id hidden)
+      .my-3.table-responsive   
+        table#dataTable.table.rounded-lg.overflow-hidden
+          thead.thead-dark
+            tr
+              th(scope='col') ID
+              th(scope='col') #{translation.FORM.NAME}
+              th(scope='col') #{translation.FORM.IMAGE}
+              th(scope='col') #{translation.FORM.ALTERNATIVE_TEXT}
+              th(scope='col') #{translation.FORM.ACTIONS}
+          tbody
+            if Array.isArray(data) && data.length > 0 
+              each item in data 
+                tr
+                  th(scope='row') #{item.id}
+                  td #{item.nombre}
+                  td #{item.url}
+                  td #{item.alt}
+                  td #{item.id}
+
+  script 
+    include /js/modulo-tv/delete.js
+  script.
+    let tablaRedes;
+    const emid = document.getElementById('emid');
+    $(document).ready(function () {
+      tablaRedes = $('#dataTable').DataTable({
+        fnCreatedRow: function (nRow, aData, iDataIndex) {
+          $(nRow).attr('id', `delete${aData.id}`);
+        },
+        // processing: true,
+        // // responsive: true,
+        // serverSide: true,
+        // ajax: '/admin-sliders/datatable',
+        // dataType: 'json',
+        // type: 'POST',
+        // order: [[0, 'desc']],
+        columns: [
+          {
+            data: 'id',
+            name: 'ID',
+            searchable: false,
+            orderable: true,
+          },
+          {
+            data: 'nombre',
+            name: 'Nombre'
+          },
+          {
+            data: 'url',
+            name: 'Url',
+            searchable: true,
+            orderable: false,
+            render: function (data, type, row) {
+              return `<img src="${data}" alt="${row.nombre}" width="50" height="50" style="object-fit: cover"/>`
+            }
+          },
+          {
+            data: 'alt',
+            name: 'Alt',
+            searchable: false,
+            orderable: false,
+          },
+          {
+            data: 'Acciones',
+            render: function (data, type, row) {
+              return `
+                    <div class="btn-group" role="group" aria-label="acciones">
+                      <a class="btn btn-primary btn-sm" href="/admin-sliders/empresa/${emid.value}/editar/${data}"><i class="fas fa-pen" aria-hidden="true"></i></a>
+                      <a class="btn btn-danger btn-sm" href="#" onclick="beforeDeleteItem('/admin-sliders/sliders/${data}', deleteItemSuccess)"><i class="fas fa-trash" aria-hidden="true"></i></a>
+                    </div>
+                    `
+            },
+            searchable: false,
+            orderable: false,
+          }
+        ]
+      })
+    });
+    function deleteItemSuccess(data) {
+      tablaRedes.row($(`#${data.target}`)).remove().draw();
+    }

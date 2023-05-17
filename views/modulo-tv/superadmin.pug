@@ -1,0 +1,56 @@
+script.
+  let tablaSocial;
+  function superadminTableInit (target, url) {
+    tablaSocial = $(`#${target}`).DataTable({
+      fnCreatedRow: function (nRow, aData, iDataIndex) {
+        $(nRow).attr('data-id', `delete${aData.id}`);
+      },
+      columns: [
+        { data: 'id', name: 'id', title: "ID" },
+        { data: 'nombre', name: 'nombre', title: '#{translation.FORM.NAME}' },
+        { data: 'direccion', name: 'direccion', title: '#{translation.FORM.ADDRESS}'},
+        { data: 'razon_social', name: 'razon_social', title: '#{translation.FORM.SOCIAL_REASON}'},
+        { data: 'email_corporativo', name: 'email_corporativo', title: '#{translation.FORM.COMPANY_EMAIL}'},
+        { data: 'email_contacto', name: 'email_contacto', title: '#{translation.FORM.CONTACT_EMAIL}'},
+        { data: 'celular_contacto', name: 'celular_contacto', title: '#{translation.FORM.CONTACT_PHONE}' },
+        { data: 'nombre_contacto', name: 'nombre_contacto', title: '#{translation.FORM.CONTACT_NAME}'},
+        { 
+          data: 'acciones',
+          name: 'acciones',
+          title: '#{translation.FORM.ACTIONS}',
+          render: function (data, type, row) {
+            return `<a class="btn btn-info btn-sm" data-id="${row.id}" href="${url}/${row.id}">#{translation.EDIT}</a>`;
+          }
+        }
+      ]
+    });
+    obtenerDatos()
+  }
+
+  function obtenerDatos() {
+    $.ajax({
+      url: '/admin-empresa-datatable',
+      method: 'GET',
+      success: function (data) {
+
+        if (data.ok && Array.isArray(data.data)) {
+          tablaSocial.clear();
+          tablaSocial.rows.add(data.data);
+          tablaSocial.draw();
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: '#{translation.ALERTS.ERROR_DATA}'
+          })
+        }
+      },
+      error: function (err) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: '#{translation.ALERTS.ERROR_DATA}'
+        })
+      }
+    });
+  }

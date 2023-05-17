@@ -1,0 +1,52 @@
+//- Este archivo depende de /modulo-marketing/banners/modals/crear-tienda-admin.pug
+//- Y el anterior depende de /
+script.
+  $("#lista-banners, #lista-banners-editar").select2({
+    ajax: {
+      url: "/admin-banners/select2",
+      dataType: 'json',
+      delay: 500,
+      data: function (params) {
+        return {
+          term: params.term,
+          select: ['id', 'nombre', 'url', 'imagen'],
+          page: params.page
+        }
+      },
+      processResults: function (data, params) {
+        return {
+          results: $.map(data.data, (item) => {
+            return {
+              id: item.imagen,
+              text: item.nombre,
+              identificador: item.id,
+              url: item.url
+            }
+          })
+        }
+      },
+      cache: true
+    },
+    placeholder: 'Search',
+    templateResult: bannersState,
+    allowClear: true
+  }).on("select2:open", () => {
+    $(".select2-results:not(:has(a))").append(
+      '<a href="#" style="padding: 6px;height: 20px;display: inline-table;" data-toggle="modal" data-target="#nuevoBannerAdministrador" onclick="closeBannersSelect2()">#{translation.ADD_BANNERS}</a>'
+    );
+  });
+
+  function bannersState (state) {
+    if (!state.id) {
+      return state.text;
+    }
+    let $container = $(`
+      <span><strong>${state.identificador}</strong> | ${state.text}</span>
+    `);
+
+    return $container;
+  }
+
+  function closeBannersSelect2 () {
+    $("#lista-banners, #lista-banners-editar").select2('close');
+  }

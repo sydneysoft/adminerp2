@@ -1,0 +1,103 @@
+.modal.fade.justify-content-center.align-items-center(tabindex="-1" role="dialog" id="editarTratamientoModal" style="min-height: 80vh;")
+  .modal-dialog.modal-lg
+    .modal-content.modalContent(style="height: 100%;")
+      .modal-header 
+        .row(style="margin:0;")
+          .col-md-12.text-center
+            h3(style="margin:0px 0;")  #{translation.EDIT}
+
+
+      .modal-body.borderBottom(style="height: 80vh;overflow-y: scroll")
+        .row
+          .col-12.col-md-8
+            .form-group
+              label(for="paciente")  #{translation.FORM.PATIENT_NAME} *
+              select#pacienteEditar.form-control(name="nombre" placeholder="Nombre de paciente")
+
+                if Array.isArray(pacientes) && pacientes.length > 0
+                  each paciente, index in pacientes
+                    if index === 0
+                      option(value="0") #{translation.FORM.SELECT_PATIENTS} 
+                    option(value=paciente.id)= paciente.nombre
+                else
+                  option(value="0") #{translation.FORM.NO_PATIENTS_REGISTERED} 
+            .row
+              .col-12.col-md-6 
+                .form-group
+                  label(for="nombreEditar") #{translation.FORM.TREATMENT_NAME} *
+                  input#nombreEditar.form-control(type="text" name="nombre" placeholder="Nombre del tratamiento")
+              .col-12.col-md-6
+                .form-group
+                  label(for="dosisEditar") #{translation.FORM.DOSIS} *
+                  input#dosisEditar.form-control(type="text" name="dosis" placeholder="Dosis")
+              .col-12.col-md-6 
+                .form-group
+                  label(for="inicio_tratamientoEditar") #{translation.FORM.TREATMENT_BEGINNING} *
+                  input#inicio_tratamientoEditar.form-control(type="date" name="inicio_tratamiento" placeholder="Inicio del tratamiento")
+              .col-12.col-md-6
+                .form-group
+                  label(for="fin_tratamientoEditar") #{translation.FORM.END_OF_TREATMENT} *
+                  input#fin_tratamientoEditar.form-control(type="date" name="fin_tratamiento" placeholder="Fin del tratamiento")
+          .col-12.col-md-4
+            .form-group
+              label(for="descripcion_cortaEditar")  #{translation.FORM.END_OF_TREATMENT}
+              textarea#descripcion_cortaEditar.form-control(name="descripcion_corta" placeholder="Descripción corta")
+        .row.mt-3
+          .col-12.col-md-4 
+            .form-group
+              label(for="costo_tratamientoEditar") #{translation.FORM.TREATMENT_PRICE}
+              input#costo_tratamientoEditar.form-control(type="number" name="costo_tratamiento" placeholder="Costo del tratamiento")
+          .col-12.col-md-4
+            .form-group
+              label(for="duracionEditar") #{translation.FORM.DURATION} *
+              input#duracionEditar.form-control(type="text" name="duracion" placeholder="Duracion")
+          .col-12.col-md-4
+            .form-group
+              label(for="codigoexternoEditar") #{translation.FORM.EXTERNAL_CODE}
+              input#codigoexternoEditar.form-control(type="text" name="codigoexterno" placeholder="Código externo")
+        .row.mt-3
+          .col-12.col-md-6
+            .form-group
+              label(for="descripcion_largaEditar") #{translation.FORM.LONG_DESCRIPTION}
+              textarea#descripcion_largaEditar.form-control(name="descripcion_larga" placeholder="Descripción larga")
+          .col-12.col-md-6 
+            .form-group
+              label(for="resultadoEditar") #{translation.FORM.RESULTS}
+              textarea#resultadoEditar.form-control(name="resultado" placeholder="Resultados")
+        .row.mt-3
+          .col-12.col-md-6
+            //- .form-group
+            //-   label(for="imagenEditar") Imagen
+            //-   input#imagenEditar.form-control(type="text" name="imagen" placeholder="Imagen")
+            include /modulo-tv/modulo-general/galeria-fotos/modal-galeria.pug
+          .col-12.col-md-6 
+            .form-group 
+              label(for="sedeEditar") #{translation.FORM.BRANCH}
+              select#sedeEditar.form-control(name="sede" placeholder="Sede")
+                if Array.isArray(sedes) && sedes.length > 0
+                  each sede, index in sedes
+                    if index === 0
+                      option(value="0") #{translation.FORM.SELECT_BRANCH}
+                    option(value=sede.id)= sede.nombre
+                else
+                  option(value="0")  #{translation.FORM.NO_BRANCHES_REGISTERED}
+        .row.mt-3
+          .col-12.col-md-4
+            .form-group 
+              label(for="sintomasEditar")  #{translation.FORM.SINTOMS}
+              textarea#sintomasEditar.form-control.h-100(name="sintomas" placeholder="Sintomas")
+          .col-12.col-md-4 
+            .form-group 
+              label(for="estadoEditar")  #{translation.FORM.STATE} 
+              select#estadoEditar.form-control(name="estado" placeholder="Estado")
+                if Array.isArray(estado_tratamiento) && estado_tratamiento.length > 0
+                  each valor in estado_tratamiento[0].valor
+                    option(value=valor)= valor
+                else
+                  option(value="0") No hay estado registradas
+        input#idTratamiento(tyype="text" hidden)
+      .modal-footer(style="padding:8px;")
+        .row(style="margin:0;")
+          .col-md-12.text-right
+            button#actualizarTratamiento.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;") Agregar
+            button.btn.btn-danger(type="buton" data-dismiss="modal") Cerrar

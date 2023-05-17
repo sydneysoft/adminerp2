@@ -1,0 +1,67 @@
+extends ./layout.pug
+
+append contenido 
+  .border-bottom.border-left.border-right.rounded-bottom.p-3
+    .my-3.row.justify-content-between 
+      .col 
+        button.btn.btn-info(role="button" onclick="window.history.back()") #{translation.BACK}
+      .col.text-right
+        button#guardarItem.btn.btn-primary(type='submit') #{translation.SAVE}
+          i.fas.fa-save.ml-2
+    .my-3 
+      .row 
+        .col-12.col-md-8
+          input#empresa_id(type="text" value=empresa_id hidden)
+          .form-group
+            label(for='nombre') #{translation.FORM.NAME}
+            input#nombre.form-control(type='text' placeholder="Nombre" name=translation.FORM.NAME required)
+          .form-group 
+            label(for='alt') #{translation.FORM.ALTERNATIVE_TEXT}
+            textarea#alt.form-control(name="ubicacion" placeholder=translation.FORM.ALTERNATIVE_TEXT)
+          .form-group   
+            label(for="descripcion") #{translation.FORM.DESCRIPTION}
+            textarea#descripcion(placeholder=translation.FORM.DESCRIPTION)
+        .col-12.col-md-4
+          .form-group 
+            label(for='imagen') #{translation.FORM.IMAGE} *
+            include /modulo-generales/galeria-fotos/modal-galeria.pug
+  include /modulo-generales/galeria-fotos/partial-modal-galeria.pug
+  script.
+    const editor = CKEDITOR.replace('descripcion')   
+    
+  script
+    include /js/modulo-tv/save.js
+    include /modulo-generales/galeria-fotos/modal-galeria.js
+
+  script.
+    const nombre = document.getElementById('nombre');
+    const imagen = document.getElementById('imagen');
+    const alt = document.getElementById('alt');
+
+    const clearForm = () => {
+      nombre.value = '';
+      alt.value = '';
+      editor.setData('', '')
+    };
+    const empresa_id = document.getElementById('empresa_id');
+    document.getElementById('guardarItem').addEventListener('click', (event) => {
+      if (nombre.value !== '' && imagen.value !== '') {
+        save('/admin-sliders/sliders', {
+          nombre: nombre.value,
+          url: imagen.value,
+          alt: alt.value,
+          descripcion: editor.getData(),
+          empresa_id: empresa_id.value
+        }, clearImage);
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: '#{translation.FORM.REQUIRED_FIELDS}',
+        })
+      }
+    });
+    function clearImage (data) {
+      imagen.value = '';
+      $('.imagen_').html('')
+    }

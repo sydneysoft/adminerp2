@@ -1,0 +1,26 @@
+.modal#nuevo(tabindex="-1" role="dialog" )
+  .modal-dialog.modal-lg(role="document")
+    .modal-content
+      .modal-header 
+        .row 
+          .col-12
+          h5.strong(style="font-size:1rem;") Enviar Cotización
+      .modal-body-almacen
+        .row(style="padding:15px;")
+
+          .col-md-12.col-12
+            p Esta cotización se enviará a: 
+              span#emailCliente
+            .form-group
+              label Asunto
+              .controls
+                input#asunto.form-control(type="text")
+          .col-md-12.col-12
+            .form-group
+              label Agregar un mensaje
+                .controls
+                textarea#descripcionCortaNuevo.producto-admin.form-control(name="" rows="5" cols="100") 
+
+        .modal-footer     
+          button.btn.btn-danger(type="buton" data-dismiss="modal") Cancelar
+          span#footer

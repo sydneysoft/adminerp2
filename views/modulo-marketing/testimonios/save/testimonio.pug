@@ -1,0 +1,74 @@
+script.
+
+  document.getElementById('addTestimonio').addEventListener('click', (e) => {
+    //- id	titulo	nombre	apellido	imagen	fecha	texto	calificacion
+    const data = {
+      titulo: document.getElementById('titulo').value,
+      nombre: document.getElementById('nombre').value,
+      apellido: document.getElementById('apellido').value,
+      fecha: document.getElementById('fecha').value,
+      calificacion: document.getElementById('calificacion').value,
+      texto: document.getElementById('texto').value,
+      //- document.getElementById('imagen').value
+    };
+    if (data.titulo != '' && data.nombre != '' && data.calificacion != '' && data.texto != '') {
+      if(empresa_id != '') {
+        data.empresa_id = empresa_id.value;
+      }
+
+      $.ajax({
+        url: '/admin-testimonios',
+        type: 'POST',
+        data: data,
+        success: function (data) {
+          if (data.ok) {
+            $('#nuevoTestimonioModal').modal('hide');
+            Swal.fire({
+              icon: 'success',
+              title: 'Medico registrado',
+              text: 'El medico se registro correctamente',
+              timer: 2000
+            });
+            
+            if (typeof tablaTestimonios !== 'undefined') {
+              tablaTestimonios.ajax.reload();
+            }
+
+          } else {
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: '#{translation.ALERTS.DOCTOR_ERROR}',
+              timer: 2000
+            });
+          }
+        },
+        error: function (err) {
+          console.log(err);
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: '#{translation.ALERTS.DOCTOR_ERROR}',
+            timer: 2000
+          });
+        }
+      })
+
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: '#{translation.FORM.REQUIRED_FIELDS}!',
+        timer: 2000
+      });
+    }
+  });
+  function clearForm() {
+    document.getElementById('titulo').value = '';
+    document.getElementById('nombre').value = '';
+    document.getElementById('apellido').value = '';
+    document.getElementById('fecha').value = '';
+    document.getElementById('calificacion').value = '';
+    document.getElementById('texto').value = '';
+    //- document.getElementById('imagen').value = '';
+  }

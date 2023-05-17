@@ -1,0 +1,25 @@
+extends ../extends/menu-superior-admin
+
+block contenido
+  ul#myTab.nav.nav-tabs(role='tablist')
+    //- li.nav-item(role='presentation')
+    //-   button#home-tab.nav-link.active(data-toggle='tab' data-target='#home' type='button' role='tab' aria-controls='home' aria-selected='true') Citas
+    //- li.nav-item(role='presentation')
+    //-   button#profile-tab.nav-link(data-toggle='tab' data-target='#profile' type='button' role='tab' aria-controls='profile' aria-selected='false') Calendario
+    li.nav-item(role='citas')
+      a#profile-tab.nav-link(href="/admin-citas-medicas") #{translation.MODULE_APPOINTMENTS}
+    li.nav-item(role='citas')
+      a#profile-tab.nav-link(href="/admin-citas-medicas/calendario") #{translation.MODULE_CALENDAR}
+    li.nav-item(role='citas')
+      a#profile-tab.nav-link(href="/admin-citas-medicas/pacientes") #{translation.MODULE_PATIENTS}
+    li.nav-item(role='citas')
+      a#profile-tab.nav-link(href="/admin-citas-medicas/medicos") #{translation.MODULE_DOCTORS}
+  
+  script.
+    const currentPath = window.location.pathname
+    const navLinks = $(".nav .nav-link");
+    $.each(navLinks, function (index, value) {
+      if(currentPath === value.getAttribute('href')) {
+        value.classList.toggle('active')
+      }
+    });

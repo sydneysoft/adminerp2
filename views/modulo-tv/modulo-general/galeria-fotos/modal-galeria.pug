@@ -1,0 +1,12 @@
+.form-group 
+  #imagenUploadForm
+    div(style="width:100%;padding:10px;margin-top:10px;")
+      form.dropzone(action="/admin-galeria" id="my-awesome-dropzone" method="post" enctype="multipart/form-data")  
+  .mt-3
+    button#btn-upload.btn.btn-success.btn-block(onClicK=`uploadImagesGaleria()`,style="display:none;")="Subir Fotos"
+    button#btn-galeria.btn.btn-info.btn-block(onclick='getMultimediaPagedGaleria(0)')="Galeria"
+  //- label(for="upload_image") Subir Imagen 
+  //- input#upload_image.form-control(type="file" accept="image/*" placeholder="Subir Imagen")
+  .imagen_.mt-3
+  input#imagen.form-control(type="text" value="" hidden)
+  input#imagenEditar.form-control(type="text" value="" hidden)

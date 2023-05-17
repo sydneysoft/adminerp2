@@ -1,0 +1,159 @@
+script.
+  let tablaEspecialidades;
+  $(document).ready(function () {
+    let urlAjaxTablaEspecialidades = "/admin-especialidades/datatable"
+    if (typeof empresa_id != 'undefined' && !isNaN(empresa_id.value)) {
+      urlAjaxTablaEspecialidades += `/${empresa_id.value}`;
+    }
+    tablaEspecialidades = $("#tabla-especialidades").DataTable({
+      columnDefs: [
+        {
+          orderable: false,
+          className: "select-checkbox",
+          targets: 0,
+        },
+      ],
+      select: {
+        style: "multi",
+        selector: "td:first-child",
+      },
+      dom: "Bfrtip",
+      buttons: ["selectAll", "selectNone"],
+      order: [[1, "asc"]],
+      language: {
+        buttons: {
+          selectAll: '#{translation.FORM.SELECT_EVERYTHING}',
+          selectNone: '#{translation.FORM.ERASE_SELECTION}',
+        },
+        url: "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json",
+        select: {
+          rows: "%d filas seleccionadas",
+        },
+      },
+      responsive: true,
+      searchDelay: 500,
+      processing: true,
+      serverSide: true,
+      ajax: urlAjaxTablaEspecialidades,
+      rowId: 'id',
+      columns: [
+        { 
+          data: 'id', name: 'id', title: 'ID', orderable: false, searchable: false,
+          render: function (data, type, row) {
+            return ``;
+          }
+        },       
+        { 
+          data: 'nombre', name: 'nombre', title: '#{translation.FORM.NAME}',
+          searchable: true,
+          orderable: true,
+        },
+        { 
+          data: 'codigoexterno', name: 'codigoexterno', title: '#{translation.FORM.EXTERNAL_CODE}',
+          searchable: true,
+          orderable: true,
+        },
+        { 
+          data: 'imagen', name: 'imagen', title: '#{translation.FORM.IMAGE}',
+          searchable: false,
+          orderable: false,
+          render: function (data, type, row) {
+            try {
+              new URL(row.imagen);
+              return `<img src="${row.imagen}" alt="imagen" style="width: 50px; height: 50px;">`
+            } catch(e) {
+              return `<img src="/images/image-default.jpg" alt="imagen" style="width: 50px; height: 50px;">`
+            }
+          }
+        },
+        { 
+          data: 'activado', name: 'activado', title: '#{translation.FORM.ENABLED}',
+          searchable: false,
+          orderable: false,
+          render: function (data, type, row) {
+            if (row.activado == 1) {
+              return '<span class="badge badge-success">#{translation.FORM.ACTIVE}</span>'
+            } else {
+              return '<span class="badge badge-danger">#{translation.FORM.INACTIVE}</span>'
+            }
+          }
+        },
+        { 
+          data: 'estado', name: 'estado', title: '#{translation.FORM.STATE}',
+          searchable: false,
+          orderable: false,
+          render: function (data, type, row) {
+            if (row.estado == 1) {
+              return '<span class="badge badge-success">#{translation.FORM.ACTIVE}</span>'
+            } else {
+              return '<span class="badge badge-danger">#{translation.FORM.INACTIVE}</span>'
+            }
+          }
+        },
+        { 
+          data: 'sede', name: 'sede', title: '#{translation.FORM.BRANCH}',
+          searchable: true,
+          orderable: true,
+          render: function (data, type, row) {
+            if (Array.isArray(sedes) && sedes.length > 0) {
+              const sede = sedes.find(sede => sede.id == row.sede)
+              if (sede)
+                return sede.nombre;
+              else
+                return '#{translation.FORM.NO_BRANCH}'
+            } else {
+              return '#{translation.FORM.NO_BRANCH}'
+            }
+          }
+        },
+        { 
+          data: 'categoria', name: 'categoria', title: '#{translation.FORM.CATEGORY}',
+          searchable: true,
+          orderable: true,
+        },
+        { 
+          data: 'icono', name: 'icono', title: '#{translation.FORM.ICON}',
+          searchable: false,
+          orderable: false,   
+          render: function (data, type, row) {
+            return `<i class="${row.icono}"></i>`
+          }
+        },
+        { 
+          data: 'actions',
+          name: 'actions',
+          title: '#{translation.FORM.ACTIONS}',
+          searchable: false,
+          orderable: false,
+          render: function (data, type, row) {
+            return `
+              <button class="btn btn-primary btn-sm" onclick='editarEspecialidad(${JSON.stringify(row)})' data-toggle="modal" data-target="#editarEspecialidadModal"><i class="fas fa-edit"></i></button>
+              <button class="btn btn-success btn-sm" onclick='mostrarEspecialidad(${JSON.stringify(row)})' data-toggle="modal" data-target="#mostrarEspecialidadModal"><i class="fas fa-eye"></i></button>
+              <button class="btn btn-danger btn-sm" onclick="beforeDeleteItem('/admin-clinica/especialidades/items/${row.id}', itemDeleteSuccess)"><i class="fas fa-trash"></i></button>
+            `
+          }
+        }
+      ],
+      initComplete: function (settings) {
+        //- clone thead to tfoot
+        $("#tabla-especialidades thead tr").clone().appendTo($("#tabla-especialidades tfoot"));
+      }
+    });
+
+
+    $("#accionesBoton").click(function () {
+      const valorSeleccionado = $("#acciones").val();
+      const selected_rows = tablaEspecialidades
+        .rows({
+          selected: true,
+        })
+        .ids();
+
+      const arraySeleccion = $.makeArray(selected_rows);
+      switch (valorSeleccionado) {
+        case "0":
+          eliminarProductos(arraySeleccion, "especialidad");
+          break;
+      }
+    });
+  });

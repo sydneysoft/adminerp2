@@ -1,0 +1,71 @@
+script.
+  const AgregarCategoriaAdmin = (token) => {
+    let nombreCategoria = $("#nombreNuevo-categoria").val();
+    let descripcionCategoria = $("#descripcionNuevo-categoria").val();
+    let imagenCategoria = $("#imagen-data-banner").attr('src');
+
+    let statusCategoria = $("#activadoNuevo-categoria").val();
+    let destacadoCategoria = $("#destacadoNuevo-categoria").val();
+
+    let dataIcon = $("#btn-icon-data-new input").val();
+    let headerCategoria = $("#headerNuevo-categoria").val();
+
+    let auxData = {
+      navbar: headerCategoria,
+      name: nombreCategoria,
+      icono: dataIcon,
+      description: descripcionCategoria,
+      imagen: imagenCategoria,
+      activado: statusCategoria,
+      destacado: destacadoCategoria,
+    }
+
+    if (typeof empresa_id != 'undefined' && empresa_id && !isNaN(empresa_id.value)) {
+      auxData.empresa_id = empresa_id.value
+    }
+
+    
+    if (
+      nombreCategoria &&
+      imagenCategoria &&
+      statusCategoria &&
+      headerCategoria&&
+      destacadoCategoria
+    ) {
+      Swal.showLoading();
+      $.ajax({
+        method: "POST",
+        url: "/admin-categorias",
+        dataType: "json",
+        data: auxData,
+        success: function (data) {
+          Swal.close();
+          if (data.ok) {
+            $("#crearCategoriaModal").modal("hide");
+            if (typeof tablaCategorias != 'undefined') {
+              tablaCategorias.ajax.reload();
+            }
+            $("#crearCategoriaModal").modal('hide');
+            toastSweet('Success', '#{translation.ALERTS.CREATED}', 'success');
+          } else {
+            toastSweet('Error', '#{translation.ALERTS.CATEGORY_NOT_ADDED}', 'error');
+          }
+        },
+        error: function (data) {
+          if (data.status == 409) {
+            Swal.close();
+            toastSweet('Error', '#{translation.ALERTS.CATEGORY_ALREADY_EXISTS}', 'error');
+          } else {
+            Swal.close();
+            toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+          }
+        },
+      });
+    } else {
+      if (!imagenCategoria) {
+        toastSweet('Error', '#{translation.ALERTS.SELECT_ICON}', 'error');
+      } else {
+        toastSweet('Error', '#{translation.ALERTS.REQUIRED_FIELDS}', 'error');
+      }
+    };
+  } 

@@ -1,0 +1,57 @@
+script.
+  $("#lista-trabajadores, #lista-trabajadores-editar").select2({
+    ajax: {
+      url: function () {
+        return urlSelect2Sedes();
+      },
+      dataType: 'json',
+      delay: 500,
+      data: function (params) {
+        return {
+          term: params.term,
+          select: ['id', 'primer_nombre', 'segundo_nombre', 'apellido_paterno', 'apellido_materno'],
+          page: params.page
+        }
+      },
+      processResults: function (data, params) {
+        return {
+          results: $.map(data.data, (item) => {
+            return {
+              id: item.id,
+              text: item.primer_nombre + " " + item.segundo_nombre + " " + item.apellido_paterno + " " + item.apellido_materno
+            }
+          })
+        }
+      },
+      cache: true
+    },
+    placeholder: 'Search',
+    templateResult: trabajadoresState
+  }).on("select2:open", () => {
+    $(".select2-results:not(:has(a))").append(
+      '<a href="#" style="padding: 6px;height: 20px;display: inline-table;" data-toggle="modal" data-target="#nuevoTiendaAdmin" onclick="closeSedesSelect2()">Agregar trabajador</a>'
+    );
+  });
+
+  function trabajadoresState (state) {
+    if (!state.id) {
+      return state.text;
+    }
+    let $container = $(`
+      <span><strong>${state.id}</strong> | ${state.text}</span>
+    `);
+
+    return $container;
+  }
+
+  function closeSedesSelect2 () {
+    $("#lista-trabajadores, #lista-trabajadores-editar").select2('close');
+  }
+
+  function urlSelect2Sedes() {
+    if (typeof empresa_id != 'undefined' && empresa_id && !isNaN(empresa_id.value)) {
+      return `/admin-trabajadores/select2/${empresa_id.value}`;
+    } else {
+      return "/admin-trabajadores/select2/select2"
+    }
+  }

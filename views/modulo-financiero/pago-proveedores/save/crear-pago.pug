@@ -1,0 +1,44 @@
+script.
+  async function agregarPago(token) {
+    let insumo = $("#lista-insumos").text();
+    let agregar = $("#agregar").val();
+    let cuit = $("#cuitNuevo").val();
+    let monto = $("#montoNuevo").val();
+    let nombre_proveedor = $("#nombreProveedor").val();
+
+    const auxData = {
+      cuit,
+      insumo,
+      monto,
+      nombre_proveedor
+    }
+    if (typeof empresa_id != 'undefined' && !isNaN(empresa_id.value)) {
+      auxData.empresa_id = empresa_id.value;
+    }
+    if ((insumo, cuit, monto)) {
+      Swal.showLoading();
+      console.log(auxData);
+      $.ajax({
+        url: '/admin-pago-proveedores',
+        type: 'POST',
+        data: auxData,
+        success: function (data) {
+          if (data.ok) {
+            if (typeof tablaPagoProveedores != 'undefined' && tablaPagoProveedores) {
+              tablaPagoProveedores.ajax.reload();
+            }
+            toastSweet('Success', '#{translation.ALERTS.CREATED}', 'success');
+            $("#nuevo").modal('hide')
+          } else {
+            toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+          }
+        },
+        error: function (data) {
+          toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+        }
+      })
+
+    } else {
+      toastSweet('Error', '#{translation.ALERTS.REQUIRED_FIELDS}', 'error');
+    }
+  }

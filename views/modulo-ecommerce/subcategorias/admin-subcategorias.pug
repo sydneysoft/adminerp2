@@ -1,0 +1,87 @@
+extends ../../extends/menu-superior-admin
+block contenido
+    .row
+        .col-6.text-grey(style="margin-bottom:10px;")
+            h1.display-1
+                strong #{translation.SUBCATEGORIES} 
+                   span.light= bookStore.length
+        .col-md-6.col-6.text-right 
+            button.btn.btn-success(style="margin-bottom:25px;", type="button",onClick="openModalNew()")
+                i.fas-fa-plus
+                span #{translation.ADD_SUBCATEGORIES} 
+        
+
+        if marketplace==true     
+            .col-md-4.col-6
+                div(style="display: inline-flex")
+                    .form-group
+                        label.font-weight-bold.datev-label #{translation.BUSINESS} 
+                            select#filtroEmpresa.form-control.seleccionar
+                                option(value=0)#{translation.SELECT_BUSINESS} 
+                                option(value="-") #{translation.UNASSIGNED} 
+                                    each cx in empresa
+                                        option(value= cx.nombre)= cx.nombre 
+        .col-12
+            div.table-responsive
+                table.table.table-bordered#tabla-subcategorias
+
+    include ./modals/crear-banner-admin.pug
+    include ./modals/editar-banner-admin.pug
+    include ./modals/agregar-filtros-dinamicos.pug
+
+    script
+        include /js/toast.sweet.js
+
+    include ./update/subcategoria-admin.pug
+    include ./save/agregar-filtros.pug
+    include ./save/subcategoria-admin.pug
+
+    include ./delete/subcategoria-admin.pug
+
+    include ./script.pug
+
+    script.
+        var marketplace
+        var deleteArray=[];
+        $(document).on('click', '#removeRowDynamic', function () {
+            if($(this).closest('#inputFormRow').attr("edit")){
+                deleteArray.push(parseInt($(this).closest('#inputFormRow').attr("edit"))); 
+            }
+            $(this).closest('#inputFormRow').remove();
+
+        });
+        var typeOperation="1";
+  
+         $("#empresaEditarSubcateg").val()
+        if( $("#empresaEditarSubcateg").length || $("empresaNuevaSubcateg").length){
+           marketplace=true
+       
+        } 
+      
+        $(document).ready(function () {
+           
+            $('#tabla-categorias').DataTable({
+                "language": { "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json" }
+            });
+
+            if(marketplace==true){
+            $(".seleccionar").select2({
+                language: {
+                    noResults: function () {
+                        return "No se han encontrado resultados";
+                    },
+                },
+            });
+            var tableFilter = $("#tabla-categorias").dataTable();
+
+            $('select#filtroEmpresa').change(function () {
+                if (this.value != 0) {
+                    tableFilter.fnFilter(this.value, 4);
+                } else {
+                    tableFilter.fnFilter('', 4);
+                    tableFilter.fnFilter('')
+                }
+            })}
+        });
+    include /modulo-generales/galeria-fotos/seleccion-unica-galeria/admin-galeria-modal-simple
+    include ./datatable/subcategoria.pug

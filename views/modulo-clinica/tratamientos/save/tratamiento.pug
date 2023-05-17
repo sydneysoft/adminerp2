@@ -1,0 +1,113 @@
+script.
+  document.getElementById('nuevoTratamiento').addEventListener('click', function () {
+    $(".imagen_").empty();
+    if (imagen.value !== '') {
+      $('.imagen_').append(
+        `<img class="image-item-galeria-photo" src="${imagen.value}"/>`
+      );
+    }
+    $("#nuevoTratamientoModal").modal("show");
+  });
+
+  function formClear() {
+    paciente.value = '';
+    nombre.value = '';
+    dosis.value = '';
+    inicio_tratamiento.value = '';
+    fin_tratamiento.value = '';
+    descripcion_corta.value = '';
+    costo_tratamiento.value = '';
+    duracion.value = '';
+    codigoexterno.value = '';
+    descripcion_larga.value = '';
+    resultado.value = '';
+    imagen.value = '';
+    sede.value = '';
+    sintomas.value = '';
+  }
+
+  document.getElementById('guardarTratamiento').addEventListener('click', function () {
+    if (paciente.value !== '' && nombre.value !== '' && dosis.value !== '' && inicio_tratamiento.value !== '' && fin_tratamiento.value !== '' && duracion.value !== '') {
+      const data = {
+        paciente_id: paciente.value,
+        nombre_tratamiento: nombre.value,
+        dosis: dosis.value,
+        inicio_tratamiento: inicio_tratamiento.value,
+        fin_tratamiento: fin_tratamiento.value,
+        descripcion_corta: descripcion_corta.value,
+        costo_tratamiento: costo_tratamiento.value,
+        duracion: duracion.value,
+        codigo_externo: codigoexterno.value,
+        descripcion_larga: descripcion_larga.value,
+        resultado: resultado.value,
+        imagen: imagen.value,
+        sede_id: sede.value,
+        sintomas: sintomas.value,
+        estado: estado.value
+      };
+
+      if (typeof empresa_id != 'undefined' && !isNaN(empresa_id.value)) {
+        data.empresa_id = empresa_id.value;
+      }
+
+      $.ajax({
+        method: "POST",
+        url: "/admin-clinica/tratamiento/items",
+        data: data,
+        success: function (response) {
+          if (response.ok) {
+            console.log(response);
+            Swal.fire({
+              icon: 'success',
+              title: 'Tratamiento agregado',
+              text: response.message,
+              timer: 2000
+            });
+            data.id = response.id;
+            tablaTratamiento.row.add({
+              "ID": response.id,
+              "Nombre": data.nombre_tratamiento,
+              "Paciente": paciente.options[paciente.options.selectedIndex].text,
+              "Dosis": data.dosis,
+              "Estado": data.estado,
+              "Acciones": JSON.stringify(data)
+            }).draw();
+            $("#nuevoTratamientoModal").modal("hide");
+            formClear();
+          } else {
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: response.message,
+              timer: 2000
+            });
+          }
+        },
+        error: function (error) {
+          if (error.responseJSON) {
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: error.responseJSON.msg,
+              timer: 2000
+            });
+          } else {
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: 'Error al actualizar tratamiento',
+              timer: 2000
+            });
+          }
+        }
+      });
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Llene los campos obligatorios',
+        timer: 2000
+      })
+    }
+
+  });

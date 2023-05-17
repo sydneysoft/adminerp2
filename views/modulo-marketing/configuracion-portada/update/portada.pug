@@ -1,0 +1,64 @@
+script.
+  const handlingEditBannersAdmin = (
+    id,
+    imagen,
+
+  ) => {
+    typeOperation = "2";
+    $("#imagen-data-banner-editar").attr("src", imagen);
+    $("#selected-img-data-editar").val(imagen);
+    $("#idEditar-banners-admin").val(id);
+    $("#editarBannerAdministrador").modal("show");
+  };
+  //Portadas Actualizar
+  const updateBannerAdmin = () => {
+    let idUpdate = $("#idEditar-banners-admin").val();
+    let imagenFinal = $("#imagen-data-banner-editar").attr("src");
+    if (idUpdate && imagenFinal) {
+      Swal.showLoading();
+      $.ajax({
+        method: "POST",
+        url: "/admin-portadas/editar",
+        dataType: "json",
+        data: {
+
+          imagen: imagenFinal,
+          id: idUpdate,
+        },
+        success: function (data) {
+          if (data.status === "success") {
+            $("#editarBannerAdministrador").modal("hide");
+            Swal.close();
+            window.location.reload(true);
+          } else {
+            Swal.close();
+            Swal.fire({
+              position: "center",
+              icon: "error",
+              html: "<b>No se pudo actualizar la foto de portada.</b>",
+              showConfirmButton: false,
+              timer: 3500,
+            });
+          }
+        },
+        error: function () {
+          Swal.close();
+          Swal.fire({
+            position: "center",
+            icon: "error",
+            html: "<b>Ocurrió un error interno inténtalo más tarde.</b>",
+            showConfirmButton: false,
+            timer: 3500,
+          });
+        },
+      });
+    } else {
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        html: "<b>Ocurrió un error interno inténtalo más tarde.</b>",
+        showConfirmButton: false,
+        timer: 3500,
+      });
+    }
+  };

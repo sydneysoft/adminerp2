@@ -1,0 +1,286 @@
+extends ../layout.pug
+
+append contenido
+  .border-left.border-right.border-bottom.p-3 
+    .row 
+      .col-12.col-md-6 
+        .row
+          .col-12
+            h3.text-center #{translation.MODULOTV.HOURS_SETTING}
+        .row
+          .col-12.text-right 
+            button#guardarHorario.btn.btn-primary(type="button") #{translation.SAVE}
+        .row.mt-3
+          input#itemId(type="text" value=data[0].id hidden)
+          .col-12.col-md-4 
+            label.form-check.p-3.border.rounded-lg.d-flex.justify-content-between(for="lunesCheck")
+              div 
+                span #{translation.DAYS.MONDAY}
+              div
+                input#lunesCheck.form-check-input(type="checkbox")
+          .col-12.col-md-4
+            label.form-check.p-3.border.rounded-lg.d-flex.justify-content-between(for="martesCheck")
+              div 
+                span #{translation.DAYS.TUESDAY}
+              div
+                input#martesCheck.form-check-input(type="checkbox")
+          .col-12.col-md-4
+            label.form-check.p-3.border.rounded-lg.d-flex.justify-content-between(for="miercolesCheck")
+              div 
+                span #{translation.DAYS.WEDNESDAY}
+              div
+                input#miercolesCheck.form-check-input(type="checkbox")
+          .col-12.col-md-4
+            label.form-check.p-3.border.rounded-lg.d-flex.justify-content-between(for="juevesCheck")
+              div 
+                span #{translation.DAYS.THURSDAY}
+              div
+                input#juevesCheck.form-check-input(type="checkbox")
+          .col-12.col-md-4
+            label.form-check.p-3.border.rounded-lg.d-flex.justify-content-between(for="viernesCheck")
+              div 
+                span #{translation.DAYS.FRIDAY}
+              div
+                input#viernesCheck.form-check-input(type="checkbox")
+          .col-12.col-md-4
+            label.form-check.p-3.border.rounded-lg.d-flex.justify-content-between(for="sabadoCheck")
+              div 
+                span #{translation.DAYS.SATURDAY}
+              div
+                input#sabadoCheck.form-check-input(type="checkbox")
+          .col-12.col-md-4
+            label.form-check.p-3.border.rounded-lg.d-flex.justify-content-between(for="domingoCheck")
+              div 
+                span #{translation.DAYS.SUNDAY}
+              div
+                input#domingoCheck.form-check-input(type="checkbox")
+          .col-12.col-md-8
+          .col-12.col-md-4 
+            .form-group
+              label(for="horaInicio") #{translation.MODULOTV.START_TIME}
+              input#horaInicio.form-control(type="time")
+          .col-12.col-md-4
+            .form-group
+              label(for="horaFin") #{translation.MODULOTV.END_TIME}
+              input#horaFin.form-control(type="time")
+        .row.mt-3
+          .col-12.text-right
+            button#limpiar.btn.btn-danger.mr-1(type="button") #{translation.CLEAR}
+            button#finesDeSemanas.btn.btn-info.mr-1(type="button") #{translation.DATE.WEEKEND}
+            button#todosLosDias.btn.btn-info.mr-1(type="button") #{translation.DATE.ALLDAYS}
+            button#lunesAViernes.btn.btn-info.mr-1(type="button") #{translation.DATE.WEEKDAYS}
+        .row.mt-3
+          .col-12.text-right 
+            button#insertarHorario.btn.btn-primary(type="button") #{translation.ADD}
+              i.fas.fa-plus.ml-3
+
+      .col-12.col-md-6 
+        #showHorariosDisponibles
+
+
+
+  script 
+    include ../../../js/modulo-tv/update.js
+
+  script.
+
+    const insertarHorarioButton = document.getElementById('insertarHorario');
+    const lunesCheck = document.getElementById('lunesCheck');
+    const martesCheck = document.getElementById('martesCheck');
+    const miercolesCheck = document.getElementById('miercolesCheck');
+    const juevesCheck = document.getElementById('juevesCheck');
+    const viernesCheck = document.getElementById('viernesCheck');
+    const sabadoCheck = document.getElementById('sabadoCheck');
+    const domingoCheck = document.getElementById('domingoCheck');
+    const horaInicio = document.getElementById('horaInicio');
+    const horaFin = document.getElementById('horaFin');
+    const itemId = document.getElementById('itemId');
+    const guardarHorario = document.getElementById('guardarHorario');
+
+    const lunesAViernes = document.getElementById('lunesAViernes');
+    const todosLosDias = document.getElementById('todosLosDias');
+    const finesDeSemana = document.getElementById('finesDeSemanas');
+    const limpiarSemana = document.getElementById('limpiar');
+
+    lunesAViernes.addEventListener('click', () => {
+      lunesCheck.checked = true;
+      martesCheck.checked = true;
+      miercolesCheck.checked = true;
+      juevesCheck.checked = true;
+      viernesCheck.checked = true;
+      sabadoCheck.checked = false;
+      domingoCheck.checked = false;
+    });
+
+    todosLosDias.addEventListener('click', () => {
+      lunesCheck.checked = true;
+      martesCheck.checked = true;
+      miercolesCheck.checked = true;
+      juevesCheck.checked = true;
+      viernesCheck.checked = true;
+      sabadoCheck.checked = true;
+      domingoCheck.checked = true;
+    });
+
+    finesDeSemana.addEventListener('click', () => {
+      lunesCheck.checked = false;
+      martesCheck.checked = false;
+      miercolesCheck.checked = false;
+      juevesCheck.checked = false;
+      viernesCheck.checked = false;
+      sabadoCheck.checked = true;
+      domingoCheck.checked = true;
+    });
+
+    limpiarSemana.addEventListener('click', () => {
+      lunesCheck.checked = false;
+      martesCheck.checked = false;
+      miercolesCheck.checked = false;
+      juevesCheck.checked = false;
+      viernesCheck.checked = false;
+      sabadoCheck.checked = false;
+      domingoCheck.checked = false;
+    });
+
+
+    // Days of week 1 = Lunes, 2 = Martes, 3 = Miercoles, 4 = Jueves, 5 = Viernes, 6 = Sabado, 7 = Domingo
+    const horariosDisponibles = document.getElementById('showHorariosDisponibles');
+    function renderHorarios() {
+      calendarPayload.businessHours.forEach((horario, index) => {
+        let horarioDisponible = document.createElement('div');
+        horarioDisponible.classList.add('alert', 'alert-success', 'alert-dismissible', 'fade', 'show');
+        horarioDisponible.setAttribute('role', 'alert');
+        let button = document.createElement('button');
+        button.classList.add('close');
+        button.setAttribute('type', 'button');
+        button.setAttribute('data-dismiss', 'alert');
+        button.setAttribute('aria-label', 'Close');
+        button.setAttribute('id', `horario-${index}`);
+        button.setAttribute('onclick', 'deleteHorario(this.id)');
+        let span = document.createElement('span');
+        span.setAttribute('aria-hidden', 'true');
+        span.innerHTML = '&times;';
+        button.appendChild(span);
+        horarioDisponible.appendChild(button);
+        horario.daysOfWeek.forEach((dia) => {
+          let span = document.createElement('span');
+          span.classList.add('badge', 'badge-pill', 'badge-primary', 'ml-2');
+          switch (dia) {
+            case 1:
+              span.innerHTML = '#{translation.DAYS.MONDAY}';
+              break;
+            case 2:
+              span.innerHTML = '#{translation.DAYS.TUESDAY}';
+              break;
+            case 3:
+              span.innerHTML = '#{translation.DAYS.WEDNESDAY}';
+              break;
+            case 4:
+              span.innerHTML = '#{translation.DAYS.THURSDAY}';
+              break;
+            case 5:
+              span.innerHTML = '#{translation.DAYS.FRIDAY}';
+              break;
+            case 6:
+              span.innerHTML = '#{translation.DAYS.SATURDAY}';
+              break;
+            case 0:
+              span.innerHTML = '#{translation.DAYS.SUNDAY}';
+              break;
+          }
+          horarioDisponible.appendChild(span);
+        });
+        let div = document.createElement('div');
+        div.classList.add('mt-3');
+        span = document.createElement('span');
+        span.innerHTML = `#{translation.MODULOTV.START_TIME}: ${horario.startTime} `;
+        div.appendChild(span);
+        span = document.createElement('span');
+        span.innerHTML = `#{translation.MODULOTV.END_TIME}: ${horario.endTime}`;
+        div.appendChild(span);
+        horarioDisponible.appendChild(div);
+        horariosDisponibles.appendChild(horarioDisponible);
+      });        
+    }
+    let calendarPayload = {
+      businessHours: []
+    };
+    let campos = !{data[0].campos}
+    addEventListener('DOMContentLoaded', function () {
+      if(campos.businessHours) {
+        calendarPayload = campos;
+        renderHorarios();
+      }
+    });
+
+    function clearForm (data) {
+      lunesCheck.checked = false;
+      martesCheck.checked = false;
+      miercolesCheck.checked = false;
+      juevesCheck.checked = false;
+      viernesCheck.checked = false;
+      sabadoCheck.checked = false;
+      domingoCheck.checked = false;
+      horaInicio.value = '';
+      horaFin.value = '';
+    }
+
+    guardarHorario.addEventListener('click', (e) => {
+      let payload = {
+        campos: JSON.stringify(calendarPayload),
+      };
+      updateItem(`/admin-calendar/settings/${itemId.value}`, payload);
+    });
+
+    insertarHorarioButton.addEventListener('click', (e) => {
+      let horario = {
+        daysOfWeek: [],
+        startTime: horaInicio.value,
+        endTime: horaFin.value,
+      };
+      if (lunesCheck.checked) {
+        horario.daysOfWeek.push(1);
+      }
+      if (martesCheck.checked) {
+        horario.daysOfWeek.push(2);
+      }
+      if (miercolesCheck.checked) {
+        horario.daysOfWeek.push(3);
+      }
+      if (juevesCheck.checked) {
+        horario.daysOfWeek.push(4);
+      }
+      if (viernesCheck.checked) {
+        horario.daysOfWeek.push(5);
+      }
+      if (sabadoCheck.checked) {
+        horario.daysOfWeek.push(6);
+      }
+      if (domingoCheck.checked) {
+        horario.daysOfWeek.push(0);
+      }
+      if (horaInicio.value != '' && horaFin.value != '' && horario.daysOfWeek.length > 0) {
+        e.preventDefault();
+        clearForm();
+        calendarPayload.businessHours.push(horario);
+        horariosDisponibles.innerHTML = '';
+        renderHorarios();
+      } else {
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'error',
+          title: 'Oops...',
+          text: '#{translation.ALERTS.CONFIRM_DELETE_MULTIPLE_SELECTED_MESSAGE_TEXT_BUTTON_TEXT_BUTTON_TEXT_BUTTON_TEXT_BUTTON_TITLE}',
+          timer: 2000,
+          showConfirmButton: false
+        })
+      }
+    });
+
+    function deleteHorario (id) {
+      let index = id.split('-')[1];
+      calendarPayload.businessHours.splice(index, 1);
+      horariosDisponibles.innerHTML = '';
+      renderHorarios();
+    }

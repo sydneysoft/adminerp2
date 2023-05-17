@@ -1,0 +1,93 @@
+script.
+  let tablaCatalogos;
+  $(document).ready(function () {
+    let urlAjaxTablaCatalogos = "/admin-catalogos/datatable"
+    if (typeof empresa_id != 'undefined' && empresa_id && !isNaN(empresa_id.value)) {
+      urlAjaxTablaCatalogos += `/${empresa_id.value}`;
+    }
+    tablaCatalogos = $('#tabla-catalogos').DataTable({
+      columnDefs: [
+        {
+          orderable: false,
+          className: "select-checkbox",
+          targets: 0,
+        },
+      ],
+      select: {
+        style: "multi",
+        selector: "td:first-child",
+      },
+      dom: "Bfrtip",
+      buttons: ["selectAll", "selectNone"],
+      order: [[1, "asc"]],
+      language: {
+        buttons: {
+          selectAll: "Seleccionar todos",
+          selectNone: "Borrar Selección",
+        },
+        url: "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json",
+        select: {
+          rows: "%d filas seleccionadas",
+        },
+      },
+      rowId: 'id',
+      responsive: true,
+      searchDelay: 500,
+      processing: true,
+      serverSide: true,
+      ajax: urlAjaxTablaCatalogos,
+      columns: [
+        { 
+          data: 'id', name: 'id', title: 'ID', orderable: false, searchable: false,
+          render: function (data, type, row) {
+            return ''
+          }
+        },
+        {
+          data: 'titulo', name: 'titulo', title: "#{translation.FORM.TITLE}", orderable: true, searchable: true,
+        },
+        { 
+          data: 'foto', name: 'foto', title: "#{translation.FORM.PHOTO}", orderable: false, searchable: false,
+          render: function (data, type, row) {
+            try {
+              new URL(row.imagen)
+              return `<img src="${data}" style="width:50px;height:50px;object-fit:cover">`;
+            } catch (e) {
+              return `<img src="/images/image-default.jpg" style="width:50px;height:50px;object-fit:cover">`;
+            }
+          }
+        },
+        {
+          data: 'date', name: 'date', title: "#{translation.FORM.DATE}", orderable: false, searchable: false,
+          render: function (data, type, row) {
+            return `Desde el ${moment(row.fecha_inicio).format('D [de] MMMM')} al ${moment(row.fecha_fin).format('D [de] MMMM')}`;
+          }
+        },
+        {
+          data: 'estado', name: 'estado', title: "#{translation.FORM.STATUS}", orderable: true, searchable: true,
+          render: function (data, type, row) {
+            return data == 1 ? '<span class="badge badge-success">#{translation.FORM.ACTIVE}</span>' : '<span class="badge badge-danger">#{translation.FORM.DEACTIVATE}</span>';
+          }
+        },
+        { 
+          data: 'acciones', name: 'acciones', title: '#{translation.FORM.ACTIONS}', orderable: false, searchable: false,
+          render: function (data, type, row) {
+              //- button.btn.btn-warning(type="button" onClick="handleStateCatalogo('"+book.id+"','0')")
+              //-         i.fas.fa-error
+              //-         b="Desactivar"
+              //-     button.btn.btn-info(style="margin-right:7px;margin-left:7px;" type="button" onclick="handlePreviewPDF('"+book.url+"')")
+              //-       i.fas.fa-eye
+              //-     button.delete.btn.btn-danger(onClick="deleteHandlePdf('"+book.id+"')")
+              //-       i.fas.fa-trash
+            let strRow = JSON.stringify(row);
+            return `
+            `;
+          }
+        }
+      ],
+      initComplete: function (settings) {
+        //- clone thead to tfoot
+        $("#tabla-catalogos thead tr").clone().appendTo($("#tabla-catalogos tfoot"));
+      }
+    });
+  });

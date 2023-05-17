@@ -1,0 +1,17 @@
+extends ./layout.pug
+
+append contenido
+  .container-fluid.mt-3.border-bottom.border-left.border-right 
+    .row 
+      .col-12.table-responsive
+        table#redes_sociales.table.w-100 
+          thead 
+            tr 
+              th ID 
+              th #{translation.FORM.EMAIL_CLIENT}
+              th #{translation.FORM.BUSINESS_NAME}
+              th #{translation.FORM.BUSINESS_EMAIL}
+              th #{translation.FORM.ACTIONS}
+  
+  script
+    include ./datatable.js

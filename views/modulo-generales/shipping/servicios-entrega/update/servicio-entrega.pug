@@ -1,0 +1,122 @@
+script.
+  const ActualizarServicioAdmin = () => {
+    let nombre = $("#nombreEditar-servicio").val();
+    let telefono = $("#telefonoEditar-servicio").val();
+    let id = $("#idEditar-servicio").val();
+    let dataSelectEdit = $("#arrDatosSelectEdit").val();
+    if (nombre && telefono && id && dataSelectEdit) {
+      let deleteFiltrosArray = [];
+      if (dataOldArray.length > 0) {
+        let filtrosFiltered = dataSelectEdit.slice(",");
+        for (let xs = 0; dataOldArray.length > xs; xs++) {
+          if (!filtrosFiltered.includes(dataOldArray[xs])) {
+            deleteFiltrosArray.push(dataOldArray[xs]);
+          }
+        }
+      }
+
+      let dataUpdateArrayGen = dataSelectEdit.slice(",");
+      Swal.showLoading();
+      $.ajax({
+        method: "POST",
+        url: "/update-servicio-admin",
+        dataType: "json",
+        data: {
+          id: id,
+          nombre: nombre,
+          telefono: telefono,
+          dataMetodos: dataUpdateArrayGen,
+          dataDelete: deleteFiltrosArray,
+        },
+        success: function (data) {
+        Swal.close();
+          if (data.ok) {
+            window.location.reload(true);
+          } else {
+            Swal.fire({
+              position: "center",
+              icon: "error",
+              title: "#{translation.ALERTS.WRONG}",
+              showConfirmButton: false,
+              timer: 2500,
+            });
+          }
+        },
+        error: function (e) {
+
+          Swal.close();
+          Swal.fire({
+            position: "center",
+            icon: "error",
+            title: "#{translation.ALERTS.WRONG}",
+            showConfirmButton: false,
+            timer: 2500,
+          });
+        },
+      });
+    } else {
+      Swal.close();
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        html: "<b>#{translation.ALERTS.COMPLETE_FORM_DATA_ADD_SERVICE}</b>",
+        showConfirmButton: false,
+        timer: 2500,
+      });
+    }
+  };
+
+
+    //- Manejar Modal Servicio
+    const handleEditServicio = (id) => {
+      Swal.showLoading();
+      $.ajax({
+        method: "POST",
+        url: "/get-services-join",
+        dataType: "json",
+        data: { val: id },
+        success: function (data) {
+            Swal.close();
+            $("#nombreEditar-servicio").val(data.data1[0].nombre);
+            $("#telefonoEditar-servicio").val(data.data1[0].telefono);
+            $("#idEditar-servicio").val(data.data1[0].id);
+            dataOldArray = [];
+            for (let i = 0; data.data2.length > i; i++) {
+                dataOldArray.push(data.data2[i].id_metodo.toString());
+            }
+
+            let dataUpdatedAllHandle = dataOldArray.join(",");
+            $("#arrDatosSelectEdit").val(dataUpdatedAllHandle);
+
+            $("#dataEditSelect span").remove();
+
+            $("#dataEditSelect").append(
+            "<span id='editar-select-complement'></span>"
+            );
+            
+            new SelectPure(
+            "#editar-select-complement",
+            {
+            options: dataFunctional,
+            value: dataOldArray,
+            multiple: true,
+            autocomplete: true,
+            icon: "fa fa-times",
+            onChange: (value) => {
+                $("#arrDatosSelectEdit").val(value);
+            },
+            });
+            $("#editarServicioAdministrador").modal("show");
+        },
+        error: function () {
+        Swal.close();
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "Ocurrió un error interno inténtalo más tarde.",
+          showConfirmButton: false,
+          timer: 2500,
+        });
+        },
+      });
+    };

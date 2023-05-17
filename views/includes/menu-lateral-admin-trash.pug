@@ -1,0 +1,34 @@
+#section-20.section-20.visible.scrollLateralAdmin(style="height: calc(100vh - 96px);top:auto;")
+    ul#admin-list-menu-charging
+        li(style="padding: 10px 0;")
+            a#logout(href=url_base+"cerrarSesion")
+                i.nav-icon.fas.fa-sign-out-alt
+                span Salir
+    script.
+        var dataUserVerify=JSON.parse('!{JSON.stringify(dataSession)}');
+   
+        $.ajax({
+                method: "GET",
+                url: `/get-modulos`,
+                dataType:"json",
+                data:null,
+                success: function(data){
+         
+                    let dataFinalMenu=data.modulos.sort(function(a, b) {
+                        var x = a["orden"]; var y = b["orden"];
+                        return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+                    });
+         
+                        
+                            for(i=0;i<dataFinalMenu.length;i++){
+                                if(dataFinalMenu[i].activo==="1"){
+                            
+                                    $('#admin-list-menu-charging').prepend( '<li style="padding: 10px 0;"><a href="'+url_base+dataFinalMenu[i].url+'"><i class="nav-icon fas '+dataFinalMenu[i].icono+'"></i><span style="font-family:'+dataFinalMenu[i].fuente+'">'+dataFinalMenu[i].texto+'</span></a></li>');
+                                    $('#admin-list-menu-charging-mobile').prepend('<li style="padding: 10px 0;"><div class="row"><div class="col-md-12"><a href="'+url_base+dataFinalMenu[i].url+'"><i class="nav-icon fas '+dataFinalMenu[i].icono+'"></i><span style="font-family:'+dataFinalMenu[i].fuente+'">'+dataFinalMenu[i].texto+'</span></a></div></div></li>')
+                                }
+                            }  
+                     
+                },error: function(e){
+           
+                },
+            });

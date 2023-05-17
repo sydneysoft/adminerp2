@@ -1,0 +1,40 @@
+script.
+  
+  function deleteRegister({ currentTarget }) {
+
+    const rowIndex = currentTarget.parentElement.parentElement._DT_RowIndex
+
+    console.log(currentTarget.parentElement.parentElement._DT_RowIndex)
+    try {
+      Swal.fire({
+        title: '#{translation.ALERTS.ARE_YOU_SURE_DELETE}',
+        showDenyButton: true,
+        showCancelButton: false,
+        confirmButtonText: '#{translation.YES}',
+      })
+        .then(async (result) => {
+
+          if (result.isConfirmed) {
+
+            const { ok } = await fetch(`${API_URL}/admin-trabajadores/${$(currentTarget).attr('data-id')}`, { method: 'DELETE' })
+            //- console.log()
+            if (ok) {
+              tablaTrabajadores.row($(':eq(' + rowIndex + ')')).remove().draw();
+              Swal.fire({
+                title: '#{translation.ALERTS.SUCCESS}', 
+                html: '#{translation.ALERTS.REGISTER_DELETED_SUCCESS}', 
+                icon: 'success'
+              });
+            }
+          } else if (result.isDenied) {
+            Swal.fire('Accion detenida', '', 'info')
+          }
+        })
+
+
+    } catch (error) {
+      console.log(error)
+      Swal.fire('Oops!', error.msg ? error.msg : 'Error', 'error')
+    }
+  }
+

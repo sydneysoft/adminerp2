@@ -1,0 +1,66 @@
+extends ../layout.pug
+
+append contenido 
+  .border-bottom.border-left.border-right.rounded-bottom.p-3
+    .my-3.row.justify-content-between 
+      .col 
+        button.btn.btn-info(type='button' onclick="window.history.back()") #{translation.BACK}
+      .col.text-right
+        button#guardarItem.btn.btn-primary(type='submit') #{translation.SAVE}
+    .my-3 
+      .row 
+        .col-12.col-md-8
+          .form-group
+            label(for='nombre') #{translation.FORM.NAME}
+            input#nombre.form-control(type='text' placeholder=translation.FORM.NAME name="nombre" required)
+          .form-group 
+            label(for='alt') #{translation.FORM.ALTERNATIVE_TEXT}
+            textarea#alt.form-control(name="ubicacion" placeholder=translation.FORM.ALTERNATIVE_TEXT)
+          .form-group   
+            label(for="descripcion") #{translation.FORM.DESCRIPTION}
+            textarea#descripcion(placeholder=translation.FORM.DESCRIPTION)
+        .col-12.col-md-4
+          .form-group 
+            label(for='imagen') #{translation.FORM.IMAGE} *
+            include /modulo-general/galeria-fotos/modal-galeria.pug
+
+  include /modulo-general/galeria-fotos/partial-modal-galeria.pug
+  script.
+    const editor = CKEDITOR.replace('descripcion')   
+    
+  script
+    include /js/modulo-tv/save.js
+    include /modulo-general/galeria-fotos/modal-galeria.js
+
+  script.
+    const nombre = document.getElementById('nombre');
+    const imagen = document.getElementById('imagen');
+    const alt = document.getElementById('alt');
+
+    const clearForm = () => {
+      nombre.value = '';
+      alt.value = '';
+      editor.setData('', '')
+    };
+
+    document.getElementById('guardarItem').addEventListener('click', (event) => {
+      if (nombre.value !== '' && imagen.value !== '') {
+        save('/admin-sliders/sliders', {
+          nombre: nombre.value,
+          url: imagen.value,
+          alt: alt.value,
+          descripcion: editor.getData()
+        }, clearImage);
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: '#{translation.FORM.REQUIRED_FIELDS}',
+        })
+      }
+    });
+
+    function clearImage (data) {
+      imagen.value = '';
+      $('.imagen_').html('')
+    }

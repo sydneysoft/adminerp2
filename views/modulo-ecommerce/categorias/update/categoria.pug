@@ -1,0 +1,89 @@
+script.
+  //Editar Campos Modal Categoría
+  const handleEditCategoria = (data) => {
+    typeOperation = "2";
+    if (data.nombre == "Prendas") {
+      $("#nombreEditar-categoria").val(data.name).attr("disabled", 'disabled');
+    } else {
+      $("#nombreEditar-categoria").val(data.name);
+    }
+
+    $("#idEditarCategoriaAdmin").val(data.id);
+
+    $("#descripcionEditar-categoria").val(data.description);
+    $("#imagen-data-banner-editar").attr("src", data.imagen);
+    $("#selected-img-data-editar").val(data.imagen);
+    $("#activadoEditar-categoria").val(data.activado);
+    $("#destacadoEditar-categoria").val(data.destacado);
+    $("#btn-icon-data-edit i").attr("class", data.icono);
+    $("#btn-icon-data-edit input").val(data.icono);
+    $("#headerEditar-categoria").val(data.navbar);
+    $("#lista-empresas-editar").select2('val', data.empresa_id);
+    $("#lista-empresas-editar ~ .select2 .select2-selection__placeholder").text(data.empresa_id);
+    // placeholder
+    $("#lista-empresas-editar").append('<option value="' + data.empresa_id + '" selected>' + data.empresa_id + '</option>')
+    $("#editarBannerAdministrador").modal("show");
+  };
+
+  //Submit Editar Categoría
+  const editarCategoriaAdmin = (token) => {
+    let idEditCategoria = $("#idEditarCategoriaAdmin").val();
+    let nombreEditCategoria = $("#nombreEditar-categoria").val();
+    let descripcionEditCategoria = $("#descripcionEditar-categoria").val();
+    let imagenEditarCategoria = $("#imagen-data-banner-editar").attr('src');;
+    let activadoEditarCategoria = $("#activadoEditar-categoria").val();
+    let destacadoEditarCategoria = $("#destacadoEditar-categoria").val();
+    let headerStateCategoria = $("#headerEditar-categoria").val();
+    let dataIcon = $("#btn-icon-data-edit input").val();
+
+    if (
+      idEditCategoria &&
+      nombreEditCategoria &&
+      headerStateCategoria &&
+      imagenEditarCategoria &&
+      activadoEditarCategoria &&
+      destacadoEditarCategoria
+    ) {
+      const dataAux = {
+        navbar: headerStateCategoria,
+        name: nombreEditCategoria,
+        icono: dataIcon,
+        description: descripcionEditCategoria,
+        imagen: imagenEditarCategoria,
+        activado: activadoEditarCategoria,
+        destacado: destacadoEditarCategoria
+      }
+      if(typeof empresa_id != 'undefined' && empresa_id && !isNaN(empresa_id.value)){
+        dataAux.empresa_id = empresa_id.value
+      }
+      Swal.showLoading();
+      $.ajax({
+        method: "PUT",
+        url: "/admin-categorias/" + idEditCategoria,
+        dataType: "json",
+        data: dataAux,
+        success: function (data) {
+          Swal.close();
+          if (data.ok) {
+            $("#editarBannerAdministrador").modal("hide");
+            if (typeof tablaCategorias != 'undefined') {
+              tablaCategorias.ajax.reload();
+            }
+            toastSweet('Success', '#{translation.ALERTS.UPDATED}', 'success');
+          } else {
+            toastSweet('Error', '#{translation.ALERTS.CATEGORY_NOT_UPDATED}', 'error');
+          }
+        },
+        error: function () {
+          Swal.close();
+          toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+        },
+      });
+    } else {
+      if (!imagenEditarCategoria) {
+        toastSweet('Error', '#{translation.ALERTS.SELECT_ICON}', 'error');
+      } else {
+        toastSweet('Error', '#{translation.ALERTS.REQUIRED_FIELDS}', 'error');
+      }
+    }
+  };

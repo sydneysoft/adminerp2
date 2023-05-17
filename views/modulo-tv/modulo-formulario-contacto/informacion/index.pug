@@ -1,0 +1,68 @@
+extends ../layout.pug
+
+append contenido 
+  .border-bottom.border-left.border-right.rounded-bottom.p-3
+    .my-3 
+    input#empresa_id(type="text" value=empresa_id hidden)
+      //- a.btn.btn-primary.btn-lg.btn-block(type='button' href="/admin-faqs/crear") Crear FAQ
+    table#dataTable.table.rounded-lg.overflow-hidden
+      thead.thead-dark
+        tr
+          th(scope='col') ID
+          th(scope='col') #{translation.FORM.NAME}
+          th(scope='col') #{translation.FORM.COMPANY}
+          th(scope='col') #{translation.FORM.EMAIL}
+          th(scope='col') #{translation.FORM.PHONE}
+          th(scope='col') #{translation.FORM.ACTIONS}
+      tbody
+    
+    .modal.justify-content-center.align-items-center(tabindex="-1" role="dialog" id="nuevoPacienteModal")
+      .modal-dialog.modal-lg
+          .modal-content.modalContent(style="height: 100%;")
+              .modal-header 
+                  .row(style="margin:0;")
+                      .col-md-12.text-center
+                          h3(style="margin:0px 0;") #{translation.SHOW_INFORMATION}
+
+              .modal-body.borderBottom
+                //- nombre compani email telefono mensaje
+                .row
+                  .col-12 
+                    .form-group 
+                      label(for="nombre") #{translation.FORM.NAME}
+                      input#nombre.form-control(type="text" disabled)
+                  .col-12
+                    .form-group 
+                      label(for="compania") #{translation.FORM.COMPANY}
+                      input#compania.form-control(type="text" disabled)
+                  .col-12.col-md-8 
+                    .form-group 
+                      label(for="email") #{translation.FORM.EMAIL}
+                      input#email.form-control(type="text" disabled)
+                  .col-12.col-md-4 
+                    .form-group 
+                      label(for="telefono") #{translation.FORM.PHONE}
+                      input#telefono.form-control(type="text" disabled)
+                  .col-12 
+                    .form-group 
+                      label(for="mensaje") #{translation.FORM.MESSAGE}
+                      textarea#mensaje.form-control(type="text" disabled)
+
+              .modal-footer(style="padding:8px;")
+                  .row(style="margin:0;")
+                      .col-md-12.text-right
+                          //- button#guardarPaciente.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;") Agregar
+                          button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}
+
+
+    script.
+      const empresa_id = document.getElementById('empresa_id');
+      function showContactInfo (data) {
+        $('#nombre').val(data.nombre);
+        $('#compania').val(data.compania);
+        $('#email').val(data.email);
+        $('#telefono').val(data.telefono);
+        $('#mensaje').val(data.mensaje);
+        $('#nuevoPacienteModal').modal('show');
+      }
+    include ./datatable/informacion.pug

@@ -1,0 +1,43 @@
+extends ../layout.pug
+
+
+append contenido 
+  .my-3
+    div
+      a.btn.btn-info(href="/admin-tv/faqs") 
+        i.fas.fa-arrow-left
+        span.px-3 #{translation.BACK}
+    h1.text-center.mb-5 
+      | #{translation.CREATE_NEW_FAQ}
+  .my-3 
+    form#nuevaPregunta(action=`/admin-tv/faqs/index` method="post")
+      .row
+        .col-12.text-right 
+          button.btn.btn-primary(type="submit") #{translation.FORM.SAVE}
+        .col-12.my-3
+        .col-12.col-md-8
+          .form-group
+            label(for='pregunta') #{translation.FORM.QUESTION}
+            input#pregunta.form-control(type='text' placeholder="Pregunta")
+        .col-12.col-md-4 
+          label(for='icono') #{translation.FORM.ICON_FA}
+          input#icono.form-control(type='text' placeholder #{translation.FORM.ICON_FA})
+        .col-12.my-3
+        .col-12
+          .form-group 
+            label(for="respuesta") #{translation.FORM.ANSWER} 
+            textarea#respuesta(name="respuesta" placeholder #{translation.FORM.ANSWER}) 
+
+
+  script.
+    const editor = CKEDITOR.replace('respuesta')
+
+  script 
+    include ./faq.js
+    include ./save.js
+
+  script.
+    document.getElementById('nuevaPregunta').addEventListener('submit', (event) => {
+      event.preventDefault();
+      guardarFAQ();
+    })

@@ -1,0 +1,163 @@
+extends ./layout.pug
+append contenido
+  .row
+    if empresa_id
+      input#empresa_id(type="hidden" value=empresa_id)
+    .col-md-6.col-6.text-grey(style="margin-bottom:10px;")
+      h1.display-1
+        strong #{translation.CLOTHES}  
+
+    .col-md-6.col-6.text-right 
+      button.btn.btn-success(type="button" onClick="openNewHandleModalProduct()")
+        i.fas.fa-plus
+          span #{translation.CLOTHES} 
+    .col-md-4.col-6
+      .form-group
+        label.font-weight-bold.datev-label #{translation.FORM.SUBCATEGORY} 
+        select#lista-subcategorias-filtro
+
+    .col-md-3.col-6
+      .row.align-items-end
+        .col-7
+          .form-group
+            label.font-weight-bold.datev-label #{translation.MASSIVE_ACTIONS} 
+            select#acciones.form-control
+              option(value=null)  #{translation.SELECT}
+              option(value="0")  #{translation.DELETE}
+              option(value="1")  #{translation.PUBLISH}
+              option(value="2")  #{translation.SAVE_AS_DRAFT}
+        .col-5
+          .form-group
+            button#accionesBoton(class="btn btn-success-2")  #{translation.CONFIRM} 
+
+
+    .col-12(style="margin-top: 20px;")
+      div.table-responsive
+        table#tabla-prendas.table.table-bordered
+          thead.thead-dark
+          tbody
+          tfoot 
+
+
+  include ./modals/crear-prenda.pug
+  include ./modals/editar-prenda.pug
+  include ./modals/galeria-editar-prenda.pug
+
+
+  include ./duplicate/prenda.pug
+
+
+  include ./styles/prendas.pug
+  script
+    include /js/toast.sweet.js
+
+  include /modulo-generales/galeria-fotos/seleccion-multiple-galeria/admin-galeria-modal-multiple.pug
+
+
+  script.
+    $("#lista-subcategorias-filtro").change(function () {
+      //- tablaPrendas.columns(4).search(this.value).draw();
+      tablaPrendas.columns([4]).search(this.value).draw();
+    })
+
+    var oldFiltersArray=[];
+    var deleteFiltrosArray=[];
+    var typeUpdate=1;
+    var typeAction=1;
+    CKEDITOR.replace('ckeditorarea');
+    CKEDITOR.replace('ckeditorareaEditar');
+    var typeOperation="1"; 
+
+    //- handleChangeCategoria()
+    $(document).ready(function () {
+
+      const inputElmEditar = document.querySelector(
+        "input[name=tags-regular-tallas-editar]"
+      );
+      const inputElmNuevo = document.querySelector(
+        "input[name=tags-regular-tallas-nuevo]"
+      );
+      const inputElmNuevoCol = document.querySelector(
+        "input[name=tags-regular-colores-nuevo]"
+      );
+      const inputElmEditarCol = document.querySelector(
+        "input[name=tags-regular-colores-editar]"
+      );
+
+      const allInputs = [
+        {
+          name: "tagify1",
+          field: inputElmEditar,
+          list: ["S", "M", "L", "XL", "XXL"],
+          default: ["S", "M", "L"],
+        },
+        {
+          name: "tagify2",
+          field: inputElmNuevo,
+          list: ["S", "M", "L", "XL", "XXL"],
+          default: ["S", "M", "L"],
+        },
+        {
+          name: "tagify3",
+          field: inputElmNuevoCol,
+          list: ["Blanco", "Negro", "Amarillo", "Rosado", "Gris", "Celeste"],
+          default: ["Blanco", "Negro"],
+        },
+        {
+          name: "tagify4",
+          field: inputElmEditarCol,
+          list: ["Blanco", "Negro", "Amarillo", "Rosado", "Gris", "Celeste"],
+          default: ["Blanco", "Negro"],
+        },
+      ];
+
+      allInputs.forEach((item) => {
+        let tagify = new Tagify(item.field, {
+          whitelist: item.list,
+          tagTextProp: "name",
+          editTags: {
+            clicks: 2,
+          },
+          transformTag: (tagData, originalData) => {
+            tagData.title = tagData.value;
+          },
+          keepInvalidTags: true,
+          dropdown: {
+            enabled: 0,
+            sortby: "startsWith",
+          },
+          templates: {
+            dropdownItemNoMatch: function (data) {
+              return `<div class='${this.settings.classNames.dropdownItem}' value="noMatch" tabindex="0" role="option">' #{translation.NO_SUGGESTIONS_FOR}: <strong>${data.value}</strong>
+                </div>`;
+            },
+          },
+        });
+        tagify.on('edit:updated', ({ detail: { tagify } }) => {
+          tagify.DOM.input.focus()
+        });
+
+        setTimeout(() => {
+          tagify.loadOriginalValues(item.default)
+
+        }, 500);
+
+
+      });
+    });
+
+  include ./datatable/prendas.pug
+  include ./script.pug
+  include ./save/prenda.pug
+  include ./delete/prenda.pug
+  include ./update/prenda.pug
+
+  //- Otros modulos
+
+  include /modulo-ecommerce/subcategorias/select2/subcategoria.pug
+  include /modulo-ecommerce/subcategorias/modals/crear-banner-admin.pug
+  include /modulo-ecommerce/subcategorias/save/subcategoria-admin.pug
+
+  include /modulo-ecommerce/categorias/modals/crear-categoria.pug
+  include /modulo-ecommerce/categorias/save/categoria.pug
+  include /modulo-ecommerce/categorias/select2/categorias.pug

@@ -1,0 +1,10 @@
+extends ./layout.pug
+
+append contenido
+  .container 
+    .row 
+      .col-12 
+        .form-group
+          label(for="nombre") #{translation.FORM.NAME}
+          input#nombre.form-control(type="text", name="nombre")
+   

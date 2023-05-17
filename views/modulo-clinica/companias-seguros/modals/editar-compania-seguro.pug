@@ -1,0 +1,45 @@
+.modal.fade#editarCompaniaSeguroModal(tabindex="-1" role="dialog" )
+  .modal-dialog.modal-lg(role="document")
+    .modal-content
+      .modal-header 
+        .row 
+          .col-12
+            h5.strong(style="font-size:1rem;") Editar Compania Seguro
+
+      .modal-body-almacen
+        .row(style="padding:15px;")
+          .col-md-6.col-12
+            .form-group
+              label(for="nombreCompaniaSeguroEditar") Nombre de la compania de seguro *
+              input#nombreCompaniaSeguroEditar.form-control(type="text" placeholder="Nombre de la compania de seguro")
+          .col-md-6.col-12
+            .form-group
+              label(for="direccionCompaniaSeguroEditar") Direccion:
+              input#direccionCompaniaSeguroEditar.form-control(type="text" placeholder="Direccion")
+          .col-md-6.col-12
+            .form-group
+              label(for="lista-paises-editar") #{translation.FORM.COUNTRY}:
+              select#lista-paises
+          //- .col-md-6.col-12
+          //-   .form-group
+          //-     label(for="lista-provincias-editar") #{translation.FORM.PROVINCE}:
+          //-     select#lista-provincias
+          .col-md-6.col-12
+            .form-group
+              label(for="correoCompaniaSeguroEditar") Correo:
+              input#correoCompaniaSeguroEditar.form-control(type="text" placeholder="Correo")
+          .col-md-6.col-12
+            .form-group
+              label(for="telefonoCompaniaSeguroEditar") Telefono:
+              input#telefonoCompaniaSeguroEditar.form-control(type="text" placeholder="Telefono")
+          .col-md-6.col-12
+            .form-group
+              label(for="sitioWebCompaniaSeguroEditar") Sitio Web:
+              input#sitioWebCompaniaSeguroEditar.form-control(type="text" placeholder="Sitio Web")
+          
+
+      .modal-footer      
+        button#editarCompaniaSeguro.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;") #{translation.UPDATE}
+          i.fas.fa-save.ml-2
+        button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}
+          i.fas.fa-times.ml-2

@@ -1,0 +1,141 @@
+script.
+
+  //Manejar datos de actualizacion a modal
+  const handleDataEditModulos = (data) => {
+
+    $("#idEditar-modulo-admin").val(data.id);
+    $("#nombreEditar-modulo-admin").val(data.nombre);
+    $("#urlEditar-modulo-admin").val(data.url);
+    $("#iconoEditar-modulo-admin").val(data.icono);
+    $("#textoEditar-modulo-admin").val(data.texto);
+    $("#ordenEditar-modulo-admin").val(data.orden);
+    $("#fuenteEditar-modulo-admin").val(data.fuente);
+    $("#activadoEditar-modulo-admin").val(data.activo);
+
+    $("#lista-modulo-categorias-editar").select2('val', data.categoria_id);
+    $("#lista-modulo-categorias-editar").val(data.categoria_id).trigger("change");
+    $("#lista-modulo-categorias-editar ~ .select2 .select2-selection__placeholder").text(data.categoria_id);
+
+    let responseValueRol = []
+    if (data.roles && data.roles != 'null') {
+      responseValueRol = data.roles.split(",");
+    }
+    $("#roleshiddenDataModulos").val(responseValueRol);
+    $("#controlerEditarModulos span").remove();
+    $("#controlerEditarModulos").append(
+      "<span id='rolesEditar-admin-modulos'></span>"
+    );
+    var autocompleteRolesEditar = new SelectPure("#rolesEditar-admin-modulos", {
+      options: dataFunctional,
+      value: responseValueRol,
+      multiple: true,
+      autocomplete: true,
+      icon: "fa fa-times",
+      onChange: (value) => {
+        $("#roleshiddenDataModulos").val(value);
+      },
+      classNames: {
+        select: "select-pure__select",
+        dropdownShown: "select-pure__select--opened",
+        multiselect: "select-pure__select--multiple",
+        label: "select-pure__label",
+        placeholder: "select-pure__placeholder",
+        dropdown: "select-pure__options",
+        option: "select-pure__option",
+        autocompleteInput: "select-pure__autocomplete",
+        selectedLabel: "select-pure__selected-label",
+        selectedOption: "select-pure__option--selected",
+        placeholderHidden: "select-pure__placeholder--hidden",
+        optionHidden: "select-pure__option--hidden",
+      },
+    });
+    $("#editarModuloModalAdmin").modal("show");
+  };
+
+  //Actualizar Datos
+  const actualizarModulosAdminPanel = () => {
+    let idModulo = $("#idEditar-modulo-admin").val();
+    let nombreModulo = $("#nombreEditar-modulo-admin").val();
+    let urlModulo = $("#urlEditar-modulo-admin").val();
+    let iconoModulo = $("#iconoEditar-modulo-admin").val();
+    let textoModulo = $("#textoEditar-modulo-admin").val();
+    let ordenModulo = $("#ordenEditar-modulo-admin").val();
+    let fuenteModulo = $("#fuenteEditar-modulo-admin").val();
+    let statusModulo = $("#activadoEditar-modulo-admin").val();
+    let rolesModulo = $("#roleshiddenDataModulos").val();
+    let categoria_id = $("#lista-modulo-categorias-editar").val();
+    if (
+      idModulo &&
+      nombreModulo &&
+      urlModulo &&
+      iconoModulo &&
+      textoModulo &&
+      ordenModulo &&
+      fuenteModulo &&
+      statusModulo &&
+      rolesModulo &&
+      categoria_id
+    ) {
+      Swal.showLoading();
+      $.ajax({
+        method: "PUT",
+        url: "/admin-modulos/" + idModulo,
+        dataType: "json",
+        data: {
+          nombre: nombreModulo,
+          url: urlModulo,
+          icono: iconoModulo,
+          texto: textoModulo,
+          orden: ordenModulo,
+          fuente: fuenteModulo,
+          activo: statusModulo,
+          roles: rolesModulo,
+          categoria_id: categoria_id,
+        },
+        success: function (data) {
+          if (data.ok) {
+            $("#editarModuloModalAdmin").modal("hide");
+            Swal.close();
+            Swal.fire({
+              position: "center",
+              icon: "success",
+              title: "Se edito el módulo exitósamente.",
+              showConfirmButton: false,
+              timer: 2500,
+            });
+            if (typeof tablaModulos != "undefined") {
+              tablaModulos.ajax.reload();
+            }
+          } else {
+            Swal.close();
+            Swal.fire({
+              position: "center",
+              icon: "error",
+              title:
+                "No se pudo editar el módulo, inténtalo nuevamente  por favor.",
+              showConfirmButton: false,
+              timer: 2500,
+            });
+          }
+        },
+        error: function () {
+          Swal.close();
+          Swal.fire({
+            position: "center",
+            icon: "error",
+            title: "Ocurrió un error interno inténtalo más tarde.",
+            showConfirmButton: false,
+            timer: 2500,
+          });
+        },
+      });
+    } else {
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: "Debes completar el formulario.",
+        showConfirmButton: false,
+        timer: 2500,
+      });
+    }
+  };

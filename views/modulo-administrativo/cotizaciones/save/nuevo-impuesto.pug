@@ -1,0 +1,30 @@
+script.
+  //- Evento para guardar un nuevo impuesto
+  $("#agrega-impuesto-modal-btn").on("click", function () {
+    let nombre = $(".nombreImpuesto").val();
+    let tasa = $(".tasaImpuesto").val();
+    let empresa = parseInt($("#empresaImpuesto").val());
+    const auxData = { nombre: nombre, tasa: tasa};
+    if (!isNaN(empresa)) {
+      auxData.empresa_id = empresa;
+    }
+    Swal.showLoading();
+    $.ajax({
+      url: "/cotizaciones/nuevo-impuesto",
+      type: "POST",
+      data: auxData,
+      success: function (data) {
+        Swal.close();
+        if (data.success == true) {
+          toastSweet('success', '#{translation.ALERTS.TAX_SUCCESS}', 'success');
+          $("#agregarImpuesto").modal("hide");
+        } else {
+          toastSweet('warning', '#{translation.ALERTS.TAX_EXIST}', 'warning');
+        }
+      },
+      error: function (err) {
+        Swal.close();
+        toastSweet('error', '#{translation.ALERTS.WRONG}', 'error');
+      },
+    });
+  });

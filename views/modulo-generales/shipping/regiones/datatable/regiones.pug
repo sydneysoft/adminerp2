@@ -1,0 +1,80 @@
+script.
+  let tablaRegiones;
+  $(document).ready(function () {
+    let urlAjaxTablaRegiones = "/admin-shipping/regiones/datatable"
+    if (typeof empresa_id != 'undefined' && empresa_id && !isNaN(empresa_id.value)) {
+      urlAjaxTablaRegiones += `/${empresa_id.value}`;
+    }
+    tablaRegiones = $('#tabla-regiones').DataTable({
+      columnDefs: [
+        {
+          orderable: false,
+          className: "select-checkbox",
+          targets: 0,
+        },
+      ],
+      select: {
+        style: "multi",
+        selector: "td:first-child",
+      },
+      dom: "Bfrtip",
+      buttons: ["selectAll", "selectNone"],
+      order: [[1, "asc"]],
+      language: {
+        buttons: {
+          selectAll: "Seleccionar todos",
+          selectNone: "Borrar Selección",
+        },
+        url: "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json",
+        select: {
+          rows: "%d filas seleccionadas",
+        },
+      },
+      rowId: 'id',
+      responsive: true,
+      searchDelay: 500,
+      processing: true,
+      serverSide: true,
+      ajax: urlAjaxTablaRegiones,
+      columns: [
+        { 
+          data: 'id', name: 'id', title: 'ID', orderable: false, searchable: false,
+          render: function (data, type, row) {
+            return ''
+          }
+        },
+        {
+          data: 'nombre', name: 'nombre', title: "#{translation.FORM.NAME}", orderable: true, searchable: true,
+        },
+        {
+          data: 'activado', name: 'activado', title: "{ACTIVADO}", orderable: true, searchable: true,
+          render: function (data, type, row) {
+            return data == 1 ? '<span class="badge badge-success">#{translation.FORM.ACTIVE}</span>' : '<span class="badge badge-danger">#{translation.FORM.DEACTIVATE}</span>';
+          }
+        },
+        { 
+          data: 'acciones', name: 'acciones', title: '#{translation.FORM.ACTIONS}', orderable: false, searchable: false,
+          render: function (data, type, row) {
+            let strRow = JSON.stringify(row);
+            return `
+              <button class="btn btn-info" style="margin-right:7px;" type="button" onClick="handleVinculosMetodos(${row.id})">
+                <i class="fas fa-plus"></i>
+              </button>
+              <button class="btn btn-warning" style="margin-right:7px;" type="button" onclick='handleEditMetodo(${strRow})'>
+                <i class="fas fa-edit"></i>
+              </button>
+              <button class="delete btn btn-danger" onClick="handleDeleteMetodo(${row.id})">
+                <i class="fas fa-trash"></i>
+              </button>
+            `;
+          }
+        }
+      ],
+      initComplete: function (settings) {
+        //- clone thead to tfoot
+        $("#tabla-regiones thead tr").clone().appendTo($("#tabla-regiones tfoot"));
+      }
+    });
+
+    var tableFilter = $("#tabla-regiones").dataTable();
+  });

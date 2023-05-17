@@ -1,0 +1,153 @@
+//- .row.mb-3.align-items-end
+//-   .col-8
+//-     span Favicon 
+//-     br
+//-     .btn-group
+//-       label.btn.btn-info.m-0(for="preFavicon") Subir
+//-         i.fas.fa-upload.ml-2
+//-       button#fromTarget.btn.btn-primary(type="button" onclick="getImagePagedGaleria(0, 'modalTarget', 'showModalTarget')") De galeria
+//-   .col-4
+//-     input#preTarget.form-control-file(type="file" name="" value="" hidden)
+//-     input#target(type="text" hidden )
+//-     #showFavicon
+    
+//- .modal.fade.justify-content-center.align-items-center(tabindex="-1" role="dialog" id="modalTarget" style="height: 100vh;overflow-y: scroll;")
+//-   .modal-dialog.modal-lg
+//-     .modal-content.modalContent(style="height: 100%;")
+//-       .modal-header 
+//-         .row(style="margin:0;")
+//-           .col-md-12.text-center
+//-             h3(style="margin:0px 0;") Galeria
+
+//-       .modal-body.borderBottom
+//-         #showModalTarget.row
+        
+//-       .modal-footer(style="padding:8px;")
+//-         .row(style="margin:0;")
+//-           .col-md-12.text-right
+//-             button.btn.btn-danger(type="buton" onclick="$('#modalFavicon').modal('hide');") Cerrar
+
+script.
+  let targetImage;
+  let preTargetImage;
+  let showTargetImage;
+  let fromTargetImage;
+
+  function createImageGroup (target, preTarget, showTarget, fromTarget) {
+    targetImage = document.getElementById(target);
+    preTargetImage = document.getElementById(preTarget);
+    showTargetImage = document.getElementById(showTarget);
+    fromTargetImage = document.getElementById(fromTarget);
+
+    preTargetImage.addEventListener('change', async (event) => {
+      const file = event.target.files[0];
+      const reader = new FileReader();
+      // Extension images match and test
+      const extension = file.name.split('.').pop();
+      if (extension !== 'jpg' && extension !== 'jpeg' && extension !== 'png') {
+        Swal.fire({
+          toast: false,
+          position: 'top-end',
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Solo se permiten archivos .jpg, .jpeg y .png',
+          showConfirmButton: false,
+          timer: 2000
+        });
+        preTargetImage.value = '';
+        return;
+      }
+      reader.onload = (event) => {
+        showTargetImage.innerHTML = `<img src="${event.target.result}" class="img-fluid" alt="Responsive image">`;
+      };
+      reader.readAsDataURL(file);
+      let dataForms = new FormData();
+      dataForms.append('multimedia', file);
+      Swal.showLoading();
+      $.ajax({
+        url: '/admin-galeria',
+        type: 'POST',
+        data: dataForms,
+        contentType: false,
+        processData: false,
+        success: function (response) {
+          Swal.close();
+          if (response.status === 200) {
+            Swal.fire({
+              toast: false,
+              position: 'top-end',
+              icon: 'success',
+              title: 'Imagen subida',
+              text: 'La imagen se subio correctamente',
+              showConfirmButton: false,
+              timer: 2000
+            });
+            targetImage.value = response.data;
+            fromTargetImage.value = 'upload';
+          } else {
+            Swal.fire({
+              toast: false,
+              position: 'top-end',
+              icon: 'error',
+              title: 'Oops...',
+              text: 'La imagen no se subio correctamente',
+              showConfirmButton: false,
+              timer: 2000
+            });
+          }
+        },
+        error: function (error) {
+          Swal.close();
+          Swal.fire({
+            toast: false,
+            position: 'top-end',
+            icon: 'error',
+            title: 'Oops...',
+            text: 'La imagen no se subio correctamente',
+            showConfirmButton: false,
+            timer: 2000
+          });
+        }
+      });
+    })
+
+  }
+
+  const getImagePagedGaleria = async (dataPage,  modalTarget, showModalTarget) => {
+    $(`#${showModalTarget}`).empty();
+    $(`#${showModalTarget}`).hide();
+    $("#loadingDataAjax").show();
+    try {
+      let url = "/admin-galeria/selectImages/" + dataPage;
+      let data = null;
+      let head = { "Content-Type": "application/json" };
+      const dataFilesUpload = await axios.get(url, data, head);
+      if (dataFilesUpload.data) {
+        for (let i = 0; dataFilesUpload.data.length > i; i++) {
+          $(`#${showModalTarget}`).append(
+            '<div id="mediaPhoto' +
+            dataFilesUpload.data[i].id +
+            '" class="col-6 col-md-3 mb-4 text-center">' +
+            '<div onclick="' +
+            'insertarImage(\'' + dataFilesUpload.data[i].url + '\', \''+ modalTarget +'\')' +
+            '" class="selectImg position-relative"><img class="image-item-galeria-photo" src="' +
+            dataFilesUpload.data[i].url +
+            '"/></div>' +
+            "</div>"
+          );
+        }
+        $("#loadingDataAjax").hide();
+        $(`#${showModalTarget}`).show();
+        $(`#${modalTarget}`).modal('show');
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+
+  function insertarImage (url, modalTarget) {
+    targetImage.value = url;
+    showTargetImage.innerHTML = `<img src="${url}" class="img-fluid" alt="Responsive image">`;
+    $(`#${modalTarget}`).modal('hide');
+  }

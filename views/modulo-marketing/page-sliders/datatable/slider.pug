@@ -1,0 +1,106 @@
+script.
+  let tablaSlider;
+  $(document).ready( function () {
+    let auxAjaxSlider = "/admin-sliders/datatable";
+    if (empresa_id && empresa_id.value != '' && !isNaN(empresa_id.value)) {
+      auxAjaxSlider = `/admin-sliders/datatable/${empresa_id.value}`;
+    }
+    tableSlider = $('#tabla-sliders').DataTable({
+      fnCreatedRow: function (nRow, aData, iDataIndex) {
+        $(nRow).attr('id', `delete${aData.ID}`);
+      },
+      columnDefs: [
+        {
+          orderable: false,
+          className: "select-checkbox",
+          targets: 0,
+        },
+      ],
+      select: {
+        style: "multi",
+        selector: "td:first-child",
+      },
+      dom: "Bfrtip",
+      buttons: ["selectAll", "selectNone"],
+      order: [[1, "asc"]],
+      language: {
+        buttons: {
+          selectAll: "Seleccionar todos",
+          selectNone: "Borrar Selección",
+        },
+        url: "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json",
+        select: {
+          rows: "%d filas seleccionadas",
+        },
+      },
+      rowId: 'id',
+      searchDelay: 500,
+      processing: true,
+      serverSide: true,
+      ajax: auxAjaxSlider,
+      columns: [
+        { 
+          data: 'id', name: 'id', title: '#', searchable: false, orderable: false,
+          render: function (data, type, row) {
+            return '';
+          }  
+        },
+        { data: 'nombre', name: 'nombre', title: '#{translation.FORM.NAME}' },
+        { 
+          data: 'url',
+          name: 'url',
+          title: '#{translation.FORM.URL}',
+          searchable: false,
+          orderable: false,
+          render: function (data, type, row) {
+            try {
+              new URL(row.url);
+              return `<img src="${data}" alt="${row.nombre}" width="50" height="50" style="object-fit: cover"/>`
+            } catch (e) {
+              return `<img src="/images/image-default.jpg" alt="${row.nombre}" width="50" height="50" style="object-fit: cover"/>`
+            }
+          }
+        },
+        { data: 'alt', name: 'alt', title: '#{translation.FORM.TEXT_ALTERNATIVE}' },
+        { 
+          data: 'actions',
+          render: function (data, type, row) {
+            if (empresa_id && empresa_id.value && !isNaN(empresa_id.value)) {
+              return `
+                <div class="btn-group" role="group" aria-label="acciones">
+                  <a class="btn btn-primary btn-sm" href="/admin-sliders/empresa/${empresa_id.value}/editar/${row.id}"><i class="fas fa-pen" aria-hidden="true"></i></a>
+                  <a class="btn btn-danger btn-sm" href="#" onclick="beforeDeleteItem('/admin-sliders/sliders/${row.id}', deleteSliderSuccess)"><i class="fas fa-trash" aria-hidden="true"></i></a>
+                </div>
+              `
+            } else {
+              return `
+                <div class="btn btn-group" role="group" aria-label="Acciones">
+                  <a class="btn btn-primary" role="button" href="/admin-sliders/slider/editar/${row.id}">
+                    <i class="fas fa-pen"></i>
+                  </a>
+                  <a class="btn btn-info" role="button" href="/admin-sliders/slider/${row.id}">
+                    <i class="fas fa-eye"></i>
+                  </a>
+                  <a class="btn btn-danger" role="button" onClick="beforeDeleteItem('/admin-sliders/sliders/${row.id}', deleteSliderSuccess)">
+                    <i class="fas fa-trash"></i>
+                  </a>
+                </div>
+              `
+            }
+          },
+          orderable: false,
+          searchable: false,
+        }
+      ],
+      initComplete: function (settings) {
+        //- clone thead to tfoot
+        $("#tabla-sliders thead tr").clone().appendTo($("#tabla-sliders tfoot"));
+      }
+    });
+  });
+
+  function deleteSliderSuccess (data) {
+    if(data.target) {
+      tableSlider.row(`#${data.target}`).remove().draw();
+    }
+  }

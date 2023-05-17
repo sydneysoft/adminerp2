@@ -1,0 +1,195 @@
+extends ../../extends/menu-superior-admin
+block contenido
+    .row.jutify-content-end
+        if empresa_id
+            include /mixins/btn/back.pug
+            input#empresa_id(type="hidden" value=empresa_id)
+            .col-6
+                +btn-back()
+        .col-6.text-right
+    .row.mt-3
+        .col-12.text-grey(style="margin-bottom:10px;")
+            h1.display-1
+                strong #{translation.FORM.SYSTEM_CONFIGURATION}
+        .col-12 
+            nav
+                #nav-tab.nav.nav-tabs(role='tablist')
+                    a#nav-logo-tab.nav-item.nav-link.active(data-toggle='tab' href='#nav-logo' role='tab' aria-controls='nav-logo' aria-selected='true') Logo 
+                    a#nav-favicon-tab.nav-item.nav-link(data-toggle='tab' href='#nav-favicon' role='tab' aria-controls='nav-favicon' aria-selected='false') Favicon
+                    a#nav-languages-tab.nav-item.nav-link(data-toggle='tab' href='#nav-languages' role='tab' aria-controls='nav-logo' aria-selected='true') #{translation.LANGUAGES}
+                    a#nav-email-template-tab.nav-item.nav-link(data-toggle='tab' href='#nav-email-template' role='tab' aria-controls='nav-logo' aria-selected='true') #{translation.EMAIL_CONFIGURATION_TEMPLATE}
+                    a#nav-ecommerce-tab.nav-item.nav-link(data-toggle='tab' href='#nav-ecommerce' role='tab' aria-controls='nav-logo' aria-selected='true') E-commerce
+                    a#nav-seo-tab.nav-item.nav-link(data-toggle='tab' href='#nav-seo' role='tab' aria-controls='nav-seo' aria-selected='false') SEO
+                    a#nav-redes-tab.nav-item.nav-link(data-toggle='tab' href='#nav-redes' role='tab' aria-controls='nav-redes' aria-selected='false') #{translation.SOCIAL_NETWORK}
+                    a#nav-terminos-tab.nav-item.nav-link(data-toggle='tab' href='#nav-privacidad' role='tab' aria-controls='nav-privacidad' aria-selected='false') #{translation.PRIVACY_POLITICS}
+                    a#nav-privacidad-tab.nav-item.nav-link(data-toggle='tab' href='#nav-terminos' role='tab' aria-controls='nav-terminos' aria-selected='false') #{translation.TERMS_CONDITIONS}
+                    a#nav-correo-tab.nav-item.nav-link(data-toggle='tab' href='#nav-correo' role='tab' aria-controls='nav-correo' aria-selected='false') #{translation.FORM.EMAIL}
+            #nav-tabContent.tab-content
+                #nav-logo.tab-pane.fade.show.active(role='tabpanel' aria-labelledby='nav-logo-tab' style="margin-top:15px;")
+                    .row 
+                        .col-12
+                            label(style="font-weight:bold")=translation.FORM.CURRENT_LOGO
+                            img(id="imagen-data-banner" src=items.configuracion_general.logo style="margin-left:25px;width:160px;height:80px;" onClick="handleModal()")
+                        .col-12
+                            span(style="font-size:13px;")=translation.FORM.RECOMMENDED_MESAURES_LOGO
+                        .col-12.mt-2
+                            button.btn.btn-info(onClick=`UpdateLogoSistema(${token})`)  #{translation.FORM.UPDATE_LOGO}
+                #nav-favicon.tab-pane.fade(role='tabpanel' aria-labelledby='nav-favicon-tab' style="margin-top:15px;")
+                    .row 
+                        .col-12
+                            label(style="font-weight:bold")="Favicon Actual:" 
+                            img(id="imagen-data-banner" src=items.configuracion_general.favicon style="margin-left:25px;width:48px;height:48px;" onClick="handleModal()")
+                        .col-12
+                            span(style="font-size:13px;") #{translation.FORM.RECOMMENDED_MESAURES_FAVICON}
+                        .col-12.mt-2
+                            button.btn.btn-info(onClick=`UpdateFaviconSistema(${token})`)  #{translation.FORM.UPDATE_FAVICON}
+                #nav-ecommerce.tab-pane.fade(role='tabpanel' aria-labelledby='nav-ecommerce' style="margin-top:15px;")
+                    .row 
+                        .col-12
+                              .col-6.col-md-4 
+                                .form-group
+                                    label #{translation.FORM.CURRENCY}
+                                    select.form-control#moneda
+                                        option(value="USD")="USD"
+                                        option(value="AUD")="AUD"
+                                        option(value="S/")="PEN"
+                       
+                        .col-12.mt-2
+                            button.btn.btn-info(onClick=`updateEcommerce(${token})`) #{translation.FORM.UPDATE}
+                #nav-languages.tab-pane.fade(role='tabpanel' aria-labelledby='nav-languages' style="margin-top:15px;")
+                    .row 
+                        .col-12
+                              .col-6.col-md-4 
+                                .form-group
+                                    label #{translation.LANGUAGES}
+                                    select.form-control#languages
+                                        option(value='#{translation.SPANISH}')="ES"
+                                        option(value='#{translation.ENGLISH}')="EN"
+                                        option(value='#{translation.GERMAN}')="GE"
+                #nav-email-template.tab-pane.fade(role='tabpanel' aria-labelledby='nav-email-template' style="margin-top:15px;")
+                    .row 
+                        .col-12
+                            .col-6.col-md-4 
+                                .form-group
+                                    label #{translation.TEMPLATES}
+                                    select.form-control#email-templates
+                            .col-6.col-md-4 
+                                .form-group
+                                    label #{translation.SUBJECT}
+                                    input.form-control#email-subject(type="text")
+                            .col-6.col-md-4 
+                                .form-group
+                                    label #{translation.BODY_EMAIL}
+                                    input.form-control#email-body(type="textarea")
+
+                       
+                        .col-12.mt-2
+                            button.btn.btn-info(onClick=`updateEcommerce(${token})`) #{translation.FORM.UPDATE}
+                
+                #nav-seo.tab-pane.fade(role='tabpanel' aria-labelledby='nav-seo-tab' style="margin-top:15px;")
+                    .row 
+                        .col-12
+                            b #{translation.FORM.SEO_TAGS}
+                            br
+                            textarea.form-control#data-seo-text(placeholder=translation.FORM.ENTER_METADATA_CORRESPONDENT_TAGS cols="30", rows="16")=items.configuracion_general.meta_etiquetas
+                        .col-12.mt-3 
+                            button.btn.btn-info(onClick=`updateMetadatosSeo(${token})`)  #{translation.FORM.UPDATE_SEO_TAGS}
+                #nav-correo.tab-pane.fade(role='tabpanel' aria-labelledby='nav-correo-tab' style="margin-top:15px;")
+                    .row 
+                        .col-12
+                            b #{translation.FORM.EMAIL_CONFIG_DATA}
+                            br
+                        .col-6.col-md-4 
+                            .form-group
+                                label #{translation.FORM.SMTP_SERVICE}
+                                input.form-control#host-service(type="text")
+                        .col-6.col-md-4 
+                            .form-group
+                                label #{translation.FORM.SMTP_SECURE}
+                                select.form-control#seguro-smtp
+                                    option(value="1") #{translation.FORM.YES}
+                                    option(value="0") #{translation.FORM.NO}
+                        .col-6.col-md-4  
+                            .form-group 
+                                label #{translation.FORM.SMTP_HOST}
+                                input.form-control#host-smtp(type="text")
+                        .col-6.col-md-4  
+                            .form-group 
+                                label #{translation.FORM.SMTP_PORT} 
+                                input.form-control#puerto-smtp(type="text")
+                        .col-6.col-md-4  
+                            .form-group 
+                                label #{translation.FORM.SMTP_EMAIL}
+                                input.form-control#correo-smtp(type="text")
+                        .col-6.col-md-4
+                            .form-group
+                                label #{translation.FORM.SMTP_USER}
+                                input.form-control#usuario-smtp(type="text" placeholder="SMTP User")
+                        .col-6.col-md-4  
+                            .form-group 
+                                label #{translation.FORM.SMTP_PASSWORD}
+                                input.form-control#password-smtp(type="password")
+                        .col-12.col-md-4 
+                            .form-group
+                                label #{translation.FORM.STATE}
+                                br
+                                input(id="toggle-state" type="checkbox" data-toggle="toggle" data-on="Activo" data-off="Desactivado" data-onstyle="success" data-offstyle="danger")
+
+                        .col-12.mt-3              
+                            button.btn.btn-info(onClick=`updateConfigurationNewsletter(${token})`) #{translation.SAVE}
+           
+                #nav-redes.tab-pane.fade(role='tabpanel' aria-labelledby='nav-redes-tab' style="margin-top:15px;")
+                    .row 
+                        
+                       
+                        .col-6.col-md-4 
+                            .form-group
+                                label Facebook
+                                input.form-control#facebook(type="text" value=items.datosCompania.facebook_corporativo)
+                        .col-6.col-md-4 
+                            .form-group
+                                label Instagram
+                                input.form-control#instagram(type="text" value=items.datosCompania.instagram_corporativo)
+                            .form-group
+                                label Youtube
+                                input.form-control#youtube(type="text" value=items.datosCompania.youtube_corporativo)
+                        .col-6.col-md-4  
+                            .form-group 
+                                label Twitter
+                                input.form-control#twitter(type="text" value=items.datosCompania.twitter_corporativo)
+                        
+              
+                        .col-12.mt-3              
+                            button.btn.btn-info(onClick=`actualizarRedesSociales(${token})`) #{translation.SAVE}
+
+
+                #nav-terminos.tab-pane.fade(role='tabpanel' aria-labelledby='nav-terminos' style="margin-top:15px;")
+                    .row 
+                        .col-12.col-md-8
+                            .form-group   
+                                label(for="terminos" style="font-weight:bold") #{translation.TERMS_CONDITIONS}
+                                textarea#terminos(placeholder="Escriba aqui")
+                       
+                        .col-12.mt-2
+                            button.btn.btn-info(onClick=`updateTerminos(${token})`)="Actualizar"
+                #nav-privacidad.tab-pane.fade(role='tabpanel' aria-labelledby='nav-privacidad' style="margin-top:15px;")
+                    .row 
+                        .col-12.col-md-8
+                            .form-group   
+                                label(for="privacidad" style="font-weight:bold") #{translation.PRIVACY_POLITICS}
+                                textarea#privacidad(placeholder="Escriba aqui")
+                       
+                        .col-12.mt-2
+                            button.btn.btn-info(onClick=`updatePrivacidad(${token})`)  #{translation.UPDATE} 
+                
+        include ./../../modulo-generales/galeria-fotos/seleccion-unica-galeria/admin-galeria-modal-simple
+ 
+    //- script
+        //- include ./script.js  
+    include ./script.pug
+
+    script.
+        var typeOperation="1";
+
+        const editor_terminos = CKEDITOR.replace('terminos')   
+        const editor_privacidad  = CKEDITOR.replace('privacidad')   

@@ -1,0 +1,51 @@
+.modal.fade#nuevoBannerAdministrador(tabindex="-1" role="dialog")
+  .modal-dialog.modal-lg(role="document")
+    .modal-content
+      .modal-body
+        .row(style="padding:10px;margin-bottom:8px;")
+          .col-12.col-md-6
+            .row
+              .col-md-12.col-12
+                .form-group
+                  img(id="imagen-data-banner" src="https://www.cuba.travel/images/noimage.png" class="content-img-banner" onClick="handleModal()")
+              .col-md-6.col-12
+                .form-group
+                  label #{translation.FORM.NAME}:
+                  .controls
+                    input#nombreNuevo-tratamiento.form-control(type="text" placeholder=translation.FORM.NAME)
+              .col-md-6.col-12
+                .form-group
+                  label #{translation.FORM.DESCRIPTION}:
+                  .controls
+                    input#descripcionNuevo-tratamiento.form-control(type="text" placeholder=translation.FORM.DESCRIPTION)
+              .col-md-6.col-12
+                .form-group
+                  label #{translation.ACTIVE}:
+                  .controls
+                    select#activadoNuevo-tratamiento.form-control
+                      option(value="1") #{translation.ACTIVE}
+                      option(value="0") #{translation.DEACTIVATED}
+              .col-md-6.col-12
+                .form-group
+                  label #{translation.FORM.STATUS}:
+                  .controls
+                    select#statusNuevo-tratamiento.form-control
+                      option(value="1") #{translation.FORM.ACTIVE}
+                      option(value="0") #{translation.FORM.INACTIVE}
+              .col-12
+                .form-group
+                  label #{translation.FORM.BRANCH}:
+                  .controls
+                    select#lista-sedes
+
+          .col-12.col-md-6
+            .col-12 
+              .form-group
+                label #{translation.FORM.DESCRIPTION}
+                textarea#ckeditorarea(name="ckeditorarea" placeholder=translation.FORM.DESCRIPTION)
+
+      .modal-footer
+        button.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;",onClick=`agregarTratamientoAdmin(${token})`) #{translation.ADD}
+          i.fas.fa-plus.ml-2
+        button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}
+          i.fas.fa-times.ml-2

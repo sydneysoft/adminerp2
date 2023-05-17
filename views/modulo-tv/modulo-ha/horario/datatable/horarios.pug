@@ -1,0 +1,51 @@
+script.
+  let tablaHorarios;
+  $(document).ready(function () {
+    let urlAjaxHorario = '/admin-horarios/datatable';
+    if (empresa_id && empresa_id.value != "" && !isNaN(empresa_id.value)) {
+      urlAjaxHorario = `/admin-horarios/datatable/${empresa_id.value}`;
+    }
+    tablaHorarios = $('#dataTable').DataTable({
+      fnCreatedRow: function (nRow, aData, iDataIndex) {
+        $(nRow).attr('id', `delete${aData.ID}`);
+      },
+      order: [[0, 'desc']],
+      searchDelay: 500,
+      processing: true,
+      serverSide: true,
+      ajax: urlAjaxHorario,
+      columns: [
+        { data: 'id', name: 'id', title: 'ID', searchable: false },
+        { 
+          data: 'nombre', 
+          name: 'nombre', 
+          title: #{translation.FORM.NAME}
+        },
+        { 
+          data: 'horario', 
+          name: 'horario', 
+          title: #{translation.FORM.SCHEDULE},
+          render: function (data, type, row) {
+            return `${parseDay(row.dia_de)} - ${parseDay(row.dia_a)}, ${row.hora_de} - ${row.hora_a}`
+          },
+          orderable: false,
+          searchable: false
+        },
+        {
+          data: 'acciones',
+          name: 'acciones',
+          title: #{translation.FORM.ACTIONS},
+          render: function (data, type, row) {
+            let strRow = JSON.stringify(row);
+            return `
+              <button class="btn btn-primary" onclick='editarHorario(${strRow})' data-toggle="modal" data-target="#updateModal"><i class="fas fa-pen"></i></button>
+              <button class="btn btn-info" onclick='mostrarHorario(${strRow})' data-toggle="modal" data-target="#showModal"><i class="fas fa-eye"></i></button>
+              <a class="btn btn-danger" onclick='beforeDeleteItem("/admin-horarios/horarios/${row.id}", deleteItemSuccess)'><i class="fas fa-trash"></i></a>
+            `
+          },
+          orderable: false,
+          searchable: false
+        }
+      ]
+    });
+  });

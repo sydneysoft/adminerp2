@@ -1,0 +1,67 @@
+script.
+  //Manejar Datos al Modal
+  const handlingEditVentanaAdmin = (data) => {
+    $("#data-id-ventanas").val(data.id);
+    $("#urlEditar-ventantas-admin").val(data.url);
+    $("#imagen-data-banner-editar").attr("src", data.imagen);
+    $("#activadoEditar-ventanas-admin").val(data.estado);
+    $("#editarBannerAdministrador").modal("show");
+  };
+
+  //Actualizar Datos de la Ventana Emergente
+  const updateVentanaAdmin = (token) => {
+    let id = $("#data-id-ventanas").val();
+    let url = $("#urlEditar-ventantas-admin").val();
+    let imagen = $("#imagen-data-banner-editar").attr("src");
+    let estado = $("#activadoEditar-ventanas-admin").val();
+    if (id && url && imagen && estado) {
+      Swal.showLoading();
+      const auxData = {
+        imagen: imagen, url: url, estado: estado
+      }
+      if (typeof empresa_id && !isNaN(empresa_id.value)) {
+        auxData.empresa_id = empresa_id.value
+      }
+      $.ajax({
+        method: "PUT",
+        url: "/admin-ventanas-emergentes/" + id,
+        dataType: "json",
+        data: auxData,
+        success: function (data) {
+          Swal.close();
+          if (data.ok) {
+            $("#editarBannerAdministrador").modal("hide");
+            if (typeof tablaVentanaEmergentes != 'undefined') {
+              tablaVentanaEmergentes.ajax.reload();
+            }
+          } else {
+            Swal.fire({
+              position: "center",
+              icon: "error",
+              html: "<b>No se pudo agregar la Ventana Emergente.</b>",
+              showConfirmButton: false,
+              timer: 3500,
+            });
+          }
+        },
+        error: function () {
+          Swal.close();
+          Swal.fire({
+            position: "center",
+            icon: "error",
+            html: "<b>Ocurrió un error interno inténtalo más tarde.</b>",
+            showConfirmButton: false,
+            timer: 3500,
+          });
+        },
+      });
+    } else {
+      Swal.fire({
+        position: "center",
+        icon: "info",
+        html: "<b>Debes completar el formulario para actualizar el registro.</b>",
+        showConfirmButton: false,
+        timer: 2500,
+      });
+    }
+  };

@@ -1,0 +1,60 @@
+script.
+  // la variable editarMoneda viene del id del boton editar moneda */modals/editar-moneda.pug
+  editarMoneda.addEventListener("click", function (event) {
+    const id = $("#editarMonedaModal").attr("data-id");
+    const nombre = $("#nombreMonedaEditar").val(),
+      simbolo = $("#simboloMonedaEditar").val(),
+      pais = $("#lista-paises-editar").val(),
+      codigo = $("#codigoMonedaEditar").val();
+    if (id > 0) {
+      const auxData = {
+        nombre,
+        simbolo,
+        pais,
+        codigo,
+      };
+      if (typeof empresa_id != 'undefined' && empresa_id && !isNaN(empresa_id.value)) {
+        auxData.empresa_id = empresa_id.value;
+      }
+      Swal.showLoading();
+      $.ajax({
+        url: "/admin-monedas/" + id,
+        type: "PUT",
+        data: auxData,
+        success: function (data) {
+          Swal.close();
+          if (data.ok) {
+            if (typeof tablaMonedas !== 'undefined') {
+              tablaMonedas.ajax.reload();
+            }
+            $("#editarMonedaModal").modal("hide");
+            toastSweet('Success', '#{translation.ALERTS.UPDATED}', 'success');
+          } else {
+            toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+          }
+        },
+        error: function (err) {
+          Swal.close();
+          toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+        }
+      })
+    } else {
+      toastSweet('Error', '#{translation.ALERTS.REQUIRED_FIELDS}', 'error');
+    }
+  });
+
+  /**
+   * @description Funcion que carga los datos de la moneda a editar
+   * @param {Object} data
+   */
+  const setDataEditarMoneda = (data) => {
+    typeOperation = "2";
+    $("#nombreMonedaEditar").val(data.nombre);
+    $("#simboloMonedaEditar").val(data.simbolo);
+    $("#codigoMonedaEditar").val(data.codigo);
+    $("#lista-paises-editar").val(data.pais).trigger('change');
+    setTimeout(() => {
+      $("#lista-estados-editar").val(data.provincia).trigger('change');
+    }, 500);
+    $("#editarMonedaModal").modal("show").attr("data-id", data.id);
+  };

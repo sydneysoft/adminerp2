@@ -1,0 +1,88 @@
+script.
+  //Manejar datos al Modal Edit Banners
+  const handlingEditBannersAdmin = (
+    id,
+    nombre,
+    url,
+    descripcion,
+    imagen,
+    activado
+  ) => {
+    typeOperation = "2";
+    $("#nombreEditar-banners-admin").val(nombre);
+    $("#imagen-data-banner-editar").attr("src", imagen);
+    $("#selected-img-data-editar").val(imagen);
+    $("#urlEditar-banners-admin").val(url);
+    $("#activadoEditar-banners-admin").val(activado);
+    $("#descripcionEditar-banners-admin").val(descripcion);
+    $("#idEditar-banners-admin").val(id);
+    $("#editarBannerAdministrador").modal("show");
+  };
+
+  //Actualizar Información del Banner
+  const updateBannerAdmin = (token) => {
+    let nombreBanner = $("#nombreEditar-banners-admin").val();
+    let imagenBanner = $("#imagen-data-banner-editar").attr("src");
+    let urlBanner = $("#urlEditar-banners-admin").val();
+    let estatusBanner = $("#activadoEditar-banners-admin").val();
+    let descripcionBanner = $("#descripcionEditar-banners-admin").val();
+    let idBanner = $("#idEditar-banners-admin").val();
+
+    if (
+      idBanner &&
+      nombreBanner &&
+      imagenBanner &&
+      urlBanner &&
+      estatusBanner &&
+      descripcionBanner
+    ) {
+      Swal.showLoading();
+      $.ajax({
+        method: "PUT",
+        url: "/admin-banners/update-admin-banners",
+        dataType: "json",
+        data: {
+          id: idBanner,
+          nombre: nombreBanner,
+          imagen: imagenBanner,
+          url: urlBanner,
+          activado: estatusBanner,
+          descripcion: descripcionBanner,
+        },
+        success: function (data) {
+          if (data.status === "success") {
+            $("#editarBannerAdministrador").modal("hide");
+            Swal.close();
+            window.location.reload(true);
+          } else {
+            Swal.close();
+            Swal.fire({
+              position: "center",
+              icon: "error",
+              title: #{translation.ALERTS.BANNER_CANT_BE_ADDED},
+              showConfirmButton: false,
+              timer: 2500,
+            });
+          }
+        },
+        error: function () {
+          Swal.close();
+          Swal.fire({
+            position: "center",
+            icon: "error",
+            title: #{translation.ALERTS.WRONG},
+            showConfirmButton: false,
+            timer: 2500,
+          });
+        },
+      });
+    } else {
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: ".",
+        showConfirmButton: false,
+        timer: 2500,
+      });
+    }
+  };

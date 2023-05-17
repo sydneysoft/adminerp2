@@ -1,0 +1,39 @@
+//- Modal para mostrar una nuevo link a red social
+.modal.fade.justify-content-center.align-items-center(role="dialog" id="showRedModal")
+  .modal-dialog.modal-md
+    .modal-content.modalContent(style="height: 100%;")
+      .modal-header 
+        .row(style="margin:0;")
+          .col-md-12
+            h3(style="margin:0px 0;") #{translation.ADD}
+
+      .modal-body.borderBottom
+        .row 
+          .col-12 
+            .form-group
+              label(for='nombre_mostrar') #{translation.FORM.NAME}
+              input#nombre_mostrar.form-control(type='text' placeholder=translation.FROM.NAME name="nombre" required readonly)
+        .row 
+          .col-12
+            .form-group
+              label(for='url_mostrar') #{translation.FORM.URL}
+              input#url_mostrar.form-control(type='text' placeholder=translation.FORM.URL name="url" required readonly)
+          .col-12
+            .form-group
+              //- label(for='identificador_mostrar') #{translation.FORM.IDENTIFIER} (#{translation.OPTIONAL})
+              select#identificador_mostrar.form-control( name="identificador" disabled hidden)
+                option(value="footer" selected) #{translation.FOOTER}
+        .row
+          .col-12.col-md-4 
+            .form-group
+              label(for='icono_mostrar') #{translation.FORM.ICON}
+              br
+              button.btn.btn-info#icono_mostrar(data-iconset="fontawesome5" data-icon="fas fa-wifi" role="iconpicker") 
+                //- span#showIcon.ml-3
+              //- input#icono.form-control(type='text' placeholder="Icono (Fontawesome)" name="icono" required)
+              //- select#icono_mostrar.form-control(disabled)
+
+      .modal-footer(style="padding:8px;")
+        .row(style="margin:0;")
+          .col-md-12.text-right
+            button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}

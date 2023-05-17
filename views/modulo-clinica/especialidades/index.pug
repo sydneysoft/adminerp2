@@ -1,0 +1,237 @@
+extends ./layout.pug
+
+append contenido
+  .border-left.border-right.border-bottom.p-3
+    .container-fluid 
+      .row.justify-content-end
+        if empresa_id
+          include /mixins/btn/back.pug
+          input#empresa_id(type="text" value=empresa_id hidden)
+          .col-md-6.col-6
+            +btn-back()
+        .col-md-6.col-6.text-right 
+          button#nuevoPaciente.btn.btn-primary(role="button") #{translation.CREATE}
+            i.fas.fa-plus.ml-2
+      .row.mt-3
+        .col-md-4.col-6(style="max-width: 400px")
+
+          label.font-weight-bold.datev-label #{translation.MASSIVE_ACTIONS}
+            .row
+              .col-md-8.col-12
+                select#acciones.form-control
+                  option(value=null) #{translation.SELECT}
+                  option(value="0") #{translation.DELETE}
+              .col-md-4.col-12
+                button#accionesBoton(class="btn btn-success-2") #{translation.CONFIRM}
+      .row
+        .col-12.text-right 
+          button.btn.btn-primary(type="button" data-toggle="modal" onclick="nuevaEspecialidad()" data-target="#nuevoEspecialidadModal") #{translation.ADD}
+            i.fas.fa-plus.ml-2
+    .container-fluid.mt-3
+      .table-responsive
+        table#tabla-especialidades.table.table-striped
+          thead.thead-dark
+          tbody
+          tfoot
+  include ./modals/crear-especialidad.pug
+  include ./modals/editar-especialidad.pug  
+  include ./modals/mostrar-especialidad.pug
+
+  script.
+    const nombre = document.getElementById('nombre');
+    const codigoexterno = document.getElementById('codigoexterno');
+    const imagen = document.getElementById('imagen');
+    const activado = document.getElementById('activado');
+    const estado = document.getElementById('estado');
+    const sede = document.getElementById('sede');
+    const categoria = document.getElementById('categoria');
+    const descripcioncorta = document.getElementById('descripcioncorta');
+    const descriptionlarga = document.getElementById('descriptionlarga');
+    const icono = document.getElementById('icono');
+
+    const nombre_editar = document.getElementById('nombre_editar');
+    const codigoexterno_editar = document.getElementById('codigoexterno_editar');
+    const imagen_editar = document.getElementById('imagen_editar');
+    const activado_editar = document.getElementById('activado_editar');
+    const estado_editar = document.getElementById('estado_editar');
+    const sede_editar = document.getElementById('sede_editar');
+    const categoria_editar = document.getElementById('categoria_editar');
+    const descripcioncorta_editar = document.getElementById('descripcioncorta_editar');
+    const descriptionlarga_editar = document.getElementById('descriptionlarga_editar');
+    const icono_editar = document.getElementById('icono_editar');
+
+    const nombre_mostrar = document.getElementById('nombre_mostrar');
+    const codigoexterno_mostrar = document.getElementById('codigoexterno_mostrar');
+    const imagen_mostrar = document.getElementById('imagen_mostrar');
+    const activado_mostrar = document.getElementById('activado_mostrar');
+    const estado_mostrar = document.getElementById('estado_mostrar');
+    const sede_mostrar = document.getElementById('sede_mostrar');
+    const categoria_mostrar = document.getElementById('categoria_mostrar');
+    const descripcioncorta_mostrar = document.getElementById('descripcioncorta_mostrar');
+    const descriptionlarga_mostrar = document.getElementById('descriptionlarga_mostrar');
+    const icono_mostrar = document.getElementById('icono_mostrar');
+
+    
+    const addEspecialidad =  document.getElementById('addEspecialidad');
+    const editEspecialidad =  document.getElementById('editEspecialidad');
+    const itemId = document.getElementById('itemId');
+
+    const showIcono = document.getElementById('showIcono');
+    const showIcono_editar = document.getElementById('showIcono_editar');
+    const showIcono_mostrar = document.getElementById('showIcono_mostrar');
+
+  script.
+    function nuevaEspecialidad() {
+      createImageGroup('imagen', 'imagenFile', 'mostrarImagen', 'galeriaImagen');
+    }
+
+    
+    function mostrarEspecialidad(data) {
+      nombre_mostrar.value = data.nombre;
+      codigoexterno_mostrar.value = data.codigoexterno;
+      activado_mostrar.checked = data.activado;
+      estado_mostrar.value = data.estado;
+      sede_mostrar.value = data.sede;
+      categoria_mostrar.value = data.categoria;
+      descripcioncorta_mostrar.value = data.descripcioncorta;
+      descriptionlarga_mostrar.value = data.descriptionlarga;
+      icono_mostrar.value = data.icono;
+      $('#showIcono_mostrar').html(`<i class="${data.icono}"></i>`)
+      try {
+        new URL(data.imagen);
+        $('#mostrarImagen_mostrar').html(`<img src="${data.imagen}" alt="imagen" style="width: 50px; height: 50px;">`)
+      }catch (e) {
+        $('#mostrarImagen_mostrar').html(`<img src="/images/image-default.jpg" alt="imagen" style="width: 50px; height: 50px;">`)
+      }
+    }
+
+  include ./modals/imagen.pug
+
+  include /modulo-tv/modulo-general/galeria-fotos/image.pug
+
+  script.
+    // iconos medicos
+    const iconos = [
+      ['fas fa-briefcase-medical', 'Briefcase Medical'],
+      ['fas fa-bone', 'Bone'],
+      ['fas fa-bong', 'Bong'],
+      ['fas fa-briefcase-medical', 'Briefcase Medical'],
+      ['fas fa-burn', 'Burn'],
+      ['fas fa-capsules', 'Capsules'],
+      ['fas fa-clinic-medical', 'Clinic Medical'],
+      ['fas fa-couch', 'Couch'],
+      ['fas fa-diagnoses', 'Diagnoses'],
+      ['fas fa-dna', 'Dna'],
+      ['fas fa-file-medical', 'File Medical'],
+      ['fas fa-file-medical-alt', 'File Medical Alt'],
+      ['fas fa-first-aid', 'First Aid'],
+      ['fas fa-heartbeat', 'Heartbeat'],
+      ['fas fa-hospital', 'Hospital'],
+      ['fas fa-hospital-alt', 'Hospital Alt'],
+      ['fas fa-hospital-symbol', 'Hospital Symbol'],
+      ['fas fa-id-card-alt', 'Id Card Alt'],
+      ['fas fa-laptop-medical', 'Laptop Medical'],
+      ['fas fa-notes-medical', 'Notes Medical'],
+      ['fas fa-pills', 'Pills'],
+      ['fas fa-prescription-bottle', 'Prescription Bottle'],
+      ['fas fa-prescription-bottle-alt', 'Prescription Bottle Alt'],
+      ['fas fa-procedures', 'Procedures'],
+      ['fas fa-stethoscope', 'Stethoscope'],
+      ['fas fa-syringe', 'Syringe'],
+      ['fas fa-tablets', 'Tablets'],
+      ['fas fa-user-md', 'User Md'],
+      ['fas fa-user-nurse', 'User Nurse'],
+      ['fas fa-vial', 'Vial'],
+      ['fas fa-vials', 'Vials'],
+      ['fas fa-x-ray', 'X Ray'],
+      ['fas fa-allergies', 'Allergies'],
+      ['fas fa-band-aid', 'Band Aid'],
+      ['fas fa-biohazard', 'Biohazard'],
+      ['fas fa-bong', 'Bong'],
+      ['fas fa-book-medical', 'Book Medical'],
+      ['fas fa-brain', 'Brain'],
+      ['fas fa-cannabis', 'Cannabis'],
+      ['fas fa-capsules', 'Capsules'],
+      ['fas fa-clinic-medical', 'Clinic Medical'],
+      ['fas fa-couch', 'Couch'],
+      ['fas fa-diagnoses', 'Diagnoses'],
+      ['fas fa-dna', 'Dna'],
+      ['fas fa-file-medical', 'File Medical'],
+      ['fas fa-file-medical-alt', 'File Medical Alt'],
+      ['fas fa-first-aid', 'First Aid'],
+      ['fas fa-heartbeat', 'Heartbeat'],
+      ['fas fa-hospital', 'Hospital'],
+      ['fas fa-hospital-alt', 'Hospital Alt'],
+      ['fas fa-hospital-symbol', 'Hospital Symbol'],
+      ['fas fa-id-card-alt', 'Id Card Alt'],
+      ['fas fa-laptop-medical', 'Laptop Medical'],
+      ['fas fa-notes-medical', 'Notes Medical'],
+      ['fas fa-pills', 'Pills'],
+      ['fas fa-prescription-bottle', 'Prescription Bottle'],
+      ['fas fa-prescription-bottle-alt', 'Prescription Bottle Alt'],
+      ['fas fa-procedures', 'Procedures'],
+      ['fas fa-stethoscope', 'Stethoscope'],
+      ['fas fa-syringe', 'Syringe'],
+      ['fas fa-tablets', 'Tablets'],
+      ['fas fa-user-md', 'User Md'],
+      ['fas fa-user-nurse', 'User Nurse'],
+      ['fas fa-vial', 'Vial'],
+      ['fas fa-vials', 'Vials'],
+      ['fas fa-x-ray', 'X Ray'],
+      ['fas fa-allergies', 'Allergies'],
+      ['fas fa-band-aid', 'Band Aid'],
+      ['fas fa-biohazard', 'Biohazard'],
+      ['fas fa-bong', 'Bong'],
+      ['fas fa-book-medical', 'Book Medical'],
+      ['fas fa-brain', 'Brain'],
+      ['fas fa-cannabis', 'Cannabis'],
+      ['fas fa-capsules', 'Capsules'],
+      ['fas fa-clinic-medical', 'Clinic Medical'],
+      ['fas fa-couch', 'Couch'],
+      ['fas fa-diagnoses', 'Diagnoses'],
+      ['fas fa-dna', 'Dna'],
+      ['fas fa-file-medical', 'File Medical'],
+      ['fas fa-file-medical-alt', 'File Medical Alt'],
+      ['fas fa-first-aid', 'First Aid'],
+      ['fas fa-heartbeat', 'Heartbeat']
+    ]
+
+    iconos.forEach((icon) => {
+      let option = document.createElement('option');
+      option.value = icon[0];
+      option.innerHTML = icon[1];
+      icono.appendChild(option);
+      icono_editar.appendChild(option.cloneNode(true));
+    })
+  script
+    include /js/modulo-tv/save.js
+    include /js/modulo-tv/update.js
+    include /js/modulo-tv/delete.js
+  
+  include ./save/especialidad.pug
+  include ./update/especialidad.pug
+  include ./delete/especialidad.pug
+  script.
+    function itemDeleteSuccess (data) {
+      tabla.row($(`#${data.target}`)).remove().draw();
+    }
+
+    function formatState (state) {
+      if (!state.id) { return state.text; }
+          let $state = $(
+            '<span><i class="' +  state.element.value.toLowerCase() + '"> </i> ' + 
+        state.text +     '</span>'
+      );
+      return $state;
+    };
+
+    $("#icono").select2({
+      templateResult: formatState
+    });
+    $("#icono_editar").select2({
+      templateResult: formatState
+    });
+
+  script.
+    const sedes = !{JSON.stringify(sedes)}
+  include ./datatable/especialidades.pug

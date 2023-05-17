@@ -1,0 +1,55 @@
+//- Modal para crear una nuevo faq
+.modal.fade.justify-content-center.align-items-center(tabindex="-1" role="dialog" id="showModal")
+  .modal-dialog.modal-md
+    .modal-content.modalContent(style="height: 100%;")
+      .modal-header 
+        .row(style="margin:0;")
+          .col-md-12
+            h3(style="margin:0px 0;") #{translation.ADD}
+
+      .modal-body.borderBottom
+        .row 
+          .col-12
+            .form-group
+              label.text-label(for='nombre_mostrar') #{translation.FORM.NAME}
+              input#nombre_mostrar.form-control(value="" placeholder=translation.FORM.NAME name='nombre' disabled)
+            .form-group.mt-3
+              label.text-label(for='descripcion_mostrar') #{translation.FORM.DESCRIPTION}
+              textarea#descripcion_mostrar.form-control(placeholder=translation.FORM.DESCRIPTION name='descripcion' disabled)
+          .col-6
+            .form-group.mt-3
+              label.text-label(for="diaDe_mostrar") #{translation.FROM}
+              select#diaDe_mostrar.form-control(name="diaDe" disabled)
+                option(value="1") #{translation.DAYS.MONDAY}
+                option(value="2") #{translation.DAYS.TUESDAY}
+                option(value="3") #{translation.DAYS.WEDNESDAY}
+                option(value="4") #{translation.DAYS.THURSDAY}
+                option(value="5") #{translation.DAYS.FRIDAY}
+                option(value="6") #{translation.DAYS.SATURDAY}
+                option(value="0") #{translation.DAYS.SUNDAY}
+          .col-6
+            .form-group.mt-3
+              label.text-label(for="diaA_mostrar") #{translation.TO}
+              select#diaA_mostrar.form-control(name="diaA" disabled)
+                option(value="1") #{translation.DAYS.MONDAY}
+                option(value="2") #{translation.DAYS.TUESDAY}
+                option(value="3") #{translation.DAYS.WEDNESDAY}
+                option(value="4") #{translation.DAYS.THURSDAY}
+                option(value="5") #{translation.DAYS.FRIDAY}
+                option(value="6") #{translation.DAYS.SATURDAY}
+                option(value="0") #{translation.DAYS.SUNDAY}
+          .col-6
+            .form-group
+              label.text-label(for='horaDe_mostrar')  #{translation.FROM}
+              input#horaDe_mostrar.form-control(value='' type='time' disabled)
+          .col-6
+            .form-group
+              label.text-label(for='horaA_mostrar') #{translation.TO}
+              input#horaA_mostrar.form-control(value='' type='time' disabled)          
+
+      .modal-footer(style="padding:8px;")
+        .row(style="margin:0;")
+          .col-md-12.text-right
+            button#saveItem.btn.btn-primary.nuevo(type="button" data-dismiss="modal" data-toggle="modal" data-target="#updateModal" style="margin-left:7px;margin-right:7px;") #{translation.EDIT}
+              i.fas.fa-pen.ml-3
+            button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}

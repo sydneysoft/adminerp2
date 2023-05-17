@@ -1,0 +1,148 @@
+.modal.fade#nuevoProductoAdmin(tabindex="-1" role="dialog")
+  .modal-dialog.modal-lg(role="document")
+    .modal-content
+      .modal-body
+        .row(style="padding:15px;")
+          .col-md-12.col-12
+            .form-group(style="display:flex;justify-content:center;align-items:center;")
+              img(id="imagen-data-banner" src="https:www.cuba.travel/images/noimage.png" class="imagen-data-producto" onClick="handleModal()")    
+          .col-md-4.col-12
+            .form-group
+              label #{translation.NAME}
+              .controls
+                input#nombreNuevo-producto-admin.form-control(type="text")
+          .col-md-4.col-12
+            .form-group
+              label #{translation.PRICE}
+              .controls
+                input#precioNuevo-producto-admin.form-control(type="number")
+          .col-md-4.col-12
+            .form-group
+              label #{translation.STATUS}
+              .controls
+                select#estatusNuevo-producto-admin.form-control
+                  option(value="1") #{translation.ACTIVE}
+                  option(value="0") #{translation.DEACTIVATED}
+          .col-md-4.col-12
+            .form-group
+              label #{translation.HIGHLIGHTED}
+              .controls
+                select#destacadoNuevo-producto-admin.form-control
+                  option(value="1") #{translation.YES}
+                  option(value="0") #{translation.NO}
+          .col-md-4.col-12
+            .form-group
+              label #{translation.OFFER}
+              .controls
+                select#ofertaNuevo-producto-admin.form-control(onChange="handleChangeOferta()")
+                  option(value="1") #{translation.YES}
+                  option(value="0") #{translation.NO}
+          .col-md-4.col-12
+            .form-group
+              label #{translation.CATEGORY}
+              .controls
+              select#lista-categorias
+
+          .col-md-4.col-12
+            .form-group
+              label #{translation.FORM.SUBCATEGORY}
+              .controls
+                select#lista-subcategorias.form-control
+
+          .col-md-4.col-12
+            .form-group
+              label #{translation.SUBFILTER}
+              .controls
+                select#subfiltrosNuevo-producto-admin.form-control(disabled)
+          .col-md-4.col-12
+            .form-group
+              label #{translation.BRAND}
+              .controls
+                select#marcaNuevo-producto-admin.form-control(disabled)
+          .col-md-4.col-12
+            .form-group 
+              label #{translation.PHOTOS} 
+              .controls 
+                button.btn.btn-info.btn-block(onClick="multimediaModal()")
+                  i.fas.fa-camera
+                  b(style="margin-left:10px;")="Seleccionar Fotos"
+          .col-md-4.col-12
+            .form-group
+              label #{translation.OFFER_PERCENTAGE}
+              .controls
+                input#porcentajeNuevo-producto-admin.form-control(type="text")
+          .col-md-4.col-12
+            .form-group
+              label #{translation.STOCK}
+              .controls
+                input#stockNuevo-producto-admin.form-control(type="number")
+          .col-md-4.col-12 
+            .form-group 
+              label #{translation.PRODUCT_REVIEW}
+              .controls
+                select#calificacionNuevo-producto-admin.form-control(onChange="handleChangeCalificacion()")
+                  option(value="1") #{translation.YES}
+                  option(value="0") #{translation.NO}
+          .col-md-4.col-12(id="comentarios-container-new")
+            .form-group 
+              label #{translation.COMMENTS}
+              .controls
+                select#califacion-revision-Nuevo-producto-admin.form-control
+                  option(value="1") #{translation.AUTOMATIC_PUBLISH}
+                  option(value="0") #{translation.PREVIOUS_REVIEW}
+          .col-md-4.col-12
+            .form-group
+              label #{translation.SHORT_DESCRIPTION}
+              .controls
+                textarea#descripcionCortaNuevo-producto-admin.form-control(name="" rows="2") 
+          .col-12#filtrosAdvancedNew(style="display:none;")
+            input#valueFiltersNew(type="hidden")
+            .form-group 
+              label #{translation.FILTERS} 
+              div#controlerFiltrosProducto.controls
+                span#filtroNuevo-producto-admin
+          .col-12 
+            .form-group
+              label #{translation.DESCRIPTION}
+              textarea#ckeditorarea(name="ckeditorarea")
+
+          .col-12 
+            hr 
+          .col-md-12.col-12 
+            h5 #{translation.WAREHOUSES}  
+            span #{translation.SELECT_WAREHOUSE_STOCK}
+            br
+            label.radio-inline
+              input.stock_question(type='checkbox' name='stock_question', value=0)
+              |  #{translation.ENABLE_WAREHOUSE_MODULE}
+          .col-md-12.col-12 
+            h5 #{translation.WAREHOUSES}  
+            span #{translation.SELECT_WAREHOUSE_AND_STOCK}
+            br
+            label.radio-inline
+              input.stock_question(type='checkbox' name='stock_question', value=0)
+              |  #{translation.ADD_WAREHOUSE_MODULE}
+            div.habilitarAlmacen
+              .col-md-12.col-12    
+                button.btn.btn-success(type="button" onClick="cargarAlmacen('tdbodyAlmacen')")
+                  i.fas-fa-plus
+                  span #{translation.ADD_ADDITIONAL_WAREHOUSE} 
+                div.table-responsive(style="margin-top:15px;")
+                  table.table.stockEditar
+                    thead
+                      tr.bg-dark
+                        th.text-center(style="color:#fff; width:60%") #{translation.WAREHOUSE}
+                        th.text-center(style="color:#fff") #{translation.QUANTITY}
+                        th
+                    tbody#tdbodyAlmacen 
+                      tr.rowAgregaAlmacen
+                        td  
+                          select#almacenNuevo.idAlmacenEditar.form-control
+                        td
+                          input#stockNuevo.form-control(type="number" style="text-align:center")
+                        td  
+                          button#remove.rowDelete.btn.btn-danger(type="button" style="margin-left:8px")
+                            i.fa.fa-trash  
+      .modal-footer      
+        button.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;" onClick=`addProductoAdmin()`) #{translation.ADD}
+        button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}

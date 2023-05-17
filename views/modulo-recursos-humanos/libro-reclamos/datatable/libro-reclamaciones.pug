@@ -1,0 +1,51 @@
+script.
+  let tablaLibroReclamaciones;
+  addEventListener("DOMContentLoaded", () => {
+    let urlAjaxLibroReclamaciones = "/admin-libro-reclamaciones/datatable";
+    if (typeof empresa_id != 'undefined'  && empresa_id && !isNaN(empresa_id.value)) {
+      urlAjaxLibroReclamaciones += `/${empresa_id.value}`;
+    }
+    tablaLibroReclamaciones = $("#tabla-libro-reclamaciones").DataTable({
+      language: {"url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"},
+      responsive: true,
+      searchDelay: 500,
+      processing: true,
+      serverSide: true,
+      ajax: urlAjaxLibroReclamaciones,
+      columns: [
+        { data: 'id', name: 'id', title: 'ID', orderable: false, searchable: false, visible: false},
+        {
+          data: 'nombres', name: 'nombres', title: '#{translation.FORM.NAMES}', orderable: true, searchable: true,
+        },
+        {
+          data: 'apellidos', name: 'apellidos', title: '#{translation.FORM.LAST_NAMES}', orderable: true, searchable: true,
+        },
+        {
+          data: 'telefono', name: 'telefono', title: '#{translation.FORM.PHONE}', orderable: true, searchable: true,
+        },
+        {
+          data: 'monto_reclamado', name: 'monto_reclamado', title: '#{translation.FORM.CLAIMED_AMOUNT}', orderable: true, searchable: true,
+        },
+        {
+          data: 'nombre_producto', name: 'nombre_producto', title: '#{translation.FORM.PRODUCT_NAME}', orderable: true, searchable: true,
+        },
+        {
+          data: 'tipo_reclamo', name: 'tipo_reclamo', title: '#{translation.FORM.CLAIM_TYPE}', orderable: true, searchable: true,
+        },
+        {
+          data: 'motivo', name: 'motivo', title: '#{translation.FORM.REASON}', orderable: true, searchable: true,
+        },
+        {
+          data: 'acciones', name: 'acciones', title: '#{translation.FORM.ACTIONS}', orderable: false, searchable: false,
+          render: function (data, type, row) {
+            let strRow = JSON.stringify(row);
+            return `
+              <button class="btn btn-info" onclick='getReclamoPreview(${row.id})'><i class="fas fa-eye"></i></button>
+            `;
+          }
+        }
+      ],
+      drawCallback: function (setting) {
+      }
+    }); 
+  })

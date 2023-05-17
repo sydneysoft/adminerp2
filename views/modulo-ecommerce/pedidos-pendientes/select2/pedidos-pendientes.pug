@@ -1,0 +1,49 @@
+script.
+  const select2Pedidos = $("#lista-pedidos, #lista-pedidos-editar, #lista-pedidos-filtro").select2({
+    ajax: {
+      url: "/admin-pedidos-cancelados/select2",
+      dataType: 'json',
+      delay: 500,
+      data: function (params) {
+        return {
+          term: params.term,
+          select: ['id', 'usuario'],
+          page: params.page
+        }
+      },
+      processResults: function (data, params) {
+        return {
+          results: $.map(data.data, (item) => {
+            return {
+              id: item.id,
+              text: item.usuario,
+            }
+          })
+        }
+      },
+      cache: true
+    },
+    placeholder: 'Search',
+    templateResult: pedidosState,
+    allowClear: true
+  })
+  //- .on("select2:open", () => {
+  //-   $(".select2-results:not(:has(a))").append(
+  //-     '<a href="#" style="padding: 6px;height: 20px;display: inline-table;" data-toggle="modal" data-target="#nuevoBannerAdministrador" onclick="closePedidosSelect2()">Pedidos</a>'
+  //-   );
+  //- }); //- No se debe crear
+
+  function pedidosState (state) {
+    if (!state.id) {
+      return state.text;
+    }
+    let $container = $(`
+      <span><strong>${state.id}</strong> | ${state.text}</span>
+    `);
+
+    return $container;
+  }
+
+  function closePedidosSelect2 () {
+    $("#lista-pedidos, #lista-pedidos-editar, #lista-pedidos-filtro").select2('close');
+  }

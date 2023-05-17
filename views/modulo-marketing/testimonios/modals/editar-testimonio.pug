@@ -1,0 +1,44 @@
+.modal.fade.justify-content-center.align-items-center(tabindex="-1" role="dialog" id="editarTestimonioModal")
+  .modal-dialog.modal-lg
+    .modal-content.modalContent(style="height: 100%;")
+      .modal-header 
+        .row(style="margin:0;")
+          .col-md-12
+            h3(style="margin:0px 0;") #{translation.EDIT_MEDIC}
+
+      .modal-body.borderBottom
+        .row
+          .col-12
+            .form-group
+              label(for="titulo_editar") #{translation.TITLE}
+              input#titulo_editar.form-control(type="text" placeholder=translation.TITLE)
+
+          .col-6
+            .form-group
+              label(for="nombre_editar") Nombre
+              input#nombre_editar.form-control(type="text" placeholder="Nombre")
+          .col-6
+            .form-group
+              label(for="apellido_editar") Apellido
+              input#apellido_editar.form-control(type="text" placeholder="Apellido")
+          
+          .col-4
+            .form-group
+              label(for="fecha_editar") Fecha
+              input#fecha_editar.form-control(type="date" placeholder="Fecha")
+          .col-4
+            .form-group
+              label(for="calificacion_editar") Calificación
+              input#calificacion_editar.form-control(type="number" placeholder="Calificación")
+          .col-12
+            .form-group
+              label(for="texto_editar") Texto
+              textarea#texto_editar.form-control(type="text" placeholder="Texto")
+
+        input#itemId(type="text" hidden )
+      .modal-footer(style="padding:8px;")
+        .row(style="margin:0;")
+          .col-md-12.text-right
+            button#updateTestimonio.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;") #{translation.SAVE}
+              i.fas.fa-save.ml-2
+            button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}

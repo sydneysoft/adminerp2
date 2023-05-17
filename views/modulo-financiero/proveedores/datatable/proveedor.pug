@@ -1,0 +1,67 @@
+script.
+  let tablaProveedores;
+  $(document).ready( function () {
+    let urlAjaxTablaProveedores = "/admin-proveedores/datatable";
+    if (typeof empresa_id != 'undefined' && empresa_id.value != "" && !isNaN(empresa_id.value)) {
+      urlAjaxTablaProveedores = "/admin-proveedores/datatable/" + empresa_id.value;
+    }
+
+    tablaProveedores = $('#tabla-proveedores').DataTable({
+      "language": {"url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"},
+      order: [[ 0, "desc" ]],
+      searchDelay: 500,
+      processing: true,
+      serverSide: true,
+      ajax: urlAjaxTablaProveedores,
+      columns: [
+        { data: 'id', name: 'id', title: "ID", orderable: true, searchable: false, visible: false},
+        { 
+          data: 'nombre', name: 'nombre', title: #{translation.FORM.NAME}, orderable: true, searchable: true
+        },
+        {
+          data: 'ruc', name: 'ruc', title: #{translation.FORM.RUC}, orderable: true, searchable: true,
+        },
+        {
+          data: 'nombre', name: 'nombre', title: #{translation.FORM.NAME}, orderable: true, searchable: true,
+        },
+        {
+          data: 'email_corporativo', name: 'email_corporativo', title: #{translation.FORM.EMAIL_CORPORATIVE}, orderable: true, searchable: true,
+        },
+        {
+          data: 'direccion', name: 'direccion', title: #{translation.FORM.ADDRESS}, orderable: true, searchable: true,
+        },
+        {
+          data: 'nombre_contacto', name: 'nombre_contacto', title: #{translation.FORM.CONTACT_NAME}, orderable: true, searchable: true,
+        },
+        {
+          data: 'email_contacto', name: 'email_contacto', title: #{translation.FORM.CONTACT_EMAIL}, orderable: true, searchable: true,
+        },
+        {
+          data: 'telefono_contacto', name: 'telefono_contacto', title: #{translation.FORM.CONTACT_PHONE}, orderable: true, searchable: true,
+        },
+        {
+          data: 'created_at', name: 'created_at', title: #{translation.FORM.CREATED_AT}, orderable: true, searchable: true,
+          render: function (data, type, row) {
+            return moment(row.created_at).format('DD/MM/YYYY');
+          }
+        },
+        { 
+          data: 'actions', name: 'actions', title: "Acciones", orderable: false, searchable: false,
+          render: function (data, type, row) {
+            let strRow = JSON.stringify(row);
+            return `
+              <div class="dropdown">
+                <a id="dropdownMenuLink4" class="btn" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <i class="fas fa-ellipsis-v"></i>
+                </a>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item" href="#" onclick='handleEditarProveedor(${strRow})'>Editar</a>
+                  <a class="dropdown-item" href="#" onclick="borrar('${row.id}')">Eliminar</a>
+                </div>
+              </div>
+            `;
+          }  
+        }
+      ]
+    });
+  });

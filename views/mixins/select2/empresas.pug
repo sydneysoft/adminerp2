@@ -1,0 +1,56 @@
+//- target seria el id del select2
+//- como usar 
+//- incluir este archivo include ../*/select2/empresas.pug
+//- llamar a al mixin +empresas-select2('empresaEditar')
+//- Si necesita reiniciar el select2 llamar a la funcion initEmpresaSelect2('empresaEditar')
+
+mixin empresas-select2(target)
+  .form-group
+    label(for=target) #{translation.FORM.COMPANY}
+    select.form-control(id=target)
+  script.
+    initEmpresaSelect2('#{target}');
+script.
+  function initEmpresaSelect2(target) {
+    const urlAjaxEmpresaSelect2 = "/admin-empresas/select2";
+    $(`#${target}`).select2({
+      ajax: {
+        url: urlAjaxEmpresaSelect2,
+        dataType: 'json',
+        delay: 500,
+        data: function (params) {
+          return {
+            term: params.term,
+            select: ['id', 'nombre'],
+            page: params.page
+          }
+        },
+        processResults: function (data, params) {
+          return {
+            results: $.map(data.data, (item) => {
+              return {
+                id: item.id,
+                text: item.nombre
+              }
+            })
+          }
+        },
+        cache: true
+      },
+      placeholder: '#{translation.SELECT_COMPANY}',
+      templateResult: empresaSelect2State,
+      allowClear: true
+    });
+  }
+  
+  function empresaSelect2State (state) {
+    if (!state.id) {
+      return state.text;
+    }
+    let $container = $(`
+      <span><strong>${state.id}</strong> | ${state.text}</span>
+    `);
+
+    return $container;
+  }
+

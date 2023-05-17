@@ -1,0 +1,82 @@
+script.
+  let tabla;
+  addEventListener('DOMContentLoaded', () => {
+    let ajaxUrl = '/admin-cortes/datatable';
+    if (empresa_id.value != "") {
+      ajaxUrl = `/admin-cortes/datatable/${empresa_id.value}`;
+    }
+    tabla = $('#tabla-cortes').DataTable({
+      fnCreatedRow: function (nRow, aData, iDataIndex) {
+        $(nRow).attr('id', `delete${aData.id}`);
+      },
+      searchDelay: 500,
+      processing: true,
+      serverSide: true,
+      ajax: ajaxUrl,
+      columnDefs: [
+        {
+          orderable: false,
+          className: "select-checkbox",
+          targets: 0,
+        },
+      ],
+      select: {
+        style: "multi",
+        selector: "td:first-child",
+      },
+      dom: "Bfrtip",
+      buttons: ["selectAll", "selectNone"],
+      order: [[1, "asc"]],
+      language: {
+        buttons: {
+          selectAll: "Seleccionar todos",
+          selectNone: "Borrar Selección",
+        },
+        url: "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json",
+        select: {
+          rows: "%d filas seleccionadas",
+        },
+      },
+      rowId: 'id',
+      columns: [
+        { 
+          data: 'id', name: 'id', title: '#', searchable: false, orderable: false,
+          render: function (data, type, row) {
+            return '';
+          },
+        },
+        { 
+          data: 'nombre',
+          name: 'nombre',
+          title: "#{translation.FORM.NAME}"
+        },
+        { data: 'descripcion', name: 'descripcion', title: "#{translation.FORM.DESCRIPTION}", orderable: false, searchable: true},
+        { 
+          data: 'precio',
+          name: 'precio',
+          title: "#{translation.FORM.PRICE}",
+        },
+        {
+          data: 'acciones',
+          name: 'acciones',
+          title: "#{translation.FORM.ACTIONS}",
+          render: function (data, type, row) {
+            let strRow = JSON.stringify(row);
+            return `
+              <div class="btn-group">
+                <button class="btn btn-primary" onclick='editarCorte(${strRow})'><i class="fas fa-pen" aria-label="hidden"></i></button>
+                <button class="btn btn-info" onclick='mostrarCorte(${strRow})'><i class="fas fa-eye" aria-label="hidden"></i></button>
+                <button class="btn btn-danger" onclick="beforeDeleteItem('/admin-cortes/corte/${row.id}', deleteItemSuccess)"><i class="fas fa-trash" aria-label="hidden"></i></button>
+              </div>
+            `
+          },
+          orderable: false,
+          searchable: false,
+        }
+      ],
+      initComplete: function (settings) {
+        //- clone thead to tfoot
+        $("#tabla-cortes thead tr").clone().appendTo($("#tabla-cortes tfoot"));
+      }
+    });
+  });

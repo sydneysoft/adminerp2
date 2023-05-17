@@ -1,0 +1,22 @@
+.modal.fade#addFiltrosDynamic(tabindex="-1" role="dialog")
+  .modal-dialog(role="document")
+    .modal-content
+      .modal-header
+        h4="Valores de Filtro"
+        input#id-grupoFiltros-values(type="hidden")
+        input#type-action-values(type="hidden")
+        input#category-data-filtros(type="hidden")
+      .modal-body
+        .row(style="padding:10px;margin-bottom:8px;")
+          .col-12#dataLoadingSpinner(style="display:none;") 
+            img(class="image-loading-spinner" src="https://ceisantagema.com/wp-content/plugins/gallery-by-supsystic/src/GridGallery/Galleries/assets/img/loading.gif")
+          .col-12#dataCompleteValue(style="display:none;") 
+            .input-group
+              input.form-control.m-input(type='text' name='filtros[]' id="firstValueFilter" placeholder='Ingresa el valor' autocomplete='off')
+              .input-group-append
+                button#addRowDynamic.btn.btn-info(type='button')
+                  i.fas.fa-plus
+            div#newRow(style="width:100%") 
+      .modal-footer#footerLoadValues
+        button.btn.btn-success(type="buton" onClick="handleFilterData()")="Guardar Valores" 
+        button.btn.btn-danger(type="buton" data-dismiss="modal")="Cancelar" 

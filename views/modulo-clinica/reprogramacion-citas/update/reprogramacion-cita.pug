@@ -1,0 +1,19 @@
+script.
+  function updateItemSuccess(data) {
+    console.log(data);
+    if (typeof tablaCitasMedicas != "undefined") {
+      tablaCitasMedicas.ajax.reload();
+    }
+  }
+
+  editarButton.addEventListener('click', (event) => {
+    editarButton.classList.add('d-none');
+    guardarCita.classList.remove('d-none');
+  })
+
+  $('#editarCita').on('hide.bs.modal', function (event) {
+   
+    editarButton.classList.remove('d-none');
+    guardarCita.classList.add('d-none');
+
+  });

@@ -1,0 +1,102 @@
+script.
+  const changeStep = () => {
+    const steps = Array.from(document.querySelectorAll(".step"));
+    const [stepActive] = steps.filter((step) =>
+      step.classList.contains("step-active")
+    );
+    const [stepHidden] = steps.filter((step) =>
+      step.classList.contains("hidden")
+    );
+
+
+    let nombre = $("#nombreEmpresaNuevo").val();
+    let correo = $("#correoCorporativoNuevo").val();
+
+    let razon_social = $("#razonSocialNuevo").val();
+
+    if (nombre != "" & razon_social != "" & correo != "") {
+
+      stepActive.classList.remove("step-active");
+      stepActive.classList.add("hidden");
+
+      stepHidden.classList.remove("hidden");
+      stepHidden.classList.add("step-active");
+    } else {
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: "#{translation.ALERTS.MUST_COMPLETE_DATA_CREATE_BUSINESS}",
+        showConfirmButton: false,
+        timer: 2500,
+      });
+    }
+  }
+
+  var numero = document.querySelector("#whatsCorporativoNuevo");
+
+  var whatsapp_corporativo_obt = window.intlTelInput(numero, {
+    hiddenInput: "full_number",
+    nationalMode: false,
+    formatOnDisplay: true,
+    separateDialCode: true,
+    autoHideDialCode: true,
+    autoPlaceholder: "aggressive",
+    placeholderNumberType: "MOBILE",
+    initialCountry: "pe",
+
+    utilsScript:
+      "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.15/js/utils.js",
+  });
+  var numeroCelular = document.querySelector("#celularContactoNuevo");
+
+  var celular_contacto_obt = window.intlTelInput(numeroCelular, {
+    hiddenInput: "full_number",
+    nationalMode: false,
+    formatOnDisplay: true,
+    separateDialCode: true,
+    autoHideDialCode: true,
+    autoPlaceholder: "aggressive",
+    placeholderNumberType: "MOBILE",
+    initialCountry: "pe",
+
+    utilsScript:
+      "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.15/js/utils.js",
+  });
+
+  // $("#tabla-categorias-empresas").on("click", "#borrarCategoria", function () {
+  //     Swal.fire({
+  //         title: "Estás Seguro?",
+  //         text: "No podras revertir esta acción",
+  //         icon: "warning",
+  //         showCancelButton: true,
+  //         confirmButtonColor: "#3085d6",
+  //         cancelButtonColor: "#d33",
+  //         confirmButtonText: "Si, Eliminar",
+  //     }).then((result) => {
+  //         let url = $(this).data("url");
+  //         let id = $(this).data("id");
+  //         if (result.isConfirmed) {
+  //             Swal.showLoading();
+  //             fetch(url + id, {
+  //                 method: "delete",
+  //             }).then((data) => {
+  //                 if (data.status === 200) {
+  //                     $(this).closest("tr").remove();
+
+  //                     Swal.close();
+  //                 }
+  //             });
+  //         } else {
+  //             Swal.close();
+  //         }
+  //     });
+  // });
+  $(document).ready(function () {
+      $(".seleccionarMultiple").select2({
+          language: {
+              noResults: function () {
+                  return "#{translation.ALERTS.NOT_RESULTS_FOUND}";
+              },
+          },
+      });
+  })

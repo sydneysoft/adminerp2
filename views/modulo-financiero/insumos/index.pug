@@ -1,0 +1,32 @@
+extends ../../extends/menu-superior-admin
+block contenido
+  .row
+    .col-12
+      .form-group
+        select#lista-insumos
+    if empresa_id
+      input#empresa_id(type="text" value=empresa_id hidden)
+    .col-6.text-grey(style="margin-bottom:10px;")
+      h1.display-1
+        strong  #{translation.PERSONAL}
+    .col-md-6.col-6.text-right 
+      button.btn.btn-success(style="margin-bottom:25px;" type="button" data-toggle="modal" data-target="#nuevoInsumoModal")
+        span #{translation.ADD_BRAND}
+        i.fas.fa-plus.ml-2
+    .col-12
+      div.table-responsive
+        table.table.table-bordered#tabla-insumos
+          thead.thead-dark
+  script
+    include /js/toast.sweet.js
+
+  include ./modals/crear-insumo.pug
+  include ./modals/editar-insumo.pug
+
+  include ./save/insumo.pug
+  include ./update/insumo.pug
+  include ./delete/insumo.pug
+
+
+  include ./datatable/insumos.pug
+  include ./select2/insumos.pug

@@ -1,0 +1,64 @@
+extends ./layout.pug
+
+append contenido
+  .row.justify-content-end
+    if empresa_id
+      include /mixins/btn/back.pug
+      input#empresa_id(type="text" value=empresa_id hidden)
+      .col-md-6.col-6
+        +btn-back()
+    .col-md-6.col-6.text-right 
+      button.btn.btn-success(type="button" data-toggle="modal" data-target="#nuevoMonedaModal")
+        i.fas.fa-plus
+          span  Moneda
+    .col-md-3.col-sm-6
+      .form-group
+        label(for="") #{translation.FORM.COUNTRY}
+        select#lista-paises-filtro
+  .row.mt-3
+    .col-md-4.col-6(style="max-width: 400px")
+
+      label.font-weight-bold.datev-label #{translation.MASSIVE_ACTIONS}
+        .row
+          .col-md-8.col-12
+            select#acciones.form-control
+              option(value=null) #{translation.SELECT}
+              option(value="0") #{translation.DELETE}
+          .col-md-4.col-12
+            button#accionesBoton(class="btn btn-success-2") #{translation.CONFIRM}
+
+
+    .col-12(style="margin-top: 20px;")
+      div.table-responsive
+        table#tabla-monedas.table.table-bordered
+          thead.thead-dark
+          tbody
+          tfoot  
+
+
+  include ./modals/crear-moneda.pug
+  include ./modals/editar-moneda.pug
+  include ./styles/monedas.pug
+
+  script
+    include /js/toast.sweet.js
+
+  include ./datatable/monedas.pug
+  include ./update/moneda.pug
+  include ./save/moneda.pug
+  include ./delete/moneda.pug
+
+  script.
+
+    $("#lista-paises-filtro").change(function () {
+      let filtro_pais_id = this.value;
+      if (filtro_pais_id != "") {
+        tablaAlmacenes.search(filtro_pais_id).draw();
+      } else {
+        tablaAlmacenes.search("").draw();
+      }
+    })
+    
+
+  //- otros modulos
+  include /modulo-generales/geolocalizacion/select2/paises.pug

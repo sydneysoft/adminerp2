@@ -1,0 +1,53 @@
+script.
+  //Eliminar Admin Usuario
+  const eliminarAdminUsuario = (val) => {
+    Swal.fire({
+      title: "Estás Seguro?",
+      text: "No podras revertir esta acción",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "#{translation.ALERTS.YES_DELETE}",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        handleDeleteAdminUser(val);
+      }
+    });
+  };
+
+  const handleDeleteAdminUser = (val) => {
+    Swal.showLoading();
+    $.ajax({
+      method: "GET",
+      url: "/eliminar",
+      dataType: "json",
+      data: { nombretabla: "usuarios", nombreid: "id", id: val },
+      success: function (data) {
+        if (data.status === "success") {
+          Swal.close();
+          window.location.reload(true);
+        } else {
+          Swal.close();
+          Swal.fire({
+            position: "center",
+            icon: "error",
+            title: "#{translation.ALERTS.WRONG}",
+            showConfirmButton: false,
+            timer: 2500,
+          });
+        }
+      },
+      error: function () {
+        Swal.close();
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "#{translation.ALERTS.WRONG}",
+          showConfirmButton: false,
+          timer: 2500,
+        });
+      },
+    });
+  };
+

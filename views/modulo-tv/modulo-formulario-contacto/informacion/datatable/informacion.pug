@@ -1,0 +1,43 @@
+script.
+  let tablaInfoContact;
+  $(document).ready( function () {
+    let urlAjax = '/admin-informacion-contactos/datatable';
+    tablaInfoContact = $('#dataTable').DataTable({
+      dom: 'lBfrtip',
+      buttons: [
+        'copy', 'excel', 'pdf', 'print'
+      ],
+      fnCreatedRow: function (nRow, aData, iDataIndex) {
+        $(nRow).attr('id', `delete${aData.ID}`);
+      },
+      processing: true,
+      serverSide: true,
+      ajax: urlAjax,
+      searchDelay: 1000,
+      columns: [
+        { data: 'id', name: 'id', title: 'ID' },
+        { 
+          data: 'nombre', 
+          name: 'nombre',
+          render: function (data, type, row) {
+            return data ? data : 'No especificado'
+          },
+        { 
+          data: 'compania', 
+          name: 'compania'
+          render: function (data, type, row) {
+            return data ? data : 'No especificado'
+          }
+        },
+        { data: 'email', name: 'email'},
+        { data: 'telefono', name: 'telefono'},
+        { 
+          data: 'Actions',
+          render: function (data, type, row) {
+            return `<button class="btn btn-info" onclick='showContactInfo(${JSON.stringify(row)})'><i class="fas fa-eye"></i></button>`
+          },
+          searchable: false,
+        }
+      ]
+    });
+  });

@@ -1,0 +1,39 @@
+script.
+  let paisIsoCode = null;
+  const select2Paises = $("#lista-paises, #lista-paises-editar, #paises").select2({
+    ajax: {
+      url: "/admin-geolocalizacion/countries",
+      dataType: "json",
+      delay: 500,
+      data: function (params) {
+        return {
+          q: params.term, // search term
+          page: params.page,
+        }
+      },
+      processResults: function (data, params) {
+        console.log(data);
+        return {
+          results: $.map(data, (i) => {
+            return {
+              id: i.isoCode,
+              text: i.name,
+            };
+          })
+        }
+      },
+      cache: true,
+    },
+    templateResult: statePaises,
+    placeholder: "Seleccione un país",
+    allowClear: true,
+  });
+
+  function statePaises (state) {
+    if (state.loading) {
+      return state.text;
+    }
+    var baseUrl = "/img/flags";
+    var $state = $(`<span>${state.id}</strong> | ${state.text}</span>`);
+    return $state;
+  }

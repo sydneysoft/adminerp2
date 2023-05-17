@@ -1,0 +1,126 @@
+doctype transitional
+head
+  meta(charset='UTF-8')
+  meta(content='width=device-width, initial-scale=1' name='viewport')
+  meta(name='x-apple-disable-message-reformatting')
+  meta(http-equiv='X-UA-Compatible' content='IE=edge')
+  meta(content='telephone=no' name='format-detection')
+  title
+.es-wrapper-color
+
+  //- Asunto: ¡Bienvenido/a a Inkalandia!
+
+  h1 Estimado/a 
+    if Array.isArray(usuario) && usuario.length > 0
+      strong
+        | #{usuario[0].nombre},
+
+  p
+    strong(style="margin-right: 5px") ¡Gracias por elegir Inkalandia como tu proveedor de software!
+    | Nos complace tener la oportunidad de ofrecerte una solución de alta calidad y fácil de usar que te ayudará a mejorar la eficiencia y la productividad de tu empresa.
+
+  //- Tu membresía te dará acceso completo a nuestro software, lo que significa que podrás aprovechar al máximo todas las características y funcionalidades que ofrecemos. Además, como miembro de Inkalandia, podrás disfrutar de beneficios exclusivos, como acceso a nuevas funciones, actualizaciones y soporte técnico especializado.
+  p
+    | Estamos comprometidos en brindarte el mejor servicio posible y queremos que sepas que estamos a tu disposición si necesitas ayuda o asistencia. Si tienes alguna pregunta o necesitas ayuda para configurar o utilizar nuestro software, no dudes en ponerte en contacto con nosotros. Estamos aquí para ayudarte y asegurarnos de que obtengas el máximo beneficio de tu membresía.
+
+  P 
+    | De nuevo, gracias por elegir Inkalandia como tu proveedor de software. Esperamos tener una larga y exitosa relación con tu empresa.
+
+  if Array.isArray(empresa) && Array.isArray(usuario)
+    if empresa.length > 0 && usuario.length > 0
+      h2 Datos de Registro
+      .registro
+        ul
+          li
+            strong Correo para iniciar sesión: 
+            | #{usuario[0].correo}
+            
+          li
+            strong Nombre:
+            |  #{usuario[0].nombre}
+          li
+            strong Direcci&oacute;n:
+            |  #{usuario[0].direccion}
+          li 
+            strong Celular:
+            | #{usuario[0].celular}
+          
+          li 
+            strong Nombre de la empresa:
+            | #{empresa[0].nombre}
+          li
+            strong Url de la empresa:
+            |  #{empresa[0].slug}.tiendavirtual.online
+          li
+            strong Correo corporativo:
+            |  #{empresa[0].email_corporativo}
+          li
+            strong Correo de contacto:
+            |  #{empresa[0].email_contacto}
+      style.
+        .registro {
+          border: 2px solid #ccc;
+          border-radius: 10px;
+          padding: 20px;
+          //- margin: 20px;
+          //- width: 400px;
+          font-family: Arial, sans-serif;
+        }
+
+        .registro h2 {
+          margin-bottom: 10px;
+          font-size: 1.2em;
+          text-align: center;
+        }
+
+        .registro ul {
+          list-style: none;
+          padding: 0;
+          margin: 0;
+        }
+
+        .registro li {
+          margin-bottom: 10px;
+          font-size: 1.1em;
+        }
+
+        .registro li strong {
+          display: inline-block;
+          //- width: 120px;
+          font-weight: bold;
+        }
+
+
+  p Atentamente,
+  p Mijail
+  p Equipo Inkalandia
+
+  style.
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-bottom: 20px;
+    }
+
+    thead {
+      background-color: #f2f2f2;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 8px;
+    }
+
+    th {
+      border-bottom: 1px solid #ddd;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    tfoot td {
+      text-align: right;
+      font-weight: bold;
+      border-top: 2px solid #ddd;
+    }

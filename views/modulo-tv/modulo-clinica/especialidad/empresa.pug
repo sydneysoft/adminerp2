@@ -1,0 +1,53 @@
+extends ../layout.pug
+
+append contenido
+  .container.mt-3
+    .tab-content
+      h2 #{translation.TRATAMIENTO}
+    .row
+      .col-12
+        .text-right 
+          button#nuevoTratamiento.btn.btn-primary(role="button") #{translation.FORM.ADD} 
+            i.fas.fa-plus.ml-3
+    .row.mt-3
+      .col-12 
+        div.table-responsive 
+          table#dataTable.w-100.table
+            thead 
+              tr 
+                th ID
+                th #{translation.ACTIONS} 
+            tbody
+              if Array.isArray(data) && data.length > 0
+                each tratamiento, index in data
+                  tr 
+                    
+                    td= JSON.stringify(tratamiento)
+
+
+  script.
+
+    let tablaTratamientos;
+    $(document).ready(function() {
+      tablaTratamientos = $('#dataTable').DataTable({
+        fnCreatedRow: function (nRow, aData, iDataIndex) {
+          $(nRow).attr('id', `delete${aData.ID}`);
+        },
+        columns: [
+          
+          { 
+            data: 'Acciones',
+            render: function (data, type, row) {
+              return `<button class="btn btn-primary btn-sm" onclick='editarTratamiento(${data})'><i class="fas fa-edit"></i></button>
+                      <button class="btn btn-info btn-sm" onclick='verTratamiento(${data})'><i class="fas fa-eye"></i></button>
+                      <button class="btn btn-danger btn-sm" onclick="beforeDeleteItem('/admin-clinica/tratamientos/items/${row.ID}', deleteItemSuccess)"><i class="fas fa-trash"></i></button>`;
+            }
+          }
+        ]
+      });
+    });
+    function deleteItemSuccess (data) {
+      tablaTratamientos.row(`#${data.target}`).remove().draw();
+    }
+  script
+    include ../../../js/modulo-tv/delete.js

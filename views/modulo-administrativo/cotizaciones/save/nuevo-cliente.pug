@@ -1,0 +1,30 @@
+script.
+  // Evento para guardar un nuevo cliente
+  $("#add-customer-modal-btn").on("click", function () {
+    let customer_name_modal = $("#nombreCliente").val();
+    let customer_email_modal = $("#emailCliente").val();
+    let empresa_modal = parseInt($("#empresaCliente").val());
+    const auxData = { nombre: customer_name_modal, email: customer_email_modal };
+    if (!isNaN(empresa_modal)) {
+      auxData.empresa_id = empresa_modal;
+    }
+    Swal.showLoading();
+    $.ajax({
+      url: "/cotizaciones/nuevo-cliente",
+      type: "POST",
+      data: auxData,
+      success: function (data) {
+        Swal.close()
+        if (data.success == true) {
+          toastSweet('success', '#{translation.ALERTS.CLIENT_SUCCESS}', 'success');
+          $("#gestionarClientes").modal("hide");
+        } else {
+          toastSweet('warning', '#{translation.ALERTS.CLIENT_EXIST}', 'warning');
+        }
+      },
+      error: function (err) {
+        Swal.close();
+        toastSweet('error', '#{translation.ALERTS.WRONG}', 'error');
+      },
+    });
+  });

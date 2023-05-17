@@ -1,0 +1,58 @@
+script.
+  let tablaSedes;
+  addEventListener("DOMContentLoaded", () => {
+    let urlAjaxSedes = "/admin-sedes/datatable";
+    if (typeof empresa_id != 'undefined' && empresa_id && !isNaN(empresa_id.value)) {
+      urlAjaxSedes += `/${empresa_id.value}`;
+    }
+    tablaSedes = $("#tabla-sedes").DataTable({
+      "language": {"url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"},
+      "responsive": true,
+      searchDelay: 500,
+      processing: true,
+      serverSide: true,
+      ajax: urlAjaxSedes,
+      columns: [
+        { data: 'id', name: 'id', title: 'ID', orderable: false, searchable: false, visible: false},
+        { 
+          data: 'imagen', name: 'imagen', title: '#{translation.FORM.IMAGE}',
+          render: function (data, type, row) {
+            try {
+              new URL(row.imagen)
+              return `<img src="${data}" style="width:50px;height:50px;object-fit:cover">`;
+            } catch (e) {
+              return `<img src="/images/image-default.jpg" style="width:50px;height:50px;object-fit:cover">`;
+            }
+          },
+          orderable: false, searchable: false,
+        },
+        {
+          data: 'nombre', name: 'nombre', title: "#{translation.FORM.NAME}", orderable: true, searchable: true,
+        },
+        {
+          data: 'horario', name: 'horario', title: "#{translation.FORM.SCHEDULE}", orderable: false, searchable: false,
+        },
+        {
+          data: 'direccion', name: 'direccion', title: "#{translation.FORM.ADDRESS}", orderable: true, searchable: true,
+        },
+        {
+          data: 'acciones', name: 'acciones', title: '#{translation.FORM.ACTIONS}', orderable: false, searchable: false,
+          render: function (data, type, row) {
+            let strRow = JSON.stringify(row);
+            return `
+              <button class="btn btn-warning" style="margin-right:7px;" type="button" onclick='handleTiendaAdmin(${strRow})'>
+                <i class="fas fa-edit"></i>
+              </button>
+              <button class="delete btn btn-danger" onclick="deleteTiendasAdminPanel('${row.id}')">
+                <i class="fas fa-trash"></i>
+              </button>
+            `;
+          }
+        }
+      ],
+      initComplete: function (settings) {
+        //- clone thead to tfoot
+        $("#tabla-sedes thead tr").clone().appendTo($("#tabla-sedes tfoot"));
+      }
+    });
+  })

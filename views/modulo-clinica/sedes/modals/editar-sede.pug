@@ -1,0 +1,82 @@
+//- Modal para editar sede
+.modal.fade.justify-content-center.align-items-center(tabindex="-1" role="dialog" id="editarSedeModal")
+  .modal-dialog.modal-lg
+    .modal-content.modalContent(style="height: 100%;")
+      .modal-header 
+        .row(style="margin:0;")
+          .col-md-12
+            h3(style="margin:0px 0;") #{translation.EDIT}
+
+      .modal-body.borderBottom
+        .row
+          .col-md-6
+            .form-group
+              label(for="nombre_editar") #{translation.FORM.NAME}
+              input#nombre_editar.form-control(type="text" placeholder=translation.FORM.NAME)
+          .col-md-6
+            .form-group
+              label(for="direccion_editar") #{translation.FORM.ADDRESS}
+              input#direccion_editar.form-control(type="text" placeholder=translation.FORM.ADDRESS)
+        .row.mt-3
+          .col-md-6
+            .form-group
+              label(for="googlemap_editar") #{translation.FORM.GOOGLEMAP}
+              textarea#googlemap_editar.form-control(placeholder=translation.FORM.GOOGLEMAP)
+          .col-md-6
+            //- .form-group
+            //-   label(for="imagen_editar") #{translation.FORM.IMAGE}
+            //-   input#imagen_editar.form-control(type="text" placeholder="#{translation.FORM.IMAGE}")
+            .row.mb-3.align-items-end
+              .col-8
+                span #{translation.FORM.IMAGE}
+                br
+                .btn-group
+                  label.btn.btn-info.m-0(for="preFavicon") #{translation.UPLOAD}
+                    i.fas.fa-upload.ml-2
+                  button#galeriaImagen_editar.btn.btn-primary(type="button" onclick="getImagePagedGaleria(0, 'imagenModal', 'showImagenModal')") De galeria
+              .col-4
+                input#imagenFile_editar.form-control-file(type="file" name="" value="" hidden)
+                input#imagen_editar(type="text" hidden )
+                #mostrarImagen_editar
+        .row.mt-3 
+          .col-md-6
+            .form-group
+              label(for="telefono_editar") #{translation.FORM.PHONE}
+              input#telefono_editar.form-control(type="text" placeholder=translation.FORM.PHONE)
+          .col-md-6
+            .form-group
+              label(for="activado_editar") #{translation.FORM.ACTIVATED}
+              select#activado_editar.form-control
+                option(value="1") #{translation.FORM.ACTIVE}
+                option(value="0") #{translation.FORM.INACTIVE}
+        .row.mt-3
+          .col-md-4
+            .form-group
+              label(for="estado_editar") #{translation.FORM.STATUS}
+              select#estado_editar.form-control
+                option(value="1") #{translation.FORM.ACTIVE}
+                option(value="0") #{translation.FORM.INACTIVE}
+
+          .col-md-8
+            .row.align-items-end
+              .col-8 
+                .form-group
+                  label(for="atencion_editar") #{translation.FORM.ATTENTION}
+                  //- input#atencion_editar.form-control(type="text" placeholder=translation.FORM.ATTENTION)
+                  select#atencion_editar.form-crontrol(type="text" placeholder=translation.FORM.ATTENTION)
+                    each item in horarios
+                      option(value=item.id) #{item.text}
+              .col-4 
+                .form-group 
+                  button#agregar_atencion_editar.btn.btn-primary.btn-block(type="button") #{translation.ADD}
+                    i.fas.fa-plus.ml-1
+            .row 
+              .col-12 
+                #showHorarioAtencionEditar.mt-3 
+          input#itemId(type="text" value="" hidden)
+
+      .modal-footer(style="padding:8px;")
+        .row(style="margin:0;")
+          .col-md-12.text-right
+            button#editSede.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;") #{translation.EDIT}
+            button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}

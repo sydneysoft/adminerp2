@@ -1,0 +1,117 @@
+script.
+  const handleStateLibro = () => {
+    let urlAjax = "/admin-secciones-configuracion/get";
+
+    if (typeof empresa_id != 'undefined' && !isNaN(empresa_id.value)) {
+      urlAjax = "/admin-secciones-configuracion/get/0" + empresa_id;
+    }
+    else
+    {
+      let bid=0
+      urlAjax = "/admin-secciones-configuracion/get/" + bid;
+    } 
+
+
+    //console.log(empresa_id.value)
+    
+    Swal.showLoading();
+    $.ajax({
+      method: "GET",
+      url: urlAjax,
+      dataType: "json",
+      data: null,
+      success: function (data) {
+        Swal.close();
+        if (data.info) {
+          CKEDITOR.instances.ckeditorareaEditar.setData(data.info);
+        }
+        if (data.footer) {
+          CKEDITOR.instances.ckeditorareaFooter.setData(data.footer);
+        }
+        if (data.estado == "1") {
+          $("#toggle-state").bootstrapToggle("on");
+        }
+        $("#configuracionLibroReclamaciones").modal("show");
+      },
+      error: function () {
+        Swal.close();
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "Ocurrió un error interno inténtalo más tarde.",
+          showConfirmButton: false,
+          timer: 2500,
+        });
+      },
+    });
+  };
+  const updateConfigurationBook = () => {
+    let header = CKEDITOR.instances.ckeditorareaEditar.getData();
+    let footer = CKEDITOR.instances.ckeditorareaFooter.getData();
+    let valState = document.getElementById("toggle-state").checked;
+    const idSeccionConfiguracion = $("#idConfiguracionLibroReclamaciones").val();
+
+    if (valState == true) {
+      valState = "1";
+    } else {
+      valState = "0";
+    }
+
+    const auxData = { info: header, estado: valState, footer: footer};
+
+    if (typeof empresa_id && !isNaN(empresa_id.value)) {
+      auxData.empresa_id = empresa_id.value;
+    }
+
+    if (header) {
+      Swal.showLoading();
+      $.ajax({
+        method: "PUT",
+        url: "/admin-secciones-configuracion/" + idSeccionConfiguracion,
+        dataType: "json",
+        data: auxData,
+        success: function (data) {
+          if (data.ok) {
+            Swal.close();
+            // window.location.reload(true);
+            Swal.fire({
+              position: "center",
+              icon: "success",
+              title: "#{translation.ALERTS.SUCCESS}",
+              showConfirmButton: false,
+              timer: 2500,
+            });
+            $("#configuracionLibroReclamaciones").modal("hide");
+          } else {
+            Swal.close();
+            Swal.fire({
+              position: "center",
+              icon: "error",
+              title: "#{translation.ALERTS.WRONG}",
+              showConfirmButton: false,
+              timer: 2500,
+            });
+          }
+        },
+        error: function () {
+          Swal.close();
+          Swal.fire({
+            position: "center",
+            icon: "error",
+            title: "#{translation.ALERTS.WRONG}",
+            showConfirmButton: false,
+            timer: 2500,
+          });
+        },
+      });
+    } else {
+      Swal.close();
+      Swal.fire({
+        position: "center",
+        icon: "info",
+        html: "<b>#{translation.ALERTS.MUST_COMPLETE_FORM}</b>",
+        showConfirmButton: false,
+        timer: 3500,
+      });
+    }
+  };

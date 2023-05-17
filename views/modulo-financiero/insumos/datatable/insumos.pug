@@ -1,0 +1,46 @@
+script.
+  let tablaInsumos;
+  $(document).ready( function () {
+    let urlAjaxTablaInsumos = "/admin-insumos/datatable";
+    if (typeof empresa_id != 'undefined' && empresa_id.value != "" && !isNaN(empresa_id.value)) {
+      urlAjaxTablaInsumos = "/admin-insumos/datatable/" + empresa_id.value;
+    }
+
+    tablaInsumos = $('#tabla-insumos').DataTable({
+      "language": {"url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"},
+      order: [[ 0, "desc" ]],
+      searchDelay: 500,
+      processing: true,
+      serverSide: true,
+      ajax: urlAjaxTablaInsumos,
+      columns: [
+        { data: 'id', name: 'id', title: "ID", orderable: true, searchable: false, visible: false},
+        { 
+          data: 'insumo', name: 'insumo', title: "#{translation.FORM.NAME}", orderable: true, searchable: true
+        },
+        {
+          data: 'created_at', name: 'created_at', title: "#{translation.FORM.CREATED_AT}", orderable: true, searchable: false,
+          render: function (data, type, row) {
+            return moment(data).format('DD/MM/YYYY');
+          }
+        },
+        {
+          data: 'updated_at', name: 'updated_at', title: "#{translation.FORM.UPDATED_AT}", orderable: true, searchable: false,
+          render: function (data, type, row) {
+            return moment(data).format('DD/MM/YYYY');
+          }
+        },
+        { 
+          data: 'actions', name: 'actions', title: "#{translation.FORM.ACTIONS}", orderable: false, searchable: false,
+          render: function (data, type, row) {
+            let strRow = JSON.stringify(row);
+            return `
+              <button class="btn btn-warning" style="margin-right:7px;" type="button" data-toggle="modal" data-target="#editarInsumoModal" onclick='handleEditarInsumo(${strRow})'><i class="fas fa-edit"></i></button>
+              <button class="delete btn btn-danger" onClick="eliminarInsumoAdmin('${row.id}')"><i class="fas fa-trash"></i></button>
+            `;
+          }  
+        }
+      ]
+    });
+  });
+

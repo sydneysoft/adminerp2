@@ -1,0 +1,86 @@
+script.
+
+  //Agregar Filtros Data
+  const handleFilterDataSubcategorias = () => {
+    let typeActionData = $("#type-action-values").val();
+    let idGrupoFiltros = $("#id-grupoFiltros-values").val();
+    let values = [];
+    let valuesEdit = [];
+    $("input[name='filtros[]']").each(function () {
+      if ($(this).attr("edit")) {
+        if ($(this).val() != "") {
+          valuesEdit.push([parseInt($(this).attr("edit")), $(this).val()]);
+        }
+      } else {
+        if ($(this).val() != "") {
+          values.push([idGrupoFiltros, $(this).val()]);
+        }
+      }
+    });
+
+    if (typeActionData == "1") {
+      if (values.length > 0 || valuesEdit.length > 0) {
+        Swal.showLoading();
+        $.ajax({
+          method: "POST",
+          url: "/admin-subcategorias/filtros",
+          dataType: "json",
+          data: {
+            valuesPost: values,
+            valuesEdit: valuesEdit,
+            valuesDelete: deleteArray,
+          },
+          success: function (data) {
+            Swal.close();
+            if (data.status === "success") {
+              $("#addFiltrosDynamic").modal('hide');
+            } else {
+              toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+            }
+          },
+          error: function () {
+            Swal.close();
+            toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+          },
+        });
+      } else {
+        Swal.fire({
+          position: "center",
+          icon: "info",
+          html: "<b>Debes ingresar como mínimo un valor para guardar los datos.</b>",
+          showConfirmButton: false,
+          timer: 3500,
+        });
+      }
+    } else {
+      if (values.length > 0) {
+        Swal.showLoading();
+        $.ajax({
+          method: "POST",
+          url: "/admin-subcategorias/filtros",
+          dataType: "json",
+          data: { valuesPost: values, valuesEdit: [] },
+          success: function (data) {
+            Swal.close();
+            if (data.status === "success") {
+              $("#addFiltrosDynamic").modal('hide');
+            } else {
+              toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+            }
+          },
+          error: function () {
+            Swal.close();
+            toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+          },
+        });
+      } else {
+        Swal.fire({
+          position: "center",
+          icon: "info",
+          html: "<b>Debes ingresar como mínimo un valor para guardar los datos.</b>",
+          showConfirmButton: false,
+          timer: 3500,
+        });
+      }
+    }
+  };

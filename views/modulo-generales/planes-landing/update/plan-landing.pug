@@ -1,0 +1,36 @@
+script.
+  //- //- EDIT
+  $('button[data-action="edit"]').click(edit);
+
+  async function edit(e) {
+    action = 'edit';
+
+    try {
+
+      const res = await fetch(`/admin-planes-landing/${e.currentTarget.getAttribute('data-id')}`);
+
+      const  plan  = await res.json()
+
+
+      $('.modal#guardarPlan').modal('show')
+
+      if (action == 'edit' && plan) {
+
+        document.querySelectorAll('#guardarPlan form input, #guardarPlan form select, #guardarPlan form textarea').forEach(element => {
+
+          $(element).attr('type') !== 'file' && $(element).val(plan[$(element).attr('name')])
+
+          if (element.nodeName === 'SELECT') {
+            $(element).change();
+          }
+        });
+
+        $('.modal#guardarPlan').attr('data-id', e.currentTarget.getAttribute('data-id'));
+      }
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+

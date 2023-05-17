@@ -1,0 +1,35 @@
+script.
+  const eliminarPedido = (val) => {
+    Swal.fire({
+      title: '#{translation.ALERTS.DELETE}',
+      text: '#{translation.ALERTS.CONFIRM_DELETE}',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: '#{translation.FORM.YES}',
+      cancelButtonText: '#{translation.FORM.NO}',
+    }).then(result => {
+      if (result.isConfirmed) {
+        Swal.showLoading();
+        $.ajax({
+          method: "DELETE",
+          url: `/admin-pedidos/${val}`,
+          dataType: "json",
+          success: function (data) {
+            Swal.close();
+            if (data.ok) {
+              window.location.reload(true);
+            } else {
+              toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error')
+            }
+          },
+          error: function () {
+            Swal.close();
+            toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error')
+          },
+        });
+      }
+    });
+  };
+

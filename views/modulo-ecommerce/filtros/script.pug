@@ -1,0 +1,87 @@
+script.
+  const cambiarCategoriaPorEmpresaNuevo = () => {
+    let valorEmpresa = $("#empresaNuevaFiltros").val();
+    $("#categoriaNuevo-filtros").empty();
+    if (valorEmpresa == null || valorEmpresa == "") {
+      valorEmpresa = 0
+    }
+    if (valorEmpresa != "") {
+      $.ajax({
+        method: "GET",
+        url: "/admin-categorias/empresa/" + valorEmpresa,
+        dataType: "json",
+        success: function (data) {
+          let categorias = data.categorias;
+          if (categorias.length > 0) {
+            $("#categoriaNuevo-filtros").append(
+              '<option value=""> #{translation.FORM.SELECT_CATEGORY}</option>'
+            );
+            for (let i = 0; categorias.length > i; i++) {
+              $("#categoriaNuevo-filtros").append(
+                '<option value="' +
+                categorias[i].id +
+                '">' +
+                categorias[i].name +
+                "</option>"
+              );
+            }
+            $("#categoriaNuevo-filtros").attr("disabled", false);
+          } else {
+            $("#categoriaNuevo-filtros").append(
+              '<option value="0"> #{translation.FORM.CATEGORIES_NOT_FOUND}</option>'
+            );
+            $("#categoriaNuevo-filtros").attr("disabled", true);
+          }
+        },
+        error: function (e) {
+
+        },
+      });
+    } else {
+      $("#categoriaNuevo-filtros").attr("disabled", true);
+
+    }
+  };
+
+  const cambiarCategoriaPorEmpresaEdita = () => {
+    let valorEmpresa = $("#empresaEditarFiltros").val();
+    $("#categoriaEditar-filtros").empty();
+    typeUpdate = 2;
+    if (valorEmpresa != "") {
+      $.ajax({
+        method: "GET",
+        url: "/admin-categorias/empresa/" + valorEmpresa,
+        dataType: "json",
+
+        success: function (data) {
+
+          let categorias = data.categorias;
+          if (categorias.length > 0) {
+            $("#categoriaEditar-filtros").append(
+              '<option value="">Elige una categoría</option>'
+            );
+            for (let i = 0; categorias.length > i; i++) {
+              $("#categoriaEditar-filtros").append(
+                '<option value="' +
+                categorias[i].id +
+                '">' +
+                categorias[i].name +
+                "</option>"
+              );
+            }
+            $("#categoriaEditar-filtros").attr("disabled", false);
+          } else {
+            $("#categoriaEditar-filtros").append(
+              '<option value="0">#{translation.FORM.CATEGORIES_NOT_FOUND}</option>'
+            );
+            $("#categoriaEditar-filtros").attr("disabled", true);
+          }
+        },
+        error: function (e) {
+          console.log(e);
+        },
+      });
+    } else {
+      $("#categoriaEditar-filtros").append('<option value=""></option>');
+    }
+  };

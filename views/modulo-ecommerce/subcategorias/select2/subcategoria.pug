@@ -1,0 +1,74 @@
+//- Este archivo depende de /modulo-ecommerce/subcategorias/modals/crear-tienda-admin.pug
+//- Y el anterior depende de /
+script.
+  const select2Subcategoria = $("#lista-subcategorias, #lista-subcategorias-editar, #lista-subcategorias-filtro").select2({
+    ajax: {
+      url: function () {
+        return urlSelect2Subcategoria ();
+      },
+      dataType: 'json',
+      delay: 500,
+      data: function (params) {
+        return {
+          term: params.term,
+          select: ['id', 'nombre'],
+          page: params.page,
+          where: [
+            {
+              name: 'categoria',
+              search: {
+                value: function () {
+                  if (typeof categoria_select2 != "undefined") {
+                    return categoria_select2;
+                  }
+                  return "";
+                }
+              }
+            }
+          ]
+        }
+      },
+      processResults: function (data, params) {
+        return {
+          results: $.map(data.data, (item) => {
+            return {
+              id: item.id,
+              text: item.nombre,
+            }
+          })
+        }
+      },
+      cache: true
+    },
+    placeholder: 'Search',
+    templateResult: subcategoriasState,
+    allowClear: true
+  })
+  .on("select2:open", () => {
+    $(".select2-results:not(:has(a))").append(
+      '<a href="#" style="padding: 6px;height: 20px;display: inline-table;" data-toggle="modal" data-target="#crearSubcategoriaModal" onclick="closeSubcategoriasSelect2()">#{translation.FORM.ADD_SUBCATEGORY}</a>'
+    );
+  }); //- No se debe crear
+
+  function subcategoriasState (state) {
+    if (!state.id) {
+      return state.text;
+    }
+    let $container = $(`
+      <span><strong>${state.id}</strong> | ${state.text}</span>
+    `);
+
+    return $container;
+  }
+
+  function closeSubcategoriasSelect2 () {
+    $("#lista-subcategorias, #lista-subcategorias-editar, #lista-subcategorias-filtro").select2('close');
+  }
+
+  function urlSelect2Subcategoria () {
+    if (typeof empresa_id != 'undefined' && !isNaN(empresa_id.value)) {
+      return `/admin-subcategorias/select2/${empresa_id.value}`;
+    } else {
+      return "/admin-subcategorias/select2";
+    }
+  }

@@ -1,0 +1,61 @@
+extends ../layout.pug
+
+
+append contenido 
+  .my-3
+    div
+      a.btn.btn-info(href="/admin-tv/pages") 
+        i.fas.fa-arrow-left
+        span.px-3 #{translation.BACK}
+    h1.text-center.mb-5 
+      | #{translation.EDIT} #{data.nombre}
+  .my-3 
+    form#editarPagina(action=`/admin-tv/pages/${data.id}` method="post")
+      input#idPagina(name="id" value=data.id hidden)
+      .row
+        .col-12.text-right 
+          button.btn.btn-primary(type="submit") #{translation.SAVE}
+        .col-12.my-3
+        .col-12 
+          .form-group
+            label(for='nombre') #{translation.FORM.NAME}
+            input#nombre.form-control(type='text' aria-describedby='nombreHelp' placeholder="Nombre de la página." value=data.nombre)
+            small#nombreHelp.form-text.text-muted.d-none #{translation.WRITE_THE_NAME}
+        .col-12.my-3
+        .col-12.col-md-8 
+          .form-group 
+            label(for="estracto") #{translation.FORM.EXTRACT} 
+            textarea#estracto.form-control(name="estracto" placeholder="Escriba una descripción corta.")
+              |#{data.estracto}
+        .col-12.col-md-4 
+          .form-group 
+            label(for="tipo") #{translation.FORM.TYPE} 
+            select#tipo.form-control(name="tipo")
+              option(value="post") #{translation.FORM.POST}
+        .col-12.my-3
+        .col-12.col-md-8
+          label(for='thumbnail') #{translation.FORM.THUMBNAIL}
+          input#thumbnail.form-control(type='text'  placeholder #{translation.FORM.THUMBNAIL} value=data.thumbnail)
+        .col-12.col-md-4
+          label(for='identificador') #{translation.FORM.IDENTIFIER}
+          input#identificador.form-control(type='text'  placeholder #{translation.FORM.IDENTIFIER} value=data.indentificador)
+        .col-12.my-3
+        .col-12
+          .form-group 
+            label(for="body") #{translation.FORM.BODY} 
+            textarea#body(name="body")
+              |#{data.body}
+
+
+  script.
+    const editor = CKEDITOR.replace('body')
+
+  script 
+    include ./page.js
+    include ./update.js
+
+  script.
+    document.getElementById('editarPagina').addEventListener('submit', function (event){
+      event.preventDefault();
+      actualizarPagina();
+    })

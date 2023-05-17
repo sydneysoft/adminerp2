@@ -1,0 +1,104 @@
+.border-left.border-right.border-bottom.p-3 
+  .container-fluid
+    .row
+      .col-12 
+        h3 #{translation.SOCIAL_NETWORKS}
+    .row.mt-3.align-items-end
+      .col-12.col-md-2
+        .form-group
+          label(for="nombre_brand") #{translation.FORM.NAME} *
+          input#nombre_brand.form-control(type="text" placeholder=translation.FORM.NAME name="nombre_brand" required)
+      .col-12.col-md-5
+        .form-group
+          label(for="url_brand") #{translation.FORM.URL} *
+          input#url_brand.form-control(type="text" placeholder=translation.FORM.URL name="url_brand" required)
+      .col-12.col-md-2
+        .form-group
+          label(for="icono_brand") #{translation.FORM.ICON} *
+          select#icono_brand.form-control(name="icono_brand")
+      .col-12.col-md-2
+        .form-group
+          button#insertBrand.btn.btn-primary(type="button") #{translation.ADD}
+            i.fas.fa-plus-circle.ml-2
+    .row.mt-3
+      .col-12
+        #renderBrandsPayload.row
+script
+  include /js/modulo-tv/select2-icon.js     
+script.
+  const icono_brand = document.getElementById('icono_brand');
+  const nombre_brand = document.getElementById('nombre_brand');
+  const url_brand = document.getElementById('url_brand');
+  const insertBrand = document.getElementById('insertBrand');
+  const renderBrandsPayload = document.getElementById('renderBrandsPayload');
+  let brandsPayload = [];
+  
+  insertBrand.addEventListener('click', () => {
+    if (nombre_brand.value != '' && url_brand.value != '' && icono_brand.value != '') {
+      brandsPayload.push({
+        nombre: nombre_brand.value,
+        url: url_brand.value,
+        icono: icono_brand.value
+      });
+      renderBrands();
+      nombre_brand.value = '';
+      url_brand.value = '';
+      icono_brand.value = '';
+      $('#icono_brand').val(null).trigger('change');
+    }
+  });
+
+  function renderBrands () {
+    if (Array.isArray(brandsPayload) && brandsPayload.length > 0) {
+      renderBrandsPayload.innerHTML = '';
+      brandsPayload.forEach((brand, index) => {
+        const bAlert = document.createElement('div');
+        bAlert.className = 'alert alert-primary alert-dismissible fade show col-4';
+        bAlert.setAttribute('role', 'alert');
+        bAlert.innerHTML = `
+          <i class="${brand.icono} mr-2"></i>
+          <strong>${brand.nombre}</strong>
+          <p class="mb-0">${brand.url}</p>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="deleteBrandFromPayload(${index})">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        `;
+        renderBrandsPayload.appendChild(bAlert);
+      });
+
+    }
+  }
+
+  function deleteBrandFromPayload (index) {
+    brandsPayload.splice(index, 1);
+    renderBrands();
+  }
+  let icono_brands = [
+    ['fab fa-facebook', 'Facebook'],
+    ['fab fa-instagram', 'Instagram'],
+    ['fab fa-twitter', 'Twitter'],
+    ['fab fa-youtube', 'Youtube'],
+    ['fab fa-whatsapp', 'Whatsapp'],
+    ['fab fa-linkedin', 'Linkedin'],
+    ['fab fa-pinterest', 'Pinterest'],
+    ['fab fa-tumblr', 'Tumblr'],
+    ['fab fa-google-plus', 'Google Plus'],
+    ['fab fa-google', 'Google'],
+    ['fab fa-yahoo', 'Yahoo'],
+    ['fab fa-skype', 'Skype'],
+    ['fab fa-vimeo', 'Vimeo'],
+    ['fab fa-vimeo-v', 'Vimeo V'],
+    ['fab fa-vimeo-square', 'Vimeo Square'],
+    ['fab fa-vine', 'Vine'],
+  ]
+
+  icono_brands.forEach((icono) => {
+    let option = document.createElement('option');
+    option.value = icono[0];
+    option.innerHTML = icono[1];
+    icono_brand.appendChild(option);
+  });
+
+  $('#icono_brand').select2({
+    templateResult: iconState
+  })

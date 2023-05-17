@@ -1,0 +1,213 @@
+extends ../../extends/menu-superior-admin
+block contenido
+    .row
+        .col-12.text-grey(style="margin-bottom:10px;")
+            h1.display-1
+                strong #{translation.RECEIPTS_LIST}
+        .col-12
+            button.btn.btn-success(style="margin-bottom:25px;", type="button", data-toggle="modal" data-target="#nuevoModalFactura")
+                i.fas-fa-plus
+                span #{translation.NEW_RECEIPT}
+        .col-12
+            div.table-responsive
+                table.table.table-bordered#tabla-facturas
+                    thead.thead-dark
+                        tr
+                            th.text-center ID
+                            th.text-center #{translation.FORM.CLIENT}
+                            th.text-center #{translation.FORM.PRICE} 
+                            th.text-center #{translation.FORM.TYPE} 
+                            th.text-center #{translation.FORM.DATE}
+                    tbody
+                        if (items.facturas!="")
+                            each book in items.facturas
+                                tr
+                                    td.text-center=book.id
+                                    td.text-center=book.nombre
+                                    td.text-center="$/ "+book.precio
+                                    td.text-center=book.tipo
+                                    td.text-center
+                                        if(book.estado==1)
+                                            a.btn.btn-info(style="margin-right:7px;",href=book.enlace_pdf,target="_blank")
+                                                i.fas.fa-eye
+                                            button.delete.btn.btn-danger(onClick="handleAnularInvoice('"+book.numero+"','"+book.tipo+"','"+book.id+"')")
+                                                i.fas.fa-ban
+                                        else 
+                                            if(book.tipo=="2")
+                                                b #{translation.ALERTS.BILLED_ANULED}
+                                            else 
+                                                b #{translation.ALERTS.BILLED_ANULED}
+
+    include ./modals/crear-facturacion.pug
+
+    include ./save/facturas.pug
+    include ./update/anular-invoice.pug
+    include ./handles/descuento-factura.pug
+    include ./handles/stock-factura.pug
+    script.
+        var arrayProductsFactura=[];
+        const handleAddRow=()=>{
+            let pricePassed=$('#productoNuevo-factura').attr("price");
+            let stockPassed=$('#productoNuevo-factura').attr("stock");
+            let textPassed=$('#productoNuevo-factura').attr("text");
+            let idPassed=$('#productoNuevo-factura').attr("data-id");
+            if(pricePassed && stockPassed && textPassed && idPassed){
+                if(stockPassed=="0"){
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'info',
+                        html: "#{translation.ALERTS.NO_STOCK}",
+                        showConfirmButton: false,
+                        timer: 2500
+                    });  
+                }else{
+                    if(arrayProductsFactura.length>0){
+                        let idProductoIndex=arrayProductsFactura.findIndex(obj => obj.id==idPassed);
+                        if(idProductoIndex==-1){
+                            arrayProductsFactura.push({id:idPassed,cantidad:1,stock:stockPassed,name:textPassed,price:pricePassed,subtotal:pricePassed,descuento:0});
+                            $('#idAddedBody').append('<tr id="row'+idPassed+'"><td><button class="btn btn-danger" style="border-radius:50%" onClick="handleDeleteRow(\''+idPassed+'\')"><i class="fa fa-times"></i></button></td><td><input name="nombres[]" value="'+textPassed+'" class="form-control" readonly/></td><td><input type="number" name="stocks[]" value="1" id="stock'+idPassed+'" class="form-control" onchange="handleStockFactura(\''+idPassed+'\')"/></td><td><input name="descuentos[]" placeholder="% de descuento" type="number" value="0" class="form-control"  id="descuento'+idPassed+'" onchange="handleDescuentoFactura(\''+idPassed+'\')"/></td><td><input name="precios[]" type="number" value="'+pricePassed+'" class="form-control" readonly/></td><td><input name="subtotales[]" type="number" value="'+pricePassed+'" class="form-control" id="valuetotal'+idPassed+'" readonly/></td></tr>');
+                            $('#productoNuevo-factura').attr("price","");
+                            $('#productoNuevo-factura').attr("stock","");
+                            $('#productoNuevo-factura').attr("text","");
+                            $('#productoNuevo-factura').attr("data-id","");
+                            $('#productoNuevo-factura').val("");
+                        }else{
+                            let dataVerifyStock=parseInt(arrayProductsFactura[idProductoIndex].cantidad) +1;
+                            if(dataVerifyStock <= arrayProductsFactura[idProductoIndex].stock){
+                                let discountData=parseInt(arrayProductsFactura[idProductoIndex].descuento);
+                                let dataSubtotal=parseInt(arrayProductsFactura[idProductoIndex].price);
+                                dataSubtotal=dataSubtotal*dataVerifyStock;
+                                let dataObtainTotal=(dataSubtotal * discountData) / 100;
+                                dataObtainTotal=dataSubtotal-dataObtainTotal;
+                                arrayProductsFactura[idProductoIndex].cantidad=dataVerifyStock;
+                                arrayProductsFactura[idProductoIndex].subtotal=dataObtainTotal;
+                                $('#stock'+arrayProductsFactura[idProductoIndex].id).val(dataVerifyStock);
+                                $('#valuetotal'+arrayProductsFactura[idProductoIndex].id).val(dataObtainTotal);
+                                $('#productoNuevo-factura').attr("price","");
+                                $('#productoNuevo-factura').attr("stock","");
+                                $('#productoNuevo-factura').attr("text","");
+                                $('#productoNuevo-factura').attr("data-id","");
+                                $('#productoNuevo-factura').val("");
+                            }else{
+                                $('#productoNuevo-factura').attr("price","");
+                                $('#productoNuevo-factura').attr("stock","");
+                                $('#productoNuevo-factura').attr("text","");
+                                $('#productoNuevo-factura').attr("data-id","");
+                                $('#productoNuevo-factura').val("");
+                                Swal.fire({
+                                    position: 'center',
+                                    icon: 'info',
+                                    html: "#{translation.ALERTS.NO_STOCK}",
+                                    showConfirmButton: false,
+                                    timer: 2500
+                                });  
+                            }
+                        }
+                    }else{
+                        arrayProductsFactura.push({id:idPassed,cantidad:1,stock:stockPassed,name:textPassed,price:pricePassed,subtotal:pricePassed,descuento:0});
+                        $('#idAddedBody').append('<tr id="row'+idPassed+'"><td><button class="btn btn-danger" style="border-radius:50%" onClick="handleDeleteRow(\''+idPassed+'\')"><i class="fa fa-times"></i></button></td><td><input name="nombres[]" value="'+textPassed+'" class="form-control" readonly/></td><td><input type="number" name="stocks[]" value="1" id="stock'+idPassed+'" class="form-control"  onchange="handleStockFactura(\''+idPassed+'\')"/></td><td><input name="descuentos[]" type="number" placeholder="% de descuento" value="0" class="form-control" id="descuento'+idPassed+'" onchange="handleDescuentoFactura(\''+idPassed+'\')"/></td><td><input name="precios[]" type="number" value="'+pricePassed+'" class="form-control" readonly/></td><td><input name="subtotales[]" type="number" value="'+pricePassed+'" class="form-control" id="valuetotal'+idPassed+'" readonly/></td></tr>');
+                        $('#productoNuevo-factura').attr("price","");
+                        $('#productoNuevo-factura').attr("stock","");
+                        $('#productoNuevo-factura').attr("text","");
+                        $('#productoNuevo-factura').attr("data-id","");
+                        $('#productoNuevo-factura').val("");
+                    }
+                }
+            }else{
+       
+                Swal.fire({
+                    position: 'center',
+                    icon: 'info',
+                    html: #{translation.ALERTS.ARE_YOU_SURE_ADD_PRODUCT},
+                    showConfirmButton: true,
+                    showCancelButton: true,
+                    confirmButtonText:'<i class="fa fa-thumbs-up"></i> Continuar!',
+                    cancelButtonText:'<i class="fa fa-thumbs-down"></i>'
+                }).then((result)=> {
+                 
+                    if (result.isConfirmed) {
+                        var newId = getNewProductId();
+                        var prodName = $("#productoNuevo-factura").val();
+                    
+                        arrayProductsFactura.push({id:newId,cantidad:1,stock:1,name:prodName,price:0.0,subtotal:0.0,descuento:0});
+                        $('#idAddedBody').append('<tr id="row'+newId+'"><td><button class="btn btn-danger" style="border-radius:50%" onClick="handleDeleteRow(\''+newId+'\')"><i class="fa fa-times"></i></button></td><td><input id="name'+newId+'" name="nombres[]" value="'+prodName+'" class="form-control"/></td><td><input type="number" name="stocks[]" value="1" id="stock'+newId+'" class="form-control"  onchange="updateProductDetail(\''+newId+'\')"/></td><td><input name="descuentos[]" type="number" placeholder="% de descuento" value="0" class="form-control" id="descuento'+newId+'" onchange="updateProductDetail(\''+newId+'\')"/></td><td><input name="precios[]" id="precio'+newId+'" type="number" value="0" onchange="updateProductDetail(\''+newId+'\')" class="form-control"/></td><td><input name="subtotales[]" type="number" value="'+pricePassed+'" class="form-control" id="valuetotal'+newId+'" readonly/></td></tr>');
+                        $('#productoNuevo-factura').attr("price","");
+                        $('#productoNuevo-factura').attr("stock","");
+                        $('#productoNuevo-factura').attr("text","");
+                        $('#productoNuevo-factura').attr("data-id","");
+                        $('#productoNuevo-factura').val("");
+                    } else {
+                        Swal.close();
+                    }
+                });
+            }
+        }
+
+        const handleDeleteRow=(idRecieved)=>{
+            let indexCarrito = arrayProductsFactura.findIndex(obj => obj.id==idRecieved);
+            if(indexCarrito>=0){
+                arrayProductsFactura.splice(indexCarrito,1);
+                $('#row'+idRecieved).remove();
+            }
+        }
+        
+        var arrayProducts=[];
+        $(document).ready( function () {
+            $('#tabla-facturas').DataTable({
+                "language": {"url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"}
+            });
+        });
+
+        $('#productoNuevo-factura').keyup(function(){
+             var query = $('#productoNuevo-factura').val();
+             if(query.length >= 2){
+                    $('.list-group').empty();
+                    $('.list-group').css('display', 'block');
+                    $.ajax({
+                        url:"/get-products-by-name",
+                        method:"POST",
+                        data:{query:query},
+                        success:function(data){
+                            for(let i=0;data.length>i;i++){
+                                $('.list-group').append('<li class="list-group-item contsearch" data-id="'+data[i].Id+'" id="gsearch" price="'+data[i].precio+'" stock="'+data[i].stock+'"><a href="javascript:void(0)" style="color:#333;text-decoration:none;">'+data[i].name+'</a></li>') 
+                            }
+                        }
+                    })
+             }else{
+                $('.list-group').css('display', 'none');
+             }
+        });
+
+        $(document).on('click', '#gsearch', function(){
+            let textObtain = $(this).text();
+            let priceObtain = $(this).attr("price");
+            let stockObtain = $(this).attr("stock");
+            let idObtain = $(this).attr("data-id");
+            $('.list-group').css('display', 'none');
+            $('#productoNuevo-factura').attr("price",priceObtain);
+            $('#productoNuevo-factura').attr("stock",stockObtain);
+            $('#productoNuevo-factura').attr("text",textObtain);
+            $('#productoNuevo-factura').attr("data-id",idObtain);
+            $('#productoNuevo-factura').val(textObtain);
+        });
+
+        function getNewProductId() {
+            var random_number = Math.floor(Math.random() * 1000);
+ 
+            return random_number
+        }
+
+        function updateProductDetail(id) {
+            let precio = $("#precio"+id).val();
+            let stock = $("#stock"+id).val();
+            let dscto = $("#descuento"+id).val();
+            let name = $("#name"+id).val();
+            let indexSearch = arrayProductsFactura.findIndex(obj => obj.id==id);
+            arrayProductsFactura[indexSearch].price = precio;
+            arrayProductsFactura[indexSearch].stock = stock;
+            arrayProductsFactura[indexSearch].subtotal = stock;
+            arrayProductsFactura[indexSearch].name = name;
+            let pretotal = precio*stock;
+            let subtotal = pretotal*((100-dscto)/100);
+            $("#valuetotal"+id).val(subtotal);
+        }

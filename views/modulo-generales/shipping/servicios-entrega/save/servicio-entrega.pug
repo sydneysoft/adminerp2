@@ -1,0 +1,47 @@
+script.
+  const AgregarServicioAdmin = (token) => {
+    let nombre = $("#nombreNuevo-servicio").val();
+    let telefono = $("#telefonoNuevo-servicio").val();
+    let metodos_envio = autocompleteTiposEnvioNuevo.value();
+    if (nombre && telefono && metodos_envio.length > 0) {
+      Swal.showLoading();
+      $.ajax({
+        method: "POST",
+        url: "/admin-servicios-entrega",
+        dataType: "json",
+        data: { nombre: nombre, empresa_id:token,telefono: telefono, metodos: metodos_envio },
+        success: function (data) {
+            Swal.close();
+            if (data.ok) {
+              window.location.reload(true);
+            } else {
+              Swal.fire({
+                position: "center",
+                icon: "error",
+                title: "#{translation.ALERTS.WRONG}", 
+                showConfirmButton: false,
+                timer: 2500,
+              });
+            }
+        },
+        error: function () {
+          Swal.close();
+          Swal.fire({
+            position: "center",
+            icon: "error",
+            title: "#{translation.ALERTS.WRONG}",
+            showConfirmButton: false,
+            timer: 2500,
+          });
+        },
+      });
+    } else {
+      Swal.fire({
+        position: "center",
+        icon: "info",
+        html: "<b>#{translation.ALERTS.MUST_COMPLETE_DATA_TO_ADD_DELIVERY_SERVICE}</b>",
+        showConfirmButton: false,
+        timer: 2500,
+      });
+    }
+  };

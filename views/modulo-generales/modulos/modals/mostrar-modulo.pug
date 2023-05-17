@@ -1,0 +1,110 @@
+//- .modal.modalnotpadding(tabindex="-1" role="dialog" id="info"+i)
+//-   .modal-dialog.modal-lg.margenModal
+//-     .modal-content.modalContent
+//-       .modal-header 
+//-         .row(style="margin:0;")
+//-           .col-md-4.responsive
+//-             div.hei
+//-               div(style="text-align:right;width:100%;font-size:16px;position:relative;")
+
+//-                 div(style="display:inline-block;margin:0px 10px;position:relative;")
+//-                   button.EditarPacientes(style="border:none;background:transparent;padding:5px;" onclick="handleDataEditModulos('"+book.Id+"','"+book.name+"','"+book.url+"','"+book.icono+"','"+book.texto+"','"+book.orden+"','"+book.fuente+"','"+book.roles+"','"+book.activo+"')")
+//-                     <span class="glyphicon glyphicon-edit"></span>
+//-                     div.targetEditar 
+//-                       span(style="padding: 2px 7px;color: #fff;background: rgba(0,0,0,0.55);border-radius: 3px;font-size: 12px;") Editar
+
+//-                 div(style="display:inline-block;position:relative;margin:0px 10px;")
+//-                   button.tres.tresPaciente(style="border:none;background:transparent;position:relative;padding:5px;")
+//-                     <span class="glyphicon glyphicon-option-vertical"></span>
+//-                     div.targetTres 
+//-                       span(style="padding: 2px 7px;color: #fff;background: rgba(0,0,0,0.55);border-radius: 3px;font-size: 12px;") Más acciones
+//-                   div.campoOculto(style="position:absolute;right:5px;top:30px;background:#fff;;box-shadow: 0 1px 4px rgb(0 0 0 / 50%);width:950%;display:none;z-index:999;padding:10px 0;")
+//-                     div
+//-                       button.subtres(type="button" onclick="printDiv('campo"+i+"')")
+//-                         span.glyphicon.glyphicon-print(style="font-size:13px;")
+//-                         span(style="padding-left:10px;") Imprimir
+//-                     div
+//-                       button.subtres(type="button")
+//-                         span.glyphicon.glyphicon-download-alt(style="font-size:13px;")
+//-                         span(style="padding-left:10px;") Exportar
+//-                     div(style="border-bottom:1px solid rgba(0,0,0,0.12);padding:0 0 10px 0;")
+//-                       button.subtres(type="button")
+//-                         i.fas.fa-trash(style="font-size:13px;")
+//-                         span(style="padding-left:10px;") Eliminar
+//-                     div(style="padding:10px 0 0 0;")
+//-                       button.subtres(type="button")
+//-                         span.glyphicon.glyphicon-calendar(style="font-size:13px;")
+//-                         span(style="padding-left:10px;") Importado el 09/03/2021
+//-                 div(style="display:inline-block;margin:0px 0px 0px 10px;position:relative;  ")
+//-                   button.cerrarPaciente(style="border:none;background:transparent;padding:5px;" data-dismiss="modal" aria-label="close")
+//-                     <span class="glyphicon glyphicon-remove"></span>
+//-                     div.targetCerrar 
+//-                       span(style="padding: 2px 7px;color: #fff;background: rgba(0,0,0,0.55);border-radius: 3px;font-size: 12px;") Cerrar
+//-           .col-md-8 
+//-             .row(style="margin:0 0 0px 0;")
+//-               .col-md-2(style="padding:0;")
+//-                 div.imgPaciente
+//-                   div
+//-                     div(style="margin:0px 0;text-align:center;")
+//-                       img(src="images/icono.jpg" style="width:60px;border-radius:50%;")
+//-               .col-md-10(style="padding:0;")
+//-                 div.nombrePaciente
+//-                   div
+//-                     h3=book.name
+//-                     div
+//-                       button.importado="Importado el 09/03/2021"
+//-           .col-md-4.notCell
+//-             div(style="height:110px;display:flex;justify-content:right;align-items:center;")
+//-               div(style="text-align:right;width:100%;font-size:16px;position:relative;")
+
+//-                 div(style="display:inline-block;margin:0px 10px;position:relative;")
+//-                   button.EditarPacientes(style="border:none;background:transparent;padding:5px;" onclick="handleDataEditModulos('"+book.Id+"','"+book.name+"','"+book.url+"','"+book.icono+"','"+book.texto+"','"+book.orden+"','"+book.fuente+"','"+book.roles+"','"+book.activo+"')")
+//-                     <span class="glyphicon glyphicon-edit"></span>
+//-                     div.targetEditar 
+//-                       span(style="padding: 2px 7px;color: #fff;background: rgba(0,0,0,0.55);border-radius: 3px;font-size: 12px;") Editar
+
+//-                 div(style="display:inline-block;position:relative;margin:0px 10px;")
+//-                   button.tres.tresPaciente(style="border:none;background:transparent;position:relative;padding:5px;")
+//-                     <span class="glyphicon glyphicon-option-vertical"></span>
+//-                     div.targetTres 
+//-                       span(style="padding: 2px 7px;color: #fff;background: rgba(0,0,0,0.55);border-radius: 3px;font-size: 12px;") Más acciones
+//-                   div.campoOculto(style="position:absolute;right:5px;top:30px;background:#fff;;box-shadow: 0 1px 4px rgb(0 0 0 / 50%);width:950%;display:none;z-index:999;padding:10px 0;")
+//-                     div
+//-                       button.subtres(type="button" onclick="printDiv('campo"+i+"')")
+//-                         span.glyphicon.glyphicon-print(style="font-size:13px;")
+//-                         span(style="padding-left:10px;") Imprimir
+//-                     div
+//-                       button.subtres(type="button")
+//-                         span.glyphicon.glyphicon-download-alt(style="font-size:13px;")
+//-                         span(style="padding-left:10px;") Exportar
+//-                     div(style="border-bottom:1px solid rgba(0,0,0,0.12);padding:0 0 10px 0;")
+//-                       button.subtres(type="button")
+//-                         i.fas.fa-trash(style="font-size:13px;")
+//-                         span(style="padding-left:10px;") Eliminar
+//-                     div(style="padding:10px 0 0 0;")
+//-                       button.subtres(type="button")
+//-                         span.glyphicon.glyphicon-calendar(style="font-size:13px;")
+//-                         span(style="padding-left:10px;") Importado el 09/03/2021
+//-                 div(style="display:inline-block;margin:0px 0px 0px 10px;position:relative;  ")
+//-                   button.cerrarPaciente(style="border:none;background:transparent;padding:5px;" data-dismiss="modal" aria-label="close")
+//-                     <span class="glyphicon glyphicon-remove"></span>
+//-                     div.targetCerrar 
+//-                       span(style="padding: 2px 7px;color: #fff;background: rgba(0,0,0,0.55);border-radius: 3px;font-size: 12px;") Cerrar
+
+//-       .modal-body.borderBottom(id="campo"+i)
+//-         .row(style="margin:0;")
+//-           .col-md-12
+//-             h4(style="margin:0 0 10px;") Detalles de doctor:
+//-           .col-md-12 
+//-             div(style="color:#000;font-size:17px;margin-bottom:10px;")
+//-               span.glyphicon.glyphicon-credit-card(style="margin-right:20px;vertical-align: middle;")
+//-               span=book.name
+//-           .col-md-12 
+//-             div.cellPaciente(style="color:#000;font-size:17px;margin-bottom:10px;position:relative")
+//-               span.glyphicon.glyphicon-phone(style="margin-right:20px;")
+//-               span=statusModuloAdmin
+//-           .col-md-12 
+//-             div.cellPaciente(style="color:#000;font-size:17px;margin-bottom:10px;position:relative")
+//-               span.glyphicon.glyphicon-phone(style="margin-right:20px;")
+//-               span=url_base+book.url
+

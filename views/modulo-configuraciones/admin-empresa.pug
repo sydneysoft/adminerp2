@@ -1,0 +1,78 @@
+extends extends/menu-superior-admin
+block contenido
+    .row
+        .col-xs-10.text-grey(style="margin-bottom:50px;")
+            h2.display-1
+                strong  #{translation.EDIT_BUSINESS}
+        .col-xs-2.text-grey(style="height:80px;")
+            div(style="height: 100%;display: flex;justify-content: center;align-items: center;")
+                button.btn.btn-success(style="margin-bottom:10px;", type="button")
+                    i.fas-fa-plus
+                    span #{translation.SAVE}
+        .col-xs-12 
+            .container-table 
+                .container 
+                    .row 
+                        .col-md-12(style="margin-bottom:20px;")
+                            .row
+                                .col-md-1(style="height:35px;")
+                                    div(style="height: 100%;display: flex;align-items: center;")
+                                        label(style="color:#202020")="#{translation.FORM.NAME}:"
+                                .col-md-11
+                                    input.form-control(type="text",id="nombreEmpresa", name="nombreEmpresa", readonly)
+
+                        .col-md-12(style="margin-bottom:20px;")
+                            .row
+                                .col-md-1(style="height:35px;")
+                                    div(style="height: 100%;display: flex;align-items: center;")
+                                        label(style="color:#202020")="#{translation.FORM.SLOGAN}:"
+                                .col-md-11
+                                    input.form-control(type="text",id="esloganEmpresa", name="esloganEmpresa")
+
+                        .col-md-12(style="margin-bottom:20px;")
+                            .row
+                                .col-md-1(style="height:35px;")
+                                    div(style="height: 100%;display: flex;align-items: center;")
+                                        label(style="color:#202020")="#{translation.FORM.PHONE}:"
+                                .col-md-11
+                                    input.form-control(type="text",id="telefonoEmpresa", name="telefonoEmpresa")
+
+                        .col-md-12(style="margin-bottom:20px;")
+                            .row
+                                .col-md-1(style="height:35px;")
+                                    div(style="height: 100%;display: flex;align-items: center;")
+                                        label(style="color:#202020")="#{translation.FORM.ADDRESS}:"
+                                .col-md-11
+                                    input.form-control(type="text",id="direccionEmpresa", name="direccionEmpresa")
+
+                        .col-md-12(style="margin-bottom:20px;")
+                            .row
+                                .col-md-1(style="height:35px;")
+                                    div(style="height: 100%;display: flex;align-items: center;")
+                                        label(style="color:#202020")="#{translation.FORM.CODE}:"
+                                .col-md-11
+                                    input.form-control(type="text",id="codigoEmpresa", name="codigoEmpresa", readonly)
+
+                        .col-md-4(style="margin-bottom:20px;")
+                            .row
+                                .col-md-12(style="height:35px;")
+                                    div
+                                        label(style="color:#202020")="#{translation.FORM.MESSAGE1}:"
+                                .col-md-12
+                                    textarea.form-control(id="mensaje1Empresa", name="mensaje1Empresa", rows="5",style="resize:none;")
+                        .col-md-4(style="margin-bottom:20px;")
+                            .row
+                                .col-md-12(style="height:35px;")
+                                    div
+                                        label(style="color:#202020")="#{translation.FORM.MESSAGE2}:"
+                                .col-md-12
+                                    textarea.form-control(id="mensaje2Empresa", name="mensaje2Empresa", rows="5",style="resize:none;")
+                        .col-md-4(style="margin-bottom:20px;")
+                            .row
+                                .col-md-12(style="height:35px;")
+                                    div
+                                        label(style="color:#202020")="#{translation.FORM.MESSAGE3}:"
+                                .col-md-12
+                                    textarea.form-control(id="mensaje3Empresa", name="mensaje3Empresa", rows="5",style="resize:none;")
+    script
+        include ../js/template.js

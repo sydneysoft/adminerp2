@@ -1,0 +1,109 @@
+extends ./layout.pug
+append contenido
+  .row.justify-content-end
+    if empresa_id
+      include /mixins/btn/back.pug
+      input#empresa_id(type="hidden" value=empresa_id)
+      .col-6 
+        +btn-back()
+    .col-md-6.col-6.text-right 
+      button.btn.btn-success(style="margin-bottom:25px;" type="button" data-toggle="modal" data-target="#nuevoModalFiltros")
+        i.fas-fa-plus
+        span #{translation.ADD_FILTER}
+  .row.mt-3
+    .col-6.col-md-4.col-lg-3
+      .form-group
+        label(for="lista-categorias-filtro") #{translation.FORM.CATEGORIES}
+        select#lista-categorias-filtro.form-control 
+  .row.mt-3
+
+    .col-12
+      div.table-responsive
+        table.table.table-bordered#tabla-filtros
+          thead.thead-dark
+          tbody
+          tfoot 
+
+  script
+    include /js/toast.sweet.js
+
+  include ./modals/crear-filtros.pug
+  include ./modals/actualizar-filtros.pug
+  include ./modals/manejar-filtro.pug  
+
+  script.
+    $("#lista-categorias-filtro").change(function () {
+      if (typeof tablaGrupoFiltros != 'undefined') {
+        tablaGrupoFiltros.columns([2]).search(this.value).draw();
+      }
+    });
+
+    var deleteArray=[];
+    $(document).on('click', '#removeRowDynamic', function () {
+      if($(this).closest('#inputFormRow').attr("edit")){
+        deleteArray.push(parseInt($(this).closest('#inputFormRow').attr("edit"))); 
+      }
+      $(this).closest('#inputFormRow').remove();
+    });
+
+    $(document).ready( function () {
+
+      $('#tabla-categorias').DataTable({
+        "language": { "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json" }
+      });
+
+      $(".seleccionar").select2({
+        language: {
+          noResults: function () {
+            return "No se han encontrado resultados";
+          },
+        },
+      });
+      var tableFilter = $("#tabla-categorias").dataTable();
+
+      $('select#filtroEmpresa').change(function () {
+        if (this.value != 0) {
+          tableFilter.fnFilter(this.value, 2);
+        } else {
+          tableFilter.fnFilter('', 2);
+          tableFilter.fnFilter('')
+        }
+      })
+
+    });  
+
+    if( $("#empresaEditarFiltros").length || $("empresaNuevaFiltros").length){
+      marketplace=true
+
+    } else {
+
+      //- $.ajax({
+      //-     method: "GET",
+      //-     url: "/data-table",
+      //-     dataType:"json",
+      //-     data:{tableName:"categorias"},
+      //-     success: function(data){
+
+      //-         for(i=0;i<data.length;i++){
+      //-             $('#categoriaNuevo-filtros').append('<option value="'+data[i].id+'">'+data[i].name+'</option>');   
+      //-             $('#categoriaEditar-filtros').append('<option value="'+data[i].id+'">'+data[i].name+'</option>');                                   
+      //-         }  
+      //-     },error: function(e){
+      //-         console.log(e);
+      //-     },
+      //- });
+    }
+
+  include ./script.pug
+  include ./save/filtros.pug
+  include ./save/grupo-filtros.pug
+  include ./update/grupo-filtro.pug
+  include ./delete/filtros-admin.pug
+  include ./handle/agregar-filtros.pug
+  include ./handle/editar-filtros.pug
+
+  include ./datatable/filtros.pug
+  include ./select2/grupo-filtros.pug
+
+  //- otros modulos
+  include /modulo-ecommerce/categorias/select2/categorias.pug

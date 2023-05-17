@@ -1,0 +1,63 @@
+script.
+  const handleEdiFiltros = (id) => {
+    typeOperation = "2";
+    Swal.showLoading();
+
+    $("#idEditar-filtros").val(id);
+    $('#categoriaEditar-filtros').attr("disabled", true);
+    $('#categoriaEditar-filtros').empty();
+    $("#nombreEditar-filtros").val("");
+    $('#categoriaEditar-filtros').val("")
+    $("#empresaEditarFiltros").val("")
+    typeUpdate = 1;
+
+
+    $.ajax({
+      method: "GET",
+
+      url: "/grupo-filtro-obtener/" + id,
+      dataType: "json",
+
+      success: async function (data) {
+
+        if (data.status === "success") {
+          let filtro = data.dataFiltros
+          let categorias = data.dataCategorias
+          if (categorias.length > 0) {
+            for (let i = 0; categorias.length > i; i++) {
+              $("#categoriaEditar-filtros").append(
+                '<option value="' +
+                categorias[i].id +
+                '">' +
+                categorias[i].name +
+                "</option>"
+              );
+            }
+            $("#categoriaEditar-filtros").attr("disabled", false);
+          } else {
+            $("#categoriaEditar-filtros").append(
+              '<option value="">#{translation.FORM.CATEGORIES_NOT_FOUND}</option>'
+            );
+            $("#categoriaEditar-filtros").attr("disabled", true);
+          }
+
+
+          $("#nombreEditar-filtros").val(filtro[0].nombre);
+          $("#empresaEditarFiltros").val(filtro[0].empresa_id).select2()
+          $("#categoriaEditar-filtros").val(filtro[0].categoria);
+
+          Swal.close();
+          $("#editarBannerAdministrador").modal("show");
+        }
+        else {
+          Swal.close();
+          toastSweet('Error', '#{translation.ALERTS.WRONG_GET_DATA}', 'error');
+        }
+      },
+
+      error: function () {
+        Swal.close();
+        toastSweet('Error', '#{translation.ALERTS.WRONG_GET_DATA}', 'error');
+      },
+    });
+  }

@@ -1,0 +1,139 @@
+.modal.fade#guardarTrabajadorAdmin(tabindex="-1" role="dialog")
+  .modal-dialog.modal-lg(role="document")
+    .modal-content
+      .modal-body
+        form
+          #step-one.step.step-active
+            .row
+              .col-md-6.mb-3
+                label.form-label(for='primer_nombre' )  #{translation.FORM.FIRST_NAME} 
+                input.form-control(type='text' name='primer_nombre' id='primer_nombre' )
+              .col-md-6.mb-3
+                label.form-label(for='segundo_nombre')  #{translation.FORM.SECOND_NAME} 
+                input.form-control(type='text' name='segundo_nombre' id='segundo_nombre' )
+            .row
+              .col-md-6.mb-3
+                label.form-label(for='apellido_paterno') #{translation.FORM.FATHERS_NAME} 
+                input.form-control(type='text' name='apellido_paterno' id='apellido_paterno' )
+              .col-md-6.mb-3
+                label.form-label(for='apellido_materno') #{translation.FORM.MOTHERS_NAME} 
+                input.form-control(type='text' name='apellido_materno' id='apellido_materno' )
+            .row
+              .col-md-6.mb-3
+                label.form-label(for='celular') #{translation.FORM.MOBILE} 
+                input.form-control(type='text' name='celular' id='celular' )
+              .col-md-6.mb-3
+                label.form-label(for='telefono') #{translation.FORM.PHONE} 
+                input.form-control(type='text' name='telefono' id='telefono' )
+            .row
+              .col-md-6.mb-3
+                label.form-label(for='correo') #{translation.FORM.EMAIL} 
+                input.form-control(type='text' name='correo' id='correo' )
+              .col-md-6.mb-3
+                label.form-label(for='foto_de_documento_cara_trasera') #{translation.FORM.DOCUMENT_PHOTO_BACK}
+                input.form-control(type='file' name='foto_de_documento_cara_trasera' id='foto_de_documento_cara_trasera' )
+            .row
+              .col-md-6.mb-3
+                label.form-label(for='tipo_de_documento') #{translation.FORM.DOCUMENT_TYPE}
+                select.form-control(name='tipo_de_documento' id='tipo_de_documento' )
+                  option(value="") #{translation.FORM.SELECT_OPTION}
+                  option(value="DNI") #{translation.FORM.DOCUMENT_NUMBER}
+                  option(value="Carnet de Extranjería") #{translation.FORM.FOREIGNER_CARD}
+                  option(value="Pasaporte") #{translation.FORM.PASSPORT}
+              .col-md-6.mb-3
+                label.form-label(for='numero_de_documento') #{translation.FORM.DOCUMENT_NUMBER}
+                input.form-control(type='text' name='numero_de_documento' id='numero_de_documento' )
+            .row
+              .col-md-6.mb-3
+                label.form-label(for='foto_de_documento_cara_frontal') #{translation.FORM.DOCUMENT_PHOTO_FRONT}
+                input.form-control(type='file' name='foto_de_documento_cara_frontal' id='foto_de_documento_cara_frontal' )
+
+
+            .row
+              .col-md-12.mb-3
+                label.form-label(for='direccion') #{translation.FORM.ADDRESS}
+                textarea.form-control(type='text' name='direccion' id='direccion' )
+            .row.justify-content-end.mt-3
+              .col-md-3
+                button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.FORM.CANCEL}
+              .col-md-3
+                button.btn.btn-primary(data-action='change-step' type="button") #{translation.FORM.NEXT}
+          #step-two.step.hidden
+            .row
+              .col-md-6.mb-3
+                label.form-label(for='entidad_bancaria') #{translation.FORM.BANK_ENTITY}
+                input.form-control(type='text' name='entidad_bancaria' id='entidad_bancaria')
+              .col-md-6.mb-3
+                label.form-label(for='numero_de_cuenta') #{translation.FORM.ACCOUNT_NUMBER}
+                input.form-control(type='text' name='numero_de_cuenta' id='numero_de_cuenta')
+            .row
+              .col-md-6.mb-3
+                label.form-label(for='AFP') #{translation.FORM.AFP}
+                select.form-control( name='AFP' id='AFP')
+                  option(value="") #{translation.FORM.SELECT_OPTION}
+                  option(value="AFP INTEGRA") AFP INTEGRA
+                  option(value="AFP PRIMA") AFP PRIMA
+                  option(value="AFP HABITAT") AFP HABITAT
+              .col-md-6.mb-3
+                label.form-label(for='CTS') #{translation.FORM.CTS}
+                select.form-control( name='CTS' id='CTS')
+                  option(value="") #{translation.FORM.SELECT_OPTION}
+                  option(value="BCP") BCP
+                  option(value="INTERBANK") INTERBANK
+                  option(value="SCOTIABANK") SCOTIABANK
+                  option(value="BBVA") BBVA
+            .row
+              .col-md-6.mb-3
+                label.form-label(for='observaciones') #{translation.FORM.OBSERVATIONS}
+                input.form-control(type='text' name='observaciones' id='observaciones')
+              .col-md-6.mb-3
+                label.form-label(for='fecha_de_contratacion' ) #{translation.FORM.DATE_HIRED}
+                input.form-control.date-picker(type='text' name='fecha_de_contratacion' id='fecha_de_contratacion' data-provide="datepicker" data-date-language="es")
+            .row
+              .col-md-6.mb-3
+                label.form-label(for='estado') #{translation.FORM.STATE}
+                select.form-control( name='estado' id='estado')
+                  option(value="ACTIVO") #{translation.FORM.ACTIVE} 
+                  option(value="SUSPENDIDO") #{translation.FORM.SUSPENDED} 
+                  option(value="DESPEDIDO") #{translation.FORM.FIRED} 
+                  option(value="RENUNCIA") #{translation.FORM.QUITTED} 
+              .col-md-6.mb-3
+                label.form-label(for='fecha_de_despido' ) #{translation.FORM.FIRED_DATE}
+                input.form-control.date-picker(type='text' name='fecha_de_despido' id='fecha_de_despido' data-provide="datepicker" data-date-language="es")
+            .row
+              .col-md-6.mb-3
+                label.form-label(for='CV') #{translation.FORM.CV}
+                input.form-control(type='file' name='CV' id='CV')
+              .col-md-6.mb-3
+                label.form-label(for='contrato') #{translation.FORM.CONTRACT}
+                input.form-control(type='file' name='contrato' id='contrato')
+            .row
+              .col-md-6.mb-3
+
+                label.form-label(for='nombres_de_persona_de_contacto') #{translation.FORM.NAMES_PERSON_CONTACT}
+                input.form-control(type='text' name='nombres_de_persona_de_contacto' id='nombres_de_persona_de_contacto' )
+              .col-md-6.mb-3
+                label.form-label(for='celular_de_persona_de_contrato') #{translation.FORM.MOBILE_PERSON_CONTACT}
+                input.form-control(type='text' name='celular_de_persona_de_contacto' id='celular_de_persona_de_contacto')
+            .row
+              .col-md-6.mb-3
+                label.form-label(for='tipo_de_documento_de_persona_de_contacto')
+                  #{translation.FORM.DOCUMENT_TYPE_PERSON_CONTACT}
+                select.form-control(type='text' name='tipo_de_documento_de_persona_de_contacto' id='tipo_de_documento_de_persona_de_contacto')
+                  option(value="") #{translation.FORM.SELECT_OPTION}
+                  option(value="DNI") #{translation.FORM.DOCUMENT_NUMBER}
+                  option(value="Carnet de Extranjería") #{translation.FORM.FOREGINER_CARD}
+                  option(value="Pasaporte") #{translation.FORM.PASSPORT}
+              .col-md-6.mb-3
+                label.form-label(for='numero_de_documento_de_persona_de_contacto')
+                | #{translation.FORM.DOCUMENT_NUMBER_PERSON_CONTACT}
+                input.form-control(type='text' name='numero_de_documento_de_persona_de_contacto' id='numero_de_documento_de_persona_de_contacto')
+            .row.justify-content-end.mt-3
+              .col-md-3
+                button.btn.btn-primary(data-action='change-step' type="button") #{translation.FORM.BACK}
+              .col-md-3
+                button.btn.btn-success(type='submit') #{translation.FORM.SAVE}
+
+    .modal-footer      
+
+      button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.FORM.CLOSE}

@@ -1,0 +1,60 @@
+script.
+  async function actualizar(token) {
+    const id = $("#editar").attr("data-id");
+    let nombre = $("#nombreEditar").val(),
+      direccion = $("#direccionEditar").val(),
+      provincia = $("#lista-estados-editar").val(),
+      pais = $("#lista-paises-editar").val();
+      //- empresa_id_select = $("#empresaEditar").val();
+      //- empresa_id_select = $("#lista-empresas-editar").val();
+    if (id > 0) {
+      const auxData = {
+          nombre,
+          direccion,
+          provincia,
+          pais
+        };
+      if (typeof empresa_id !== 'undefined' && empresa_id && !isNaN(empresa_id.value)) {
+        auxData.empresa_id = empresa_id.value;
+      }
+      Swal.showLoading();
+      await fetch(`/admin-almacenes/` + id, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(auxData),
+      })
+
+        .then((data) => {
+          Swal.close();
+          if (data.status === 200) {
+            if (typeof tablaAlmacenes !== 'undefined') {
+              tablaAlmacenes.ajax.reload();
+            }
+            $("#editar").modal("hide");
+            toastSweet('Success', '#{translation.ALERTS.UPDATED}', 'success');
+          } else {
+            toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+          }
+        })
+        .catch(() => {
+          Swal.close();
+          toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+        });
+    } else {
+      toastSweet('Error', '#{translation.ALERTS.REQUIRED_FIELDS}', 'error');
+    }
+  }
+
+    const openNewHandleModalStore = (data) => {
+    typeOperation = "2";
+    $("#nombreEditar").val(data.nombre);
+    $("#direccionEditar").val(data.direccion);
+    $("#lista-paises-editar").val(data.pais).trigger('change');
+    setTimeout(() => {
+      $("#lista-estados-editar").val(data.provincia).trigger('change');
+    }, 500);
+    $("#empresaEditar").select2("trigger", "select", {
+      data: { id: data.empresa_id, text: `#{translation.FORM.COMPANY} ${data.empresa_id}` },
+    });
+    $("#editar").modal("show").attr("data-id", data.id);
+  };

@@ -1,0 +1,44 @@
+extends ../layout.pug
+
+
+append contenido 
+  .my-3
+    .d-grid
+      a#aCrear.btn.btn-primary.btn-block(type='button' href="/admin-video-prime/generos/crear") #{translation.CREATE_NEW}
+        span#spanCrear #{translation.FORM.GENRE}
+  if data && data.length > 0
+    .table-responsive
+      table.table
+        thead#headTable 
+          tr 
+            th ID 
+            th #{translation.FORM.NAME} 
+            th #{translation.FORM.EXTRACT}
+        tbody#generosTable 
+          each item, key in data 
+            tr(id=`delete${item.id}`)
+              td #{item.id}
+              td #{item.nombre}
+              td #{item.estracto}
+              td 
+                .btn-group
+                  a.btn.btn-primary(href=`/admin-video-prime/generos/editar/${item.id}`)
+                    i.fas.fa-pen
+                  a.btn.btn-info(href=`/admin-video-prime/generos/mostrar/${item.id}`)
+                    i.fas.fa-eye
+                  button.btn.btn-danger(onclick=`beforeDeleteItem('/admin-video-prime/generos/genero/${item.id}', ${item.id})`)
+                    i.fas.fa-trash
+ 
+  else 
+    .alert.alert-primary(role='alert')
+      | #{translation.ALERTS.NO_GENRE_YET}
+
+  nav(aria-label='...')
+    ul.pagination
+      li.page-item
+        a#prevPage.page-link #{translation.PREVIOUS}
+      li.page-item
+        a#nextPage.page-link(href='#') #{translation.NEXT}
+
+  script 
+    include ../../../js/modulo-tv/delete.js

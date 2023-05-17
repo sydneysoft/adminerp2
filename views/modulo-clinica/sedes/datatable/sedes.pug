@@ -1,0 +1,133 @@
+script.
+  let tablaClinicaSedes;
+  $(document).ready(function () {
+    let urlAjaxTablaClinicaSedes = "/admin-clinica/sedes/datatable"
+    if (typeof empresa_id != 'undefined' && !isNaN(empresa_id.value)) {
+      urlAjaxTablaClinicaSedes += `/${empresa_id.value}`;
+    }
+    tablaClinicaSedes = $("#tabla-sedes").DataTable({
+      columnDefs: [
+        {
+          orderable: false,
+          className: "select-checkbox",
+          targets: 0,
+        },
+      ],
+      select: {
+        style: "multi",
+        selector: "td:first-child",
+      },
+      dom: "Bfrtip",
+      buttons: ["selectAll", "selectNone"],
+      order: [[1, "asc"]],
+      language: {
+        buttons: {
+          selectAll: '#{translation.FORM.SELECT_EVERYTHING}',
+          selectNone: '#{translation.FORM.ERASE_SELECTION}',
+        },
+        url: "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json",
+        select: {
+          rows: "%d filas seleccionadas",
+        },
+      },
+      responsive: true,
+      searchDelay: 500,
+      processing: true,
+      serverSide: true,
+      ajax: urlAjaxTablaClinicaSedes,
+      rowId: 'id',
+      columns: [
+        { 
+          data: 'id', name: 'id', title: 'ID', orderable: false, searchable: false,
+          render: function (data, type, row) {
+            return ``;
+          }
+        },
+        { 
+          data: 'nombre', name: 'nombre', title: '#{translation.FORM.NAME}',
+          searchable: true,
+          orderable: true,
+        },
+        { 
+          data: 'direccion', name: 'direccion', title: '#{translation.FORM.ADDRESS}',
+          searchable: true,
+          orderable: true,
+        },
+        { 
+          data: 'imagen', name: 'imagen', title: '#{translation.FORM.IMAGE}',
+          searchable: true,
+          orderable: true,
+          render: function (data, type, row) {
+            try {
+              new URL(row.imagen);
+              return `<img src="${row.imagen}" alt="imagen" style="width: 50px; height: 50px;">`
+            } catch(e) {
+              return `<img src="/images/image-default.jpg" alt="imagen" style="width: 50px; height: 50px;">`
+            }
+          }
+        },
+        { 
+          data: 'telefono', name: 'telefono', title: '#{translation.FORM.PHONE}',
+          searchable: true,
+          orderable: true,
+        },
+        { 
+          data: 'atencion', name: 'atencion', title: '#{translation.FORM.ATTENTION}',
+          searchable: false,
+          orderable: false,
+        },
+        { 
+          data: 'estado', name: 'estado', title: '#{translation.FORM.STATUS}',
+          searchable: false,
+          orderable: false,
+          render: function (data, type, row) {
+            return row.estado ? '<span class="badge badge-success"><i class="fas fa-check"></i></span>' : '<span class="badge badge-danger"><i class="fas fa-times"></i></span>';
+          }
+        },
+        { 
+          data: 'activado', name: 'activado', title: '#{translation.FORM.ACTIVATED}',
+          searchable: false,
+          orderable: false,
+          render: function (data, type, row) {
+            return row.activado ? '<span class="badge badge-success"><i class="fas fa-check"></i></span>' : '<span class="badge badge-danger"><i class="fas fa-times"></i></span>';
+          }
+        },
+        { 
+          data: 'actions',
+          name: 'actions',
+          title: '#{translation.FORM.ACTIONS}',
+          searchable: false,
+          orderable: false,
+          render: function (data, type, row) {
+            //- console.log(row);
+            return `
+              <button class="btn btn-primary btn-sm" onclick='editarSede(${JSON.stringify(row)})' data-toggle="modal" data-target="#editarSedeModal"><i class="fas fa-edit"></i></button>
+              <button class="btn btn-success btn-sm" onclick='mostrarSede(${JSON.stringify(row)})' data-toggle="modal" data-target="#mostrarSedeModal"><i class="fas fa-eye"></i></button>
+              <button class="btn btn-danger btn-sm" onclick="beforeDeleteItem('/admin-clinica/sedes/items/${row.id}', deleteItemSuccess)"><i class="fas fa-trash"></i></button>
+            `
+          }
+        }
+      ],
+      initComplete: function (settings) {
+        //- clone thead to tfoot
+        $("#tabla-sedes thead tr").clone().appendTo($("#tabla-sedes tfoot"));
+      }
+    });
+
+
+    $("#accionesBoton").click(function () {
+      const valorSeleccionado = $("#acciones").val();
+      const selected_rows = tablaClinicaSedes
+        .rows({
+          selected: true,
+        })
+        .ids();
+
+      const arraySeleccion = $.makeArray(selected_rows);
+      switch (valorSeleccionado) {
+        case "0":
+          eliminarProductos(arraySeleccion, "sedes");
+          break;
+      }
+    });
+  });

@@ -1,0 +1,43 @@
+extends ../../extends/menu-superior-admin
+block contenido
+    .row
+        .col-12
+            table.table#tabla-portadas
+                thead.thead-dark
+            include ./datatable/portada.pug
+        .col-12.text-grey(style="margin-bottom:20px;")
+            h1.display-1
+                strong #{translation.LIST_COVERS} 
+             
+        .col-md-12
+            .row#imagenesPostadas
+                each book in items.portadas
+                    .col-12.col-md-6
+                        .container-banner
+                            .row
+                                .col-12.text-center
+                                    h6(style="font-weight:bold")="Página "+book.nombre
+                                .col-12.text-center
+                                
+                                    img(src=book.imagen  alt=book.id style="width: 100%; height: 250px;object-fit:cover;border-radius:4px")
+                                .col-12.text-center.mt-3
+                                    button.btn.btn-warning(onClick="handlingEditBannersAdmin('"+book.id+"','"+book.imagen+"')")
+                                        i.fas.fa-edit
+    include ./modals/editar-portada.pug
+    include ./../../modulo-generales/galeria-fotos/seleccion-unica-galeria/admin-galeria-modal-simple
+    include ./update/portada.pug
+    
+    script.
+        var typeOperation="1";
+        $("#imagenesPostadas img").each (function (index,element) {
+            $(element).attr('src',urlImagenPortada($(element).attr('src')))
+        });
+        function urlImagenPortada (url) {
+            try {
+                new URL(url);
+                return url
+            }catch (e) {
+                return '/images/image-default.jpg'
+            }
+        }
+ 

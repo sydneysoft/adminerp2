@@ -1,0 +1,75 @@
+.modal#nuevoModalFactura(tabindex="-1" role="dialog")
+  .modal-dialog.modal-lg(role="document")
+    .modal-content
+      .modal-body
+        .row(style="padding:10px;margin-bottom:8px;")
+          .col-md-4.col-12
+            .form-group
+              label #{translation.RAZON_SOCIAL}
+              .controls
+                input#nombreNuevo-factura.form-control(type="text")
+          .col-md-4.col-12
+            .form-group
+              label #{translation.RAZON_SOCIAL}
+              .controls
+                select#tipoNuevo-factura.form-control
+                  option(value="1")="FACTURA"
+                  option(value="2")="BOLETA"
+                  option(value="3")="NOTA DE CRÉDITO"
+                  option(value="4")="NOTA DE DÉBITO"
+          .col-md-4.col-12
+            .form-group
+              label #{translation.DOCUMENT_TYPE}
+              .controls
+                select#tipodocumentoNuevo-factura.form-control
+                  option(value="1")="DNI"
+                  option(value="2")="RUC"
+                  option(value="3")="CARNET DE EXTRANJERÍA"
+                  option(value="4")="PASAPORTE"
+                  option(value="4")="CÉDULA DIPLOMÁTICA DE "
+          .col-md-4.col-12
+            .form-group
+              label #{translation.FORM.DOCUMENT_NUMBER}
+              .controls
+                input#numeroDocumentoNuevo-factura.form-control(type="text")
+          .col-md-4.col-12
+            .form-group
+              label #{translation.FORM.EMAIL}
+              .controls
+                input#emailNuevo-factura.form-control(type="text")
+          .col-md-4.col-12
+            .form-group
+              label #{translation.FORM.MOBILE_PHONE}
+              .controls
+                input#celularNuevo-factura.form-control(type="number")
+          .col-md-6.col-12
+            .form-group
+              label #{translation.FORM.ADDRESS}
+              .controls
+                input#direccionNuevo-factura.form-control(type="text")
+          .col-md-6.col-12
+            .form-group
+              label #{translation.FORM.PRODUCT}
+              .controls(style="position:relative;")
+                .input-group
+                  input#productoNuevo-factura.form-control(type="text" autocomplete="password" placeholder=translation.ENTER_PRODUCT)
+                  .input-group-append
+                    button.btn.btn-primary(onClick="handleAddRow()")
+                      i.fa.fa-plus
+                ul.list-group( style="max-height: 150px; overflow: auto; position:absolute;z-index:9999;width:100%")
+          .col-md-12.col-12
+            div.table-responsive(style="margin-top:15px;")
+              table.table 
+                thead
+                  tr.bg-primary
+                    th.text-center(style="color:#fff") #
+                    th.text-center(style="color:#fff") #{translation.FORM.PRODUCT}
+                    th.text-center(style="color:#fff") #{translation.FORM.QUANTITY}
+                    th.text-center(style="color:#fff") #{translation.FORM.PERCENTAGE_DISCOUNT}
+                    th.text-center(style="color:#fff") #{translation.FORM.PRICE} 
+                    th.text-center(style="color:#fff") #{translation.FORM.SUBTOTAL} 
+                tbody#idAddedBody
+      .modal-footer
+        button.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;", onClick=`generateInvoice(${token})`) #{translation.SAVE}
+        button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}
+

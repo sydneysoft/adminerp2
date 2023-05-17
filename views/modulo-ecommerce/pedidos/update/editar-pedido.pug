@@ -1,0 +1,34 @@
+script.
+  //Actualizar todo los Datos
+  const actualizar = () => {
+    let id = $("#idItem").val();
+    let estado = $("#estado").val();
+    console.log(estado)
+    if (id && estado) {
+      Swal.showLoading();
+      $.ajax({
+        method: "PUT",
+        url: `/admin-pedidos/${id}`,
+        dataType: "json",
+        data: {
+          estado: estado,
+        },
+        success: function (data) {
+          if (data.status === "success") {
+            $("#editarPedido").modal("hide");
+            Swal.close();
+            window.location.reload(true);
+          } else {
+            Swal.close();
+            toastSweet('Error', '#{translation.ALERTS.REGISTER_CANNOT_UPDATE}', 'error')
+          }
+        },
+        error: function () {
+          Swal.close();
+          toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error')
+        },
+      });
+    } else {
+      toastSweet('Error', '#{translation.ALERTS.NO_STATE_SELECTED}', 'error')
+    }
+  };

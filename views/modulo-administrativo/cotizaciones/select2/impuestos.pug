@@ -1,0 +1,63 @@
+script.
+  let impuestosUrlAjaxSelect2 = "/cotizaciones/impuestos/select2";
+  $('#empresa').on('change', (e) => {
+    const empresa = parseInt($('#empresa').val());
+    if (!isNaN(empresa) ) {
+      impuestosUrlAjaxSelect2 = `/cotizaciones/impuestos/select2/${empresa}`;
+      initImpuestosSelect2();
+    }
+  });
+  function initImpuestosSelect2() {
+    const empresa = parseInt($('#empresa').val());
+    if (empresa_id && empresa_id.value != "" && isNaN(empresa)) {
+      impuestosUrlAjaxSelect2 = `/cotizaciones/impuestos/select2/${empresa_id.value}`;
+    }
+    $('.impuesto, .impuesto2').select2({
+      ajax: {
+        url: impuestosUrlAjaxSelect2,
+        dataType: 'json',
+        delay: 500,
+        data: function (params) {
+          return {
+            term: params.term,
+            select: ['id', 'nombre', 'tasa'],
+            page: params.page
+          }
+        },
+        processResults: function (data, params) {
+          return {
+            results: $.map(data.data, (item) => {
+              return {
+                id: item.tasa,
+                text: item.nombre,
+                "data-desc": item.nombre
+              }
+            })
+          }
+        },
+        cache: true
+      },
+      placeholder: '#{translation.FORM.TAX}',
+      templateResult: impuestoState,
+      allowClear: true
+    }).on("select2:open", () => {
+      $(".select2-results:not(:has(a))").append(
+        '<a href="#" style="padding: 6px;height: 20px;display: inline-table;" onclick="agregarImpuesto()">#{translation.ADD}</a>'
+      );
+    });
+
+    
+  }
+  function impuestoState (state) {
+    //- option(value=item.email data-value=item.nombre)= item.nombre +" | " + item.email 
+    if (!state.id) {
+      return state.text;
+    }
+    let $container = $(`
+      <span>${state.text}-${state.id}%</span>
+    `)
+
+    return $container;
+  }
+
+  initImpuestosSelect2();

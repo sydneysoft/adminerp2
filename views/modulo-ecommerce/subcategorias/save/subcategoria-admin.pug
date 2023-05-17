@@ -1,0 +1,59 @@
+script.
+
+  const AgregarSubcategoriaAdmin = (token) => {
+
+    let nombreSubcategoria = $("#nombreNuevo-subcategoria").val();
+    //- let categoria = $("#categoriaNuevo-subcategoria").val();
+    let categoria = $("#lista-categorias").val();
+    let status = $("#activadoNuevo-subcategoria").val();
+    let imagen = $("#imagen-data-banner").attr('src');
+    let empresa
+    let empresaSeleccionada = $(".empresa-subcategoria").select2().val();
+
+    const auxData = {
+      nombre: nombreSubcategoria,
+      categoria: categoria,
+      activado: status,
+      imagen: imagen,
+    }
+
+    if (typeof empresa_id != 'undefined' && empresa_id && !isNaN(empresa_id.value)) {
+      auxData.empresa_id = empresa_id.value
+    }
+
+    if (nombreSubcategoria && categoria && status) {
+      Swal.showLoading();
+      $.ajax({
+        method: "POST",
+        url: "/admin-subcategorias",
+        dataType: "json",
+        data: auxData,
+        success: function (data) {
+          if (data.status === "success") {
+            Swal.close();
+            if (typeof tablaSubcategorias != 'undefined') {
+              tablaSubcategorias.ajax.reload();
+            }
+            toastSweet('Success', '#{translation.ALERTS.CREATED}', 'success');
+            $("#crearSubcategoriaModal").modal("hide");
+            //- window.location.reload(true);
+          } else {
+            Swal.close();
+            toastSweet('Error', '#{translation.ALERTS.CANNOT_ADD_SUBCATEGORY}', 'error');
+          }
+        },
+        error: function (data) {
+          if (data.status == 409) {
+            Swal.close();
+            toastSweet('Error', '#{translation.ALERTS.SUBCATEGORY_EXIST}', 'error');
+          } else {
+            Swal.close();
+            toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+          }
+        },
+      });
+    } else {
+      Swal.close();
+      toastSweet('Error', '#{translation.ALERTS.COMPLETE_FORM}', 'error');
+    }
+  };

@@ -1,0 +1,36 @@
+//- Modal para mostrar una nuevo link a red social
+.modal.fade.justify-content-center.align-items-center(tabindex="-1" role="dialog" id="showModal")
+  .modal-dialog.modal-md
+    .modal-content.modalContent(style="height: 100%;")
+      .modal-header 
+        .row(style="margin:0;")
+          .col-md-12
+            h3(style="margin:0px 0;") #{translation.ADD}
+
+      .modal-body.borderBottom
+        .row 
+          .col-12 
+            .form-group
+              label(for="nombre_mostrar") #{translation.FORM.NAME}
+              input#nombre_mostrar.form-control(type="text" placeholder=translation.FORM.NAME readonly)
+        .row.mt-2 
+          .col-12 
+            .alert.alert-info 
+              | #{translation.FORM.CORTE_MESSAGE_INFO}  
+        .row.mt-2 
+          .col-12
+            .form-group 
+              label(for="descripcion_mostrar") #{translation.FORM.DESCRIPTION}
+              textarea#descripcion_mostrar.form-control(type="text" placeholder=translation.FORM.DESCRIPTION readonly)
+        .row.mt-2 
+          .col-12
+            .form-group
+              label(for="precio_mostrar") #{translation.FORM.PRICE}
+              input#precio_mostrar.form-control(type="number" placeholder=translation.FORM.PRICE readonly) 
+
+      .modal-footer(style="padding:8px;")
+        .row(style="margin:0;")
+          .col-md-12.text-right
+            button#addRed.btn.btn-primary.nuevo(type="button" data-dismiss="modal" style="margin-left:7px;margin-right:7px;" data-toggle="modal" data-target="#editModal") #{translation.EDIT}
+              i.fas.fa-pen.ml-3
+            button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}

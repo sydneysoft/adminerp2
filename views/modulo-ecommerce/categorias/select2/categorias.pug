@@ -1,0 +1,64 @@
+//- Este archivo depende de /modulo-ecommerce/categorias/modals/crear-categoria.pug
+//- Y el anterior depende de /
+script.
+  let categoria_select2 = "";
+  function urlAjaxSelect2Categorias () {
+    if (typeof empresa_id != 'undefined' && empresa_id.value != '' && !isNaN(empresa_id.value)) {
+      return `/admin-categorias/select2/${empresa_id.value}`;
+    }
+    return "/admin-categorias/select2";
+  }
+
+  const select2Categorias = $("#lista-categorias, #lista-categorias-editar, #lista-categorias-filtro").select2({
+    ajax: {
+      url: function () {
+        return urlAjaxSelect2Categorias();
+      },
+      dataType: 'json',
+      delay: 500,
+      data: function (params) {
+        return {
+          term: params.term,
+          select: ['id', 'name'],
+          page: params.page
+        }
+      },
+      processResults: function (data, params) {
+        return {
+          results: $.map(data.data, (item) => {
+            return {
+              id: item.id,
+              text: item.name
+            }
+          })
+        }
+      },
+      cache: true
+    },
+    placeholder: 'Search',
+    templateResult: categoriasState,
+    allowClear: true
+  }).on("select2:open", () => {
+    $(".select2-results:not(:has(a))").append(
+      '<a href="#" style="padding: 6px;height: 20px;display: inline-table;" data-toggle="modal" data-target="#crearCategoriaModal" onclick="closeCategoriaSelect2()">#{translation.FORM.ADD_CATEGORY}</a>'
+    );
+  });
+
+  function categoriasState (state) {
+    if (!state.id) {
+      return state.text;
+    }
+    let $container = $(`
+      <span><strong>${state.id}</strong> | ${state.text}</span>
+    `);
+
+    return $container;
+  }
+
+  function closeCategoriaSelect2 () {
+    $("#lista-categorias, #lista-categorias-editar, #lista-categorias-filtro").select2('close');
+  }
+
+  $("#lista-categorias, #lista-categorias-editar, #lista-categorias-filtro").change(function () {
+    categoria_select2 = $(this).val();
+  })

@@ -1,0 +1,46 @@
+script.
+
+  //- NEW
+  $('button[data-action="new"]').click(function (e) {
+    action = 'new';
+    $('#guardarPlan form input, #guardarPlan form select, #guardarPlan form textarea').val('')
+  });
+  //- SUBMIT
+  $('#guardarPlan form').submit(async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.target)
+
+    try {
+
+      const ENDPOINT = action === 'new'
+        ? `/admin-planes-landing/new`
+        : `/admin-planes-landing/${$('.modal#guardarPlan').attr('data-id')}`
+
+      const res = await fetch(ENDPOINT, {
+        method: action === 'new' ? 'POST' : 'PUT',
+        body: formData
+      });
+
+      const obj = await res.json()
+
+
+      if (obj.ok) {
+        Swal.fire('El registro se ha guardado correctamente', '', 'success');
+
+        const id = action === 'new' ? obj.insertId : $('.modal#guardarPlan').attr('data-id');
+
+        updateTable(id);
+
+        e.target.reset();
+
+      } else {
+        console.log(obj)
+        Swal.fire('Oops!', 'Ha ocurrido un error al guardar los datos', 'error');
+      }
+
+    } catch (error) {
+      console.log(error)
+      Swal.fire('Oops!', 'Ha ocurrido un error al guardar los datos', 'error');
+    }
+  })

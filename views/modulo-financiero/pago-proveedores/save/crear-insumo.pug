@@ -1,0 +1,53 @@
+script.
+
+  async function guardarInsumo(token) {
+  
+
+    let insumo = $("#insumoAgregar").val()
+
+    if (insumo != null) {
+      await fetch(`/admin-insumos`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          insumo,
+          empresa_id
+        }),
+      })
+        .then((data) => {
+          if (data.status == 200) {
+            Swal.close();
+            window.location.reload(true);
+          } else if (data.status === 400) {
+
+            Swal.close();
+            Swal.fire({
+              position: "center",
+              icon: "error",
+              title: '#{translation.ALERTS.INGREDIENTS_EXIST}',
+              showConfirmButton: false,
+              timer: 2500,
+            });
+          } else {
+            Swal.fire({
+              position: "center",
+              icon: "error",
+              title: '#{translation.ALERTS.WRONG}',
+              showConfirmButton: false,
+              timer: 2500,
+            });
+          }
+        })
+        .catch((err) => {
+
+          Swal.close();
+          Swal.fire({
+            position: "center",
+            icon: "error",
+            title: '#{translation.ALERTS.WRONG}',
+            showConfirmButton: false,
+            timer: 2500,
+          });
+        });
+    }
+  }

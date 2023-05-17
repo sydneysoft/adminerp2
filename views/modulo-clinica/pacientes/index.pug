@@ -1,0 +1,97 @@
+extends ./layout.pug
+
+append contenido
+  include /mixins/select-pais.pug
+  .container-fluid
+    .row.justify-content-end
+      if empresa_id
+        include /mixins/btn/back.pug
+        input#empresa_id(type="text" value=empresa_id hidden)
+        .col-md-6.col-6
+          +btn-back()
+      .col-md-6.col-6.text-right 
+        button#nuevoPaciente.btn.btn-primary(role="button") #{translation.CREATE}
+          i.fas.fa-plus.ml-2
+    .row.mt-3
+      .col-md-4.col-6(style="max-width: 400px")
+        label.font-weight-bold.datev-label #{translation.MASSIVE_ACTIONS}
+          .row
+            .col-md-8.col-12
+              select#acciones.form-control
+                option(value=null) #{translation.SELECT}
+                option(value="0") #{translation.DELETE}
+            .col-md-4.col-12
+              button#accionesBoton(class="btn btn-success-2") #{translation.CONFIRM}
+
+    .row.mt-3
+      .col-12
+    .row.mt-3
+      .col-12 
+        div.table-responsive 
+          table#tabla-pacientes.w-100.table
+            thead.thead-dark
+            tbody
+            tfoot
+  include ./modals/crear-paciente.pug
+  include ./modals/editar-paciente.pug
+  script
+    include /js/modulo-tv/delete.js
+  
+  script.
+    const nombre = document.getElementById('nombre');
+    const apellido_paterno = document.getElementById('apellido_paterno');
+    const apellido_materno = document.getElementById('apellido_materno');
+    const numero_documento = document.getElementById('numero_documento');
+    const tipo_documento = document.getElementById('tipo_documento');
+    const sexo = document.getElementById('sexo');
+    const fecha_nacimiento = document.getElementById('fecha_nacimiento');
+    const estado_civil = document.getElementById('estado_civil');
+    const numero_seguro = document.getElementById('numero_seguro');
+    const tipo_seguro = document.getElementById('tipo_seguro');
+    const celular = document.getElementById('celular');
+    const correo = document.getElementById('correo');
+    const direccion = document.getElementById('direccion');
+    const nota = document.getElementById('nota');
+    const pais = document.getElementById('pais');
+    const nombre_seguro = document.getElementById('nombre_seguro');
+
+    const nombreEditar = document.getElementById('nombreEditar');
+    const apellido_paternoEditar = document.getElementById('apellido_paternoEditar');
+    const apellido_maternoEditar = document.getElementById('apellido_maternoEditar');
+    const numero_documentoEditar = document.getElementById('numero_documentoEditar');
+    const tipo_documentoEditar = document.getElementById('tipo_documentoEditar');
+    const sexoEditar = document.getElementById('sexoEditar');
+    const fecha_nacimientoEditar = document.getElementById('fecha_nacimientoEditar');
+    const estado_civilEditar = document.getElementById('estado_civilEditar');
+    const numero_seguroEditar = document.getElementById('numero_seguroEditar');
+    const tipo_seguroEditar = document.getElementById('tipo_seguroEditar');
+    const celularEditar = document.getElementById('celularEditar');
+    const correoEditar = document.getElementById('correoEditar');
+    const direccionEditar = document.getElementById('direccionEditar');
+    const notaEditar = document.getElementById('notaEditar');
+    const idEditar = document.getElementById('idEditar');
+    const paisEditar = document.getElementById('paisEditar');
+    const nombre_seguroEditar = document.getElementById('nombre_seguroEditar');
+
+    $("#pais").select2();
+    $("#paisEditar").select2();
+    $("#tipo_documento").select2();
+    $("#tipo_documentoEditar").select2();
+    $("#sexo").select2();
+    $("#sexoEditar").select2();
+    $("#estado_civil").select2();
+    $("#estado_civilEditar").select2();
+    $("#tipo_seguro").select2();
+    $("#tipo_seguroEditar").select2();
+    $("#nombre_seguro").select2();
+    $("#nombre_seguroEditar").select2();
+
+
+  include ./save/paciente.pug
+  include ./update/paciente.pug
+  include ./delete/paciente.pug
+  include ./datatable/pacientes.pug
+
+  //- OTROS MODULOS
+  include /modulo-generales/configuracion/documentos/select2/documentos.pug
+  include /modulo-clinica/companias-seguros/select2/companias-seguros.pug

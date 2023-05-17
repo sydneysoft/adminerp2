@@ -1,0 +1,49 @@
+script.
+  const actualizar_personal = document.getElementById("actualizarPersonal");
+  actualizar_personal.addEventListener("click", (event) => {
+    const nombre = document.getElementById("nombre-editar").value;
+    const tipo_documento = document.getElementById("tipo-documento-editar").value;
+    const nro_documento = document.getElementById("nro-documento-editar").value;
+    const itemId = document.getElementById("itemId").value;
+    const data = {
+      nombre,
+      tipo_documento,
+      nro_documento
+    };
+
+    if (typeof empresa_id != 'undefined' && empresa_id && !isNaN(empresa_id.value)) {
+      data.empresa_id = empresa_id.value;
+    }
+
+    if (itemId != "" && nombre != "" && tipo_documento != "" && nro_documento != "") {
+      $.ajax({
+        url: "/admin-personal/" + itemId,
+        type: "PUT",
+        data: data,
+        success: function (data) {
+          if (data.ok) {
+            if (typeof tablaPersonales != 'undefined' && tablaPersonales) {
+              tablaPersonales.ajax.reload();
+            }
+            toastSweet('Exito', #{translation.ALERTS.UPDATED}, 'success');
+            $("#editarPersonalModal").modal("hide");
+          } else {
+            toastSweet('Error', #{translation.ALERTS.WRONG}, 'error');
+          }
+        },
+        error: function (data) {
+          toastSweet('Error', #{translation.ALERTS.WRONG}, 'error');
+        }
+      });
+    } else {
+      toastSweet('Error', #{translation.ALERTS.REQUIRED_FIELDS}, 'error');
+    }
+  });
+
+  function handleEditarPersonal (data) {
+    const { id, nombre, tipo_documento, nro_documento } = data;
+    document.getElementById("itemId").value = id;
+    document.getElementById("nombre-editar").value = nombre;
+    document.getElementById("tipo-documento-editar").value = tipo_documento;
+    document.getElementById("nro-documento-editar").value = nro_documento;
+  }

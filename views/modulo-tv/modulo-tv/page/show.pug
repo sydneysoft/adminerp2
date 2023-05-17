@@ -1,0 +1,45 @@
+extends ../layout.pug
+
+append contenido
+  .my-3
+    div
+      a.btn.btn-primary(href="/admin-tv/pages") 
+        i.fas.fa-arrow-left
+        span.px-3 #{translation.BACK}
+
+    h1.text-center.mb-5 
+      | #{data.nombre}
+
+    .my-3.text-right 
+      a.btn.btn-primary(href=`/admin-tv/pages/edite/${data.id}`) #{translation.EDIT}
+    .card   
+      .card-body 
+        .table-responsive 
+          table.table 
+            thead
+              tr
+                th(scope='col') #{translation.FORM.NAME}
+                th(scope='col') #{translation.FORM.DESCRIPTION}
+
+            tbody
+              tr
+                th(scope='row') ID
+                td #{data.id}
+              tr
+                th(scope='row') #{translation.FORM.NAME}
+                td #{data.nombre}
+              tr
+                th(scope='row') #{translation.FORM.TYPE}
+                td #{data.tipo}
+              tr
+                th(scope='row') #{translation.FORM.EXTRACT}
+                td #{data.estracto}
+              tr
+                th(scope='row') #{translation.THUMBNAIL}
+                td #{data.thumbnail}
+              tr
+                th(scope='row') #{translation.IDENTIFIER}
+                td #{data.identificador}
+              tr
+                th(scope='row') #{translation.BODY}
+                td!= data.body

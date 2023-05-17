@@ -1,0 +1,122 @@
+script.
+  let tablaSubcategorias;
+  $(document).ready(function () {
+    let urlAjaxTablaSubcategorias = "/admin-subcategorias/datatable"
+    if (typeof empresa_id != 'undefined' && empresa_id  && !isNaN(empresa_id.value)) {
+      urlAjaxTablaSubcategorias += `/${empresa_id.value}`;
+    }
+
+    const dataColumnsSubcategorias = [
+      { data: 'id', name: 'id', title: 'ID', orderable: false, searchable: false, visible: false},
+      { 
+        data: 'imagen', name: 'imagen', title: '#{translation.FORM.IMAGE}', orderable: false, searchable: false,
+        render: function (data, type, row) {
+          try {
+            new URL(row.imagen)
+            return `<img src="${data}" style="width:50px;height:50px;object-fit:cover">`;
+          } catch (e) {
+            return `<img src="/images/image-default.jpg" style="width:50px;height:50px;object-fit:cover">`;
+          }
+        }  
+      }, 
+      {
+        data: 'nombre', name: 'nombre', title: '#{translation.FORM.NAME}', orderable: true, searchable: true
+      },
+      { 
+        data: 'categoria', name: 'categoria', title: '#{translation.FORM.CATEGORY}', orderable: true, searchable: true,
+        render: function (data, type, row) {
+          let nombre = "";
+          $.ajax({
+            url: "/admin-categorias/" + row.categoria,
+            type: "GET",
+            async: false,
+            success: function (response) {
+              nombre = response.name;
+            }
+          });
+          return nombre;
+        }
+      },
+      {
+        data: 'activado', name: 'activado', title: '#{translation.FORM.ACTIVATED}', orderable: false, searchable: false,
+        render: function (data, type, row) {
+          if (data == '1') {
+            return `<i class="fas fa-check text-success"></i>`;
+          } else {
+            return `<i class="fas fa-times text-danger"></i>`;
+          }
+        }
+      }
+    ];
+
+    if (typeof marketplace != 'undefined' && marketplace) {
+      dataColumnsSubcategorias.push({ 
+        data: 'empresa_id', name: 'empresa_id', title: '#{translation.FORM.COMPANY}', orderable: true, searchable: true,
+        render: function (data, type, row) {
+          let nombre = "";
+          $.ajax({
+            url: "/admin-empresas/" + row.empresa_id,
+            type: "GET",
+            async: false,
+            success: function (response) {
+              if (response.ok) {
+                nombre = response.result[0].nombre;
+              }
+            }
+          });
+          return nombre;
+        }
+      });
+    }
+
+    dataColumnsSubcategorias.push({ 
+      data: 'acciones', name: 'acciones', title: '#{translation.FORM.ACTIONS}', orderable: false, searchable: false,
+      render: function (data, type, row) {
+        let strRow = JSON.stringify(row);
+        return `
+          <button class="btn btn-info" style="margin-right:7px;" type="button" onclick="handleAddValuesFilterSubcategorias('${row.id}')">
+            <i class="fas fa-plus"></i>
+          </button>
+          <button class="btn btn-warning" style="margin-right:7px;" type="button" onclick="handleEditSubCategoria('${row.id}')">
+            <i class="fas fa-edit"></i>
+          </button>
+          <button class="delete btn btn-danger" onclick="eliminarSubCategoriaAdmin('${row.id}')">
+            <i class="fas fa-trash"></i>
+          </button>
+        `;
+      }
+    });
+
+    tablaSubcategorias = $('#tabla-subcategorias').DataTable({
+      responsive: true,
+      order: [[0, "desc"]],
+      searchDelay: 500,
+      processing: true,
+      serverSide: true,
+      ajax: urlAjaxTablaSubcategorias,
+      columns: dataColumnsSubcategorias,
+      initComplete: function (settings) {
+        //- clone thead to tfoot
+        $("#tabla-subcategorias thead tr").clone().appendTo($("#tabla-subcategorias tfoot"));
+      }
+    });
+
+    $(".seleccionar").select2({
+      language: {
+        noResults: function () {
+          return "No se han encontrado resultados";
+        },
+      },
+    });
+
+    var tableFilter = $("#tabla-subcategorias").dataTable();
+
+    //- $('select#empresa').change(function () {
+    //-   if (this.value != 0) {
+    //-     tablaSubcategorias.search(this.value).draw();
+    //-   } else {
+    //-     tablaSubcategorias.search("").draw();
+    //-   }
+    //- })
+
+  });

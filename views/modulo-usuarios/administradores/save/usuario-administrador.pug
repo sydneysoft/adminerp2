@@ -1,0 +1,94 @@
+script.
+  //Crear un Usuario Administrador con limitados módulos
+  const addUserAdmin = (token) => {
+    let tipo_documento = $("#tipo_documento_user").val();
+    let numero_documento = $("#numero_documento_user").val();
+    let nombres = $("#nombres_user").val();
+    let apellidos = $("#apellidos_user").val();
+    let telefono = itiRegister.getNumber();
+    let correo = $("#correo_user").val();
+    let password = $("#password_user").val();
+    let verifyPassword = $("#password_repeat_password").val();
+
+
+
+    if (
+      tipo_documento &&
+      numero_documento &&
+      nombres &&
+      apellidos &&
+      telefono &&
+      correo &&
+      password &&
+      verifyPassword
+
+    ) {
+      if (password == verifyPassword) {
+
+        Swal.showLoading();
+        $.ajax({
+          method: "POST",
+          url: "/admin-usuarios/nuevo",
+          dataType: "json",
+          data: {
+            rol: 3,
+            tipo_documento: tipo_documento,
+            numero_documento: numero_documento,
+            nombre: nombres + " " + apellidos,
+            celular: telefono,
+            correo: correo,
+            clave: password,
+            empresa_id: token,
+
+          },
+          success: function (data) {
+
+
+            if (data.status == "success") {
+              Swal.close();
+              window.location.reload(true)
+
+
+            } else {
+              Swal.close();
+              Swal.fire({
+                position: "center",
+                icon: "error",
+                html: data.msg,
+                showConfirmButton: false,
+                timer: 3500,
+              });
+            }
+          },
+          error: function () {
+            Swal.close();
+            Swal.fire({
+              position: "center",
+              icon: "error",
+              html: "<b>#{translation.ALERTS.WRONG}</b>",
+              showConfirmButton: false,
+              timer: 2500,
+            });
+          },
+        });
+      } else {
+        Swal.close();
+        Swal.fire({
+          position: "center",
+          icon: "info",
+          html: "<b>#{translation.ALERTS.PASSWORD_UNMATCH}</b>",
+          showConfirmButton: false,
+          timer: 3500,
+        });
+      }
+    } else {
+      Swal.close();
+      Swal.fire({
+        position: "center",
+        icon: "info",
+        html: "<b>Debes ingresar los datos requeridos para crear un administrador.</b>",
+        showConfirmButton: false,
+        timer: 3500,
+      });
+    }
+  };

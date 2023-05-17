@@ -1,0 +1,37 @@
+//- Modal para crear una nuevo link a red social
+#nuevoRedModal.modal.fade(role="dialog" aria-modal="true")
+  .modal-dialog.modal-md(role="document")
+    .modal-content
+      .modal-header 
+        .row(style="margin:0;")
+          .col-md-12
+            h3(style="margin:0px 0;") #{translation.ADD}
+
+      .modal-body
+        .row 
+          .col-12
+            .form-group
+              label(for='nombre') #{translation.FORM.NAME} *
+              input#nombre.form-control(type='text' placeholder=translation.FORM.NAME name="nombre" required)
+        .row 
+          .col-12
+            .form-group
+              label(for='url') #{translation.FORM.URL} *
+              input#url.form-control(type='text' placeholder=translation.FORM.URL name="url" required)
+          .col-12
+            .form-group
+              //- label(for='identificador') #{translation.FORM.IDENTIFIER} (#{translation.OPTIONAL})
+              select#identificador.form-control( name="identificador" hidden)
+                option(value="footer" selected) #{translation.FOOTER}
+        .row(style="padding:10px;margin-bottom:8px;")
+          .col-12
+            label(for='icono') #{translation.FORM.ICON}
+            .controls
+              button.btn.btn-info#icono(data-iconset="fontawesome5" data-icon="fas fa-wifi" role="iconpicker")
+
+      .modal-footer(style="padding:8px;")
+        .row(style="margin:0;")
+          .col-md-12.text-right
+            button#addRed.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;") #{translation.ADD}
+              i.fas.fa-plus.ml-3
+            button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}

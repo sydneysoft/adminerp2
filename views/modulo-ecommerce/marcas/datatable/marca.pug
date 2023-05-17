@@ -1,0 +1,87 @@
+script.
+  let tablaMarcas;
+  $(document).ready( function () {
+    let urlAjaxTablaMarcas = "/admin-marcas/datatable";
+    if (typeof empresa_id != 'undefined' && empresa_id.value != "" && !isNaN(empresa_id.value)) {
+      urlAjaxTablaMarcas = "/admin-marcas/datatable/" + empresa_id.value;
+    }
+
+    tablaMarcas = $('#tabla-marcas').DataTable({
+      "language": {"url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"},
+      order: [[ 0, "desc" ]],
+      searchDelay: 500,
+      processing: true,
+      serverSide: true,
+      ajax: urlAjaxTablaMarcas,
+      columns: [
+        { data: 'id', name: 'id', title: "ID", orderable: true, searchable: false, visible: false},
+        { 
+          data: 'name', name: 'name', title: "#{translation.FORM.NAME}", orderable: true, searchable: true},
+        { 
+          data: 'imagen', name: 'imagen', title: "#{translation.FORM.IMAGE}", orderable: false, searchable: false,
+          render: function (data, type, row) {
+            try {
+              new URL(row.imagen)
+              return `<img src="${data}" style="width:50px;height:50px;object-fit:cover">`;
+            } catch (e) {
+              return `<img src="/images/image-default.jpg" style="width:50px;height:50px;object-fit:cover">`;
+            }
+          }
+        },
+        { 
+          data: 'categoria', name: 'categoria', title: "#{translation.FORM.CATEGORY}", orderable: true, searchable: true,
+          render: function (data, type, row) {
+            let nombre = ""
+            $.ajax({
+              url: "/admin-categorias/" + row.categoria,
+              type: "GET",
+              async: false,
+              success: function (response) {
+                if (response.name != "") {
+                  nombre = response.name;
+                }
+              }
+            });
+            return nombre;
+          }
+        },
+        { 
+          data: 'activado', name: 'activado', title: "Activado", orderable: false, searchable: false,
+          render: function (data, type, row) {
+            console.log(data);
+            if (data == '1') {
+              return `<i class="fas fa-check text-success"></i>`;
+            } else {
+              return `<i class="fas fa-times text-danger"></i>`;
+            }
+          }  
+        },
+        { 
+          data: 'destacado', name: 'destacado', title: "Destacado", orderable: false, searchable: false,
+          render: function (data, type, row) {
+            console.log(data);
+            if (data == '1') {
+              return `<i class="fas fa-check text-success"></i>`;
+            } else {
+              return `<i class="fas fa-times text-danger"></i>`;
+            }
+          }  
+        },
+        { 
+          data: 'actions', name: 'actions', title: "Acciones", orderable: false, searchable: false,
+          render: function (data, type, row) {
+            let strRow = JSON.stringify(row);
+            return `
+              <button class="btn btn-warning" style="margin-right:7px;" type="button" onclick='handleEditMarca(${strRow})'><i class="fas fa-edit"></i></button>
+              <button class="delete btn btn-danger" onClick="eliminarMarcasAdmin('${row.id}')"><i class="fas fa-trash"></i></button>
+            `;
+          }  
+        }
+      ],
+      initComplete: function (settings) {
+        //- clone thead to tfoot
+        $("#tabla-marcas thead tr").clone().appendTo($("#tabla-marcas tfoot"));
+      }
+    });
+  });
+

@@ -1,0 +1,53 @@
+script.
+  const AgregarMarcasAdmin = (token) => {
+    let nombre = $("#nombreNuevo-marcas").val();
+    //- let categoria = $("#categoriaNuevo-marcas").val();
+    let categoria = $("#lista-categorias").val();
+    let status = $("#activadoNuevo-marcas").val();
+    let destacado = $("#destacadoNuevo-marcas").val();
+    let imagen = $("#imagen-data-banner").attr('src');
+    const auxData = {
+      name: nombre,
+      categoria: categoria,
+      activado: status,
+      imagen: imagen,
+      destacado: destacado,
+    }
+    if (nombre && categoria && status && destacado) {
+      if (typeof empresa_id != 'undefined' && empresa_id && !isNaN(empresa_id.value)) {
+        auxData.empresa_id = empresa_id.value;
+      } 
+      //- else {
+      //-   if (token) {
+      //-     auxData.empresa_id = token;
+      //-   }
+      //- }
+      Swal.showLoading();
+      $.ajax({
+        method: "POST",
+        url: "/admin-marcas",
+        dataType: "json",
+        data: auxData,
+        success: function (data) {
+          if (data.ok) {
+            Swal.close();
+            $("#nuevoBannerAdministrador").modal("hide");
+            toastSweet('Success', '#{translation.ALERTS.CREATED}', 'success');
+            if(typeof tablaMarcas != 'undefined') {
+              tablaMarcas.ajax.reload();
+              $("#empresa_id").val("");
+            }
+          } else {
+            Swal.close();
+            toastSweet('Error', '#{translation.ALERTS.BRAND_ERROR}', 'error');
+          }
+        },
+        error: function () {
+          Swal.close();
+          toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+        },
+      });
+    } else {
+      toastSweet('Error', '#{translation.ALERTS.FORM_EMPTY}', 'error');
+    }
+  };

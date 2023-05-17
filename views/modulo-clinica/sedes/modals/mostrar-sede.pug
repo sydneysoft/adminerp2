@@ -1,0 +1,79 @@
+//- Modal para mostrar sede
+.modal.fade.justify-content-center.align-items-center(tabindex="-1" role="dialog" id="mostrarSedeModal")
+  .modal-dialog.modal-lg
+    .modal-content.modalContent(style="height: 100%;")
+      .modal-header 
+        .row(style="margin:0;")
+          .col-md-12
+            h3(style="margin:0px 0;") #{translation.SHOW}
+
+      .modal-body.borderBottom
+        .row
+          .col-md-6
+            .form-group
+              label(for="nombre_mostrar") #{translation.FORM.NAME}
+              input#nombre_mostrar.form-control(type="text" placeholder=translation.FORM.NAME)
+          .col-md-6
+            .form-group
+              label(for="direccion_mostrar") #{translation.FORM.ADDRESS}
+              input#direccion_mostrar.form-control(type="text" placeholder=translation.FORM.ADDRESS)
+        .row.mt-3 
+          .col-md-6
+            .form-group
+              label(for="googlemap_mostrar") #{translation.FORM.GOOGLEMAP}
+              textarea#googlemap_mostrar.form-control(placeholder=translation.FORM.GOOGLEMAP)
+          .col-md-6
+            //- .form-group
+            //-   label(for="imagen_mostrar") #{translation.FORM.IMAGE}
+            //-   input#imagen_mostrar.form-control(type="text" placeholder="#{translation.FORM.IMAGE}")
+            .row.mb-3.align-items-end
+              .col-8
+              .col-4
+                #mostrarImagen_mostrar
+        .row.mt-3 
+          .col-md-6
+            .form-group
+              label(for="telefono_mostrar") #{translation.FORM.PHONE}
+              input#telefono_mostrar.form-control(type="text" placeholder=translation.FORM.PHONE)
+          .col-md-6
+            .form-group
+              label(for="activado_mostrar") #{translation.FORM.ACTIVATED}
+              select#activado_mostrar.form-control
+                option(value="1") #{translation.FORM.ACTIVE}
+                option(value="0") #{translation.FORM.INACTIVE}
+        .row.mt-3
+          .col-md-6
+            .form-group
+              label(for="estado_mostrar") #{translation.FORM.STATUS}
+              select#estado_mostrar.form-control
+                option(value="1") #{translation.FORM.ACTIVE}
+                option(value="0") #{translation.FORM.INACTIVE}
+          .col-md-6
+            .row.align-items-end 
+              .col-8 
+              .col-4 
+                #showHorarioAtencionMostrar.mt-3
+
+      .modal-footer(style="padding:8px;")
+        .row(style="margin:0;")
+          .col-md-12.text-right
+            button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}
+
+  script.
+
+    function mostrarSede (data) {
+      nombre_mostrar.value = data.nombre;
+      direccion_mostrar.value = data.direccion;
+      googlemap_mostrar.value = data.googlemap;
+      telefono_mostrar.value = data.telefono;
+      //- atencion_mostrar.value = data.atencion;
+      horario_atencion_mostrar = JSON.parse(data.horario_atencion);
+      try {
+        new URL(data.imagen);
+        $('#mostrarImagen_mostrar').html(`<img src="${data.imagen}" alt="imagen" style="width: 50px; height: 50px;">`);
+      }catch (e) {
+        $('#mostrarImagen_mostrar').html(`<img src="/images/image-default.jpg" alt="imagen" style="width: 50px; height: 50px;">`);
+      }
+      estado_mostrar.value = data.estado;
+      activado_mostrar.value = data.activado;
+    }

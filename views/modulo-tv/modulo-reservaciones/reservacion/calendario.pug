@@ -1,0 +1,247 @@
+.container 
+  .row 
+    .col-12.text-right 
+      button#nuevaCitaButton.btn.btn-primary(role="button") #{translation.MODULOTV.NEWAPPOINTMENT}
+        i.fas.fa-plus.ml-3
+  .row.mt-3
+    .col-12
+      if empresa_id
+        input#empresa_id(type="text" value=empresa_id hidden)
+      else
+        input#empresa_id(type="text" value="" hidden)
+#calendario
+
+include ./modals/crear-cita.pug
+include ./modals/editar-cita.pug
+
+script
+  include ../../../js/toast.sweet.js
+
+script.
+  let calendar;
+
+  const nombre = document.getElementById('nombre');
+  const email = document.getElementById('email');
+  const telefono = document.getElementById('telefono');
+  const color = document.getElementById('color');
+  const start = document.getElementById('start');
+  const end = document.getElementById('end');
+
+  const nombre_editar = document.getElementById('nombre_editar');
+  const email_editar = document.getElementById('email_editar');
+  const telefono_editar = document.getElementById('telefono_editar');
+  const color_editar = document.getElementById('color_editar');
+  const start_editar = document.getElementById('start_editar');
+  const end_editar = document.getElementById('end_editar');
+
+  const empresa_id = document.getElementById('empresa_id');
+  const itemId = document.getElementById('itemId');
+
+  function esHabilDD (info) {
+    if (configuracion == null ) {
+      return true
+    }
+    if (Array.isArray(configuracion.businessHours) && configuracion.businessHours.length > 0) {
+      let esHabil = false;
+      for(let i = 0; i < configuracion.businessHours.length; i++) {
+        esHabil = true;
+        if(configuracion.businessHours[i].daysOfWeek.includes(info.event.start.getDay())) {
+
+          const horaCita = moment(info.event.start);
+          const ahora = moment(new Date());
+          if (horaCita.isAfter(ahora)) {
+            const horaInicio = moment(configuracion.businessHours[i].startTime, 'HH:mm');
+            const horaFin = moment(configuracion.businessHours[i].endTime, 'HH:mm');
+            const auxHoraCita = moment(horaCita.format('HH:mm'), 'HH:mm');
+            const auxFinCita = moment(moment(info.event.end).format('HH:mm'), 'HH:mm');
+            if (auxHoraCita.isSameOrAfter(horaInicio) && auxFinCita.isSameOrBefore(horaFin)) {
+              esHabil = true;
+              break;
+            } else {
+              esHabil = false;
+            }
+
+          } else {
+            esHabil = false;
+          }
+        } else {
+          esHabil = false;
+        }
+      }
+      return esHabil;
+    }
+    return false;
+  }
+
+  function clearForm () {
+    nombre.value = '';
+    email.value = '';
+    telefono.value = '';
+    color.value = '';
+    start.value = '';
+    end.value = '';
+  }
+
+  function esHabil (info) {
+    if (configuracion == null ) {
+      return true
+    }
+    if (Array.isArray(configuracion.businessHours) && configuracion.businessHours.length > 0) {
+      let esHabil = false;
+      for(let i = 0; i < configuracion.businessHours.length; i++) {
+        esHabil = true;
+        if(configuracion.businessHours[i].daysOfWeek.includes(info.date.getDay())) {
+
+          const horaCita = moment(info.date);
+          const ahora = moment(new Date());
+          if (horaCita.isAfter(ahora)) {
+            const horaInicio = moment(configuracion.businessHours[i].startTime, 'HH:mm');
+            const horaFin = moment(configuracion.businessHours[i].endTime, 'HH:mm');
+            const auxHoraCita = moment(horaCita.format('HH:mm'), 'HH:mm');
+            if (auxHoraCita.isBefore(horaInicio) || auxHoraCita.isSameOrAfter(horaFin)) {
+              esHabil = false;
+            }
+          } else {
+            esHabil = false;
+          }
+        } else {
+          esHabil = false;
+        }
+        if (esHabil) {
+          break;
+        }
+      }
+      return esHabil;
+    }
+    return false;
+  }
+
+  function getEvents() {
+    let auxUlr = '/admin-reservaciones/calendario';
+    if (empresa_id.value != '') {
+      auxUlr = `/admin-reservaciones/calendario/${empresa_id.value}`;
+    }
+    console.log(auxUlr)
+    $.ajax({
+      method: "GET",
+      dataType: 'json',
+      url: auxUlr,
+      success: function (data) {
+        if (data.ok) {
+          calendar.removeAllEvents();
+          calendar.addEventSource(data.data);
+        }
+      },
+      error: function (error) {
+        toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+      }
+    })
+  }
+
+  function alertFechaInvalida () {
+    toastSweet('Error', '#{translation.ALERTS.APPOINTMENT_DATE_ERROR}', 'error');
+  }
+
+  document.getElementById('addNewCita').addEventListener('click', (e) => {
+    if (nombre.value != '' && start.value != '' && end.value != '') {
+      console.log('post');
+      const auxData = {
+        nombre: nombre.value,
+        correo: email.value,
+        celular: telefono.value,
+        color: color.value,
+        start: start.value,
+        end: end.value
+      }
+      if (empresa_id.value != '') {
+        auxData.empresa_id = empresa_id.value;
+      }
+      $.ajax({
+        method: "POST",
+        url: '/admin-reservaciones/items',
+        data: auxData,
+        success: function (data) {
+          if (data.ok) {
+            toastSweet('Success', '#{translation.ALERTS.APPOINTMENT_SUCCESS}', 'success');
+            $('#nuevaCita').modal('hide');
+            clearForm();
+            getEvents();
+          } else {
+            toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+          }
+        },
+        error: function (err) {
+          toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+        }
+      })
+    } else {
+      toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+    }
+  });
+
+  document.getElementById('updateCita').addEventListener('click', (e) => {
+
+    if (nombre_editar.value != '' && start_editar.value != '' && end_editar.value != '') {
+      const auxData = {
+        nombre: nombre_editar.value,
+        correo: email_editar.value,
+        celular: telefono_editar.value,
+        color: color_editar.value,
+        start: start_editar.value,
+        end: end_editar.value
+      }
+
+      $.ajax({
+        method: "PUT",
+        // dataType: 'json',
+        url: `/admin-reservaciones/items/${itemId.value}`,
+        data: auxData,
+        success: function (data) {
+          if (data.ok) {
+            toastSweet('Success', '#{translation.ALERTS.APPOINTMENT_UPDATED}', 'success');
+            $('#editarCita').modal('hide');
+            getEvents();
+            // location.reload();
+          } else {
+            toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+          }
+        },
+        error: function (err) {
+          toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+        }
+      })
+    } else {
+      toastSweet('Error', '#{translation.FORM.REQUIRED_FIELDS}', 'error');
+    }
+  })
+
+  document.getElementById('nuevaCitaButton').addEventListener('click', (e) => {
+    $('#nuevaCita').modal('show');
+  });
+
+  function actualizarFechaCita(id, fechaInicio, fechaFin) {
+    if (moment(fechaInicio).isValid() && moment(fechaFin).isValid) {
+      let auxData = {
+        start: moment(fechaInicio).format('YYYY-MM-DD HH:mm:ss'),
+        end: moment(fechaFin).format('YYYY-MM-DD HH:mm:ss')
+      }
+      console.log(auxData);
+      $.ajax({
+        method: "PUT",
+        url: `/admin-reservaciones/items/${id}`,
+        data: auxData,
+        success: function (data) {
+          if (data.ok) {
+            toastSweet('Success', '#{translation.ALERTS.APPOINTMENT_UPDATED}', 'success');
+          } else {
+            toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+          }
+        },
+        error: function (err) {
+          toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+        }
+      })
+    }
+  }
+
+include ./fullcalendar/citas.pug

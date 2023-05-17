@@ -1,0 +1,34 @@
+extends ./layout.pug
+
+append contenido
+  style.
+    .hidden {
+      display: none;
+    }
+  .row
+    .col-8.text-grey(style="margin-bottom:50px;")
+      h1.display-1
+        strong #{translation.LIST_OF_WORKERS} 
+    .col-4.text-right
+      button.btn.btn-success(type="button" data-toggle="modal" data-target="#guardarTrabajadorAdmin" data-action="new")
+        i.fas-fa-plus
+        span #{translation.ADD_WORKERS} 
+
+    .col-12(style="margin-top: 20px;")
+      div.table-responsive
+        table#tabla-trabajadores.table.table-bordered
+          thead.thead-dark
+
+  include ./modals/crear-trabajador.pug
+
+  include ./script.pug
+
+  include ./save/trabajador.pug
+  include ./update/trabajador.pug
+  include ./delete/trabajador.pug
+  include ./duplicate/trabajador.pug
+
+  include ./datatable/trabajadores.pug
+
+  script
+    include ./listener.js

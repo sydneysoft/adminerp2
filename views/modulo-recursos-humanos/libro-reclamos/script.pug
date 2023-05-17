@@ -1,0 +1,51 @@
+script.
+  //Crear Previsualización de Reclamación
+  const getReclamoPreview = (id) => {
+    Swal.showLoading();
+    $.ajax({
+      method: "GET",
+      url: "/admin-libro-reclamaciones/" + id,
+      dataType: "json",
+      data: null,
+      success: function (data) {
+        $("#tipo-documento-libro").val(data.tipo_documento);
+        $("#nombres-libro").val(data.nombres);
+        $("#apellidos-libro").val(data.apellidos);
+        $("#tipo-respuesta-libro").val(data.tipo_respuesta);
+        $("#direccion-libro").val(data.direccion);
+        $("#departamento-libro").val(data.departamento);
+        $("#provincia-libro").val(data.provincia);
+        $("#distrito-libro").val(data.distrito);
+        $("#telefono-libro").val(data.telefono);
+        $("#email-libro").val(data.email);
+        $("#identificacion-libro").val(data.bien_contratado);
+        $("#monto-libro").val(data.monto_reclamado);
+        $("#nombre-producto-libro").val(data.nombre_producto);
+        $("#tipo-reclamo-libro").val(data.tipo_reclamo);
+        $("#descripcion-producto-libro").val(data.descripcion_producto);
+        $("#motivo-libro").val(data.motivo);
+        $("#tipo-libro").val(data.tipo_reclamacion);
+        $("#detalle-reclamo-libro").val(data.detalle_reclamo);
+        $("#detalle-pedido-reclamo-libro").val(data.pedido);
+
+        if (data.menor_edad == "true") {
+          $("#menor-edad-libro").val("SI");
+        } else {
+          $("#menor-edad-libro").val("NO");
+        }
+        Swal.close();
+
+        $("#preview-reclamo-modal").modal("show");
+      },
+      error: function () {
+        Swal.close();
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "#{translation.ALERTS.WRONG}",
+          showConfirmButton: false,
+          timer: 2500,
+        });
+      },
+    });
+  };

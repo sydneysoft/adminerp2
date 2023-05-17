@@ -1,0 +1,107 @@
+extends /extends/menu-superior-admin
+block contenido
+  style.
+    .hidden {
+      display: none;
+    }
+  .row
+    .col-12.text-grey(style="margin-bottom:10px;")
+      h1.display-1
+        strong #{translation.LIST_PLANS_MEMBERSHIPS}
+    .col-12
+      button.btn.btn-success(type="button" data-toggle="modal" data-target="#guardarPlan" data-action="new")
+        i.fas-fa-plus
+        span #{translation.ADD_PLAN} 
+
+    .col-12(style="margin-top: 20px;")
+      div.table-responsive
+        table#tabla-planes.table.table-bordered
+          thead.thead-dark
+            tr.table-head
+              th.text-center Id
+              th.text-center #{translation.FORM.NAME}
+              th.text-center #{translation.FORM.PAYMENT_FREQUENCY}
+              th.text-center #{translation.FORM.PRICE}
+              th.text-center #{translation.FORM.ACTIONS}
+
+          tbody
+            each book in bookStore
+              tr
+                td.text-center=book.id
+                td.text-center=book.nombre
+                td.text-center=book.frecuencia_del_pago
+                td.text-center=book.precio
+                td.text-center
+                  button.btn.btn-info(type="button" data-action="duplicate" style="margin-left:8px" data-id="" + book.id + "")
+                    i.fa.fa-camera 
+                  button.btn.btn-warning(type="button" data-action="edit" style="margin-left:8px" data-id="" + book.id + "")
+                    i.fa.fa-edit
+                  button.btn.btn-danger(type="button" data-action="delete" style="margin-left:8px" data-id="" + book.id + "")
+                    i.fa.fa-trash 
+  script.
+    //- Variables
+    let table = null;
+    let action = '';
+
+    $(document).ready(function () {
+        table = $('#tabla-planes').DataTable({
+            "language": { "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json" }
+        });
+    });
+
+    //- Functions
+    async function updateTable(id) {
+
+      const res = await fetch(`/admin-planes-landing/${id}`);
+      const plan = await res.json()
+      const data = {
+        id: id,
+        nombre: plan.nombre,
+        frecuencia_del_pago: plan.frecuencia_del_pago,
+        precio: plan.precio,
+        '': `
+          <td class="text-center">
+            <button class="btn btn-info" style="margin-left:8px" data-action="duplicate" data-id="${plan.id}">
+              <i class="fa fa-camera"></i>
+            </button>
+            <button class="btn btn-warning" type="button" style="margin-left:8px" data-toggle="modal" data-target="#guardarPlan" data-action="edit" data-id="${plan.id}">
+              <i class="fa fa-edit"></i>
+            </button>
+            <button class="btn btn-danger" type="button" style="margin-left:8px" data-id="${plan.id}" data-action="delete">
+              <i class="fa fa-trash"></i>
+            </button>
+          </td>
+        `
+      };
+
+      if (action === 'new') {
+        table.row.add(Object.values(data)).draw(false);
+
+      } else {
+
+        const dataValues = Object.values(data);
+
+        $('button[data-id="' + id + '"]').parents('tr')[0].querySelectorAll('td').forEach((td, index) => {
+          td.innerHTML = dataValues[index]
+        });
+
+      }
+
+      $('button[data-action="delete"]').click(deleteRegister);
+      $('button[data-action="edit"]').click(edit);
+      $('button[data-action="duplicate"]').click(duplicate);
+
+      $('#tabla-planes tbody td').addClass('text-center')
+
+      action = ''
+
+    }
+
+  
+  include ./modals/crear-plan-landing.pug
+  include ./modals/editar-plan-landing.pug
+
+  include ./save/plan-landing.pug
+  include ./update/plan-landing.pug
+  include ./delete/plan-landing.pug
+  include ./duplicate/plan-landing.pug

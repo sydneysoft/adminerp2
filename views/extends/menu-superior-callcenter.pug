@@ -1,0 +1,15 @@
+extends ../extends/doctype
+block content
+    .navigator
+        .cont.content.left
+            a(href=url_base+"admin-reservas")
+                img.concebir-logo(src=url_base+"images/concebir.png", alt="Concebir logo")
+        .cont.content-right
+            a.nodisplay(href=url_base+"cerrarsesion")
+                img.nav-icon-alt.icon__.logout.float-right(src=url_base+"images/iconos/POWER.png", style="width: 60px;")
+            a#bars
+                i.fas.fa-bars.icon__.float-right(style="margin-top: 30px; margin-right: 18px;")
+    .flex-section
+        include ../includes/-callcenter
+        #section-80.section-80.section-80-left.container-fluid(style="padding: 20px;") 
+            block contenido

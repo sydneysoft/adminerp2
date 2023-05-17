@@ -1,0 +1,30 @@
+script.
+  let tablaCategorias;
+  $(document).ready( function () {
+    let urlAjaxTablaCategorias = "/admin-modulos/categorias/datatable";
+
+    tablaCategorias = $('#tabla-modulos-categorias').DataTable({
+      "language": {"url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"},
+      order: [[ 0, "desc" ]],
+      searchDelay: 500,
+      processing: true,
+      serverSide: true,
+      ajax: urlAjaxTablaCategorias,
+      pageLength: 5,
+      lengthMenu: [[5, 10, 20, -1], [5, 10, 20, "Todos"]],
+      columns: [
+        { data: 'id', name: 'id', title: "ID", orderable: true, searchable: false, visible: false},
+        { data: 'nombre', name: 'nombre', title: "#{translation.FORM.NAME}", orderable: true, searchable: true},
+        { 
+          data: 'actions', name: 'actions', title: "#{translation.FORM.ACTIONS}", orderable: false, searchable: false,
+          render: function (data, type, row) {
+            let strRow = JSON.stringify(row);
+            return `
+              <button class="btn btn-warning" onclick='handleEditarCategoriaModulo(${strRow})'><i class="fa fa-edit"></i></button>
+              <button class="btn btn-danger" onclick='deleteCategoriaAdminPanel("${row.id}")'><i class="fa fa-trash"></i></button>
+            `;
+          }  
+        }
+      ]
+    });
+  });

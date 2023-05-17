@@ -1,0 +1,37 @@
+script.
+  //Actualizar Datos de un FIltro
+  function updateDataGrupoFiltros () {
+    let idGrupoFiltro = $("#idEditar-filtros").val();
+      let nombreGrupoFiltro = $("#nombreEditar-filtros").val();
+      let categoriaGrupoFiltro = $("#categoriaEditar-filtros").val();
+      let empresa = $("#empresaEditarFiltros").val();
+
+      if (idGrupoFiltro && nombreGrupoFiltro && categoriaGrupoFiltro) {
+        Swal.showLoading();
+        $.ajax({
+          method: "POST",
+          url: "/update-grupoFiltros",
+          dataType: "json",
+          data: {
+            id: idGrupoFiltro,
+            nombre: nombreGrupoFiltro,
+            categoria: categoriaGrupoFiltro,
+          },
+          success: function (data) {
+            if (data.status === "success") {
+              Swal.close();
+              window.location.reload(true);
+            } else {
+              Swal.close();
+              toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+            }
+          },
+          error: function () {
+            Swal.close();
+            toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+          },
+        });
+      } else {
+        toastSweet('Error', '#{translation.ALERTS.FORM_EMPTY}', 'error');
+      }
+  }

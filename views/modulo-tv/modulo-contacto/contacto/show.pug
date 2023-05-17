@@ -1,0 +1,67 @@
+extends ../layout.pug
+
+append contenido 
+  .border-bottom.border-left.border-right.rounded-bottom.p-3
+    if data
+      .row.justify-content-between
+        .col
+          button.btn.btn-info(role="button" onclick="window.history.back()") Atrás
+        .col.text-right 
+          a.btn.btn-primary(role="button" href=`/admin-contactos/contacto/editar/${data.id}`) Editar
+      //- nombre	descripcion	direccion	ubicacion	correo	telefono	
+      .row.mt-3 
+        .col-12.col-md-8
+          .input-group.mb-3
+            .input-group-prepend
+              span.input-group-text Nombre
+            input.form-control(type='text' value=data.nombre readonly)
+        .col-12.col-md-4
+          .input-group
+            input.form-control(type='text' value #{translation.SCHEDULES} readonly)
+          .my-3 
+            if typeof data.horario_id === 'string'
+              .alert.alert-primary.mt-3 
+                ol.m-0.py-0
+                  each horario in JSON.parse(data.horario_id)
+                    li
+                      | #{horario.text}
+            if typeof data.horario_id === 'object'
+              .alert.alert-primary.mt-3 
+                ol.m-0.py-0
+                  each horario in data.horario_id
+                    li
+                    | #{horario.text}
+      .row 
+        .col-12.col-md-8
+          .form-group   
+            label(for="descripcion") #{translation.FORM.DESCRIPTION} 
+            div.form-control #{data.descripcion}
+        .col-12.col-md-4 
+          .form-group
+            label(for='direccion') #{translation.FORM.ADDRESS}
+            input#direccion.form-control(type='text' placeholder="Dirección" value=data.direccion name="direccion" readonly)
+          .form-group
+            label(for='ubicacion') #{translation.FORM.LINK_MAP}
+            input#ubicacion.form-control(type='text' placeholder="Enlace de mapa" value=data.ubicacion name="ubicacion" readonly)
+          .form-group
+            label(for='correo') #{translation.FORM.EMAIL}
+            input#correo.form-control(type='email' placeholder="Correo electronico" value=data.correo name="correo" readonly)
+          .form-group
+            label(for='telefono') #{translation.FORM.PHONE}
+            input#telefono.form-control(type='text' placeholder="Número de telefono" value=data.telefono name="telefono" readonly)
+    else 
+      .alert.alert-info.mt-3(role="alert")
+        | #{translation.ALERT.NO_DATA}
+
+    script.
+      const horario = document.getElementById('horario')
+      $.ajax({
+        method: 'GET',
+        dataType: 'json',
+        url: `/admin-horarios/horarios/${horario.value}`,
+        success: (data) => {
+          if(data.id) {
+            horario.value = `${data.dia_de} a ${data.dia_a} de ${data.hora_de} a ${data.hora_a}`
+          }
+        }
+      })

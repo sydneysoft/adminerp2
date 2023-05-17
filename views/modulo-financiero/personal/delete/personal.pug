@@ -1,0 +1,36 @@
+script.
+  function eliminarPersonalesAdmin (id) {
+    Swal.fire({
+      title: "Estás Seguro?",
+      text: "No podras revertir esta acción",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Si, Eliminar!",
+    })
+    .then((willDelete) => {
+      if (willDelete.isConfirmed) {
+        $.ajax({
+          url: "/admin-personal/" + id,
+          type: "DELETE",
+          success: function (data) {
+            if (data.ok) {
+              if (typeof tablaPersonales != 'undefined' && tablaPersonales) {
+                tablaPersonales.ajax.reload();
+              }
+              if (typeof tablGestionarPersonal != 'undefined' && tablGestionarPersonal) {
+                tablGestionarPersonal.ajax.reload();
+              }
+              toastSweet('Exito', '#{translation.ALERTS.DELETED}', 'success');
+            } else {
+              toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+            }
+          },
+          error: function (data) {
+            toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+          }
+        });
+      }
+    });
+  }

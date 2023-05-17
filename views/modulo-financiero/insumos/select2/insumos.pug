@@ -1,0 +1,60 @@
+script.
+  const select2Insumos = $("#lista-insumos, #lista-insumos-editar").select2({
+    ajax: {
+      url: function () {
+        return urlSelect2Personal ()
+      },
+      dataType: 'json',
+      delay: 500,
+      data: function (params) {
+        return {
+          term: params.term,
+          select: ['id', 'insumo'],
+          page: params.page
+        }
+      },
+      processResults: function (data, params) {
+        return {
+          results: $.map(data.data, (item) => {
+            return {
+              id: item.id,
+              text: item.insumo,
+            }
+          })
+        }
+      },
+      cache: true
+    },
+    placeholder: 'Search',
+    templateResult: insumosState,
+    allowClear: true
+  })
+  .on("select2:open", () => {
+    $(".select2-results:not(:has(a))").append(
+      '<a href="#" style="padding: 6px;height: 20px;display: inline-table;" data-toggle="modal" data-target="#nuevoInsumoModal" onclick="closeInsumosSelect2()">#{translation.ADD_INGREDIENTS}</a>'
+    );
+  }); 
+
+  function insumosState (state) {
+    if (!state.id) {
+      return state.text;
+    }
+    let $container = $(`
+      <span><strong>${state.id}</strong> | ${state.text} </span>
+    `);
+
+    return $container;
+  }
+
+  function closeInsumosSelect2 () {
+    $("#lista-insumos, #lista-insumos-editar").select2('close');
+  }
+
+  function urlSelect2Personal () {
+    
+    if (typeof empresa_id !== 'undefined' && empresa_id && !isNaN(empresa_id.value)) {
+      return `/admin-insumos/select2/${empresa_id.value}`
+    } else {
+      return "/admin-insumos/select2"
+    }
+  }

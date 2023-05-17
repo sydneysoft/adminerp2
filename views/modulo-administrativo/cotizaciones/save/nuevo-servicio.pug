@@ -1,0 +1,27 @@
+script.
+  //- Evento para guardar un nuevo servicio
+  $("#add-service-modal-btn").on("click", function () {
+    let nombre = $("#nombreServicio").val();
+    let descripcion = $("#descripcionServicio").val();
+    let precio = $("#precioServicio").val();
+    let empresa_id = parseInt($("#empresaServicio").val());
+    const auxData = { name: nombre, description: descripcion, precio: precio };
+
+    if (!isNaN(empresa_id)) {
+      auxData.empresa_id = empresa_id;
+    }
+
+    $.ajax({
+      url: "/cotizaciones/nuevo-servicio",
+      type: "POST",
+      data: auxData,
+      success: function () {
+        toastSweet('success', '#{translation.ALERTS.SUCCESS}', 'success');
+        $("#agregarServicio").modal("hide");
+      },
+      error: function (err) {
+        Swal.close();
+        toastSweet('error', '#{translation.ALERTS.WRONG}', 'error');
+      },
+    });
+  });

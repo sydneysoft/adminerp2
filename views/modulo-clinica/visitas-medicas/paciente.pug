@@ -1,0 +1,449 @@
+//- id	paciente_id	medico_id	fecha	hora	motivo	anotaciones	resultado	diagnostico	recetas	estado	costo	clinica_id	referenccias	empresa_id
+
+extends ../layout.pug
+
+append contenido 
+  .border-bottom.border-left.border-right.rounded-bottom.p-3
+    .my-3 
+      input#paciente_id(type="text" value=paciente_id hidden)
+      input#empresa_id(type="text" value=empresa_id hidden)
+      .row 
+        .col-6.text-left 
+          button.btn.btn-info(type="button" onclick="window.history.back()") #{translation.BACK}
+        .col-6.text-right
+          button#nueva_visita.btn.btn-success(type="button" ) #{translation.NEW_TREATMENT}
+            i.fas.fa-plus.ml-3
+    #listaPacientes
+      //- crea un componete collapse en bootstrap
+      .accordion#visita_acordion
+        if Array.isArray(data) && data.length > 0
+          each item, key in data
+            .card(id=`delete${item.id}`)
+              .card-header(id=`heading${item.id}`)
+                h2.mb-0
+                  button.btn.btn-link.btn-block.text-left(type='button', data-toggle='collapse', data-target=`#collapse${item.id}`, aria-expanded='true', aria-controls=`collapse${item.id}`)
+                    | Fecha: #{moment(item.fecha).format('YYYY-MM-DD')} - Hora: #{moment(item.hora, 'HH:mm:ss').format('HH:mm')} - Motivo: #{item.motivo}
+              div(id=`collapse${item.id}` class=`collapse ${ key === 0 ? 'show': '' }` aria-labelledby=`heading${item.id}`, data-parent='#visita_acordion')
+                .card-body
+                  .row 
+                    .col-6.text-left 
+                    .col-6.text-right
+                      .btn-group 
+                        button.btn.btn-primary(type="button" onclick=`editarVisita(${JSON.stringify(item)})`)
+                          i.fas.fa-pen
+                        button.btn.btn-danger(type="button" onclick=`eliminarVisita(${item.id})`)
+                          i.fas.fa-trash
+                  .row.mt-3
+                    .col-12.col-md-4 
+                      .form-group 
+                        label Fecha
+                        input.form-control(type='date' value=moment(item.fecha).format('YYYY-MM-DD') readonly)
+                    .col-12.col-md-4 
+                      .form-group 
+                        label Hora
+                        input.form-control(type='time' value=moment(item.hora, 'HH:mm:ss').format('HH:mm') readonly)
+                    .col-12.col-md-4
+                      .form-group 
+                        label Motivo
+                        input.form-control(type='text' value=item.motivo readonly)
+                  .row.mt-3
+                    .col-12.col-md-6 
+                      .form-group 
+                        label Anotaciones
+                        textarea.form-control(placeholder="Anotaciones de la visita" value=item.anotaciones readonly)
+                    .col-12.col-md-6
+                      .form-group 
+                        label Resultado
+                        textarea.form-control(placeholder="Resultado de la visita" value=item.resultado readonly)
+                  .row.mt-3 
+                    .col-12.col-md-6 
+                      .form-group 
+                        label Diagnóstico
+                        textarea.form-control(placeholder="Diagnóstico de la visita" value=item.diagnostico readonly)
+                    .col-12.col-md-6
+                      .form-group 
+                        label Recetas
+                        textarea.form-control(placeholder="Recetas de la visita" value=item.recetas readonly)
+                  .row.mt-3 
+                    .col-12.col-md-6
+                      .form-group
+                        label Referencias
+                        textarea.form-control(placeholder="Referencias de la visita" value=item.referencias readonly)
+                    .col-12.col-md-3
+                      .form-group 
+                        label Estado
+                        input.form-control(type='text', placeholder="Estado de la visita" value=item.estado readonly)
+                    .col-12.col-md-3
+                      .form-group 
+                        label Costo
+                        input.form-control(type='number', placeholder="Costo de la visita" value=item.costo readonly)
+
+              
+
+      
+  .modal.justify-content-center.align-items-center(tabindex="-1" role="dialog" id="nuevoTratamientoModal" style="min-height: 80vh;")
+    .modal-dialog.modal-lg
+      .modal-content.modalContent(style="height: 100%;")
+        .modal-header 
+          .row(style="margin:0;")
+            .col-md-12.text-center
+              h3(style="margin:0px 0;") #{translation.FORM.ADD_VISIT}
+
+
+        .modal-body.borderBottom(style="height: 80vh;overflow-y: scroll")
+          .row.mt-3
+            .col-12.col-md-4 
+              .form-group 
+                label(for='fecha') #{translation.FORM.DATE}
+                input#fecha.form-control(type='date')
+            .col-12.col-md-4 
+              .form-group 
+                label(for='hora') #{translation.FORM.TIME}
+                input#hora.form-control(type='time')
+            .col-12.col-md-4
+              .form-group 
+                label(for='motivo') Motivo
+                select#motivo.form-control
+                  option(value='') Seleccione un motivo
+                  option(value='1') Consulta
+                  option(value='2') Examen
+                  option(value='3') Cirugía
+                  option(value='4') Otro
+          .row.mt-3
+            .col-12.col-md-6 
+              .form-group 
+                label(for='anotaciones') Anotaciones
+                textarea#anotaciones.form-control(placeholder="Anotaciones de la visita")
+            .col-12.col-md-6
+              .form-group 
+                label(for='resultado') Resultado
+                textarea#resultado.form-control(placeholder="Resultado de la visita")
+          .row.mt-3 
+            .col-12.col-md-6 
+              .form-group 
+                label(for='diagnostico') Diagnóstico
+                textarea#diagnostico.form-control(placeholder="Diagnóstico de la visita")
+            .col-12.col-md-6
+              .form-group 
+                label(for='recetas') Recetas
+                textarea#recetas.form-control(placeholder="Recetas de la visita")
+          .row.mt-3 
+            .col-12.col-md-6
+              .form-group 
+                label(for='referencias') Referencias
+                textarea#referencias.form-control(placeholder="Referencias de la visita")
+            .col-12.col-md-3
+              .form-group 
+                label(for='estado') Estado
+                select#estado.form-control
+                  option(value='') Seleccione un estado
+                  option(value='1') Pendiente
+                  option(value='2') Realizada
+                  option(value='3') Cancelada
+            .col-12.col-md-3
+              .form-group 
+                label(for='costo') Costo
+                input#costo.form-control(type='number', placeholder="Costo de la visita")
+
+        .modal-footer(style="padding:8px;")
+          .row(style="margin:0;")
+            .col-md-12.text-right
+              button#guardarPaciente.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;") Agregar
+              button.btn.btn-danger(type="buton" data-dismiss="modal") Cerrar
+  
+  .modal.justify-content-center.align-items-center(tabindex="-1" role="dialog" id="editarTratamientoModal" style="min-height: 80vh;")
+    .modal-dialog.modal-lg
+      .modal-content.modalContent(style="height: 100%;")
+        .modal-header 
+          .row(style="margin:0;")
+            .col-md-12.text-center
+              h3(style="margin:0px 0;") Editar Visita
+        .modal-body.borderBottom(style="height: 80vh;overflow-y: scroll")
+          .row.mt-3
+            .col-12.col-md-4 
+              input#item_id(type="text" hidden)
+              .form-group 
+                label(for='fecha_editar') Fecha
+                input#fecha_editar.form-control(type='date')
+            .col-12.col-md-4 
+              .form-group 
+                label(for='hora_editar') Hora
+                input#hora_editar.form-control(type='time')
+            .col-12.col-md-4
+              .form-group 
+                label(for='motivo_editar') Motivo
+                select#motivo_editar.form-control
+                  option(value='') Seleccione un motivo
+                  option(value='1') Consulta
+                  option(value='2') Examen
+                  option(value='3') Cirugía
+                  option(value='4') Otro
+          .row.mt-3
+            .col-12.col-md-6 
+              .form-group 
+                label(for='anotaciones_editar') Anotaciones
+                textarea#anotaciones_editar.form-control(placeholder="Anotaciones de la visita")
+            .col-12.col-md-6
+              .form-group 
+                label(for='resultado_editar') Resultado
+                textarea#resultado_editar.form-control(placeholder="Resultado de la visita")
+          .row.mt-3 
+            .col-12.col-md-6 
+              .form-group 
+                label(for='diagnostico_editar') Diagnóstico
+                textarea#diagnostico_editar.form-control(placeholder="Diagnóstico de la visita")
+            .col-12.col-md-6
+              .form-group 
+                label(for='recetas_editar') Recetas
+                textarea#recetas_editar.form-control(placeholder="Recetas de la visita")
+          .row.mt-3 
+            .col-12.col-md-6
+              .form-group 
+                label(for='referencias_editar') Referencias
+                textarea#referencias_editar.form-control(placeholder="Referencias de la visita")
+            .col-12.col-md-3
+              .form-group 
+                label(for='estado_editar') Estado
+                select#estado_editar.form-control
+                  option(value='') Seleccione un estado
+                  option(value='1') Pendiente
+                  option(value='2') Realizada
+                  option(value='3') Cancelada
+            .col-12.col-md-3
+              .form-group 
+                label(for='costo_editar') Costo
+                input#costo_editar.form-control(type='number', placeholder="Costo de la visita")
+
+        .modal-footer(style="padding:8px;")
+          .row(style="margin:0;")
+            .col-md-12.text-right
+              button#editarPaciente.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;") Agregar
+              button.btn.btn-danger(type="buton" data-dismiss="modal") Cerrar
+
+  script 
+    include ../../../js/modulo-tv/save.js
+    include ../../../js/modulo-tv/update.js
+    include ../../../js/modulo-tv/delete.js
+  script.
+    const fecha = document.getElementById('fecha');
+    const hora = document.getElementById('hora');
+    const motivo = document.getElementById('motivo');
+    const anotaciones = document.getElementById('anotaciones');
+    const resultado = document.getElementById('resultado');
+    const diagnostico = document.getElementById('diagnostico');
+    const recetas = document.getElementById('recetas');
+    const referencias = document.getElementById('referencias');
+    const estado = document.getElementById('estado');
+    const costo = document.getElementById('costo');
+
+    const fecha_editar = document.getElementById('fecha_editar');
+    const hora_editar = document.getElementById('hora_editar');
+    const motivo_editar = document.getElementById('motivo_editar');
+    const anotaciones_editar = document.getElementById('anotaciones_editar');
+    const resultado_editar = document.getElementById('resultado_editar');
+    const diagnostico_editar = document.getElementById('diagnostico_editar');
+    const recetas_editar = document.getElementById('recetas_editar');
+    const referencias_editar = document.getElementById('referencias_editar');
+    const estado_editar = document.getElementById('estado_editar');
+    const costo_editar = document.getElementById('costo_editar');
+    const item_id = document.getElementById('item_id');
+
+    const paciente_id = document.getElementById('paciente_id');
+    const empresa_id = document.getElementById('empresa_id');
+
+    function clearForm () {
+      fecha.value = '';
+      hora.value = '';
+      motivo.value = '';
+      anotaciones.value = '';
+      resultado.value = '';
+      diagnostico.value = '';
+      recetas.value = '';
+      referencias.value = '';
+      estado.value = '';
+      costo.value = '';
+    }
+
+    function editarVisita (data) {
+      fecha_editar.value = moment(data.fecha).format('YYYY-MM-DD');
+      hora_editar.value = moment(data.hora, 'HH:mm:ss').format('HH:mm');
+      motivo_editar.value = data.motivo;
+      anotaciones_editar.value = data.anotaciones;
+      resultado_editar.value = data.resultado;
+      diagnostico_editar.value = data.diagnostico;
+      recetas_editar.value = data.recetas;
+      referencias_editar.value = data.referencias;
+      estado_editar.value = data.estado;
+      costo_editar.value = data.costo;
+      item_id.value = data.id;
+      $('#editarTratamientoModal').modal('show');
+    }
+
+    document.getElementById('nueva_visita').addEventListener('click', function () {
+      $('#nuevoTratamientoModal').modal('show');
+    });
+    document.getElementById('guardarPaciente').addEventListener('click', function () {
+      if (motivo.value !== '' && estado.value !== '') {
+        const data = {
+          fecha: fecha.value,
+          hora: hora.value,
+          motivo: motivo.value,
+          anotaciones: anotaciones.value,
+          resultado: resultado.value,
+          diagnostico: diagnostico.value,
+          recetas: recetas.value,
+          referencias: referencias.value,
+          estado: estado.value,
+          costo: costo.value,
+          paciente_id: paciente_id.value,
+          empresa_id: empresa_id.value
+        };
+        save('/admin-clinica/visitas/items', data, insertarNuevoTratamiento);
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Debe seleccionar un motivo y un estado',
+        });
+      }
+    });
+
+    document.getElementById('editarPaciente').addEventListener('click', function () {
+      if (motivo_editar.value !== '' && estado_editar.value !== '') {
+        const data = {
+          fecha: fecha_editar.value,
+          hora: hora_editar.value,
+          motivo: motivo_editar.value,
+          anotaciones: anotaciones_editar.value,
+          resultado: resultado_editar.value,
+          diagnostico: diagnostico_editar.value,
+          recetas: recetas_editar.value,
+          referencias: referencias_editar.value,
+          estado: estado_editar.value,
+          costo: costo_editar.value,
+          paciente_id: paciente_id.value,
+          empresa_id: empresa_id.value
+        };
+        updateItem(`/admin-clinica/visitas/items/${item_id.value}`, data, editarTratamientoSuccess);
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Debe seleccionar un motivo y un estado',
+        });
+      }
+    });
+
+    function editarTratamientoSuccess(data) {
+      $(`#delete${data.id}`).remove();
+      $('#visita_acordion').prepend(nuevaVisitaPrepend({ id: data.id, ...data.data }));
+      $('#editarTratamientoModal').modal('hide');
+    }
+
+    function insertarNuevoTratamiento(data) {
+      $('#visita_acordion').prepend(nuevaVisitaPrepend({ id: data.id, ...data.data }));
+      $('#nuevoTratamientoModal').modal('hide');
+    }
+    function eliminarVisita(id){ 
+      beforeDeleteItem(`/admin-clinica/visitas/items/${id}`, deleteVisitaSuccess);
+    }
+    function deleteVisitaSuccess(data) {
+      $(`#${data.target}`).remove();
+    }
+    function nuevaVisitaPrepend(data) {
+      $('.collapse').removeClass('show')
+      return `<div id="delete${data.id}" class="card">
+        <div class="card-header" id="heading${data.id}">
+          <h2 class="mb-0">
+            <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse${data.id}" aria-expanded="true" aria-controls="collapse${data.id}">
+              Fecha: ${moment(data.fecha).format('YYYY-MM-DD')} - Hora: ${moment(data.hora, 'HH:mm:ss').format('HH:mm')} - Motivo: ${data.motivo}
+            </button>
+          </h2>
+        </div>
+        <div id="collapse${data.id}" class="collapse show" aria-labelledby="heading${data.id}" data-parent="#visita_acordion">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-6 text-left"></div>
+              <div class="col-6 text-right">
+                <button class="btn btn-primary" type="button" onclick='editarVisita(${JSON.stringify(data)})'><i class="fas fa-pen"></i></button>
+                <button class="btn btn-danger" type="button" onclick="eliminarVisita(${data.id})"><i class="fas fa-trash"></i></button>
+              </div>
+            </div>
+            <div class="row mt-3">
+              <div class="col-12 col-md-4">
+                <div class="form-group">
+                  <label>Fecha</label>
+                  <input class="form-control" type="date" value="${moment(data.fecha).format('YYYY-MM-DD')}" readonly/>
+                </div>
+              </div>
+              <div class="col-12 col-md-4">
+                <div class="form-group">
+                  <label>Hora</label>
+                  <input class="form-control" type="time" value="${moment(data.hora, 'HH:mm:ss').format('HH:mm')}" readonly />
+                </div>
+              </div>
+              <div class="col-12 col-md-4">
+                <div class="form-group">
+                  <label>Motivo</label>
+                  <select class="form-control" disabled>
+                    <option value="">Seleccione un motivo</option>
+                    <option value="1" ${data.motivo == 1 ? 'selected' : ''}>Consulta</option>
+                    <option value="2" ${data.motivo == 2 ? 'selected' : ''}>Examen</option>
+                    <option value="3" ${data.motivo == 3 ? 'selected' : ''}>Cirugía</option>
+                    <option value="4" ${data.motivo == 4 ? 'selected' : ''}>Otro</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12 col-md-6">
+                <div class="form-group">
+                  <label for="anotaciones">Anotaciones</label>
+                  <textarea class="form-control" readonly>${data.anotaciones}</textarea>
+                </div>
+              </div>
+              <div class="col-12 col-md-6">
+                <div class="form-group">
+                  <label for="resultado">Resultado</label>
+                  <textarea class="form-control" readonly>${data.resultado}</textarea>
+                </div>
+              </div>
+              <div class="col-12 col-md-6">
+                <div class="form-group">
+                  <label for="diagnostico">Diagnostico</label>
+                  <textarea class="form-control" readonly>${data.diagnostico}</textarea>
+                </div>
+              </div>
+              <div class="col-12 col-md-6">
+                <div class="form-group">
+                  <label for="recetas">Recetas</label>
+                  <textarea class="form-control" readonly>${data.recetas}</textarea>
+                </div>
+              </div>
+              <div class="col-12 col-md-6">
+                <div class="form-group">
+                  <label for="referencias">Referencias</label>
+                  <textarea class="form-control" readonly>${data.referencias}</textarea>
+                </div>
+              </div>
+              <div class="col-12 col-md-3">
+                <div class="form-group">
+                  <label for="estado">Estado</label>
+                  <select class="form-control" id="estado" disabled>
+                    <option value="">Seleccione un estado</option>
+                    <option value="1" ${data.estado == 1 ? 'selected' : ''}>Pendiente</option>
+                    <option value="2" ${data.estado == 1 ? 'selected' : ''}>Realizada</option>
+                    <option value="3" ${data.estado == 1 ? 'selected' : ''}>Cancelada</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-12 col-md-3">
+                <div class="form-group">
+                  <label for="costo">Costo</label>
+                  <input type="number" class="form-control" placeholder="Costo de la visita" value="${data.costo}" readonly/>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>`
+    }

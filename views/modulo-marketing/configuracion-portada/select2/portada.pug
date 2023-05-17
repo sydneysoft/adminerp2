@@ -1,0 +1,52 @@
+//- Este archivo depende de /modulo-marketing/portadas/modals/crear-tienda-admin.pug
+//- Y el anterior depende de /
+script.
+  const select2Postadas = $("#lista-portadas, #lista-portadas-editar").select2({
+    ajax: {
+      url: "/admin-portadas/select2",
+      dataType: 'json',
+      delay: 500,
+      data: function (params) {
+        return {
+          term: params.term,
+          select: ['id', 'nombre','imagen'],
+          page: params.page
+        }
+      },
+      processResults: function (data, params) {
+        return {
+          results: $.map(data.data, (item) => {
+            return {
+              id: item.imagen,
+              text: item.nombre,
+              identificador: item.id,
+            }
+          })
+        }
+      },
+      cache: true
+    },
+    placeholder: 'Search',
+    templateResult: portadasState,
+    allowClear: true
+  })
+  //- .on("select2:open", () => {
+  //-   $(".select2-results:not(:has(a))").append(
+  //-     '<a href="#" style="padding: 6px;height: 20px;display: inline-table;" data-toggle="modal" data-target="#" onclick="closePortadasSelect2()">Agregar portada</a>'
+  //-   );
+  //- }); //- No se debe crear
+
+  function portadasState (state) {
+    if (!state.id) {
+      return state.text;
+    }
+    let $container = $(`
+      <span><strong>${state.identificador}</strong> | ${state.text}</span>
+    `);
+
+    return $container;
+  }
+
+  function closePortadasSelect2 () {
+    $("#lista-portadas, #lista-portadas-editar").select2('close');
+  }

@@ -1,0 +1,54 @@
+script. 
+  //- Actualizar Fotos
+  function editarSubcategoriaAdmin () {
+    let idSubCategoria = $("#idEditarSubcategoriaAdmin").val();
+    let nombreSubcategoria = $("#nombreEditar-subcategoria").val();
+
+    let imagen = $("#imagen-data-banner-editar").attr('src');
+    let categoria = $("#lista-categorias-editar").val();
+    let status = $("#activadoEditar-categoria").val();
+    let empresa
+    let empresaSeleccionada = $("#empresaEditarSubcateg").select2().val();
+    const auxData = {
+      nombre: nombreSubcategoria,
+      activado: status,
+      imagen: imagen,
+    }
+    if (typeof empresa_id != 'undefined' && empresa_id && !isNaN(empresa_id.value)) {
+      auxData.empresa_id = empresa_id.value
+    }
+    console.log(categoria)
+
+    if (categoria && categoria != "") {
+      auxData.categoria = categoria;
+    }
+
+    if (idSubCategoria && nombreSubcategoria &&  status) {
+
+      Swal.showLoading();
+      $.ajax({
+        method: "PUT",
+        url: "/admin-subcategorias/" + idSubCategoria ,
+        dataType: "json",
+        data: auxData,
+        success: function (data) {
+          Swal.close();
+          if (data.status === "success") {
+            if (typeof tablaSubcategorias != 'undefined') {
+              tablaSubcategorias.ajax.reload();
+            }
+            toastSweet('Success', '#{translation.ALERTS.UPDATED}', 'success');
+            $("#editarSubcategoriaModal").modal("hide");
+          } else {
+            toastSweet('Error', '#{translation.ALERTS.CANNOT_UPDATE_SUBCATEGORY}', 'error');
+          }
+        },
+        error: function () {
+          Swal.close();
+          toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+        },
+      });
+    } else {
+      toastSweet('Error', '#{translation.ALERTS.COMPLETE_FORM}', 'error');
+    }
+  }

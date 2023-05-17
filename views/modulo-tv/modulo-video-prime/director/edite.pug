@@ -1,0 +1,66 @@
+extends ../../extends/menu-superior-admin
+
+block contenido
+  .my-3
+    div
+      a.btn.btn-primary(href="/admin-video-prime/directores") 
+        i.fas.fa-arrow-left
+        span.px-3 #{translation.BACK}
+
+    h1.text-center.mb-5 
+      | #{translation.EDIT_DIRECTOR}
+    
+    .card 
+      .card-body 
+        form#editar-director-forms
+          input#idItem(type="text" value=data.id hidden)
+          .row.g-3 
+            .col-12.mb-3.text-right 
+              button.btn.btn-primary(type="submit") #{translation.SAVE}
+            .col-12.col-md-8
+              label.form-label(for='nombre') #{translation.FORM.DIRECTORS_NAME}
+              input#nombre.form-control(type='text' value=data.nombre required='' placeholder="Nombre del programa" name="nombre")
+              .valid-feedback
+                | #{translation.FORM.NAME}
+            .col-12.col-md-4 
+              label.form-label(for="nacionalidad") #{translation.FORM.NATIONALITY} 
+              input#nacionalidad.form-control(type="text" value=data.nacionalidad placeholder="Nacionalidad" name="nacionalidad" required)
+            .col-12.my-3 
+            .col-12.col-md-6 
+              label.form-label(form="biografia") #{translation.FORM.BIOGRAPHY} 
+              textarea#biografia.form-control(type="text" placeholder="Biografia")
+                | #{data.biografia} 
+            .col-12.col-md-3 
+              label.form-label(for="fecha_nacimiento") #{translation.FORM.BIRTH_DATE}
+              input#fecha_nacimiento.form-control(type="date" placeholder #{translation.FORM.BIRTH_DATE} value=data.fecha_nacimiento)
+            .col-12.col-md-3 
+              label.form-label(for="genero") #{translation.FORM.GENRE}
+              select#genero.custom-select
+                if data.genero == 'Masculino'
+                  option(value='Masculino' selected) #{translation.FORM.MALE}
+                else 
+                  option(value='Masculino') #{translation.FORM.MALE}
+                if data.genero == 'Femenino'
+                  option(value='Femenino' selected) #{translation.FORM.FEMALE}
+                else 
+                  option(value='Femenino') #{translation.FORM.FEMALE}
+
+  script.
+    const editor = CKEDITOR.replace('biografia')
+
+  script 
+    include ./director.js
+    include ../../../js/modulo-tv/update.js
+
+  script.
+    const idItem = document.getElementById('idItem')
+    document.getElementById('editar-director-forms').addEventListener('submit', (event) => { 
+      event.preventDefault()
+      updateItem(`/admin-video-prime/directores/director/${idItem.value}`, {
+        nombre: nombre.value,
+        nacionalidad: nacionalidad.value,
+        fecha_nacimiento: fecha_nacimiento.value,
+        genero: genero.value,
+        biografia: editor.getData()
+      })
+    })

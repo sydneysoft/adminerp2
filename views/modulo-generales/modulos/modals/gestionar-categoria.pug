@@ -1,0 +1,22 @@
+.modal.fade#gestionarCategoriasModuloModal(tabindex="-1" role="dialog")
+  .modal-dialog.modal-lg(role="document")
+    .modal-content
+      .modal-header
+        .row(style="margin:0;")
+          .col-md-12
+            h3(style="margin:0px 0;") #{translation.ADD_MODULE}
+      .modal-body
+        .row
+          .col-6
+          .col-6.text-right
+            button.btn.btn-success(type="button" data-toggle="modal" data-target="#nuevaCategoriaModal") #{translation.NEW_CATEGORY}
+        .row.mt-3
+          .col-12
+              //- .table-responsive
+              table#tabla-modulos-categorias.table.w-100
+                thead.thead-dark
+
+      .modal-footer(style="padding:8px;")
+        .row(style="margin:0;")
+          .col-md-12.text-right
+            button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}  

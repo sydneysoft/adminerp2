@@ -1,0 +1,94 @@
+extends ../layout.pug
+
+append contenido 
+  .border-bottom.border-left.border-right.rounded-bottom.p-3
+    input#idItem(type="text" value=data.id hidden)
+    input#urlImagen(type="text" value=data.imagen hidden)
+    input#icono_selected(type="text" value=data.icono hidden)
+    input#icono_imagen_select(type="text" value=data.icono_imagen hidden)
+    .my-3.row.justify-content-between 
+      .col 
+        button.btn.btn-info(type='button' onclick="window.history.back()") #{translation.BACK}
+      .col.text-right
+        button#updateItem.btn.btn-primary(type='submit') #{translation.SAVE}
+          i.fas.fa-save.ml-2
+    .my-3 
+      .row 
+        .col-12.col-md-8 
+          .form-group
+            label(for='nombre') #{translation.FORM.NAME}
+            input#nombre.form-control(type='text' placeholder=translation.FORM.NAME name="nombre" required value=data.nombre)
+          .form-group 
+            label(for='estracto') #{translation.FORM.EXCERPT}
+            textarea#estracto.form-control(name="estracto" placeholder=translation.FORM.EXCERPT) #{data.estracto}
+        .col-12.col-md-2
+          .form-group
+            label(for='icono') #{translation.FORM.ICON}
+            .controls
+              button.btn.btn-info#icono(data-iconset="fontawesome5" data-icon="fas fa-wifi" role="iconpicker")
+        .col-12.col-md-2
+          .form-group
+            label(for='iconoImagen') #{translation.FORM.ICON_IMAGE}
+            .controls
+              button.btn.btn-info#iconoImagen(data-iconset="fontawesome5" data-icon="fas fa-wifi" role="iconpicker")
+
+      .row 
+        .col-12.col-md-8
+          .form-group   
+            label(for="body") #{translation.FORM.BODY}
+            textarea#body(placeholder=translation.FORM.BODY name="body") #{data.body}
+        .col-12.col-md-4
+          include ../../modulo-general/galeria-fotos/modal-galeria.pug
+          include ../../modulo-general/galeria-fotos/partial-modal-galeria.pug
+          //- .form-group.mt-3
+          //-   label(for='imagen') Imagen
+          //-   input#imagen.form-control(type='text' placeholder="Imagen" name="imagen" value=data.imagen)
+
+  script.
+    const editor = CKEDITOR.replace('body')   
+  script
+    include ../../../js/modulo-tv/update.js
+    include ../../modulo-general/galeria-fotos/modal-galeria.js
+    include ../../../js/modulo-tv/select2-icon.js
+
+  script.
+    const idItem = document.getElementById('idItem');
+    const nombre = document.getElementById('nombre');
+    const estracto = document.getElementById('estracto');
+    const icono = document.getElementById('icono');
+    const iconoImagen = document.getElementById('iconoImagen');
+    const imagen = document.getElementById('imagen');
+
+    document.getElementById('updateItem').addEventListener('click', (event) => {
+      updateItem(`/admin-ceservicios/servicios/${idItem.value}`, {
+        nombre: nombre.value,
+        estracto: estracto.value,
+        icono: $("#icono input").val(),
+        icono_imagen: $("#iconoImagen input").val(),
+        imagen: imagen.value,
+        body: editor.getData()
+      });
+    });
+
+    addEventListener('DOMContentLoaded', () => {
+      $('#icono input').val($('#icono_selected').val());
+      $('#icono i').attr('class', $('#icono_selected').val());
+
+      $('#iconoImagen input').val($('#icono_imagen_select').val());
+      $('#iconoImagen i').attr('class', $('#icono_imagen_select').val());
+
+      imagen.value = document.getElementById('urlImagen').value;
+      $(".imagen_").empty();
+      if (imagen.value !== '') {
+        $(".imagen_").append(`
+          <figure style="position:relative">
+            <img src="${imagen.value}" class="img-fluid" alt="Responsive image">
+            <button type="button" class="btn btn-danger btn-sm" onclick="deletePhotoMultimediaFromTemplate()" style="position:absolute; top:0; right:0">
+              <i class="fas fa-trash"></i>
+            </button>
+          </figure>
+        `);
+      }
+    });
+  
+  script(src="/js/bootstrap-iconpicker.bundle.min.js")

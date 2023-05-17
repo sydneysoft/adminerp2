@@ -1,0 +1,37 @@
+//- nombre	codigoexterno	imagen	activado	estado	especialidad_fechareg	sede	Categoria	descripcioncorta	descriptionlarga	icono	
+
+.container-fluid 
+  .row 
+    .col-12.col-md-8 
+      .form-group 
+        label(for="nombre") #{translation.FORM.NAME}
+        input#nombre.form-control(type="text" placeholder=#{translation.FORM.NAME})
+    .col-12.col-md-4
+      .form-group 
+        label(for="codigoexterno") #{translation.FORM.EXTERNAL_CODE}
+        input#codigoexterno.form-control(type="text" placeholder=#{translation.FORM.EXTERNAL_CODE})
+  .row.mt-3
+    .col-12.col-md-4 
+      label(for="imagen") #{translation.FORM.IMAGE}
+      input#imagen.form-control(type="text" placeholder=#{translation.FORM.IMAGE})
+    .col-12.col-md-4 
+      .form-group 
+        label(for="activado") #{translation.FORM.ACTIVE}
+        select#activado.form-control
+          option(value="1") #{translation.FORM.ACTIVE}
+          option(value="0") #{translation.FORM.DEACTIVATED}
+    .col-12.col-md-4 
+      .form-group 
+        label(for="estado") #{translation.FORM.STATE}
+        select#estado.form-control
+          option(value="1") #{translation.FORM.ACTIVE}
+          option(value="0") #{translation.FORM.DEACTIVATED}
+  .row.mt-3
+    .col-12.col-md-6 
+      .form-group
+        label(for="descripcioncorta") #{translation.FORM.SHORT_DESCRIPTION}
+        textarea#descripcioncorta.form-control(type="text" placeholder=#{translation.FORM.SHORT_DESCRIPTION})
+    .col-12.col-md-6 
+      .form-group
+        label(for="descriptionlarga") #{translation.FORM.LONG_DESCRIPTION}
+        textarea#descriptionlarga.form-control(type="text" placeholder=#{translation.FORM.LONG_DESCRIPTION})

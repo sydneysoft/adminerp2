@@ -1,0 +1,54 @@
+script.
+  const select2FiltroCuitPagoProveedor = $("#lista-filtro-cuit-proveedores, #lista-filtro-cuit-proveedores-editar").select2({
+    ajax: {
+      url: function () {
+        return urlSelect2FiltroCuitPagoProveedor()
+      },
+      dataType: 'json',
+      delay: 500,
+      data: function (params) {
+        return {
+          term: params.term,
+          select: ['id', 'cuit'],
+          page: params.page
+        }
+      },
+      processResults: function (data, params) {
+        return {
+          results: $.map(data.data, (item) => {
+            return {
+              id:  item.cuit,
+              text: item.cuit
+            }
+          })
+        }
+      },
+      cache: true
+    },
+    placeholder: '#{translation.SEARCH}',
+    templateResult: filtroCuitProveedorState,
+    allowClear: true
+  })
+
+  function filtroCuitProveedorState (state) {
+    if (!state.id) {
+      return state.text;
+    }
+    let $container = $(`
+      <span><strong>${state.id}</strong></span>
+    `);
+
+    return $container;
+  }
+
+  function closeFiltroCuitPagoProveedorSelect2 () {
+    $("#lista-filtro-cuit-proveedores, #lista-filtro-cuit-proveedores-editar").select2('close');
+  }
+
+  function urlSelect2FiltroCuitPagoProveedor () {
+    if (typeof empresa_id !== 'undefined' && empresa_id && !isNaN(empresa_id.value)) {
+      return `/admin-pago-proveedores/select2/${empresa_id.value}`
+    } else {
+      return "/admin-pago-proveedores/select2"
+    }
+  }

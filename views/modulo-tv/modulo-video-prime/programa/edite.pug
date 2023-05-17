@@ -1,0 +1,93 @@
+extends ../../extends/menu-superior-admin
+
+block contenido
+  .my-3
+    div
+      a.btn.btn-primary(href="/admin-video-prime/programas") 
+        i.fas.fa-arrow-left
+        span.px-3 Atras
+    h1.text-center.mb-5 
+      | Editar programa
+    if data
+      .card.card-body 
+        form#editar-programas-forms(method="post" action="/admin-video-prime/programas")
+          input#idItem(value=data.id hidden)
+          .row.g-3 
+            .col-12.mb-3.text-right 
+              button.btn.btn-primary(type="submit") Guardar
+            .col-12.col-md-8
+              label.form-label(for='nombre') Nombre del programa
+              input#nombre.form-control(type='text' value=data.nombre required='' placeholder="Nombre del programa" name="nombre")
+              .valid-feedback
+                | Nombre
+
+            .col-12.col-md-4
+              label.form-label(for='numero_temporadas') Numero de temporadas
+              input#numero_temporadas.form-control(type='number' value=data.num_temporadas required='' placeholder="numero de temporada" name="num_temporadas")
+              .valid-feedback
+                | Numero de temporadas
+              
+            .col-12.my-3
+            .col-12.col-md-6 
+              label.form-label(for='slogan') Eslogan
+              input#slogan.form-control(type='text' value=data.slogan required='' placeholder="Eslogan" name="slogan")
+              .valid-feedback
+                | Eslogan
+            .col-12.col-md-6 
+              label.form-label(for='slogan') Descripcion corta
+              textarea#estracto.form-control(required='' placeholder="Descripcion corta" name="estracto")
+                | #{data.estracto}
+              .valid-feedback
+                | Eslogan
+            .col-12.my-3 
+
+            .col-12.col-md-8
+              label.form-label(for='portada') Foto de portada
+              input#portada.form-control(type='text' value=data.foto_portada required='' placeholder="Nombre del programa" name="foto_portada")
+              .valid-feedback
+                | Foto de portada
+
+            .col-12.col-md-4
+              label.form-label(for='lanzamiento') Fecha de lanzamiento
+              input#lanzamiento.form-control(type='text' value=data.fecha_lanzamiento required='' placeholder="Fecha de lanzamiento")
+              .valid-feedback
+                | Fecha de lanzamiento
+          
+            .col-12.my-3
+
+            .col-12.col-md-4
+              label.form-label() Genero 
+              select#idGenero.custom-select(name="id_genero")
+                option(selected=data.id_genero) Seleccione un genero
+            .col-12.col-md-4
+              label.form-label() Director 
+              select#idDirector.custom-select(name="id_director")
+                option(selected=data.id_director) Seleccione al director
+            .col-12.col-md-4
+              label.form-label() Programa 
+              select#idProductor.custom-select(name="id_productor")
+                option(selected=data.id_productor) Seleccione al productor
+
+    else 
+      .alert.alert-info.text-center.mt-3 
+        | No hay datos
+  script 
+    include ./programa.js
+    include ../../../js/modulo-tv/update.js
+  
+  script.
+    const idItem = document.getElementById('idItem')
+    document.getElementById('editar-programas-forms').addEventListener('submit', (event) => {
+      event.preventDefault()
+      updateItem(`/admin-video-prime/programas/programa/${idItem.value}`, {
+        nombre: nombrePrograma.value,
+        slogan: sloganPrograma.value,
+        estracto: estractoPrograma.value,
+        foto_portada: portadaPrograma.value,
+        num_temporadas: num_temporadas.value,
+        id_productora: idProductorPrograma.value,
+        id_genero: idGeneroPrograma.value,
+        id_director: idDirectorPrograma.value,
+        fecha_lanzamiento: lanzamiento.value
+      })
+    })

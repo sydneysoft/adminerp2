@@ -1,0 +1,129 @@
+script.
+  let tablaMedicos;
+  $(document).ready(function () {
+    let urlAjaxTablaMedicos = "/admin-medicos/datatable"
+    if (typeof empresa_id != 'undefined' && !isNaN(empresa_id.value)) {
+      urlAjaxTablaMedicos += `/${empresa_id.value}`;
+    }
+    tablaMedicos = $("#tabla-medicos").DataTable({
+      columnDefs: [
+        {
+          orderable: false,
+          className: "select-checkbox",
+          targets: 0,
+        },
+      ],
+      select: {
+        style: "multi",
+        selector: "td:first-child",
+      },
+      dom: "Bfrtip",
+      buttons: ["selectAll", "selectNone"],
+      order: [[1, "asc"]],
+      language: {
+        buttons: {
+          selectAll: '#{translation.FORM.SELECT_EVERYTHING}',
+          selectNone: '#{translation.FORM.ERASE_SELECTION}',
+        },
+        url: "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json",
+        select: {
+          rows: "%d filas seleccionadas",
+        },
+      },
+      responsive: true,
+      searchDelay: 500,
+      processing: true,
+      serverSide: true,
+      ajax: urlAjaxTablaMedicos,
+      rowId: 'id',
+      columns: [
+        { 
+          data: 'id', name: 'id', title: 'ID', orderable: false, searchable: false,
+          render: function (data, type, row) {
+            return ``;
+          }
+        },       
+        { 
+          data: 'primer_nombre',
+          name: 'primer_nombre',
+          title: '#{translation.FORM.NAME}',
+          render: function (data, type, row) {
+            return `${row.primer_nombre} ${row.segundo_nombre} ${row.apellidos}`;
+          },
+          orderable: false,
+          searchable: false
+        },
+        { 
+          data: 'especialidad',
+          name: 'especialidad',
+          title: '#{translation.FORM.SPECIALTY}',
+          render: function (data, type, row) {
+            let aux = parseInt(row.especialidad)
+            if (!isNaN(aux)) {
+              //- console.log(especialidades_server.filter((especialidad) => {
+              //-   return especialidad.id == row.especialidad;
+              //- }))
+              const especialidades = especialidades_server.filter((especialidad) => {
+                return especialidad.id == row.especialidad;
+              });
+              if (especialidades.length > 0) {
+                return `${especialidades[0].nombre}`;
+              }
+            }
+            return `${row.especialidad}`;
+          },
+          orderable: false,
+          searchable: false
+        },
+        { 
+          data: 'celular',
+          name: 'celular',
+          title: '#{translation.FORM.CELLPHONE}'
+        },
+        {
+          data: 'correo',
+          name: 'correo',
+          title: '#{translation.FORM.EMAIL}'
+        },
+        {
+          data: 'acciones',
+          name: 'acciones',
+          title: '#{translation.ACTIONS}',
+          render: function (data, type, row) {
+            let strRow = JSON.stringify(row);
+            return `
+              <button class="btn btn-primary btn-sm" onclick='editarMedicoModal(${strRow})'>
+                <i class="fas fa-edit"></i>
+              </button>
+              <button class="btn btn-danger btn-sm" onclick="beforeDeleteItem('/admin-medicos/medicos/${row.id}', ${row.id})">
+                <i class="fas fa-trash"></i>
+              </button>
+              `
+          },
+          orderable: false,
+          searchable: false
+        },
+      ],
+      initComplete: function (settings) {
+        //- clone thead to tfoot
+        $("#tabla-medicos thead tr").clone().appendTo($("#tabla-medicos tfoot"));
+      }
+    });
+
+
+    $("#accionesBoton").click(function () {
+      const valorSeleccionado = $("#acciones").val();
+      const selected_rows = tablaMedicos
+        .rows({
+          selected: true,
+        })
+        .ids();
+
+      const arraySeleccion = $.makeArray(selected_rows);
+      switch (valorSeleccionado) {
+        case "0":
+          eliminarProductos(arraySeleccion, "medicos");
+          break;
+      }
+    });
+  });

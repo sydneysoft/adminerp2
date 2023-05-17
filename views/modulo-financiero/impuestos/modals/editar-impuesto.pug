@@ -1,0 +1,36 @@
+.modal.fade#editarImpuestoModal(tabindex="-1" role="dialog" )
+  .modal-dialog.modal-lg(role="document")
+    .modal-content
+      .modal-header 
+        .row 
+          .col-12
+            h5.strong(style="font-size:1rem;") #{translation.EDIT_TAX}
+
+      .modal-body-almacen
+        .row(style="padding:15px;")
+          .col-md-6.col-12
+            .form-group
+              label(for="nombreImpuestoEditar") #{translation.TAX_NAME} *
+              input#nombreImpuestoEditar.form-control(type="text" placeholder="Nombre de la moneda")
+          .col-md-6.col-12
+            .form-group
+              label(for="lista-paises-editar") #{translation.FORM.COUNTRY}:
+              select#lista-paises-editar
+          .col-md-4.col-12
+            .form-group
+              label(for="tasaImpuestoEditar") #{translation.TAX_FEE} % *
+              input#tasaImpuestoEditar.form-control(type="number" name="tasaImpuesto" placeholder="Tasa de impuesto")
+          .col-md-4.col-12
+            .form-group
+              label(for="codigoImpuestoEditar") #{translation.TAX_CODE}:
+              input#codigoImpuestoEditar.form-control(type="text" name="codigoImpuesto" placeholder="Codigo de impuesto")
+          .col-12
+            .form-group
+              label(for="descripcionImpuestoEditar") #{translation.DESCRIPTION}:
+              textarea#descripcionImpuestoEditar.form-control(type="text" name="descripcionImpuesto" placeholder="Descripcion")
+
+      .modal-footer      
+        button#editarImpuesto.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;") #{translation.UPDATE}
+          i.fas.fa-save.ml-2
+        button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}
+          i.fas.fa-times.ml-2

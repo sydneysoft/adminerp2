@@ -1,0 +1,58 @@
+.modal.fade#editar(tabindex="-1" role="dialog" )
+  .modal-dialog.modal-lg(role="document")
+    .modal-content
+      .modal-body-almacen
+        .row(style="padding:15px;")
+          //- if activo_marketplace===1
+            .col-md-12.col-12
+              .form-group
+                label Empresa:
+                  select#editarEmpresa.seleccionar
+                    option(value=null) --SELECCIONE-- 
+                    option(value=0) Sin Asignar 
+                      each item in empresas
+                        option(value=item.id)= item.nombre
+          input#itemId(type="text" value="" hidden)
+          .col-md-12.col-12
+            .form-group
+              label #{translation.FORM.NAME}
+              .controls
+                input#editarNombre.form-control(type="text")
+          .col-md-6.col-12
+            .form-group
+              label(for #{translation.DOCUMENT_TYPES}) #{translation.FORM.DOCUMENT_TYPE}:
+              select#editarTipoDoc.form-control
+                option(value="null") #{translation.FORM.SELECT}
+                option(value #{translation.DOCUMENT_NUMBERS}) #{translation.FORM.DOCUMENT_NUMBER} 
+                option(value #{translation.FOREGINER_CARD}) 	#{translation.FORM.FOREGINER_CARD}
+                option(value #{translation.UNIQUE_REGISTRATION_NUMBER}) #{translation.FORM.UNIQUE_REGISTRATION_NUMBER}
+                option(value #{translation.FORM.PASSPORT}) #{translation.FORM.PASSPORT}
+                option(value #{translation.FORM.BIRTH_REGISTRATION}) #{translation.FORM.BIRTH_REGISTRATION}
+                option(value #{translation.OTHERS}) #{translation.OTHERS}
+
+          .col-md-6.col-12
+            .form-group
+              label #{translation.FORM.DOCUMENT_NUMBER}
+              .controls
+                input#editarNroDocumento.form-control(type="text")
+
+          .col-md-6.col-12
+
+            .form-group
+              label(for="Tipo de Pago") #{translation.PAYMENT_TYPE}:
+              select#editarTipoPago.form-control
+                option(value="null") #{translation.SELECT}
+                option(value="sueldo") #{translation.SALARY}
+                option(value="afp") #{translation.AFP}
+                option(value="CTS") #{translation.CTS}
+                option(value="otros") #{translation.OTHERS}
+
+          .col-md-6.col-12
+            .form-group
+              label #{translation.FORM.AMOUNT}
+              .controls   
+                input#editarMonto.text-center.form-control(type="number" ) 
+
+      .modal-footer     
+        button.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;" onClick="actualizar()") #{translation.UPDATE}
+        button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE} 

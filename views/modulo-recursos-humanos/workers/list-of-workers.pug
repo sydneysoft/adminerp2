@@ -1,0 +1,102 @@
+extends ../../extends/menu-superior-admin
+block contenido
+    style.
+        .hidden {
+            display: none;
+        }
+    .row
+        .col-8.text-grey(style="margin-bottom:50px;")
+            h1.display-1
+                strong #{translation.LIST_OF_WORKERS} 
+        .col-4.text-right
+            button.btn.btn-success(type="button" data-toggle="modal" data-target="#guardarTrabajadorAdmin" data-action="new")
+                i.fas-fa-plus
+                span #{translation.ADD_WORKERS} 
+
+        .col-12(style="margin-top: 20px;")
+            div.table-responsive
+                table#tabla-trabajadores.table.table-bordered
+                    thead.thead-dark
+                        tr.table-head
+                            th.text-center id
+                            th.text-center #{translation.FORM.FIRST_NAME} 
+                            th.text-center #{translation.FORM.MIDDLE_NAME} 
+                            th.text-center #{translation.FORM.FATHERS_NAME} 
+                            th.text-center #{translation.FORM.MOTHERS_NAME} 
+                            th.text-center #{translation.FORM.MOBILE} 
+                            th.text-center #{translation.FORM.PHONE} 
+                            th.text-center #{translation.FORM.EMAIL} 
+                            th.text-center #{translation.FORM.ADDRESS} 
+                            th.text-center #{translation.FORM.DOCUMENT_TYPE} 
+                            th.text-center #{translation.FORM.DOCUMENT_NUMBER} 
+                            th.text-center #{translation.FORM.DOCUMENT_PHOTO_FRONT}
+                            th.text-center #{translation.FORM.DOCUMENT_PHOTO_BACK}
+                            th.text-center #{translation.FORM.BANK_ENTITY}
+                            th.text-center #{translation.FORM.ACCOUNT_NUMBER}
+                            th.text-center #{translation.FORM.AFP}
+                            th.text-center #{translation.FORM.CTS}
+                            th.text-center #{translation.FORM.OBSERVATIONS}
+                            th.text-center #{translation.FORM.HIRED_DATE}
+                            th.text-center #{translation.FORM.STATE}
+                            th.text-center #{translation.FORM.FIRED_DATE}
+                            th.text-center #{translation.FORM.CV}
+                            th.text-center C#{translation.FORM.CONTRACT}
+                            th.text-center #{translation.FORM.CONTACT_PERSON_NAME}
+                            th.text-center #{translation.FORM.CONTACT_PERSON_MOBILE}
+                            th.text-center #{translation.FORM.CONTACT_PERSON_DOCUMENT_TYPE}
+                            th.text-center #{translation.FORM.CONTACT_PERSON_DOCUMENT_NUMBER} 
+                            th.text-center
+                    tbody
+
+                        each book in bookStore
+                            tr
+
+                                td.text-center=book.id
+                                td.text-center=book.primer_nombre
+                                td.text-center=book.segundo_nombre
+                                td.text-center=book.apellido_paterno
+                                td.text-center=book.apellido_materno
+                                td.text-center=book.celular
+                                td.text-center=book.telefono
+                                td.text-center=book.correo
+                                td.text-center=book.direccion
+                                td.text-center=book.tipo_de_documento
+                                td.text-center=book.numero_de_documento
+                                td.text-center
+                                    a(href="admin-trabajadores/files/" + book.foto_de_documento_cara_frontal + "" target="_blank")=book.foto_de_documento_cara_frontal
+                                td.text-center
+                                    a(href="admin-trabajadores/files/" + book.foto_de_documento_cara_trasera + "" target="_blank")=book.foto_de_documento_cara_trasera 
+                                td.text-center=book.entidad_bancaria
+                                td.text-center=book.numero_de_cuenta
+                                td.text-center=book.AFP
+                                td.text-center=book.CTS
+                                td.text-center=book.observaciones
+                                td.text-center=book.fecha_de_contratacion
+                                td.text-center=book.estado
+                                td.text-center=book.fecha_de_despido
+                                td.text-center
+                                    a(href="admin-trabajadores/files/" + book.CV + "" target="_blank")=book.CV
+                                td.text-center  
+                                    a(href="admin-trabajadores/files/" + book.contrato + "" target="_blank")=book.contrato
+                                td.text-center=book.nombres_de_persona_de_contacto
+                                td.text-center=book.celular_de_persona_de_contacto
+                                td.text-center=book.tipo_de_documento_de_persona_de_contacto
+                                td.text-center=book.numero_de_documento_de_persona_de_contacto
+                                td.text-center
+                                    button.btn.btn-info(type="button" data-action="duplicate" data-id="" + book.id + "")
+                                        i.fa.fa-camera 
+                                    button.btn.btn-warning(type="button" data-action="edit" data-id="" + book.id + "")
+                                        i.fa.fa-edit
+                                    button.btn.btn-danger(type="button" style="margin-left:8px" data-id="" + book.id + "")
+                                        i.fa.fa-trash 
+    
+    include ./modals/crear-trabajador.pug
+
+    //- script(src='//cdn.jsdelivr.net/npm/sweetalert2@11')
+
+    include ./script.pug
+
+    include ./save/trabajador.pug
+    include ./update/trabajador.pug
+    include ./delete/trabajador.pug
+    include ./duplicate/trabajador.pug

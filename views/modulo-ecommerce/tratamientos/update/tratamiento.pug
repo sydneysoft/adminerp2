@@ -1,0 +1,70 @@
+script.
+  //Manejar Datos Marcas Editar
+  function handleEditTratamiento(data) {
+    $("#dataIdTratamiento").val(data.id);
+    $("#nombreEditar-tratamiento").val(data.nombre);
+    $("#activadoEditar-tratamiento").val(data.activado);
+    $("#statusEditar-tratamiento").val(data.estado);
+    $("#descripcionCortaEditar-tratamiento").val(data.descripcion_corta);
+    if (typeof data.descripcion_larga === "string") {
+      CKEDITOR.instances.ckeditorareaEditar.setData(data.descripcion_larga.trim());
+    } else {
+      CKEDITOR.instances.ckeditorareaEditar.setData("");
+    }
+    $("#lista-sedes-editar").select2("val", data.sede_id);
+    $("#lista-sedes-editar ~ .select2 .select2-selection__placeholder").html(data.sede_id);
+    $("#imagen-data-banner-editar").attr("src", data.imagen);
+    $("#selected-img-data-editar").val(data.imagen);
+    $("#editarBannerAdministrador").modal("show");
+  }
+  const editarTratamientoAdmin = () => {
+    let id = $("#dataIdTratamiento").val();
+    let nombre = $("#nombreEditar-tratamiento").val();
+    let activado = $("#activadoEditar-tratamiento").val();
+    let estado = $("#statusEditar-tratamiento").val();
+    let descripcionCorta = $("#descripcionCortaEditar-tratamiento").val();
+    let descripcionLarga = descripcion_larga_editar.getData();
+    let tienda = $("#lista-sedes-editar").val();
+    let imagen = $("#imagen-data-banner-editar").attr('src');
+
+    if (nombre) {
+      Swal.showLoading();
+      const auxData = {
+        nombre: nombre,
+        imagen: imagen,
+        descripcion_corta: descripcionCorta,
+        descripcion_larga: descripcionLarga,
+        activado: activado,
+        estado: estado,
+      }
+      if (tienda != null) {
+        auxData.sede_id = tienda;
+      }
+      if (typeof empresa_id != 'undefined' && empresa_id && !isNaN(empresa_id.value)) {
+        auxData.empresa_id = empresa_id.value
+      }
+      $.ajax({
+        method: "PUT",
+        url: "/admin-tratamientos/" + id,
+        dataType: "json",
+        data: auxData,
+        success: function (data) {
+          if (data.ok) {
+            $("#editarBannerAdministrador").modal("hide");
+            Swal.close();
+            toastSweet('Success', '#{translation.ALERTS.TREATMENT_UPDATED}', 'success');
+            tablaTratamientos.ajax.reload();
+          } else {
+            Swal.close();
+            toastSweet('Error', '#{translation.ALERTS.CANNOT_UPDATE_TREATMENT}', 'error');
+          }
+        },
+        error: function () {
+          Swal.close();
+          toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+        },
+      });
+    } else {
+      toastSweet('Error', '#{translation.ALERTS.FORM_EMPTY}', 'error');
+    }
+  };

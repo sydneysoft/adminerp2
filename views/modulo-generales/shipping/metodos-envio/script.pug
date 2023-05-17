@@ -1,0 +1,202 @@
+script.
+  const addValuesMethod = () => {
+    //Variable para Validar errores
+    let errorHandled = "0";
+
+    let typeActionData = $("#type-action-values").val();
+    let dataMethodId = $("#idHandledEditar").val();
+
+    let valuesRegion = [];
+    let valuesPrecio = [];
+    let valuesHoras = [];
+
+    let valuesRegionEdit = [];
+    let valuesPrecioEdit = [];
+    let valuesHorasEdit = [];
+    let valuesAll = [];
+    let valuesAllEdit = [];
+
+    $("select[name='regiones[]']").each(function () {
+      if ($(this).attr("edit")) {
+        if ($(this).val() != "") {
+          valuesRegionEdit.push([parseInt($(this).attr("edit")), $(this).val()]);
+        } else {
+          errorHandled = "1";
+        }
+      } else {
+        if ($(this).val() != "") {
+          valuesRegion.push($(this).val());
+        } else {
+          errorHandled = "1";
+        }
+      }
+    });
+
+    $("input[name='precios[]']").each(function () {
+      if ($(this).attr("edit")) {
+        if ($(this).val() != "") {
+          valuesPrecioEdit.push([parseInt($(this).attr("edit")), $(this).val()]);
+        }
+      } else {
+        if ($(this).val() != "") {
+          valuesPrecio.push($(this).val());
+        } else {
+          errorHandled = "1";
+        }
+      }
+    });
+
+    $("input[name='tiempos[]']").each(function () {
+      if ($(this).attr("edit")) {
+        if ($(this).val() != "") {
+          valuesHorasEdit.push([parseInt($(this).attr("edit")), $(this).val()]);
+        } else {
+          errorHandled = "1";
+        }
+      } else {
+        if ($(this).val() != "") {
+          valuesHoras.push($(this).val());
+        } else {
+          errorHandled = "1";
+        }
+      }
+    });
+
+    if (typeActionData == "1") {
+      for (let ma = 0; valuesRegion.length > ma; ma++) {
+        valuesAll.push([
+          dataMethodId,
+          valuesPrecio[ma],
+          valuesRegion[ma],
+          valuesHoras[ma],
+        ]);
+      }
+
+      for (let za = 0; valuesRegionEdit.length > za; za++) {
+        valuesAllEdit.push([
+          valuesPrecioEdit[za][0],
+          dataMethodId,
+          valuesPrecioEdit[za][1],
+          valuesRegionEdit[za][1],
+          valuesHorasEdit[za][1],
+        ]);
+      }
+      if (valuesAll.length > 0 || valuesAllEdit.length > 0) {
+        if (errorHandled == "1") {
+          Swal.fire({
+            position: "center",
+            icon: "info",
+            html: "<b>Revisa que todos los campos creados hayan sido completados correctamente.</b>",
+            showConfirmButton: false,
+            timer: 2500,
+          });
+        } else {
+          $.ajax({
+            method: "POST",
+            url: "/admin-shipping/metodos-envio/add-values-methods",
+            dataType: "json",
+            data: {
+              valuesPost: valuesAll,
+              valuesEdit: valuesAllEdit,
+              valuesDelete: deleteArray,
+            },
+            success: function (data) {
+              if (data.status === "success") {
+                Swal.close();
+                //- window.location.reload(true);
+              } else {
+                Swal.close();
+                Swal.fire({
+                  position: "center",
+                  icon: "error",
+                  title: "Ocurrió un error interno inténtalo más tarde.",
+                  showConfirmButton: false,
+                  timer: 2500,
+                });
+              }
+            },
+            error: function () {
+              Swal.close();
+              Swal.fire({
+                position: "center",
+                icon: "error",
+                title: "Ocurrió un error interno inténtalo más tarde.",
+                showConfirmButton: false,
+                timer: 2500,
+              });
+            },
+          });
+        }
+      } else {
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "Debes ingresar como mínimo un valor para guardar los datos.",
+          showConfirmButton: false,
+          timer: 2500,
+        });
+      }
+    } else {
+      for (let ma = 0; valuesRegion.length > ma; ma++) {
+        valuesAll.push([
+          dataMethodId,
+          valuesPrecio[ma],
+          valuesRegion[ma],
+          valuesHoras[ma],
+          empresa_id
+        ]);
+      }
+      if (valuesAll.length > 0) {
+        if (errorHandled == "1") {
+          Swal.fire({
+            position: "center",
+            icon: "info",
+            html: "<b>Revisa que todos los campos creados hayan sido completados correctamente.</b>",
+            showConfirmButton: false,
+            timer: 2500,
+          });
+        } else {
+          Swal.showLoading();
+          $.ajax({
+            method: "POST",
+            url: "/admin-shipping/metodos-envio/add-values-methods",
+            dataType: "json",
+            data: { valuesPost: valuesAll, valuesEdit: []},
+            success: function (data) {
+              if (data.status === "success") {
+                Swal.close();
+                //- window.location.reload(true);
+              } else {
+                Swal.close();
+                Swal.fire({
+                  position: "center",
+                  icon: "error",
+                  title: "Ocurrió un error interno inténtalo más tarde.",
+                  showConfirmButton: false,
+                  timer: 2500,
+                });
+              }
+            },
+            error: function () {
+              Swal.close();
+              Swal.fire({
+                position: "center",
+                icon: "error",
+                title: "Ocurrió un error interno inténtalo más tarde.",
+                showConfirmButton: false,
+                timer: 2500,
+              });
+            },
+          });
+        }
+      } else {
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          html: "<b>Debes ingresar como mínimo un valor para guardar los datos.</b>",
+          showConfirmButton: false,
+          timer: 2500,
+        });
+      }
+    }
+  };

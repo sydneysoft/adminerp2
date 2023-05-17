@@ -1,0 +1,57 @@
+script.
+  const guardarCategoria = async () => {
+
+    const modulos = $("#modulosSel").val();
+    const empresa_id = $("#permisosEmpresas").attr("data-id");
+
+
+    if ((modulos, empresa_id)) {
+      Swal.showLoading();
+
+      await fetch(`/admin-empresas/categoria`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          modulos,
+          empresa_id
+        }),
+      })
+
+        .then((data) => {
+          if (data.status === 200) {
+            Swal.close();
+            window.location.reload(true);
+          } else if (data.status === 400) {
+            Swal.close();
+            Swal.fire({
+              position: "center",
+              icon: "error",
+              title: "#{translation.ALERTS.CATEGORY_REGISTERED}",
+              showConfirmButton: false,
+              timer: 2500,
+            });
+          } else {
+            Swal.close();
+            Swal.fire({
+              position: "center",
+              icon: "error",
+              title: "#{translation.ALERTS.WRONG}",
+              showConfirmButton: false,
+              timer: 2500,
+            });
+          }
+        })
+
+        .catch(() => {
+          Swal.close();
+          Swal.fire({
+            position: "center",
+            icon: "error",
+            title: "#{translation.ALERTS.WRONG}",
+            showConfirmButton: false,
+            timer: 2500,
+          });
+        });
+
+    }
+  }

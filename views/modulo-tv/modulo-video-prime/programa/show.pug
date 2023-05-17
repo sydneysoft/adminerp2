@@ -1,0 +1,37 @@
+extends ../../extends/menu-superior-admin
+
+block contenido
+  .my-3
+    div
+      a.btn.btn-primary(href="/admin-tv#nav-programas-tab") 
+        i.fas.fa-arrow-left
+        span.px-3 #{translation.BACK}
+    h1.text-center.mb-5 
+      | #{data.nombre}
+
+    .my-3.text-right 
+      a.btn.btn-primary(href=`/admin-tv/programas/editar/${data.id}`) #{translation.EDIT}
+
+    .card 
+      .card-body 
+        table.table
+          thead
+            tr
+              th(scope='col') #{translation.FORM.NAME}
+              th(scope='col') #{translation.FORM.DESCRIPTION}
+          tbody
+            tr
+              th(scope='row') ID
+              td #{data.id}
+            tr
+              th(scope='row') #{translation.FORM.NAME}
+              td #{data.nombre}
+            tr
+              th(scope='row') #{translation.FORM.SLOGAN}
+              td #{data.slogan}
+            tr
+              th(scope='row') #{translation.FORM.BACKGROUND_PHOTO}
+              td #{data.foto_portada}
+            tr
+              th(scope='row') #{translation.FORM.SEASONS_NUMBER}
+              td #{data.num_temporadas}

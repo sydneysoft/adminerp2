@@ -1,0 +1,41 @@
+//- Modal para crear
+.modal.fade.justify-content-center.align-items-center(tabindex="-1" role="dialog" id="crearModal")
+  .modal-dialog.modal-lg
+    .modal-content.modalContent(style="height: 100%;")
+      .modal-header 
+        .row(style="margin:0;")
+          .col-md-12
+            h3(style="margin:0px 0;") #{translation.ADD}
+
+      .modal-body.borderBottom
+        .row
+          .col-12.col-md-8
+            .form-group
+              label(for='nombre') #{translation.FORM.NAME} *
+              input#nombre.form-control(type='text' placeholder=translation.FORM.NAME name="nombre" required)
+          .col-12.col-md-4 
+            .form-group
+              label(for="telefono") #{translation.FORM.PHONE}
+              input#telefono.form-control(type="number" placeholder=translation.FORM.PHONE name="telefono")
+          .col-12
+            .form-group
+              label(for="eslogan") #{translation.FORM.SLOGAN}
+              textarea#eslogan.form-control(placeholder=translation.FORM.SLOGAN name="eslogan")
+          .col-12
+            .form-group
+              label(for="repository") REPOSITORY
+              input#repository.form-control(type="text" placeholder="REPOSITORY" name="repository")
+        .row.mt-3.align-items-end
+          .col-9
+            .form-group
+              label(for="token") TOKEN
+              input#token.form-control(type="text" placeholder="TOKEN" name="token" readonly)
+          .col-3
+            .form-group
+              button.btn.btn-primary.btn-block(type="button" id="generarToken" onclick="generarNewToken()") GENERAR
+      .modal-footer(style="padding:8px;")
+        .row(style="margin:0;")
+          .col-md-12.text-right
+            button#addItem.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;") #{translation.ADD}
+              i.fas.fa-plus.ml-3
+            button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}

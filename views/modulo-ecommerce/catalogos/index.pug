@@ -1,0 +1,78 @@
+extends ./layout.pug
+append contenido
+  .row.justify-content-end
+    if empresa_id
+      include /mixins/btn/back.pug
+      input#empresa_id(type="hidden" value=empresa_id)
+      .col-6
+        +btn-back()
+    .col-6.text-right
+      button.btn.btn-success(style="margin-bottom:25px;" type="button" data-toggle="modal" data-target="#nuevoCatalogoPDFAdministrador")
+        i.fas-fa-plus
+        span #{translation.ADD_CATALOGUE_PDF}
+      button.btn.btn-success(style="margin-bottom:25px;margin-left:8px" type="button" data-toggle="modal" data-target="#nuevoCatalogoImagenesAdministrador")
+        i.fas-fa-plus
+        span #{translation.ADD_CATALOGUE_IMAGE}
+  .row.mt-2
+    .col-12
+      div.table-responsive
+        table.table.table-bordered#tabla-catalogos
+          thead.thead-dark
+            //- tr
+              th.text-center #{translation.FORM.TITLE}
+              th.text-center #{translation.FORM.PHOTO}
+              th.text-center #{translation.FORM.DATE}
+              th.text-center #{translation.FORM.STATUS}
+              th.text-center #{translation.FORM.ACTIONS}
+          tbody
+          tfoot
+            //- each book in bookStore
+              -var finalStatusCategoria = (book.estado=="0" ? 'Desactivado': 'Activado')
+              tr
+                td.text-center=book.titulo
+                td.text-center
+                  img(src=book.foto,style="width:50px;height:50px;object-fit:cover")
+                td.text-center="Desde el "+moment(book.fecha_inicio).format('D [de] MMMM')+" al "+moment(book.fecha_fin).format('D [de] MMMM')
+                td.text-center=finalStatusCategoria
+                td.text-center.col-right
+                  if(book.estado=="0")
+                    button.btn.btn-success(type="button" onClick="handleStateCatalogo('"+book.id+"','1')")
+                      i.fas.fa-error
+                      b="Activar"
+                  else 
+                    button.btn.btn-warning(type="button" onClick="handleStateCatalogo('"+book.id+"','0')")
+                      i.fas.fa-error
+                      b="Desactivar"
+                  button.btn.btn-info(style="margin-right:7px;margin-left:7px;" type="button" onclick="handlePreviewPDF('"+book.url+"')")
+                    i.fas.fa-eye
+                  button.delete.btn.btn-danger(onClick="deleteHandlePdf('"+book.id+"')")
+                    i.fas.fa-trash
+
+  include ./modals/crear-catalogo.pug
+  include ./modals/crear-catalogo-imagenes.pug
+  include ./modals/mostrar-pdf.pug
+
+  include ./save/catalogo.pug
+  include ./save/catalogo-imagenes.pug
+  
+  
+  script. 
+    var inputs = document.getElementById("file-pdf-new");
+
+    inputs.addEventListener( 'change', function( e ){
+      let fileName=e.target.value;
+      if(fileName){
+        $('#data-route-file-new').text(fileName)
+      }
+    });
+
+    Dropzone.autoDiscover = false;
+    var myDropzone = new Dropzone(".dropzone", { 
+      name: "multimedia",
+      acceptedFiles: ".jpeg,.jpg,.png,.gif",
+      autoQueue: false,
+      addRemoveLinks:true,
+      dictDefaultMessage:"<b>Suelta los archivos aquí o haz click para subirlos</b><br><p>(Recuerda que la máxima cantidad permitida de imágenes es 30 y la resolución es 538*807)</p>",
+      dictRemoveFile:"<b style='color:red;margin-top:5px;'>#{translation.REMOVE}</b>",
+    });
+  include ./datatable/catalogos.pug

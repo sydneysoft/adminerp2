@@ -1,0 +1,64 @@
+script.
+  const select2Sedes = $("#lista-sedes, #lista-sedes-editar, #lista-sedes-filtro").select2({
+    placeholder: '#{translation.FORM.SEARCH}',
+    templateResult: sedesState,
+    allowClear: true
+  })
+  //- .on("select2:open", () => {
+  //-   $(".select2-results:not(:has(a))").append(
+  //-     '<a href="#" style="padding: 6px;height: 20px;display: inline-table;" data-toggle="modal" data-target="#nuevoBannerAdministrador" onclick="closeSedesSelect2()">Agregar sedes</a>'
+  //-   );
+  //- }); //- No se debe crear
+
+  //- Funcion para modificar como muestra el select2 las opciones
+  function sedesState (state) {
+    if (!state.id) {
+      return state.text;
+    }
+    let $container = $(`
+      <span><strong>${state.id}</strong> | ${state.text}</span>
+    `);
+
+    return $container;
+  }
+
+  function closeSedesSelect2 () {
+    $("#lista-sedes, #lista-sedes-editar, #lista-sedes-filtro").select2('close');
+  }
+
+  //- Funcion para poder obtener los datos de la especialidad con empresa dinamicamente
+  function urlSelect2Sedes() {
+    let auxUrl = "/admin-clinica/sedes/select2";
+    if (typeof empresa_id != "undefined" && !isNaN(empresa_id.value)) {
+      auxUrl += `/${empresa_id.value}`;
+    }
+    return auxUrl;
+  }
+
+  $.ajax({
+    url: urlSelect2Sedes(),
+    dataType: 'json',
+    delay: 500,
+    data: {
+      select: ['id', 'nombre', 'direccion']
+    },
+    success: function (data, status) {
+      if (data.ok) {
+        if (Array.isArray(data.data) && data.data.length > 0) {
+          select2Sedes.empty();
+          select2Sedes.append(new Option('Seleccionar', '', false, false));
+          data.data.forEach((item) => {
+            let newOption = new Option(`${item.nombre} ${item.direccion}`, item.id, false, false);
+            select2Sedes.append(newOption);
+          });
+        } else {
+          select2Sedes.empty();
+          select2Sedes.append(new Option('Seleccionar', '', false, false));
+        }
+      }
+    }, 
+    error: function (error, statur) {
+      select2Sedes.empty();
+      select2Sedes.append(new Option('Seleccionar', '', false, false));
+    }
+  })

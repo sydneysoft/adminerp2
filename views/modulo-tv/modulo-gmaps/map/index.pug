@@ -1,0 +1,67 @@
+extends ../layout.pug
+
+append contenido 
+  .border-bottom.border-left.border-right.p-3 
+    .my-3
+      .row 
+        .col-12.text-right 
+          button#guardarMapa.btn.btn-primary() #{translation.SAVE}
+      .row.mt-3 
+        input#empresa_id(type="text" value=empresa_id hidden)
+        input#item_id(type="text" value=data[0].id hidden)
+        .col-12.col-md-8 
+          .form-group 
+            label(for="embed") #{translation.FORM.EMBED_CODE} *
+            textarea#embed.form-control(type="text" placeholder="Embed Code" style="height: 250px;") #{data[0].embed}
+        .col-12.col-md-4 
+          .border.p-3.rounded 
+            .form-check 
+              if data[0].activo == 1
+                input#activo.form-check-input(type="checkbox" checked)
+              else
+                input#activo.form-check-input(type="checkbox")
+              label.form-check-label(for="activo") #{translation.ACTIVE}
+          .mt-3 
+            .alert.alert-info 
+              i.fas.fa-info-circle 
+              | #{translation.MODULOTV.GOOGLE_MAPS_INSTRUCTION} 
+              a(href="https://support.google.com/maps/answer/144361?co=GENIE.Platform%3DDesktop&hl=es" target="_blank") #{translation.MORE_INFORMATION}
+            .alert.alert-warning.alert-dismissible.fade.show(role="alert")
+              button.close(type="button" data-dismiss="alert" aria-label="Close")
+                span(aria-hidden="true") ×
+              i.fas.fa-exclamation-triangle 
+              | #{translation.MODULOTV.GOOGLE_MAPS_WARNING}
+              a(href="https://support.google.com/maps/answer/144361?co=GENIE.Platform%3DDesktop&hl=es" target="_blank") #{translation.MORE_INFORMATION}
+    
+  script 
+    include ../../../js/modulo-tv/template.js
+    include ../../../js/modulo-tv/update.js
+  script.
+    const beforeUpdateMap = (id, empresa_id = 0) => {
+      if (document.getElementById('embed').value != "") {
+        let isChecked = false;
+        if (document.getElementById('activo').checked) {
+          isChecked = true;
+        }
+        updateItem(`/admin-gmaps/map/${id}`, {
+          embed: document.getElementById('embed').value,
+          activo: isChecked ? 1 : 0,
+          empresa_id
+        });
+
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: '#{translation.FORM.REQUIRED_FIELDS}',
+        });
+        return;
+      }
+    };
+
+  script.
+    const empresa_id = document.getElementById('empresa_id');
+    const item_id = document.getElementById('item_id');
+    document.getElementById('guardarMapa').addEventListener('click', (event) => {
+        beforeUpdateMap(item_id.value, empresa_id.value)
+    });

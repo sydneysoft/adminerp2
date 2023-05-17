@@ -1,0 +1,107 @@
+extends ../layout.pug
+
+append contenido 
+  .border-bottom.border-left.border-right.p-3 
+    if data && data.length === 1
+      .container
+        .row
+          .col-12.my-3
+            button#crearLive.btn.btn-primary.btn-block(data-empresa=empresa_id) #{translation.SAVE}
+          .col-12 
+            #embedAlert
+          .col-12
+            .row
+              .col-12.col-md-8
+                .form-group 
+                  input#idItem(type="text" value=data[0].id hidden readonly)
+                .form-group 
+                  label.form-label(for="url") #{translation.VIDEO_URL}
+                  if data[0].recurso == 'embed'
+                    input#url.form-control(type="text" name="url" placeholder="Url del video" value=data[0].url disabled="true")
+                  else
+                    input#url.form-control(type="text" name="url" placeholder="Url del video" value=data[0].url)
+              .col-12.col-md-4  
+                .form-group
+                  label.form-label(for="recurso") #{translation.VIDEO_URL}
+                  select#recurso.form-control(name="recurso")
+                    if data[0].recurso == 'youtube'
+                      option(value="youtube" selected) Youtube 
+                    else 
+                      option(value="youtube") Youtube 
+                    if data[0].recurso == 'facebook'
+                      option(value="facebook" selected) Facebook 
+                    else
+                      option(value="facebook") Facebook
+                    if data[0].recurso == 'embed'
+                      option(value="embed" selected) Embed
+                    else 
+                      option(value="embed") Embed
+              .col-12.col-md-8 
+                .form-group 
+                  label.form-label(for="embed") Embed 
+                  if data[0].recurso == 'embed'
+                    textarea#embed.form-control(name="embed" style="height:300px") #{data[0].embed}
+                  else 
+                    textarea#embed.form-control(name="embed" style="height:300px" disabled="true") #{data[0].embed}
+              .col-12.col-md-4 
+                .form-group.mt-4 
+                  .form-check
+                    if data[0].seleccionado == 1
+                      input#seleccionado.form-check-input(type='checkbox' checked="true")
+                    else 
+                      input#seleccionado.form-check-input(type='checkbox')
+                    label.form-check-label(for='seleccionado')
+                      | #{translation.ENABLE}
+      script 
+        include ./actualizar.js
+        include ../../../js/modulo-tv/update.js
+      script.
+        const idItem = document.getElementById('idItem');
+        document.getElementById('crearLive').addEventListener('click', (event) => {
+          const empresa_id = parseInt(event.target.getAttribute('data-empresa'));
+          if(empresa_id && typeof empresa_id == 'number') {
+            beforeUpdate(idItem.value, empresa_id)
+          }
+        });
+    else 
+      .container
+        .row
+          .col-12.my-3
+            button#crearLive.btn.btn-primary.btn-block(data-empresa=empresa_id) #{translation.SAVE}
+          .col-12 
+            #embedAlert
+          .col-12
+            .row
+              .col-12.col-md-8
+                .form-group 
+                  label.form-label(for="url") #{translation.VIDEO_URL}
+                  input#url.form-control(type="text" name="url" placeholder="Url del video" value="")
+              .col-12.col-md-4  
+                .form-group
+                  label.form-label(for="recurso") #{translation.VIDEO_URL}
+                  select#recurso.form-control(name="recurso")
+                    option(value="youtube") Youtube 
+                    option(value="facebook") Facebook 
+                    option(value="embed") Embed
+              .col-12.col-md-8 
+                .form-group 
+                  label.form-label(for="embed") Embed 
+                  textarea#embed.form-control(name="embed" style="height:300px" disabled="true") 
+              .col-12.col-md-4 
+                .form-group.mt-4 
+                  .form-check
+                    input#seleccionado.form-check-input(type='checkbox')
+                    label.form-check-label(for='seleccionado')
+                      | #{translation.ENABLE}
+      script 
+        include ./crear.js
+        include ../../../js/modulo-tv/save.js
+      script.
+        document.getElementById('crearLive').addEventListener('click', (event) => {
+          const empresa_id = parseInt(event.target.getAttribute('data-empresa'));
+          if(empresa_id && typeof empresa_id == 'number') {
+            beforeUpdate(empresa_id)
+          }
+        });        
+  script
+    include ./video-live.js

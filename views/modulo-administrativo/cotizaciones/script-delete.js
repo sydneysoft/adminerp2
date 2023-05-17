@@ -1,0 +1,41 @@
+const confirmarBorrar = (val) => {
+  Swal.fire({
+    title: "Estás Seguro?",
+    text: "No podras revertir esta acción",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Si, Eliminar!",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      borrarCotizacionAdmin(val);
+    }
+  });
+};
+
+const borrarCotizacionAdmin = (val) => {
+  Swal.showLoading();
+
+  $.ajax({
+    method: "delete",
+    url: "/cotizaciones/eliminar/" + val,
+    dataType: "json",
+    success: function (data) {
+
+        Swal.close();
+        window.location.reload(true);
+      
+    },
+    error: function () {
+      Swal.close();
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: "Ocurrió un error interno inténtalo más tarde.",
+        showConfirmButton: false,
+        timer: 2500,
+      });
+    },
+  });
+};

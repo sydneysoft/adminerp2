@@ -1,0 +1,32 @@
+extends ../../extends/menu-superior-admin
+block contenido
+    .row
+        .col-6.text-grey(style="margin-bottom:10px;")
+            h1.display-1
+                strong  #{translation.ORDERS}  
+                        //- span.light= data.length
+        
+        .col-12
+            div.table-responsive
+                table.table.table-bordered#tabla-pedidos
+                    thead.thead-dark
+    
+    include ./modals/editar-pedido.pug
+    include ./styles/pedidos.pug
+    script
+        include /js/toast.sweet.js
+    include ./update/editar-pedido.pug
+    include ./update/actualizar-datos.pug
+    include ./delete/eliminar-pedido.pug
+    
+    script.
+        $(document).ready( function () {
+            $('#tabla-categorias').DataTable({
+                "language": {"url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"}
+            });
+        });
+
+        var typeOperation="1";
+
+    include ./datatable/pedidos.pug
+        

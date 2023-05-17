@@ -1,0 +1,68 @@
+script.
+  editEspecialidad.addEventListener('click', (e) => {
+    if(nombre_editar.value != '') {
+      const data = {
+        nombre: nombre_editar.value,
+        codigoexterno: codigoexterno_editar.value,
+        imagen: imagen_editar.value,
+        activado: activado_editar.checked ? 1 : 0,
+        estado: estado_editar.value,
+        sede: sede_editar.value,
+        categoria: categoria_editar.value,
+        descripcioncorta: descripcioncorta_editar.value,
+        descriptionlarga: descriptionlarga_editar.value,
+        icono: icono_editar.value
+      }
+      updateItem(`/admin-especialidades/items/${itemId.value}`, data, editItemSuccess)
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'El nombre de la especialidad es requerido',
+        timer: 2000
+      })
+    }
+  })
+
+  function editarEspecialidad(data) {
+    nombre_editar.value = data.nombre;
+    codigoexterno_editar.value = data.codigoexterno;
+    imagen_editar.value = data.imagen;
+    activado_editar.checked = data.activado;
+    estado_editar.value = data.estado;
+    sede_editar.value = data.sede;
+    categoria_editar.value = data.categoria;
+    descripcioncorta_editar.value = data.descripcioncorta;
+    descriptionlarga_editar.value = data.descriptionlarga;
+    icono_editar.value = data.icono;
+    $('#showIcono_editar').html(`<i class="${data.icono}"></i>`)
+    try {
+      new URL(data.imagen);
+      $('#mostrarImagen_editar').html(`<img src="${data.imagen}" alt="imagen" style="width: 50px; height: 50px;">`)
+    }catch (e) {
+      $('#mostrarImagen_editar').html(`<img src="/images/image-default.jpg" alt="imagen" style="width: 50px; height: 50px;">`)
+    }
+    itemId.value = data.id;
+    createImageGroup('imagen_editar', 'imagenFile_editar', 'mostrarImagen_editar', 'galeriaImagen_editar');
+  }
+
+
+  //- Resetear el formulario, cerrar el modal y recargar la tabla
+  function editItemSuccess (data) {
+    if (typeof tablaEspecialidades != 'undefined') {
+      tablaEspecialidades.ajax.reload();
+    }
+    nombre_editar.value = '';
+    codigoexterno_editar.value = '';
+    imagen_editar.value = '';
+    activado_editar.value = '';
+    estado_editar.checked = false;
+    sede_editar.value = '';
+    categoria_editar.value = '';
+    descripcioncorta_editar.value = '';
+    descriptionlarga_editar.value = '';
+    icono_editar.value = '';
+    showIcono_editar.innerHTML = '';
+    $('#mostrarImagen_editar').html('');
+    $('#editarEspecialidadModal').modal('hide');
+  }

@@ -1,0 +1,602 @@
+.border-left.border-right.border-bottom.p-3 
+  .container-fluid
+    .row
+      .col-12 
+        h3 #{translation.FOOTER}
+    .row.mt-3
+      .col-6.text-left
+        //- button#actualizarSectionPayloads.btn.btn-info(type="button" onclick="updateSectionPayloads()") #{translation.SAVE}
+        //-   i.fas.fa-save.ml-2
+      .col-6.text-right
+        button#insertSectionFooter.btn.btn-primary(type="button") #{translation.INSERT_SECTION}
+          i.fas.fa-plus-circle.ml-2
+    .row.mt-3
+      .col-12
+        #showRenderFooterSection.row
+
+//- Modal para editar items de seccion
+.modal.fade.justify-content-center.align-items-center(tabindex="-1" role="dialog" id="editItemSectionModal")
+  .modal-dialog.modal-sm
+      .modal-content.modalContent(style="height: 100%;")
+          .modal-header 
+              .row(style="margin:0;")
+                  .col-md-12
+                      h3(style="margin:0px 0;") #{translation.EDIT_SECTION}
+          .modal-body.borderBottom
+            .row
+              .col-12
+                .form-group 
+                  label(for="nombre_item") #{translation.FORM.NAME} *
+                  input#nombre_item.form-control(type="text" placeholder=translation.FORM.NAME name="nombre_item" required)
+              .col-12
+                .form-group
+                  label(for="icono_item") #{translation.FORM.ICON} *
+                  select#icono_item.form-control
+              .col-12
+                .form-group
+                  label(for="href_item") #{translation.FORM.URL} *
+                  input#href_item.form-control(type="text" placeholder=translation.FORM.URL name="href_item" required)
+              //- .col-12.col-md-8
+              //-   .form-group
+              //-     label(for='name_section_edit') #{translation.FORM.NAME_SECTION} *
+              //-     input#name_section.form-control(type='text' placeholder=translation.FORM.NAME_SECTION name="name_section" required)
+              //- .col-12.col-md-4 
+              //-   .form-group
+              //-     label(for="description_section_edit") #{translation.FORM.DESCRIPTION_SECTION}
+              //-     input#description_section.form-control(type="text" placeholder=translation.FORM.DESCRIPTION_SECTION name="description_section")
+          .modal-footer(style="padding:8px;")
+              .row(style="margin:0;")
+                  .col-md-12.text-right
+                      button.btn.btn-danger(type="buton" onclick="$('#editItemSectionModal').modal('hide');") #{translation.CLOSE}
+                      button#saveSectionFooter.btn.btn-primary(type="button" onclick="guardarItemPayload()") #{translation.SAVE}
+
+script.
+  const insertSectionFooter = document.getElementById('insertSectionFooter');
+  //- const showFooterSection= document.getElementById('showFooterSection');
+  const showRenderFooterSection = document.getElementById('showRenderFooterSection');
+  const nameSection = document.getElementById('name_section');
+  const descriptionSection = document.getElementById('description_section');
+
+  const nombre_item = document.getElementById('nombre_item');
+  const href_item = document.getElementById('href_item');
+  const icono_item = document.getElementById('icono_item');
+
+  const sectionPayload = {
+    nombre: '',
+    descripcion: '',
+    identificador: '',
+    items: []
+  }
+
+  const itemPayload = {
+    identificador: '',
+    nombre: '',
+    icono: '',
+    href: ''
+  }
+
+  const sectionPayloads = [];
+  
+  //- Evento que inserta una nueva seccion
+  insertSectionFooter.addEventListener('click', () => {
+    const identificador_section = `section_${sectionPayloads.length + 1}_${new Date().getTime()}`;
+    let auxSectionPayload = {
+      nombre: '',
+      descripcion: '',
+      identificador: identificador_section,
+      items: []
+    };
+    sectionPayloads.push(auxSectionPayload);
+    renderSectionPayloads();
+  });
+
+  //- Evento que renderiza las secciones
+  function renderSectionPayloads () {
+    if (Array.isArray(sectionPayloads) && sectionPayloads.length > 0) {
+      showRenderFooterSection.innerHTML = '';
+      sectionPayloads.forEach((section, index) => {
+        let colCard =  document.createElement('div');
+        colCard.classList.add('col-12', 'col-md-6', 'col-lg-4', 'col-xl-4');
+
+        let cardSection = document.createElement('div');
+        cardSection.classList.add('card', 'mb-3');
+        cardSection.setAttribute('id', `card_section_${section.identificador}`);
+
+        let cardBodySection = document.createElement('div');
+        cardBodySection.classList.add('card-body');
+
+        let cardHeaderSection = document.createElement('div');
+        cardHeaderSection.classList.add('card-header');
+        
+        //- Button delete 
+        let buttonDeleteSection = document.createElement('button');
+        buttonDeleteSection.classList.add('btn', 'btn-danger', 'float-right');
+        buttonDeleteSection.setAttribute('type', 'button');
+        buttonDeleteSection.setAttribute('onclick', `deleteSection('${section.identificador}')`);
+        buttonDeleteSection.innerHTML = '#{translation.DELETE}';
+
+        cardHeaderSection.appendChild(buttonDeleteSection);
+        cardSection.appendChild(cardHeaderSection);
+
+        let sectionElement = document.createElement('div');
+        sectionElement.setAttribute('id', section.identificador);
+        //- form-group
+        let formGroup = document.createElement('div');
+        formGroup.classList.add('form-group');
+        //- label
+        let label = document.createElement('label');
+        label.setAttribute('for', `name_section_${section.identificador}`);
+        label.innerHTML = '#{translation.FORM.NAME}';
+        //- input
+        let input = document.createElement('input');
+        input.classList.add('form-control');
+        input.setAttribute('type', 'text');
+        input.setAttribute('placeholder', '#{translation.FORM.NAME}');
+        input.setAttribute('name', `name_section_${section.identificador}`);
+        input.setAttribute('id', `name_section_${section.identificador}`);
+        input.value = section.nombre;
+        input.setAttribute('onchange', "saveSection('"+ section.identificador + "')");
+
+        formGroup.appendChild(label);
+        formGroup.appendChild(input);
+        sectionElement.appendChild(formGroup);
+
+        //- form-group
+        let formGroupDescription = document.createElement('div');
+        formGroupDescription.classList.add('form-group');
+        //- label
+        let labelDescription = document.createElement('label');
+        labelDescription.setAttribute('for', `description_section_${section.identificador}`);
+        labelDescription.innerHTML = '#{translation.FORM.DESCRIPTION}';
+        //- input
+        let inputDescription = document.createElement('textarea');
+        inputDescription.classList.add('form-control');
+        inputDescription.setAttribute('placeholder', '#{translation.FORM.DESCRIPTION}');
+        inputDescription.setAttribute('name', `description_section_${section.identificador}`);
+        inputDescription.setAttribute('id', `description_section_${section.identificador}`);
+        inputDescription.innerHTML = section.descripcion;
+        inputDescription.setAttribute('onchange', "saveSection('"+ section.identificador + "')");
+
+        formGroupDescription.appendChild(labelDescription);
+        formGroupDescription.appendChild(inputDescription);
+        sectionElement.appendChild(formGroupDescription);
+
+        //- row
+        let row = document.createElement('div');
+        row.classList.add('row');
+        row.setAttribute('id', `row_${section.identificador}`);
+
+        if (Array.isArray(section.items) && section.items.length > 0) {
+          row.appendChild(renderItemsSection(section.items, section.identificador));
+        }
+
+        sectionElement.appendChild(row);
+
+        //- row insert
+        let rowInsert = document.createElement('div');
+        rowInsert.classList.add('row');
+        rowInsert.setAttribute('id', `row_insert_${section.identificador}`);
+        let colButton = document.createElement('div');
+        colButton.classList.add('col-12');
+        let formGroupButton = document.createElement('div');
+        formGroupButton.classList.add('form-group');
+
+        let buttonInsert = document.createElement('button');
+        buttonInsert.classList.add('btn', 'btn-primary', 'btn-block');
+        buttonInsert.setAttribute('type', 'button');
+        buttonInsert.setAttribute('onclick', `addItemSection('${section.identificador}')`);
+        buttonInsert.innerHTML = '#{translation.CREATE}';
+
+        formGroupButton.appendChild(buttonInsert);
+        colButton.appendChild(formGroupButton);
+        rowInsert.appendChild(colButton);
+
+        sectionElement.appendChild(rowInsert);
+
+        cardBodySection.appendChild(sectionElement);
+        cardSection.appendChild(cardBodySection);
+        colCard.appendChild(cardSection);
+        showRenderFooterSection.appendChild(colCard);
+      });
+    }
+  }
+  //- Funcion para poder renderizar los items de una seccion
+  function renderItemsSection(items, section_identificador) {
+    let col12 = document.createElement('div');
+    col12.classList.add('col-12');
+    items.forEach((item, index) => {
+      //- row
+      let rowItem = document.createElement('div');
+      rowItem.classList.add('row', 'mt-2');
+      rowItem.setAttribute('id', `row_item_${item.identificador}`);
+      
+      //- col-8 link
+      let col8 = document.createElement('div');
+      col8.classList.add('col-8');
+      let a = document.createElement('a');
+      a.setAttribute('href', item.href);
+      a.innerHTML = item.nombre;
+      let icono = document.createElement('i');
+      icono.className = item.icono;
+      a.appendChild(icono);
+      col8.appendChild(a);
+      rowItem.appendChild(col8);
+
+      //- col-4 botones
+      let col4 = document.createElement('div');
+      col4.classList.add('col-4');
+      let formGroupButton = document.createElement('div');
+      formGroupButton.classList.add('form-group', 'btn-group');
+      //- button edit
+      let buttonEdit = document.createElement('button');
+      buttonEdit.classList.add('btn', 'btn-primary');
+      buttonEdit.setAttribute('type', 'button');
+      buttonEdit.setAttribute('onclick', `editItemSection('${item.identificador}')`);
+      let iconoButtonEdit = document.createElement('i');
+      iconoButtonEdit.classList.add('fas', 'fa-edit');
+      buttonEdit.appendChild(iconoButtonEdit);
+
+      //- button delete
+      let buttonDelete = document.createElement('button');
+      buttonDelete.classList.add('btn', 'btn-danger');
+      buttonDelete.setAttribute('type', 'button');
+      buttonDelete.setAttribute('onclick', `deleteItemSection('${item.identificador}')`);
+      let iconoButtonDelete = document.createElement('i');
+      iconoButtonDelete.classList.add('fas', 'fa-trash');
+      buttonDelete.appendChild(iconoButtonDelete);
+
+      formGroupButton.appendChild(buttonEdit);
+      formGroupButton.appendChild(buttonDelete);
+      col4.appendChild(formGroupButton);
+      rowItem.appendChild(col4);
+
+      col12.appendChild(rowItem);
+    });
+    return col12;
+  }
+  //- Funcion para agregar un item a una seccion especifica
+  function addItemSection(section_identificador) {
+    let randomMath = Math.floor(Math.random() * 1000000);
+    const item_identificador = `item_${randomMath}_${new Date().getTime()}`;
+    let auxItemPayload = {
+      ...itemPayload
+    };
+    auxItemPayload.identificador = item_identificador;
+    auxItemPayload.nombre = 'Nombre del item';
+    auxItemPayload.href = '#';
+    auxItemPayload.icono = 'fas fa-link';
+    if (Array.isArray(sectionPayloads) && sectionPayloads.length > 0) {
+      for(let i = 0; i < sectionPayloads.length; i++) {
+        if (sectionPayloads[i].identificador === section_identificador) {
+          if (Array.isArray(sectionPayloads[i].items)) {
+            
+            let auxItems = sectionPayloads[i].items;
+            let insert = true;
+            for (let j = 0; j < auxItems.length; j++) {
+              if (auxItems[j].identificador == item_identificador) {
+                insert = false;
+              }
+            }
+
+            if (insert) {
+              auxItems.push(auxItemPayload);
+              sectionPayloads[i].items = auxItems;
+            }
+          }
+        }
+      }
+
+    }
+    renderSectionPayloads();
+  }
+  //- Funcion para editar un item de una seccion especifica
+  function editItemSection(item_identificador) {
+    let item = null;
+    if (Array.isArray(sectionPayloads) && sectionPayloads.length > 0) {
+      sectionPayloads.forEach((section, index) => {
+        if (Array.isArray(section.items) && section.items.length > 0) {
+          section.items.forEach((itemAux, index) => {
+            if (itemAux.identificador === item_identificador) {
+              item = itemAux;
+            }
+          });
+        }
+      });
+    }
+    if (item) {
+      
+      nombre_item.value = item.nombre;
+      href_item.value = item.href;
+      icono_item.value = item.icono;
+      nombre_item.setAttribute('data-identificador', item.identificador);
+      href_item.setAttribute('data-identificador', item.identificador);
+      icono_item.setAttribute('data-identificador', item.identificador);
+      $('#editItemSectionModal').modal('show');
+    }
+  }
+
+  //- Funcion para guardar el item editando en el modal
+  function guardarItemPayload() {
+    let identificador = nombre_item.getAttribute('data-identificador');
+    if (Array.isArray(sectionPayloads) && sectionPayloads.length > 0) {
+      let auxSectionPayloads = sectionPayloads;
+
+      auxSectionPayloads = auxSectionPayloads.map((section, index) => {
+        if (Array.isArray(section.items) && section.items.length > 0) {
+          section.items = section.items.map((item, index) => {
+            if (item.identificador === identificador) {
+              item.nombre = nombre_item.value;
+              item.href = href_item.value;
+              item.icono = icono_item.value;
+            }
+            return item;
+          });
+        }
+        return section;
+      });
+      sectionPayloads.splice(0, sectionPayloads.length);
+      sectionPayloads.push(...auxSectionPayloads);
+      renderSectionPayloads();
+      $('#editItemSectionModal').modal('hide');
+    }
+  }
+
+  //- Funcion para vorrar un item de una seccion
+  function deleteItemSection(item_identificador) {
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: "¡No podrás revertir esto!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: '¡Sí, bórralo!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        if (Array.isArray(sectionPayloads) && sectionPayloads.length > 0) {
+          let auxSectionPayloads = sectionPayloads;
+
+          auxSectionPayloads = auxSectionPayloads.map((section, index) => {
+            if (Array.isArray(section.items) && section.items.length > 0) {
+              section.items = section.items.filter((item, index) => {
+                return item.identificador !== item_identificador;
+              });
+            }
+            return section;
+          });
+          sectionPayloads.splice(0, sectionPayloads.length);
+          sectionPayloads.push(...auxSectionPayloads);
+          renderSectionPayloads();
+        }
+      }
+    })
+  }
+  //- Funcion para borrar la seccion
+  function deleteSection(section_identificador) {
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: "¡No podrás revertir esto!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: '¡Sí, bórralo!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        if (Array.isArray(sectionPayloads) && sectionPayloads.length > 0) {
+          let auxSectionPayloads = sectionPayloads.filter((section, index) => {
+            return section.identificador !== section_identificador;
+          });
+          sectionPayloads.splice(0, sectionPayloads.length);
+          sectionPayloads.push(...auxSectionPayloads);
+          renderSectionPayloads();
+        }
+      }
+    })
+  }
+  //- Funcion para guardar la seccion, esta la ejecuta el evento onchagen en los inputs nombre y descripcion de la seccion
+  function saveSection(section_identificador) {
+    let name_section = document.getElementById(`name_section_${section_identificador}`);
+    let descripcion_section = document.getElementById(`description_section_${section_identificador}`);
+    if(Array.isArray(sectionPayloads) && sectionPayloads.length > 0) {
+      let auxSectionPayloads = sectionPayloads;
+      auxSectionPayloads = auxSectionPayloads.map((section, index) => {
+        if (section.identificador === section_identificador) {
+          section.nombre = name_section.value;
+          section.descripcion = descripcion_section.value;
+        }
+        return section;
+      });
+      sectionPayloads.splice(0, sectionPayloads.length);
+      sectionPayloads.push(...auxSectionPayloads);
+      renderSectionPayloads();
+    }
+  }
+
+  
+  const iconos_footer = [
+    ['fas fa-home', 'Home'],
+    ['fas fa-link', 'Link'],
+    ['fas fa-address-book', 'Address Book'],
+    ['fas fa-address-card', 'Address Card'],
+    ['fas fa-adjust', 'Adjust'],
+    ['fas fa-align-center', 'Align Center'],
+    ['fas fa-align-justify', 'Align Justify'],
+    ['fas fa-align-left', 'Align Left'],
+    ['fas fa-align-right', 'Align Right'],
+    ['fas fa-allergies', 'Allergies'],
+    ['fas fa-ambulance', 'Ambulance'],
+    ['fas fa-american-sign-language-interpreting', 'American Sign Language Interpreting'],
+    ['fas fa-anchor', 'Anchor'],
+    ['fas fa-angle-double-down', 'Angle Double Down'],
+    ['fas fa-angle-double-left', 'Angle Double Left'],
+    ['fas fa-angle-double-right', 'Angle Double Right'],
+    ['fas fa-angle-double-up', 'Angle Double Up'],
+    ['fas fa-angle-down', 'Angle Down'],
+    ['fas fa-angle-left', 'Angle Left'],
+    ['fas fa-angle-right', 'Angle Right'],
+    ['fas fa-angle-up', 'Angle Up'],
+    ['fas fa-archive', 'Archive'],
+    ['fas fa-arrow-alt-circle-down', 'Arrow Alt Circle Down'],
+    ['fas fa-arrow-alt-circle-left', 'Arrow Alt Circle Left'],
+    ['fas fa-arrow-alt-circle-right', 'Arrow Alt Circle Right'],
+    ['fas fa-arrow-alt-circle-up', 'Arrow Alt Circle Up'],
+    ['fas fa-arrow-circle-down', 'Arrow Circle Down'],
+    ['fas fa-arrow-circle-left', 'Arrow Circle Left'],
+    ['fas fa-arrow-circle-right', 'Arrow Circle Right'],
+    ['fas fa-arrow-circle-up', 'Arrow Circle Up'],
+    ['fas fa-arrow-down', 'Arrow Down'],
+    ['fas fa-arrow-left', 'Arrow Left'],
+    ['fas fa-arrow-right', 'Arrow Right'],
+    ['fas fa-arrow-up', 'Arrow Up'],
+    ['fas fa-arrows-alt-h', 'Arrows Alt H'],
+    ['fas fa-arrows-alt-v', 'Arrows Alt V'],
+    ['fas fa-arrows-alt', 'Arrows Alt'],
+    ['fas fa-assistive-listening-systems', 'Assistive Listening Systems'],
+    ['fas fa-asterisk', 'Asterisk'],
+    ['fas fa-at', 'At'],
+    ['fas fa-audio-description', 'Audio Description'],
+    ['fas fa-backward', 'Backward'],
+    ['fas fa-balance-scale', 'Balance Scale'],
+    ['fas fa-ban', 'Ban'],
+    ['fas fa-band-aid', 'Band Aid'],
+    ['fas fa-barcode', 'Barcode'],
+    ['fas fa-bars', 'Bars'],
+    ['fas fa-baseball-ball', 'Baseball Ball'],
+    ['fas fa-basketball-ball', 'Basketball Ball'],
+    ['fas fa-bath', 'Bath'],
+    ['fas fa-battery-empty', 'Battery Empty'],
+    ['fas fa-battery-full', 'Battery Full'],
+    ['fas fa-battery-half', 'Battery Half'],
+    ['fas fa-battery-quarter', 'Battery Quarter'],
+    ['fas fa-battery-three-quarters', 'Battery Three Quarters'],
+    ['fas fa-bed', 'Bed'],
+    ['fas fa-beer', 'Beer'],
+    ['fas fa-bell-slash', 'Bell Slash'],
+    ['fas fa-bell', 'Bell'],
+    ['fas fa-bicycle', 'Bicycle'],
+    ['fas fa-binoculars', 'Binoculars'],
+    ['fas fa-birthday-cake', 'Birthday Cake'],
+    ['fas fa-blind', 'Blind'],
+    ['fas fa-bold', 'Bold'],
+    ['fas fa-bolt', 'Bolt'],
+    ['fas fa-bomb', 'Bomb'],
+    ['fas fa-book', 'Book'],
+    ['fas fa-bookmark', 'Bookmark'],
+    ['fas fa-bowling-ball', 'Bowling Ball'],
+    ['fas fa-box-open', 'Box Open'],
+    ['fas fa-box', 'Box'],
+    ['fas fa-boxes', 'Boxes'],
+    ['fas fa-braille', 'Braille'],
+    ['fas fa-briefcase-medical', 'Briefcase Medical'],
+    ['fas fa-briefcase', 'Briefcase'],
+    ['fas fa-broadcast-tower', 'Broadcast Tower'],
+    ['fas fa-broom', 'Broom'],
+    ['fas fa-bug', 'Bug'],
+    ['fas fa-building', 'Building'],
+    ['fas fa-bullhorn', 'Bullhorn'],
+    ['fas fa-bullseye', 'Bullseye'],
+    ['fas fa-burn', 'Burn'],
+    ['fas fa-bus', 'Bus'],
+    ['fas fa-calculator', 'Calculator'],
+    ['fas fa-calendar-alt', 'Calendar Alt'],
+    ['fas fa-calendar-check', 'Calendar Check'],
+    ['fas fa-calendar-minus', 'Calendar Minus'],
+    ['fas fa-calendar-plus', 'Calendar Plus'],
+    ['fas fa-calendar-times', 'Calendar Times'],
+    ['fas fa-calendar', 'Calendar'],
+    ['fas fa-camera-retro', 'Camera Retro'],
+    ['fas fa-camera', 'Camera'],
+    ['fas fa-capsules', 'Capsules'],
+    ['fas fa-car', 'Car'],
+    ['fas fa-caret-down', 'Caret Down'],
+    ['fas fa-caret-left', 'Caret Left'],
+    ['fas fa-caret-right', 'Caret Right'],
+    ['fas fa-caret-square-down', 'Caret Square Down'],
+    ['fas fa-caret-square-left', 'Caret Square Left'],
+    ['fas fa-caret-square-right', 'Caret Square Right'],
+    ['fas fa-caret-square-up', 'Caret Square Up'],
+    ['fas fa-caret-up', 'Caret Up'],
+    ['fas fa-cart-arrow-down', 'Cart Arrow Down'],
+    ['fas fa-cart-plus', 'Cart Plus'],
+    ['fas fa-certificate', 'Certificate'],
+    ['fas fa-chart-area', 'Chart Area'],
+    ['fas fa-chart-bar', 'Chart Bar'],
+    ['fas fa-chart-line', 'Chart Line'],
+    ['fas fa-chart-pie', 'Chart Pie'],
+    ['fas fa-check-circle', 'Check Circle'],
+    ['fas fa-check-square', 'Check Square'],
+    ['fas fa-check', 'Check'],
+    ['fas fa-chess-bishop', 'Chess Bishop'],
+    ['fas fa-chess-board', 'Chess Board'],
+    ['fas fa-chess-king', 'Chess King'],
+    ['fas fa-chess-knight', 'Chess Knight'],
+    ['fas fa-chess-pawn', 'Chess Pawn'],
+    ['fas fa-chess-queen', 'Chess Queen'],
+    ['fas fa-chess-rook', 'Chess Rook'],
+    ['fas fa-chess', 'Chess'],
+    ['fas fa-chevron-circle-down', 'Chevron Circle Down'],
+    ['fas fa-chevron-circle-left', 'Chevron Circle Left'],
+    ['fas fa-chevron-circle-right', 'Chevron Circle Right'],
+    ['fas fa-chevron-circle-up', 'Chevron Circle Up'],
+    ['fas fa-chevron-down', 'Chevron Down'],
+    ['fas fa-chevron-left', 'Chevron Left'],
+    ['fas fa-chevron-right', 'Chevron Right'],
+    ['fas fa-chevron-up', 'Chevron Up'],
+    ['fas fa-child', 'Child'],
+    ['fas fa-circle-notch', 'Circle Notch'],
+    ['fas fa-circle', 'Circle'],
+    ['fas fa-clipboard-check', 'Clipboard Check'],
+    ['fas fa-clipboard-list', 'Clipboard List'],
+    ['fas fa-clipboard', 'Clipboard'],
+    ['fas fa-clock', 'Clock'],
+    ['fas fa-clone', 'Clone'],
+    ['fas fa-closed-captioning', 'Closed Captioning'],
+    ['fas fa-cloud-download-alt', 'Cloud Download Alt'],
+    ['fas fa-cloud-upload-alt', 'Cloud Upload Alt'],
+    ['fas fa-cloud', 'Cloud'],
+    ['fas fa-code-branch', 'Code Branch'],
+    ['fas fa-code', 'Code'],
+    ['fas fa-coffee', 'Coffee'],
+    ['fas fa-cog', 'Cog'],
+    ['fas fa-cogs', 'Cogs'],
+    ['fas fa-coins', 'Coins'],
+    ['fas fa-columns', 'Columns'],
+    ['fas fa-comment-alt', 'Comment Alt'],
+    ['fas fa-comment-dots', 'Comment Dots'],
+    ['fas fa-comment-slash', 'Comment Slash'],
+    ['fas fa-comment', 'Comment'],
+    ['fas fa-comments', 'Comments'],
+    ['fas fa-compass', 'Compass'],
+    ['fas fa-compress-arrows-alt', 'Compress Arrows Alt'],
+    ['fas fa-compress', 'Compress'],
+    ['fas fa-copy', 'Copy'],
+    ['fas fa-couch', 'Couch'],
+    ['fas fa-credit-card', 'Credit Card'],
+    ['fas fa-crop-alt', 'Crop Alt'],
+    ['fas fa-crop', 'Crop'],
+    ['fas fa-crosshairs', 'Crosshairs'],
+    ['fas fa-cube', 'Cube'],
+    ['fas fa-cubes', 'Cubes'],
+    ['fas fa-cut', 'Cut'],
+    ['fas fa-database', 'Database'],
+    ['fas fa-deaf', 'Deaf'],
+    ['fas fa-desktop', 'Desktop'],
+    ['fas fa-diagnoses', 'Diagnoses'],
+    ['fas fa-dice-d20', 'Dice D20'],
+    ['fas fa-dice-d6', 'Dice D6'],
+    ['fas fa-dice-five', 'Dice Five'],
+    ['fas fa-dice-four', 'Dice Four']
+  ]
+
+  iconos_footer.forEach(function (icono) {
+    var option = document.createElement('option');
+    option.value = icono[0];
+    option.text = icono[1];
+    icono_item.appendChild(option);
+  });
+
+  $('#icono_item').select2({
+    templateResult: iconState,
+  })
+

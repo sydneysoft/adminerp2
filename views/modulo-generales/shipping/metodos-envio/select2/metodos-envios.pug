@@ -1,0 +1,65 @@
+script.
+  //- Este select 2 solo muestra los que estan activados
+  const select2MetodoEnvio = $("#lista-metodos-envios, #lista-metodos-envios-editar, #lista-metodos-envios-filtro").select2({
+    ajax: {
+      url: function () {
+        return urlSelect2ModuloCategoria ()
+      },
+      dataType: 'json',
+      delay: 500,
+      data: function (params) {
+        return {
+          term: params.term,
+          select: ['id', 'nombre'],
+          page: params.page,
+          where:[
+            {
+              name: 'activado',
+              search: { value: 1}
+            }
+          ]
+        }
+      },
+      processResults: function (data, params) {
+        return {
+          results: $.map(data.data, (item) => {
+            return {
+              id: item.id,
+              text: item.nombre,
+            }
+          })
+        }
+      },
+      cache: true
+    },
+    placeholder: 'Search',
+    templateResult: moduloCategoriasState,
+    allowClear: true
+  })
+  .on("select2:open", () => {
+    $(".select2-results:not(:has(a))").append(
+      '<a href="#" style="padding: 6px;height: 20px;display: inline-table;" data-toggle="modal" data-target="#nuevoMetodoAdministrador" onclick="closeMetodoEnvioSelect2()">{Agregar metodo envio}</a>'
+    );
+  }); 
+
+  function moduloCategoriasState (state) {
+    if (!state.id) {
+      return state.text;
+    }
+    let $container = $(`
+      <span><strong>${state.id}</strong> | ${state.text} </span>
+    `);
+
+    return $container;
+  }
+
+  function closeMetodoEnvioSelect2 () {
+    $("#lista-metodos-envios, #lista-metodos-envios-editar, #lista-metodos-envios-filtro").select2('close');
+  }
+
+  function urlSelect2ModuloCategoria () {
+    if(typeof empresa_id != 'undefined' && !isNaN(empresa_id.value)) {
+      return "/admin-shipping/metodos-envio/select2/"+empresa_id.value
+    }
+    return "/admin-shipping/metodos-envio/select2/"
+  }

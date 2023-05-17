@@ -1,0 +1,66 @@
+extends ../../extends/menu-superior-admin
+block contenido
+  include /mixins/select2/estados.pug
+  .row
+    if empresa_id
+      input#empresa_id(type="text" value=empresa_id hidden)
+  .row.mt-3
+    .col-6.col-md-3
+      +select2-estados()
+
+  .row.mt-3
+    .col-6.text-grey(style="margin-bottom:10px;")
+      h1.display-1
+        strong #{translation.TREATMENTS}  
+    .col-md-6.col-6.text-right 
+      button.btn.btn-success(style="margin-bottom:25px;" type="button" onClick="openModalNew()")
+        i.fas-fa-plus
+        span #{translation.ADD_TREATMENT} 
+    .col-12
+      div.table-responsive
+        table.table.table-bordered#tabla-tratamientos
+          thead.thead-dark
+          tbody 
+          tfoot 
+
+  include ./modals/crear-banner-admin.pug
+  include ./modals/editar-banner-admin.pug
+
+  include /modulo-generales/galeria-fotos/seleccion-unica-galeria/admin-galeria-modal-simple
+
+  script
+    include /js/toast.sweet.js
+
+  include ./delete/tratamiento.pug
+  include ./update/tratamiento.pug
+  include ./save/tratamiento.pug
+
+  script(src="/js/bootstrap-iconpicker.bundle.min.js") 
+  script.
+    $("#lista-estados-filtro").change(function () {
+      if (typeof tablaTratamientos != null) {
+        tablaTratamientos.columns([4]).search(this.value).draw();
+      }
+    });
+    const empresa_id = document.getElementById('empresa_id');
+
+    var typeUpdate=1;
+    var typeAction=1; 
+    var typeOperation="2";
+
+    const descripcion_larga = CKEDITOR.replace('ckeditorarea');
+    const descripcion_larga_editar = CKEDITOR.replace('ckeditorareaEditar');
+    $('#nuevoBannerAdministrador').on('shown.bs.modal', function (e) { $(document).off('focusin.modal'); });
+    $('#editarBannerAdministrador').on('shown.bs.modal', function (e) { $(document).off('focusin.modal'); });
+
+  include ./datatable/tratamiento.pug
+
+  //-  otros modulos
+  //- $(`td .servicios:eq(${i}) ~ .select2 .select2-selection__placeholder`).html(data.detalle[i].producto);
+  include /modulo-ecommerce/sedes/modals/crear-tienda-admin.pug
+  include /modulo-ecommerce/sedes/select2/sedes.pug
+  include /modulo-ecommerce/sedes/save/tienda-admin.pug
+
+  include /modulo-tv/modulo-ha/horario/select2/horario.pug
+  include /modulo-tv/modulo-ha/horario/modals/crear-horario.pug
+  include /modulo-tv/modulo-ha/horario/save/horario.pug

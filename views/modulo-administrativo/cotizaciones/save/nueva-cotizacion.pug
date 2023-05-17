@@ -1,0 +1,95 @@
+script.
+  //- Guardar una nueva cotizacion
+  async function guardarCotizacionNueva() {
+
+    let empresa_id = $("#empresa_id").val();
+
+    let cliente_nombre = $("#cliente option:selected").data().data.text; // data.text y data.id Eso se retorna en el processResults del select2
+    let cliente_email = $("#cliente option:selected").val(); 
+
+    let empresa_seleccionada = parseInt($("#empresa").val());
+    if (!isNaN(empresa_seleccionada)) {
+      empresa_id = empresa_seleccionada
+    }
+
+
+    let titulo_cotizacion = $("#titulo").val(),
+      fecha_vencimiento = $("#dateFrom").val();
+
+    const totalFilas = $(".rowAgregaServicio").length;
+    const total = totalFilas - 1;
+    let servicios_cotizados = new Array();
+
+    if (totalFilas > 0) {
+      for (let i = -1; total > i; i++) {
+        servicios_cotizados.push({
+          producto: $(`td .servicios:eq(${i + 1})`)
+            .val(),
+          descripcion: $(`td .descripcion:eq(${i + 1})`).val(),
+          precio: $(`td .precio:eq(${i + 1})`).val(),
+          cantidad: $(`td #cantidad:eq(${i + 1})`).val(),
+          impuesto: $(`td .impuesto:eq(${i + 1})`)
+            .val(),
+          impuesto2: $(`td .impuesto2:eq(${i + 1})`)
+            .val(),
+          impuestoTotal: $(`td #impuestoTotal:eq(${i + 1})`).val(),
+          total: $(`td #total:eq(${i + 1})`).val(),
+        });
+      }
+    }
+
+    let terminos_pago = $("#terminos").val();
+    if (terminos_pago == "personalizado") {
+      terminos_pago = $("#nuevosTerminosdetalle").val();
+    }
+
+    let nota_comentarios = $("#notas").val(),
+      nota_terminos = $("#terminosExtra").val();
+
+    let subtotalGeneral = $("#subtotal").text();
+    let impuestosGeneral = $("#subtotalImpuestos").text();
+    let descuento_porcentaje = $("#descuento").val();
+    let descuento = $("#descuentoSubtotal").text();
+    let totalGeneral = $("#totalGeneral").text();
+
+    if ((cliente_email, titulo_cotizacion, subtotalGeneral, totalGeneral)) {
+      let auxData = {
+        titulo_cotizacion,
+        cliente_nombre,
+        cliente_email,
+        fecha_vencimiento,
+        servicios_cotizados,
+        terminos_pago,
+        nota_comentarios,
+        nota_terminos,
+        subtotalGeneral,
+        impuestosGeneral,
+        descuento,
+        descuento_porcentaje,
+        totalGeneral,
+        empresa_id,
+      }
+      Swal.showLoading();
+      await fetch(`/cotizaciones/crear`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(auxData),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data) {
+            Swal.close();
+            window.location.href = `/cotizaciones/cliente/${data.data}`;
+          } else {
+            Swal.close();
+            toastSweet('error', '#{translation.ALERTS.WRONG}', 'error');
+          }
+        })
+        .catch(() => {
+          Swal.close();
+          toastSweet('error', '#{translation.ALERTS.WRONG}', 'error');
+        });
+    } else {
+      toastSweet('error', '#{translation.ALERTS.QUOTE_ERROR}', 'error');
+    }
+  }

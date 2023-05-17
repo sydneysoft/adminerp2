@@ -1,0 +1,44 @@
+script.
+  //Activar y Desactivar Estado de los Catálogos
+  const handleStateCatalogo = (id, val) => {
+    Swal.showLoading();
+    $.ajax({
+      method: "GET",
+      url: "/editar",
+      dataType: "json",
+      data: { nombretabla: "catalogos", nombreid: "id", id: id, estado: val },
+      success: function (data) {
+        if (data.status == "success") {
+          Swal.close();
+          window.location.reload(true);
+        } else {
+          Swal.close();
+          Swal.fire({
+            position: "center",
+            icon: "error",
+            title: "No se pudo actualizar la categoría.",
+            showConfirmButton: false,
+            timer: 2500,
+          });
+        }
+      },
+      error: function () {
+        Swal.close();
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "Ocurrió un error interno inténtalo más tarde.",
+          showConfirmButton: false,
+          timer: 2500,
+        });
+      },
+    });
+  };
+
+
+  //Mostrar Modal con el PDF para previsualización
+  const handlePreviewPDF = (pdflink) => {
+    $("#data-pdf-change").attr("src", pdflink);
+    $("#previewPDFModal").modal("show");
+  };
+

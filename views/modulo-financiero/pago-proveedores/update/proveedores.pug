@@ -1,0 +1,45 @@
+script.
+
+  async function actualizar() {
+    const id = $("#editar").attr("data-id");
+    const agregar = $("#agregarEditar").val();
+    const insumoEditar = $("#lista-insumos-editar").text();
+    const cuit = $("#cuitEditar").val();
+    const monto = $("#montoEditar").val();
+
+    const auxData = {
+      cuit,
+      monto,
+    }
+    if (insumoEditar != "") {
+      auxData.insumo = insumoEditar;
+    }
+    if (typeof empresa_id != 'undefined' && !isNaN(empresa_id.value)) {
+      auxData.empresa_id = empresa_id.value;
+    }
+    if (id > 0) {
+      console.log(auxData)
+      Swal.showLoading();
+       $.ajax({
+        url: `/admin-pago-proveedores/` + id,
+        type: 'PUT',
+        data: auxData,
+        success: function (data) {
+          if (data.ok) {
+            if (typeof tablaPagoProveedores != 'undefined' && tablaPagoProveedores) {
+              tablaPagoProveedores.ajax.reload();
+            }
+            toastSweet('Success', '#{translation.ALERTS.UPDATED}', 'success');
+            $("#editar").modal('hide')
+          } else {
+            toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+          }
+        },
+        error: function (data) {
+          toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+        }
+      }) 
+    } else {
+      toastSweet('Error', '#{translation.ALERTS.REQUIRED_FIELDS}', 'error');
+    }
+  }

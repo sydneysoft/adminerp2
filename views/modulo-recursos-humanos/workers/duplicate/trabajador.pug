@@ -1,0 +1,32 @@
+script.
+  async function duplicate({ currentTarget }) {
+    const param = $(currentTarget).attr('data-id');
+
+    try {
+      const res = await fetch(`/admin-trabajadores/${param}`);
+      const worker = await res.json();
+      const { id, ...resto } = worker;
+      const formData = new FormData();
+
+      Object.keys(resto).forEach(key => formData.append(key, resto[key]));
+
+      const response = await fetch(`${API_URL}/admin-trabajadores/new`, {
+        method: 'POST',
+        body: formData
+      });
+
+      const obj = await response.json();
+
+      if (obj.ok) {
+        Swal.fire('#{translation.ALERTS.DUPLICATED_REGISTER}', '', 'success');
+
+        action = 'new';
+
+        updateTable(obj.result.insertId);
+      }
+
+    } catch (error) {
+      console.log(error)
+      Swal.fire('Oops!', '#{translation.ALERTS.ERROR_DUPLICATING_REGISTER}', 'error');
+    }
+  }

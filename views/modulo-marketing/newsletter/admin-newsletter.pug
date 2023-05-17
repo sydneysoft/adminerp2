@@ -1,0 +1,33 @@
+extends ../../extends/menu-superior-admin
+block contenido
+    .row
+        .col-12.text-grey(style="margin-bottom:10px;")
+            h1.display-1
+                strong #{translation.NEWSLETTER_REGISTRATION}
+
+        .col-12
+            div.table-responsive
+                table.table.table-bordered#tabla-categorias
+                    thead.thead-dark
+                        tr
+                            th.text-center Id
+                            th.text-center #{translation.FORM.EMAIL}
+                            th.text-center #{translation.FORM.SUSCRIPTION_DATE}
+                            th.text-center #{translation.FORM.ACTIONS}
+                    tbody
+                        each book in bookStore
+                            tr
+                                td.text-center=book.id
+                                td.text-center=book.correo
+                                td.text-center=book.created_at
+                                td.text-center.col-right
+                                    button.btn.btn-info(style="margin-right:7px;", type="button")
+                                        i.fas.fa-envelope
+
+   
+    script.
+        $(document).ready( function () {
+            $('#tabla-categorias').DataTable({
+                "language": {"url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"}
+            });
+        });

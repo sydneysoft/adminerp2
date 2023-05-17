@@ -1,0 +1,78 @@
+script.
+  function setTestimonioData (data) {
+    //- id	titulo	nombre	apellido	imagen	fecha	texto	calificacion
+    document.getElementById("titulo_editar").value = data.titulo;
+    document.getElementById("nombre_editar").value = data.nombre;
+    document.getElementById("apellido_editar").value = data.apellido;
+    document.getElementById("fecha_editar").value = data.fecha;
+    document.getElementById("calificacion_editar").value = data.calificacion;
+    document.getElementById("texto_editar").value = data.texto;
+    //- document.getElementById("imagen_editar").value = data.imagen;
+    document.getElementById("itemId").value = data.id;
+
+    $("#editarTestimonioModal").modal("show");
+  }
+
+  updateTestimonio.addEventListener("click", function (event) {
+    const id = document.getElementById("itemId").value;
+
+    const data = {
+      titulo: document.getElementById("titulo_editar").value,
+      nombre: document.getElementById("nombre_editar").value,
+      apellido: document.getElementById("apellido_editar").value,
+      fecha: document.getElementById("fecha_editar").value,
+      calificacion: document.getElementById("calificacion_editar").value,
+      texto: document.getElementById("texto_editar").value,
+      //- document.getElementById("imagen_editar").value
+    };
+    
+    if (data.titulo != "" && data.nombre != "" && data.calificacion != "" && data.texto != "") {
+      if (empresa_id != "") {
+        data.empresa_id = empresa_id.value;
+      }
+
+      $.ajax({
+        url: "/admin-testimonios/" + id,
+        type: "PUT",
+        data: data,
+        success: function (data) {
+          if (data.ok) {
+            $("#editarTestimonioModal").modal("hide");
+            Swal.fire({
+              icon: "success",
+              title: "Medico registrado",
+              text: "El medico se registro correctamente",
+              timer: 2000,
+            });
+            if (typeof tablaTestimonios !== 'undefined') {
+              tablaTestimonios.ajax.reload();
+            }
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "#{translation.ALERTS.DOCTOR_ERROR}",
+              timer: 2000,
+            });
+          }
+        },
+        error: function (err) {
+          console.log(err);
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "#{translation.ALERTS.DOCTOR_ERROR}",
+            timer: 2000,
+          });
+        },
+      });
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Todos los campos son obligatorios",
+        timer: 2000,
+      });
+    }
+
+  });

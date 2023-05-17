@@ -1,0 +1,50 @@
+script.
+  addEspecialidad.addEventListener ('click', (e) => {
+    if (nombre.value != '') {
+      const data = {
+        nombre: nombre.value,
+        codigoexterno: codigoexterno.value,
+        imagen: imagen.value,
+        activado: activado.checked ? 1 : 0,
+        estado: estado.value,
+        sede: sede.value,
+        categoria: categoria.value,
+        descripcioncorta: descripcioncorta.value,
+        descriptionlarga: descriptionlarga.value,
+        icono: icono.value
+      }
+      if (empresa_id && empresa_id.value != '') {
+        data.empresa_id = empresa_id.value
+      }
+      save('/admin-especialidades/items',data, addItemSuccess)
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'El nombre de la especialidad es requerido',
+        timer: 2000
+      })
+    }
+  });
+
+  //- Resetear el formulario, cerrar el modal y recargar la tabla
+  function addItemSuccess (data) {
+
+    if (typeof tablaEspecialidades != 'undefined') {
+      tablaEspecialidades.ajax.reload();
+    }
+
+    nombre.value = '';
+    codigoexterno.value = '';
+    imagen.value = '';
+    activado.checked = false;
+    estado.value = '';
+    sede.value = '';
+    categoria.value = '';
+    descripcioncorta.value = '';
+    descriptionlarga.value = '';
+    icono.value = '';
+    showIcono.innerHTML = '';
+    $('#mostrarImagen').html('');
+    $('#nuevoEspecialidadModal').modal('hide');
+  }

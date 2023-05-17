@@ -1,0 +1,50 @@
+extends ../../extends/menu-superior-admin
+block contenido
+  .row
+    if empresa_id
+      input#empresa_id(type="text" value=empresa_id hidden)
+    
+    .col-6.text-grey(style="margin-bottom:10px;")
+      h1.display-1
+        strong #{translation.CATEGORIES} 
+        //-   span.light= bookStore.length
+    .col-md-6.col-6.text-right 
+      button.btn.btn-success(style="margin-bottom:25px;" type="button" data-toggle="modal" data-target="#crearCategoriaModal")
+        i.fas-fa-plus
+        span #{translation.ADD_CATEGORIES} 
+
+    if marketplace==true      
+      .col-md-4.col-6
+        div(style="display: inline-flex")
+          .form-group
+            label.font-weight-bold.datev-label #{translation.FORM.BUSINESS}
+            select#empresas
+              option(value=0) #{translation.FORM.SELECT_BUSINESS}
+
+    .col-12
+      div.table-responsive
+        table.table.table-bordered#tabla-categorias
+          thead.thead-dark
+
+  script
+    include /js/toast.sweet.js
+
+  include ./modals/crear-categoria.pug
+  include ./modals/editar-categoria.pug
+
+  include /modulo-generales/galeria-fotos/seleccion-unica-galeria/admin-galeria-modal-simple
+  script(src="/js/bootstrap-iconpicker.bundle.min.js") 
+  script.
+    //- const empresa_id = document.getElementById("empresa_id");
+    var typeOperation = "1";
+    $('#crearCategoriaModal').on('shown.bs.modal', function (e) { $(document).off('focusin.modal'); });
+    $('#editarBannerAdministrador').on('shown.bs.modal', function (e) { $(document).off('focusin.modal'); });
+
+  include ./save/categoria.pug
+  include ./update/categoria.pug
+  include ./delete/categoria.pug
+
+  include ./datatable/categoria.pug
+
+  if marketplace==true
+    include /modulo-administrativo/cotizaciones/select2/empresas.pug

@@ -1,0 +1,16 @@
+.modal.fade.justify-content-center.align-items-center(tabindex="-1" role="dialog" id="galeriaModal" style="height: 100vh;overflow-y: scroll;")
+  .modal-dialog.modal-lg
+    .modal-content.modalContent(style="height: 100%;")
+      .modal-header 
+        .row(style="margin:0;")
+          .col-md-12.text-center
+            h3(style="margin:0px 0;") Galeria
+
+      .modal-body.borderBottom
+        #dataRowListMultimedia.row
+        
+      .modal-footer(style="padding:8px;")
+        .row(style="margin:0;")
+          .col-md-12.text-right
+            button#guardarTratamiento.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;") Agregar
+            button.btn.btn-danger(type="buton" onclick="$('#galeriaModal').modal('hide');") Cerrar

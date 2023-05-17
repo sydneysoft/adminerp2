@@ -1,0 +1,77 @@
+extends ../layout.pug
+
+append contenido 
+  .my-3
+    div
+      a.btn.btn-info(href="/admin-video-prime/series") 
+        i.fas.fa-arrow-left
+        span.px-3 #{translation.BACK}
+    h1.text-center.mb-5 
+      | #{translation.EDIT_SERIE}
+  .my-3 
+    form#editarSerie(action=`/admin-video-prime/series/${data.id}` method="post")
+      input#idItem(type="text" value=data.id hidden)
+      .row
+        .col-12.text-right 
+          button.btn.btn-primary(type="submit") Guardar
+        .col-12.my-3
+        .col-12 
+          .form-group
+            label(for='nombre') Nombre
+            input#nombre.form-control(type='text' aria-describedby='nombreHelp' placeholder="Nombre de la serie." value=data.nombre)
+            small#nombreHelp.form-text.text-muted.d-none Escriba el nombre
+        .col-12.my-3
+        .col-12.col-md-8 
+          .form-group 
+            label(for="estracto") Estracto 
+            textarea#estracto.form-control(name="estracto" placeholder="Escriba una descripción corta.")
+              |#{data.estracto}
+        .col-12.col-md-4 
+          .form-check
+            if data.external == '1'
+              input#external.form-check-input(type='checkbox' value='' checked)
+            else 
+              input#external.form-check-input(type='checkbox' value='')
+            label.form-check-label(for='external')
+              | Enlace externo
+
+        .col-12.my-3
+        .col-12
+          label(for='thumbnail') Imagen miniatura
+          input#thumbnail.form-control(type='text'  placeholder="Imagen miniatura" value=data.thumbnail)
+        .col-12.my-3
+        .col-12.col-md-6
+          label(for='trailer') Trailer
+          input#trailer.form-control(type='text'  placeholder="Trailer" value=data.trailer)
+        .col-12.col-md-6
+          label(for='url') Url de la serie
+          input#url.form-control(type='text'  placeholder="Url de la serie" value=data.url)
+        .col-12.my-3
+        .col-12
+          .form-group 
+            label(for="body") Body 
+            textarea#body(name="body") 
+              | #{data.body}
+
+
+  script.
+    const editor = CKEDITOR.replace('body')
+
+  script 
+    include ./serie.js
+    include ../../../js/modulo-tv/update.js
+
+  script.
+    const idItem = document.getElementById('idItem')
+    document.getElementById('editarSerie').addEventListener('submit', (event) => {
+      event.preventDefault();
+      updateItem(`/admin-video-prime/series/serie/${idItem.value}`, {
+        nombre: nombre.value,
+        estracto: estracto.value,
+        external: externalSerie.checked ? '1' : '0',
+        thumbnail: thumbnail.value,
+        url: url.value,
+        trailer: trailer.value,
+        body: editor.getData()
+      })
+    });

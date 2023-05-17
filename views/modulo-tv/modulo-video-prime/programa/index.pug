@@ -1,0 +1,45 @@
+extends ../layout.pug
+
+
+append contenido 
+  .my-3
+    .d-grid
+      a#aCrear.btn.btn-primary.btn-block(type='button' href="/admin-video-prime/programas/crear") #{translation.CREATE_NEW_TV_SHOW}
+  if data && data.length > 0
+    .table-responsive
+      table.table
+        thead#headTable 
+          tr 
+            th ID 
+            th #{translation.FORM.NAME} 
+            th #{translation.FORM.SLOGAN} 
+            th #{translation.FORM.SEASONS_NUMBER} 
+        tbody#programasTable 
+          each item, key in data 
+            tr(id=`delete${item.id}`)
+              td #{item.id}
+              td #{item.nombre}
+              td #{item.slogan}
+              td #{item.num_temporadas}
+              td 
+                .btn-group
+                  a.btn.btn-primary(href=`/admin-video-prime/programas/edite/${item.id}`)
+                    i.fas.fa-pen
+                  a.btn.btn-info(href=`/admin-video-prime/programas/mostrar/${item.id}`)
+                    i.fas.fa-eye
+                  button.btn.btn-danger(onclick=`beforeDeleteItem('/admin-video-prime/programas/programa/${item.id}', ${item.id})`)
+                    i.fas.fa-trash
+ 
+  else 
+    .alert.alert-primary(role='alert')
+      | #{translation.ALERTS.NO_TV_SHOWS_YET}
+
+  nav(aria-label='...')
+    ul.pagination
+      li.page-item
+        a#prevPage.page-link #{translation.PREVIOUS}
+      li.page-item
+        a#nextPage.page-link(href='#') #{translation.NEXT}
+
+  script 
+    include ./delete.js

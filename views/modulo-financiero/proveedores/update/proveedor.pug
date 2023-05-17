@@ -1,0 +1,76 @@
+script.
+  function handleEditarProveedor(data) {
+    $("#correoCorporativoNuevo-editar").val(data.email_corporativo);
+    $("#nombreProveedorNuevo-editar").val(data.nombre);
+    $("#rucNuevo-editar").val(data.ruc);
+    $("#razonSocialNuevo-editar").val(data.razon_social);
+    telefono_corporativo_obt_editar.setNumber(data.telefono_corporativo);
+    $("#direccionNuevo-editar").val(data.direccion);
+    $("#nombreContactoNuevo-editar").val(data.nombre_contacto);
+    telefono_contacto_obt_editar.setNumber(data.telefono_contacto);
+    $("#correoContactoNuevo-editar").val(data.email_contacto);
+    $("#itemId").val(data.id);
+    $("#editarProveedoreModal").modal("show")
+  };
+
+  function actualizarProveedor () {
+    const id = $("#itemId").val();
+    let nombre = $("#nombreProveedorNuevo-editar").val();
+    let ruc = $("#rucNuevo-editar").val();
+    let razon_social = $("#razonSocialNuevo-editar").val();
+    let telefono_corporativo_editar = telefono_corporativo_obt_editar.getNumber();
+    let email_corporativo = $("#correoCorporativoNuevo-editar").val();
+    let direccion = $("#direccionNuevo-editar").val();
+    let nombre_contacto = $("#nombreContactoNuevo-editar").val();
+    let telefono_contacto_editar = telefono_contacto_obt_editar.getNumber();
+    let email_contacto = $("#correoContactoNuevo-editar").val();
+    const auxData = {
+      nombre: nombre,
+      ruc: ruc,
+      razon_social: razon_social,
+      telefono_corporativo: telefono_corporativo_editar,
+      email_corporativo: email_corporativo,
+      direccion: direccion,
+      nombre_contacto: nombre_contacto,
+      telefono_contacto: telefono_contacto_editar,
+      email_contacto: email_contacto,
+    }
+
+    if (typeof empresa_id != 'undefined' && empresa_id && !isNaN(empresa_id.value)) {
+      auxData.empresa_id = empresa_id.value;
+    }
+
+    if (id) {
+      $.ajax({
+        url: `/admin-proveedores/actualizar/${id}`,
+        type: "PUT",
+        dataType: "json",
+        data: auxData,
+        success: function (data) {
+          Swal.close();
+          if (data.ok) {
+            //- window.location.reload(true);
+            if (typeof tablaProveedores != 'undefined' && tablaProveedores) {
+              tablaProveedores.ajax.reload();
+            }
+            toastSweet('Success', #{translation.ALERTS.UPDATED}, 'success');
+
+            $("#editarProveedoreModal").modal("hide");
+
+          } else {
+            toastSweet('Error', #{translation.ALERTS.WRONG}, 'error');
+          }
+        },
+        error: function (err) {
+          Swal.close();
+          if ((err.responseJSON.msg == "Usuario existente") == true) {
+            toastSweet('Error', 'Email coorporativo ya fue registrado', 'error');
+          } else {
+
+            Swal.close();
+            toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+          }
+        },
+      });
+    }
+  }

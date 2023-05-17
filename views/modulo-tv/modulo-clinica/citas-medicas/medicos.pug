@@ -1,0 +1,339 @@
+extends ../layout.pug
+
+append contenido
+  .container.mt-3
+    .tab-content
+      h2  #{translation.DOCTORS}
+    .row
+      .col-12
+        .text-right 
+          button#nuevoMedico.btn.btn-primary(role="button") #{translation.NEW} 
+            i.fas.fa-plus.ml-3
+    .row.mt-3
+      .col-12 
+        div.table-responsive 
+          table#dataTable.w-100.table
+            thead 
+              tr 
+                th ID
+                th #{translation.FORM.NAME}  
+                th #{translation.FORM.SPECIALITY} 
+                th #{translation.FORM.MOBILE}
+                th #{translation.FORM.EMAIL}
+                th #{translation.FORM.ACTIONS} 
+            tbody
+              if Array.isArray(medicos) && medicos.length > 0
+                each medico in medicos
+                  tr
+                    td= medico.id
+                    td= medico.primer_nombre + " " + medico.segundo_nombre + " " + medico.apellidos
+                    td= medico.especialidad
+                    td= medico.celular
+                    td= medico.correo
+                    td= JSON.stringify(medico)
+  .modal.justify-content-center.align-items-center(tabindex="-1" role="dialog" id="nuevoMedicoModal")
+    .modal-dialog.modal-lg
+        .modal-content.modalContent(style="height: 100%;")
+            .modal-header 
+                .row(style="margin:0;")
+                    .col-md-12
+                        h3(style="margin:0px 0;") #{translation.ADD}
+
+            .modal-body.borderBottom
+              .row 
+                .col-12.col-md-8 
+                  .form-group 
+                    label(for="nombre") #{translation.FORM.NAME}
+                    input#nombre.form-control(type="text" placeholder=translation.FORM.NAME)
+                .col-12.col-md-4
+                  .form-group 
+                    label(for="especialidad") #{translation.FORM.SPECIALTY}
+                    input#especialidad.form-control(type="text" placeholder=translation.FORM.SPECIALTY)
+              .row 
+                .col-12.col-md-6
+                  .form-group 
+                    label(for="numero_documento") #{translation.FORM.DOCUMENT_NUMBER}
+                    input#numero_documento.form-control(placeholder=translation.FORM.DOCUMENT_NUMBER)
+                .col-12.col-md-6
+                  .form-group 
+                    label(for="tipo_documento") #{translation.FORM.DOCUMENT_TYPE}
+                    select#tipo_documento.form-control
+                      if Array.isArray(tipo_documento) && tipo_documento.length === 1
+                        each tipo in tipo_documento[0].valor
+                          option(value=tipo)
+                            span.text-capitalize #{tipo}
+                      else
+                        option(value="0") #{translation.FORM.NO_DOCUMENTS}
+              .row
+                .col-12.col-md-4
+                  .form-group 
+                    label(for="celular") #{translation.FORM.CELULAR}
+                    input#celular.form-control(type="text" placeholder=translation.FORM.CELULAR)
+                .col-12.col-md-4
+                  .form-group 
+                    label(for="correo") #{translation.FORM.EMAIL}
+                    input#correo.form-control(type="email" placeholder=translation.FORM.EMAIL)
+                .col-12.col-md-4 
+                  .form-group
+                    label(for="tiempo_cita") #{translation.APPOINTMENT_TIME_MINS}
+                    input#tiempo_cita.form-control(type="number" placeholder #{translation.FORM.STANDARD_TIME_30_MINS})
+            .modal-footer(style="padding:8px;")
+                .row(style="margin:0;")
+                    .col-md-12.text-right
+                        button#addMedico.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;") #{translation.ADD}
+                        button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}
+
+  .modal.justify-content-center.align-items-center(tabindex="-1" role="dialog" id="editarMedicoModal")
+    .modal-dialog.modal-lg
+        .modal-content.modalContent(style="height: 100%;")
+            .modal-header 
+                .row(style="margin:0;")
+                    .col-md-12
+                        h3(style="margin:0px 0;") #{translation.EDIT}
+
+            .modal-body.borderBottom
+              .row 
+                .col-12.col-md-8 
+                  .form-group 
+                    label(for="nombreEditar") #{translation.FORM.NAME}
+                    input#nombreEditar.form-control(type="text" placeholder=translation.FORM.NAME)
+                .col-12.col-md-4
+                  .form-group 
+                    label(for="especialidadEditar") #{translation.FORM.SPECIALTY}
+                    input#especialidadEditar.form-control(type="text" placeholder=translation.FORM.SPECIALTY)
+              .row 
+
+                .col-12.col-md-6
+                  .form-group 
+                    label(for="numero_documentoEditar") #{translation.FORM.DOCUMENT_NUMBER}
+                    input#numero_documentoEditar.form-control(type="number" placeholder=translation.FORM.DOCUMENT_NUMBER)
+                .col-12.col-md-6
+                  .form-group 
+                    label(for="tipo_documentoEditar") #{translation.FORM.DOCUMENT_TYPE}
+                    
+                    select#tipo_documentoEditar.form-control
+                      if Array.isArray(tipo_documento) && tipo_documento.length === 1
+                        each tipo in tipo_documento[0].valor
+                          option(value=tipo)
+                            span.text-capitalize #{tipo}
+                      else
+                        option(value="0") #{translation.FORM.NO_DOCUMENT_TYPE_REGISTERED}
+                    //- input#tipo_documentoEditar.form-control(type="text" placeholder="Tipo de Documento")
+              .row
+                .col-12.col-md-4
+                  .form-group 
+                    label(for="celularEditar") #{translation.FORM.CELULAR}
+                    input#celularEditar.form-control(type="text" placeholder=translation.FORM.CELULAR)
+                .col-12.col-md-4
+                  .form-group 
+                    label(for="correoEditar") #{translation.FORM.EMAIL}
+                    input#correoEditar.form-control(type="email" placeholder=translation.FORM.EMAIL)
+                .col-12.col-md-4 
+                  .form-group
+                    label(for="tiempo_citaEditar") #{translation.APPOINTMENT_TIME_MINS}
+                    input#tiempo_citaEditar.form-control(type="number" placeholder="0 (tiempo por defecto 30 minutos)")
+              input#idEditar(type="text" hidden )
+            .modal-footer(style="padding:8px;")
+                .row(style="margin:0;")
+                    .col-md-12.text-right
+                        button#updateMedico.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;") #{translation.SAVE}
+                        button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}
+  script
+    include ../../../js/modulo-tv/delete.js
+  script.
+    const nombre = document.getElementById('nombre');
+    const especialidad = document.getElementById('especialidad');
+    const numero_documento = document.getElementById('numero_documento');
+    const tipo_documento = document.getElementById('tipo_documento');
+    const celular = document.getElementById('celular');
+    const correo = document.getElementById('correo');
+    const tiempo_cita = document.getElementById('tiempo_cita');
+
+
+    const nombreEditar = document.getElementById('nombreEditar');
+    const especialidadEditar = document.getElementById('especialidadEditar');
+    const numero_documentoEditar = document.getElementById('numero_documentoEditar');
+    const tipo_documentoEditar = document.getElementById('tipo_documentoEditar');
+    const celularEditar = document.getElementById('celularEditar');
+    const correoEditar = document.getElementById('correoEditar');
+    const idEditar = document.getElementById('idEditar');
+    const tiempo_citaEditar = document.getElementById('tiempo_citaEditar');
+
+    let tablaMedicos;
+    document.addEventListener('DOMContentLoaded', function () {
+      tablaMedicos = $('#dataTable').DataTable({
+        fnCreatedRow: function (nRow, aData, iDataIndex) {
+          $(nRow).attr('id', `delete${aData.ID}`);
+        },
+        buttons: [
+          {
+            extend: 'print',
+            text: 'Print current page',
+            autoPrint: false
+          }
+        ],
+        columns: [
+          { data: 'ID' },
+          { data: 'Nombre' },
+          { data: 'Especialidad' },
+          { data: 'Celular' },
+          { data: 'Correo' },
+          {
+            data: 'Acciones',
+            render: function (data, type, row) {
+              return `
+                <button class="btn btn-primary btn-sm" onclick='editarMedicoModal(${data})'>#{translation.EDIT}</button>
+                <button class="btn btn-danger btn-sm" onclick="beforeDeleteItem('/admin-clinica/citas-medicas/medicos/medicos/${(JSON.parse(data)).id}', ${(JSON.parse(data)).id})">#{translation.DELETE}</button>
+                `
+            }
+          },
+        ],
+      });
+    });
+
+    document.getElementById('nuevoMedico').addEventListener('click', (e) => {
+      $('#nuevoMedicoModal').modal('show');
+    });
+
+    document.getElementById('addMedico').addEventListener('click', (e) => {
+      if (nombre.value !== '' && especialidad.value !== '' && numero_documento.value !== '' && tipo_documento.value !== '' && celular.value !== '' && correo.value !== '') {
+        const data = {
+          nombre: nombre.value,
+          especialidad: especialidad.value,
+          numero_documento: numero_documento.value,
+          tipo_documento: tipo_documento.value,
+          celular: celular.value,
+          correo: correo.value,
+          tiempo_consulta: tiempo_cita.value * 60 * 1000
+        };
+
+        fetch('/admin-clinica/citas-medicas/medicos/medicos', {
+          method: 'POST',
+          body: JSON.stringify(data),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+          .then(res => res.json())
+          .then(data => {
+            if (data.ok) {
+              $('#nuevoMedicoModal').modal('hide');
+              Swal.fire({
+                icon: 'success',
+                title: 'Medico registrado',
+                text: 'El medico se registro correctamente',
+                timer: 2000
+              });
+
+              tablaMedicos.rows.add([
+                {
+                  "ID": data.id,
+                  "Nombre": nombre.value,
+                  "Especialidad": especialidad.value,
+                  "Celular": celular.value,
+                  "Correo": correo.value,
+                  "Acciones": JSON.stringify({
+                    id: data.id,
+                    nombre: nombre.value,
+                    especialidad: especialidad.value,
+                    numero_documento: numero_documento.value,
+                    tipo_documento: tipo_documento.value,
+                    celular: celular.value,
+                    correo: correo.value,
+                    tiempo_consulta: tiempo_cita.value * 60 * 1000
+                  })
+                }
+              ]).draw()
+            } else {
+              Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: '#{translation.ALERTS.DOCTOR_ERROR}',
+                timer: 2000
+              });
+            }
+          })
+          .catch(err => {
+            console.log(err);
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: '#{translation.ALERTS.DOCTOR_ERROR}',
+              timer: 2000
+            });
+          });
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: '#{translation.ALERTS.REQUIRED_FIELDS}',
+          timer: 2000
+        });
+      }
+
+    });
+
+
+    function editarMedicoModal(str) {
+      const data = JSON.parse(JSON.stringify(str));
+      console.log(data);
+      idEditar.value = data.id;
+      nombreEditar.value = data.nombre;
+      especialidadEditar.value = data.especialidad;
+      numero_documentoEditar.value = data.numero_documento;
+      tipo_documentoEditar.value = data.tipo_documento;
+      celularEditar.value = data.celular;
+      correoEditar.value = data.correo;
+      tiempo_citaEditar.value = data.tiempo_consulta / 60000;
+
+      $('#editarMedicoModal').modal('show');
+    }
+    document.getElementById('editarMedicoModal').addEventListener('click', (e) => {
+
+
+    });
+
+    document.getElementById('updateMedico').addEventListener('click', (e) => {
+      if (nombreEditar !== '' && especialidadEditar !== '' && numero_documentoEditar !== '' && tipo_documentoEditar !== '' && celularEditar !== '' && correoEditar !== '') {
+        const data = {
+          nombre: nombreEditar.value,
+          especialidad: especialidadEditar.value,
+          numero_documento: numero_documentoEditar.value,
+          tipo_documento: tipo_documentoEditar.value,
+          celular: celularEditar.value,
+          correo: correoEditar.value,
+          tiempo_consulta: tiempo_citaEditar.value * 60 * 1000
+        };
+
+        fetch('/admin-clinica/citas-medicas/medicos/medicos/' + idEditar.value, {
+          method: 'PUT',
+          body: JSON.stringify(data),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+          .then(res => res.json())
+          .then(data => {
+            console.log(data)
+            if (data.ok) {
+              $('#editarMedicoModal').modal('hide');
+              Swal.fire({
+                icon: 'success',
+                title: 'Medico actualizado',
+                text: '#{translation.ALERTS.UPDATED}',
+                timer: 2000
+              });
+            }
+            // location.reload();
+          })
+          .catch(err => console.log(err));
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: '#{translation.ALERTS.REQUIRED_FIELDS}',
+          timer: 2000
+        });
+      }
+    });
+  

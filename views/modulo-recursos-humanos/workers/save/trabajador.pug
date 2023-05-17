@@ -1,0 +1,66 @@
+script.
+  //- NEW
+  $('button[data-action="new"]').click(function (e) {
+    action = 'new';
+    $('#guardarTrabajadorAdmin form input, #guardarTrabajadorAdmin form select, #guardarTrabajadorAdmin form textarea').val('')
+  });
+
+  //- SUBMIT
+  $('#guardarTrabajadorAdmin form').submit(async (e) => {
+    e.preventDefault();
+
+    if (action === 'new') {
+
+      const requiredInputs = Array.from(e.target.querySelectorAll('select, input, textarea'))
+        .filter(input => !['fecha_de_despido', 'numero_de_persona_de_contacto', 'segundo_nombre', 'observaciones']
+          .includes(input.getAttribute('name')));
+
+
+      for (let i = 0; i < requiredInputs.length; i++) {
+        const element = requiredInputs[i];
+        if (element.value === '') {
+          Swal.fire('Hay campos vacios', '', 'warning');
+          return;
+        }
+        // console.log({value: element.value, name: element.getAttribute('name')})
+      }
+
+
+    }
+
+    const formData = new FormData(e.target);
+
+    try {
+
+      const ENDPOINT = action === 'new'
+        ? `${API_URL}/admin-trabajadores/new`
+        : `${API_URL}/admin-trabajadores/${$('.modal#guardarTrabajadorAdmin').attr('data-id')}`
+
+      const res = await fetch(ENDPOINT, { method: action === 'new' ? 'POST' : 'PUT', body: formData });
+
+      const obj = await res.json()
+
+
+      if (obj.ok) {
+        Swal.fire('El registro se ha guardado correctamente', '', 'success');
+
+        const id = action === 'new'
+          ? obj.result.insertId
+          : $('.modal#guardarTrabajadorAdmin').attr('data-id');
+
+        //- updateTable(id);
+        if (typeof tablaTrabajadores != 'undefined') {
+          tablaTrabajadores.ajax.reload();
+        }
+        //- e.target.reset();
+
+      } else {
+        console.log(obj)
+        Swal.fire('Oops!', 'Ha ocurrido un error al guardar los datos', 'error');
+      }
+
+    } catch (error) {
+      console.log(error)
+      Swal.fire('Oops!', 'Ha ocurrido un error al guardar los datos', 'error');
+    }
+  })

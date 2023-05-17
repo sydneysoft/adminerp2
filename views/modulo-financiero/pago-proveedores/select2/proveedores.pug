@@ -1,0 +1,59 @@
+script.
+  const select2PagoProveedor = $("#lista-pago-proveedores, #lista-pago-proveedores-editar").select2({
+    ajax: {
+      url: function () {
+        return urlSelect2PagoProveedor()
+      },
+      dataType: 'json',
+      delay: 500,
+      data: function (params) {
+        return {
+          term: params.term,
+          select: ['id', 'nombre_proveedor'],
+          page: params.page
+        }
+      },
+      processResults: function (data, params) {
+        return {
+          results: $.map(data.data, (item) => {
+            return {
+              id: item.id,
+              text: item.nombre_proveedor
+            }
+          })
+        }
+      },
+      cache: true
+    },
+    placeholder: 'Search',
+    templateResult: pagoProveedorState,
+    allowClear: true
+  })
+  .on("select2:open", () => {
+    $(".select2-results:not(:has(a))").append(
+      '<a href="#" style="padding: 6px;height: 20px;display: inline-table;" data-toggle="modal" data-target="#nuevoProveedorModal" onclick="closePagoProveedorSelect2()">Agregar pago a proveedor</a>'
+    );
+  }); //- No se debe crear
+
+  function pagoProveedorState (state) {
+    if (!state.id) {
+      return state.text;
+    }
+    let $container = $(`
+      <span><strong>${state.id}</strong> | ${state.text}</span>
+    `);
+
+    return $container;
+  }
+
+  function closePagoProveedorSelect2 () {
+    $("#lista-pago-proveedores, #lista-pago-proveedores-editar").select2('close');
+  }
+
+  function urlSelect2PagoProveedor () {
+    if (typeof empresa_id !== 'undefined' && empresa_id && !isNaN(empresa_id.value)) {
+      return `/admin-pago-proveedores/select2/${empresa_id.value}`
+    } else {
+      return "/admin-pago-proveedores/select2"
+    }
+  }

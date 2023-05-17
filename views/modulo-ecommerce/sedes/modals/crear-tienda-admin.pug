@@ -1,0 +1,53 @@
+.modal.fade#nuevoTiendaAdmin(tabindex="-1" role="dialog")
+  .modal-dialog.modal-lg(role="document")
+    .modal-content
+      .modal-body
+        .row(style="padding:15px;")
+          .col-md-12.col-12
+            .form-group(style="display:flex;justify-content:center;align-items:center;")
+              img(id="imagen-data-banner" src="https://www.cuba.travel/images/noimage.png" class="imagen-data-producto" onClick="handleModal()")
+          .col-md-4.col-12
+            .form-group
+              label #{translation.NAME}
+              .controls
+                input#nombreNuevo-tienda-admin.form-control(type="text")
+          .col-md-4.col-12
+            .form-group
+              label #{translation.FORM.PHONE}
+              .controls
+                input#telefonoNuevo-tienda-admin.form-control(type="number")
+          .col-md-4.col-12
+            .form-group
+              label #{translation.FORM.CELLPHONE}
+              .controls
+                input#telefonoNuevo-tienda-admin.form-control(type="number")
+
+          .col-md-4.col-12
+            .form-group
+              label #{translation.FORM.EMAIL}
+              .controls
+                input#correoNuevo-tienda-admin.form-control(type="text")
+          .col-md-3.col-12
+            .form-group
+              label #{translation.FORM.STATE}
+              .controls
+                select#statusNuevo-tienda-admin.form-control
+                  option(value="1") #{translation.ACTIVE}
+                  option(value="0") #{translation.DEACTIVATED}
+
+          .col-md-5.col-12
+            .form-group
+              label #{translation.FORM.SCHEDULE}
+              .controls
+                //- lo siguiente viene de modulo-tv/modulo-ha/horarios 
+                select#lista-horarios 
+          .col-md-4.col-12
+            .form-group
+              label #{translation.FORM.ADDRESS}
+              .controls
+                input#direccionNuevo-tienda-admin.form-control(type="text")
+
+
+      .modal-footer      
+        button.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;",onClick=`addTiendaAdmin(${token})`) #{translation.ADD}
+        button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}

@@ -1,0 +1,40 @@
+script.
+
+  //- DELETE
+  $('button[data-action="delete"]').click(deleteRegister);
+
+
+  function deleteRegister({ currentTarget }) {
+
+    const rowIndex = currentTarget.parentElement.parentElement._DT_RowIndex
+
+    try {
+      Swal.fire({
+        title: '#{translation.ALERTS.ARE_YOU_SURE}',
+        showDenyButton: true,
+        showCancelButton: false,
+        confirmButtonText: 'Si',
+      })
+        .then(async (result) => {
+
+          if (result.isConfirmed) {
+
+            const { ok } = await fetch(`/admin-planes-landing/${$(currentTarget).attr('data-id')}`, { method: 'DELETE' })
+            if (ok) {
+              table.row(':eq(' + rowIndex + ')').remove().draw();
+              Swal.fire('Exito!', '#{translation.ALERTS.REGISTER_DELETED}', 'success')
+            }
+          } else if (result.isDenied) {
+            Swal.fire('#{translation.ALERTS.ACTION_STOPPED}', '', 'info')
+          }
+
+
+        })
+
+
+    } catch (error) {
+      console.log(error)
+      Swal.fire('Oops!', error.msg ? error.msg : 'Error', 'error')
+    }
+  }
+

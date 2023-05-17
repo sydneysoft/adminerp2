@@ -1,0 +1,41 @@
+.modal.fade#agregarServicio(tabindex="-1" role="dialog" )
+  .modal-dialog.modal-lg(role="document")
+    .modal-content
+      .modal-header 
+        .row 
+          .col-12
+            h5.strong(style="font-size:1rem;") Nuevo producto o servicio
+
+      .modal-body-almacen
+        .row(style="padding:20px;")
+          .col-12
+            if activo_marketplace===1
+              .form-group
+              label.form-label(style="display:block") Empresa   
+                select#empresaServicio.form-control.seleccionar(onChange="seleccionaProductoEditar()")
+                  //- option(disabled selected value=null) Elige una empresa     
+                  //- option(value=0) Sin Asignar
+                  //- each item in empresa
+                  //-   option(value=item.empresa_id)= item.nombre
+
+            else 
+              input#empresaServicio.text-center.form-control(type="text" style="display:none" value=`${token}`)
+
+          .col-12
+            .form-group
+              label Nombre
+                .controls
+                  input#nombreServicio.text-left.form-control(type="text" style="text-align:left")
+            .form-group
+              label Descripción
+                textarea.form-control#descripcionServicio(name="descripcion" value="" cols="100" rows="2") 
+
+            .form-group
+              label Precio
+                .controls
+                  input#precioServicio.text-left.form-control(type="number")
+
+      .modal-footer      
+        button.btn.btn-danger(type="buton" data-dismiss="modal") Cerrar
+        button.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;" id="add-service-modal-btn" ) Guardar
+        div.error_message 

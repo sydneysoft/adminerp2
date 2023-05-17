@@ -1,0 +1,148 @@
+extends ../layout.pug
+
+append contenido 
+  .border-bottom.border-left.border-right.rounded-bottom.p-3
+    if data  && data.length == 1
+      .container 
+        .row 
+          .col-6 
+            .text-left 
+              button.btn.btn-info(role="button" onclick="window.history.back()")  #{translation.BACK}
+          .col-6
+            .text-right 
+              button#guardarItem.btn.btn-primary(role="button" data-item=data[0].id data-empresa=data[0].empresa_id) #{translation.SAVE}
+        .row.mt-3
+          .col-12.col-md-8
+            .form-group 
+              label(for="titulo") #{translation.TITLE}
+              input#titulo.form-control(type="text" name="titulo" placeholder="Titulo" value=data[0].titulo)
+            .form-group.mt-3 
+              label(for="subtitulo") #{translation.SUBTITLE} +" "+ #{translation.OPTIONAL}
+              input#subtitulo.form-control(type="text" name="subtitulo" placeholder #{translation.SUBTITLE} value=data[0].subtitulo)
+            .form-group.mt-3 
+              label(for="estracto") #{translation.EXTRACT} 
+              textarea#estracto.form-control(placeholder="Estracto") #{data[0].estracto}
+            .form-group.mt-3
+              textarea#body(name="body") #{data[0].body}
+          .col-12.col-md-4
+            include ../../modulo-general/galeria-fotos/modal-galeria.pug
+            include ../../modulo-general/galeria-fotos/partial-modal-galeria.pug
+            input#urlImagen(type="text" name="urlImagen" value=data[0].imagen hidden)
+            //- .form-group
+            //-   span.form-text.mb-1 Agregar imagen
+            //-   //- label.d-block(for="imagen") 
+            //-   div#imageShow.d-flex.justify-content-center.align-items-center.p-3.rounded(style="border: 1px dashed gray; height: 250px; overflow:hidden;cursor: move;")
+            //-     if data[0].imagen
+            //-       img.img-fluid(src=`${data[0].imagen}`)
+            //-     else
+            //-       | Click para agregar 
+            //-       i.fas.fa-plus.ml-3
+            //-   input#imageSend(type="text" name="idImage" value="" hidden)
+            //-   //- input#imagen(type="file" name="image" hidden)
+            //-   button#imagenExistente.btn.btn-primary.btn-block.mt-3(type="button" onclick="requestImages()") Agregar imagen existente
+            .form-group.mt-3 
+              label(for="estado") #{translation.FORM.STATE} 
+              select#estado.form-control()
+                if data[0].estado == 'publish'
+                  option(value='publish' selected) #{translation.FORM.STATE} 
+                else 
+                  option(value='publish') #{translation.FORM.PUBLISHED}
+                if data[0].estado == 'draft' || data[0].estado == 'nuevo'
+                  option(value='draft' selected) #{translation.FORM.DRAFT}
+                else 
+                  option(value='draft') #{translation.FORM.DRAFT}
+                if data[0].estado == 'delete'
+                  option(value='delete' selected) #{translation.FORM.TRASH}
+                else
+                  option(value='delete') #{translation.FORM.TRASH}
+                if data[0].estado == 'pending'
+                  option(value='pending' selected) #{translation.FORM.PENDING}
+                else
+                  option(value='pending') #{translation.FORM.PENDING}
+            
+            .form-group.mt-3 
+              label(for="categoria") #{translation.FORM.CATEGORIES} 
+              input#categoria.form-control(type="text" placeholder="#{translation.FORM.NEW_CATEGORY}" value="")
+              button#nuevaCategoria.btn.btn-primary.btn-block.mt-3(role="button") #{translation.FORM.NEW_CATEGORY}
+                i.fas.fa-plus
+              .d-block.w-100 
+                fieldset.border.p-1
+                  legend #{translation.ADDED}
+                  #categorySelect
+                fieldset.border.p-1
+                  legend #{translation.AVAILABLE}
+                  #categoryAvailable
+
+    else 
+      .alert.alert-info(role="alert")
+        | #{translation.ALERT.NO_DATA}
+
+  script.
+    const editor = CKEDITOR.replace('body', {
+      height: 800
+    })
+    $(document).ready( function () {
+      $('#dataTable').DataTable();
+    });
+    //- document.getElementById('nuevoitem').addEventListener('click', (event) => {
+    //-   //- beforeCreate();
+    //- });
+    document.getElementById('guardarItem').addEventListener('click', (event) => {
+      $.ajax({
+        method: 'POST',
+        url: '/admin-blog/paginas/tach',
+        data: {
+          categories: categorySelect,
+          pagina_id: event.target.getAttribute('data-item')
+        }
+      });
+      
+      updateItem(`/admin-blog/paginas/pagina/${event.target.getAttribute('data-item')}`, {
+        titulo: titulo.value,
+        subtitulo: subtitulo.value,
+        estado: estado.value,
+        body: editor.getData(),
+        imagen: imagen.value,
+        estracto: estracto.value
+      });
+
+    });
+
+    document.getElementById('nuevaCategoria').addEventListener('click', (event) => {
+      const nuevaCategoria = document.getElementById('categoria')
+      $.ajax({
+        method: 'POST',
+        url: '/admin-blog/categorias',
+        data: {
+          nombre: nuevaCategoria.value
+        },
+        success: (data) => {
+          if(data.ok) {
+            categorySelect.push({
+              id: data.id,
+              nombre: nuevaCategoria.value
+            });
+            categoriasSeleccionadas.innerHTML += formCategorySelect({
+              id: data.id,
+              nombre: nuevaCategoria.value
+            });
+            nuevaCategoria.value = '';
+          }
+        },
+        error: (error) => {
+          console.log(error);
+          if(error.responseJSON) {
+            Swal.fire({
+              icon: 'error',
+              html: `<b>${error.responseJSON.msg}</b>`
+            })
+          }
+        }
+      })
+    });
+  script 
+    include ./pagina-categoria.js
+    include ./pagina.js
+    include ./usuario.js
+    include ../../../js/modulo-tv/update.js
+    include ../../modulo-general/galeria-fotos/modal-galeria.js
