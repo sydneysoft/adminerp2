@@ -6,9 +6,9 @@
           if activo_marketplace===1
             .col-md-12.col-12
               .form-group
-                label #{translation.FORM.BUSINESS}:
+                label #{translation.BUSINESS}:
                   select#empresaEditar.seleccionar
-                    option(value=null)  #{translation.FORM.SELECT} 
+                    option(value=null)  #{translation.SELECT} 
                       //- each item in empresas
                         option(value=item.empresa_id)= item.nombre
 
@@ -16,7 +16,7 @@
           .col-md-12.col-12
 
             .form-group
-              label #{translation.FORM.INGREDIENTS_SERVICE}:
+              label #{translation.INGREDIENTS_SERVICE}:
               select#lista-insumos-editar
                 //- select#insumoEditar.form-control  
                   option(selected value=null) --SELECCIONE--   
@@ -26,16 +26,16 @@
 
           .col-md-7.col-12
             .form-group
-              label #{translation.FORM.CUIT}
+              label #{translation.CUIT}
               .controls
                 input#cuitEditar.form-control(type="text")
           .col-md-5.col-12
             .form-group
-              label #{translation.FORM.AMOUNT}
+              label #{translation.AMOUNT}
               .controls
                 input#montoEditar.form-control(type="text")
 
 
       .modal-footer      
-        button.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;" onClick="actualizar()") #{translation.FORM.UPDATE}
-        button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.FORM.CLOSE} 
+        button.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;" onClick="actualizar()") #{translation.UPDATE}
+        button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE} 

@@ -18,20 +18,20 @@ block contenido
             span  
             button.btn.btn-success(type="button" onclick="location.href='/cotizaciones/nuevo'" )
                 i.fas.fa-plus
-                    span   #{translation.FORM.NEW_QUOTE} 
+                    span   #{translation.NEW_QUOTE} 
         .col-12
           div.dashboard
             .col-12 
               .row
                 .col-md-9.col-12 
-                    h4(style="font-weight:600") #{translation.FORM.GENERAL_VISION}
+                    h4(style="font-weight:600") #{translation.GENERAL_VISION}
 
                 .col-md-3.col-12.filtros 
                     .form-group
                             select#filtroDias.form-control 
-                                option(value=30) #{translation.FORM.LAST_30_DAYS}
-                                option(value=90) #{translation.FORM.LAST_TRIMESTER}
-                                option(value=360) #{translation.FORM.LAST_YEAR}
+                                option(value=30) #{translation.LAST_30_DAYS}
+                                option(value=90) #{translation.LAST_TRIMESTER}
+                                option(value=360) #{translation.LAST_YEAR}
             hr       
             .col-12
               .row#resumen
@@ -39,35 +39,35 @@ block contenido
                     h2.mes.cantidades= filtro_30dias.reduce((sum, value) => (typeof value.enviado == "number" ? sum + value.enviado : sum), 0)
                     h2.trimestre.cantidades= filtro_90dias.reduce((sum, value) => (typeof value.enviado == "number" ? sum + value.enviado : sum), 0)
                     h2.anual.cantidades=  filtro_360dias.reduce((sum, value) => (typeof value.enviado == "number" ? sum + value.enviado : sum), 0)
-                    span.mayus #{translation.FORM.SENT}
+                    span.mayus #{translation.SENT}
                 .col-md-3.col-6.text-center
                     h2.mes.cantidades= filtro_30dias.reduce((sum, value) => (typeof value.aceptado == "number" ? sum + value.aceptado : sum), 0)
                     h2.trimestre.cantidades= filtro_90dias.reduce((sum, value) => (typeof value.aceptado == "number" ? sum + value.aceptado : sum), 0)
                     h2.anual.cantidades=  filtro_360dias.reduce((sum, value) => (typeof value.aceptado == "number" ? sum + value.aceptado : sum), 0)
-                    span.mayus #{translation.FORM.ACCEPTED}
+                    span.mayus #{translation.ACCEPTED}
                 .col-md-3.col-6.text-center
                     h2.mes.cantidades= filtro_30dias.reduce((sum, value) => (typeof value.facturado == "number" ? sum + value.facturado : sum), 0)
                     h2.trimestre.cantidades= filtro_90dias.reduce((sum, value) => (typeof value.facturado == "number" ? sum + value.facturado : sum), 0)
                     h2.anual.cantidades=  filtro_360dias.reduce((sum, value) => (typeof value.facturado == "number" ? sum + value.facturado : sum), 0)
-                    span.mayus #{translation.FORM.BILLED}
+                    span.mayus #{translation.BILLED}
                 .col-md-3.col-6.text-center
                     h2.mes.cantidades= filtro_30dias.filter(value => value.vencido === true).length
                     h2.trimestre.cantidades= filtro_90dias.filter(value => value.vencido === true).length
                     h2.anual.cantidades=  filtro_360dias.filter(value => value.vencido === true).length
-                    span.mayus #{translation.FORM.EXPIRED}
+                    span.mayus #{translation.EXPIRED}
                     
         .col-12 
           .row
             .col-md-4.col-6.filtros
                 .form-group
-                    label.font-weight-bold.datev-label #{translation.FORM.STATE}
+                    label.font-weight-bold.datev-label #{translation.STATE}
                         select#filtroEstado.form-control 
-                            option(value=0) #{translation.FORM.SELECT}
-                            option(value="Borrador") #{translation.FORM.DRAFT}
-                            option(value="Enviado") #{translation.FORM.SENT}
-                            option(value="Aceptado") #{translation.FORM.ACCEPTED}
-                            option(value="Facturado") #{translation.FORM.BILLED}
-                            option(value="Vencido") #{translation.FORM.EXPIRED}
+                            option(value=0) #{translation.SELECT}
+                            option(value="Borrador") #{translation.DRAFT}
+                            option(value="Enviado") #{translation.SENT}
+                            option(value="Aceptado") #{translation.ACCEPTED}
+                            option(value="Facturado") #{translation.BILLED}
+                            option(value="Vencido") #{translation.EXPIRED}
 
 
         .col-12 
@@ -76,13 +76,13 @@ block contenido
                 thead.thead-dark
                     tr.table-head
 
-                        th.text-center #{translation.FORM.NUMBER}
-                        th.text-left #{translation.FORM.TITLE}
-                        th.text-center #{translation.FORM.CLIENT}
-                        th.text-center #{translation.FORM.CREATED_AT}
-                        th.text-center #{translation.FORM.TOTAL_PRICE}
-                        th.text-center #{translation.FORM.STATE} 
-                        th.text-center #{translation.FORM.ACTION}
+                        th.text-center #{translation.NUMBER}
+                        th.text-left #{translation.TITLE}
+                        th.text-center #{translation.CLIENT}
+                        th.text-center #{translation.CREATED_AT}
+                        th.text-center #{translation.TOTAL_PRICE}
+                        th.text-center #{translation.STATE} 
+                        th.text-center #{translation.ACTION}
                 tbody
 
                     each data in  cotizaciones
@@ -100,24 +100,24 @@ block contenido
                                 a#dropdownMenuLink4.btn(href='#' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')
                                     i.fas.fa-ellipsis-v
                                 div.dropdown-menu(aria-labelledby='dropdownMenuButton')
-                                    a.dropdown-item(href='#' onclick=`location.href='/cotizaciones/detalle/${data.id}'`) #{translation.FORM.EDIT}
-                                    a.dropdown-item(href='#' onclick="openModalEmail('"+data.id+"','"+data.cliente_email+"')") #{translation.FORM.SENT_EMAIL}
-                                    a.dropdown-item(href='#' onclick="printPage('"+data.id+"')") #{translation.FORM.PRINT}
-                                    a.dropdown-item(href=`/cotizaciones/pdf/${data.id}`) #{translation.FORM.DOWNLOAD_PDF}
-                                    a.dropdown-item(href='#' onclick="clonar('"+data.id+"')") #{translation.FORM.DUPLICATE}
-                                    a.dropdown-item(href='#' onclick="aceptada('"+data.id+"')") #{translation.FORM.MARK_AGREED}
-                                    a.dropdown-item(href='#' onclick="facturada('"+data.id+"')") #{translation.FORM.MARK_BILLED}
-                                    a.dropdown-item(href='#' onclick="confirmarBorrar('"+data.id+"')") #{translation.FORM.DELETE}
+                                    a.dropdown-item(href='#' onclick=`location.href='/cotizaciones/detalle/${data.id}'`) #{translation.EDIT}
+                                    a.dropdown-item(href='#' onclick="openModalEmail('"+data.id+"','"+data.cliente_email+"')") #{translation.SENT_EMAIL}
+                                    a.dropdown-item(href='#' onclick="printPage('"+data.id+"')") #{translation.PRINT}
+                                    a.dropdown-item(href=`/cotizaciones/pdf/${data.id}`) #{translation.DOWNLOAD_PDF}
+                                    a.dropdown-item(href='#' onclick="clonar('"+data.id+"')") #{translation.DUPLICATE}
+                                    a.dropdown-item(href='#' onclick="aceptada('"+data.id+"')") #{translation.MARK_AGREED}
+                                    a.dropdown-item(href='#' onclick="facturada('"+data.id+"')") #{translation.MARK_BILLED}
+                                    a.dropdown-item(href='#' onclick="confirmarBorrar('"+data.id+"')") #{translation.DELETE}
 
                 tfoot
                     tr.table-head
-                        th.text-center #{translation.FORM.NUMBER}
-                        th.text-left #{translation.FORM.TITLE}]
-                        th.text-center #{translation.FORM.CLIENT}]
-                        th.text-center #{translation.FORM.CREATED_AT}
-                        th.text-center #{translation.FORM.TOTAL_PRICE}
-                        th.text-center #{translation.FORM.STATE} 
-                        th.text-center #{translation.FORM.ACTION}
+                        th.text-center #{translation.NUMBER}
+                        th.text-left #{translation.TITLE}]
+                        th.text-center #{translation.CLIENT}]
+                        th.text-center #{translation.CREATED_AT}
+                        th.text-center #{translation.TOTAL_PRICE}
+                        th.text-center #{translation.STATE} 
+                        th.text-center #{translation.ACTION}
     
     include ./modals/enviar-email.pug
     include ./modals/revision-servicios.pug   

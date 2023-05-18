@@ -64,6 +64,20 @@ app.locals.moment.locale("es");
 
 app.use("/api/v1/auth/register", basicOrBearer, require("./routes/register.api.routes"));
 
+var whitelist = ['http://localhost:3000', 'http://localhost:3002']
+var corsOptions = {
+  origin: function (origin, callback) {
+    console.log(origin);
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  }
+}
+ 
+
+
 app.use(cors());
 
 
@@ -167,42 +181,6 @@ app.use("/admin-sistema", authenticateJWT, require("./routes/modulo-general/conf
 app.use("/admin-regiones", authenticateJWT, require("./routes/modulo-general/regiones.routes"));
 app.use("/admin-shipping", authenticateJWT, require("./routes/modulo-general/shipping/index.routes"));
 
-//modulo recursos humanos
-app.use('/admin-trabajadores', access_mod_rrhh, require('./routes/modulo-recursos-humanos/workers.routes'));
-app.use('/admin-choferes', access_mod_rrhh, require('./routes/modulo-recursos-humanos/drivers.routes'));
-app.use('/admin-libro-reclamaciones', access_mod_rrhh, require('./routes/modulo-recursos-humanos/libro-reclamaciones.routes'));
-app.use('/admin-sesiones', access_mod_rrhh, require('./routes/modulo-recursos-humanos/sesiones.routes'));
-
-//modulo finanzas
-// access_mod_finanzas,
-app.use("/admin-pago-personal",  require("./routes/modulo-financiero/pago-personal.routes"));
-app.use("/admin-pago-proveedores", require("./routes/modulo-financiero/pago-proveedores.routes"));
-app.use("/admin-insumos", require("./routes/modulo-financiero/insumos.routes"));
-app.use("/admin-proveedores", require("./routes/modulo-financiero/proveedores.routes"));
-app.use("/admin-personal", require("./routes/modulo-financiero/personal.routes"));
-app.use("/admin-monedas", require("./routes/modulo-financiero/monedas.routes"));
-app.use("/admin-impuestos", require("./routes/modulo-financiero/impuestos.routes"));
-
-//modulos ecommerce
-// access_mod_ecommerce,
-app.use("/admin-tratamientos", require("./routes/modulo-ecommerce/tratamientos.routes"));
-app.use("/admin-prendas", require("./routes/modulo-ecommerce/prendas.routes"));
-app.use("/admin-productos", require("./routes/modulo-ecommerce/productos.routes"));
-
-app.use("/admin-categorias", require("./routes/modulo-ecommerce/categorias.routes"));
-
-app.use("/admin-subcategorias", require("./routes/modulo-ecommerce/subcategorias.routes"));
-app.use("/admin-almacenes", require("./routes/modulo-ecommerce/almacenes.routes"));
-app.use("/stock",  require("./routes/modulo-ecommerce/stock.routes"));
-app.use("/admin-marcas", require("./routes/modulo-ecommerce/marcas.routes"));
-app.use("/admin-sedes", require("./routes/modulo-ecommerce/sedes.routes"));
-app.use("/admin-pedidos", require("./routes/modulo-ecommerce/pedidos.routes"));
-app.use("/admin-pedidos-cancelados", require("./routes/modulo-ecommerce/pedidos-cancelados.routes"));
-
-app.use("/admin-pedidos-pendientes", require("./routes/modulo-ecommerce/pedidos-pendientes.routes"));
-
-app.use("/admin-filtros", require("./routes/modulo-ecommerce/filtros.routes"));
-app.use("/admin-catalogos", require("./routes/modulo-ecommerce/catalogos.routes"));
 
 
 app.use("/admin-marketplace", isAdmin, require("./routes/modulo-superadmin/marketplace.routes"));
@@ -210,7 +188,6 @@ app.use("/admin-configuraciones", require('./routes/modulo-configuraciones/confi
 
 // app.use("/admin-marketplace", isAdmin, require("./routes/modulo-superadmin/marketplace.routes"));
 app.use("/admin-empresas", isAdmin, require("./routes/modulo-superadmin/empresas.routes"))
-
 
 // app.use("/registro", require("./routes/modulo-usuarios/registro.routes"))
 // app.use("/login", require("./routes/modulo-usuarios/login.routes"))
@@ -221,17 +198,10 @@ app.use("/admin-empresas", isAdmin, require("./routes/modulo-superadmin/empresas
 app.use("/usuario", authenticateJWT, require("./routes/modulo-usuarios/usuario.routes"))
 app.use("/admin-usuarios", authenticateJWT, require("./routes/modulo-usuarios/admin-usuarios.routes"));
 app.use("/admin-galeria", authenticateJWT, require("./routes/modulo-general/galeria.routes"));
-app.use("/admin-portadas", authenticateJWT, require("./routes/modulo-marketing/portadas.routes"));
-// app.use("/admin-newsletter", authenticateJWT,  require("./routes/modulo-marketing/newsletter.routes"));
 
 
 app.use("/get-modulos",  require("./routes/modulo-general/modulos.routes"));
 app.use("/admin-galeria",  authenticateJWT, require("./routes/modulo-general/galeria.routes"));
-//marketing
-app.use("/admin-portadas",  require("./routes/modulo-marketing/portadas.routes"));
-//Admin - Newsletter
-app.use("/admin-newsletter",  require("./routes/modulo-marketing/newsletter.routes"));
-
 
 app.use('/admin-video-prime', require('./routes/modulo-tv/modulo-video-prime/video-prime.routes'));
 app.use('/admin-modusuarios', require('./routes/modulo-superadmin/modusuario.routes'));
@@ -239,38 +209,85 @@ app.use('/admin-modusuarios', require('./routes/modulo-superadmin/modusuario.rou
 // app.use("/", require("./routes/general.routes"));
 
 
+
+// ********************* MODULOS RECURSOS HUMANOS *********************
+
+//modulo recursos humanos
+app.use('/admin-trabajadores', access_mod_rrhh, require('./routes/modulo-recursos-humanos/workers.routes'));
+app.use('/admin-choferes', access_mod_rrhh, require('./routes/modulo-recursos-humanos/drivers.routes'));
+app.use('/admin-libro-reclamaciones', access_mod_rrhh, require('./routes/modulo-recursos-humanos/libro-reclamaciones.routes'));
+app.use('/admin-sesiones', access_mod_rrhh, require('./routes/modulo-recursos-humanos/sesiones.routes'));
+
+
+// ********************* MODULOS FINANZAS *********************
+//modulo finanzas
+// access_mod_finanzas,
+app.use("/admin-pago-personal",  require("./routes/modulo-financiero/pago-personal.routes"));
+app.use("/admin-pago-proveedores", require("./routes/modulo-financiero/pago-proveedores.routes"));
+app.use("/admin-insumos", require("./routes/modulo-financiero/insumos.routes"));
+app.use("/admin-proveedores", require("./routes/modulo-financiero/proveedores.routes"));
+app.use("/admin-personal", require("./routes/modulo-financiero/personal.routes"));
+app.use("/admin-monedas", require("./routes/modulo-financiero/monedas.routes"));
+app.use("/admin-impuestos", require("./routes/modulo-financiero/impuestos.routes"));
+
+
+// ********************* MODULOS ECCOMERCE *********************
+//modulos ecommerce
+// access_mod_ecommerce,
+app.use("/admin-tratamientos", require("./routes/modulo-ecommerce/tratamientos.routes"));
+app.use("/admin-prendas", require("./routes/modulo-ecommerce/prendas.routes"));
+app.use("/admin-productos", require("./routes/modulo-ecommerce/productos.routes"));
+app.use("/admin-categorias", require("./routes/modulo-ecommerce/categorias.routes"));
+app.use("/admin-subcategorias", require("./routes/modulo-ecommerce/subcategorias.routes"));
+app.use("/admin-almacenes", require("./routes/modulo-ecommerce/almacenes.routes"));
+app.use("/stock",  require("./routes/modulo-ecommerce/stock.routes"));
+app.use("/admin-marcas", require("./routes/modulo-ecommerce/marcas.routes"));
+app.use("/admin-sedes", require("./routes/modulo-ecommerce/sedes.routes"));
+app.use("/admin-pedidos", require("./routes/modulo-ecommerce/pedidos.routes"));
+app.use("/admin-pedidos-cancelados", require("./routes/modulo-ecommerce/pedidos-cancelados.routes"));
+app.use("/admin-pedidos-pendientes", require("./routes/modulo-ecommerce/pedidos-pendientes.routes"));
+app.use("/admin-filtros", require("./routes/modulo-ecommerce/filtros.routes"));
+app.use("/admin-catalogos", require("./routes/modulo-ecommerce/catalogos.routes"));
+
+
 // *************************** MODULOS CLINICAS ***************************
 
-// app.use('/admin-citas-medicas', require('./routes/modulo-citas-medicas/cita-medica.routes'));
-app.use('/admin-configuracion-clinica', require('./routes/modulo-tv/modulo-general/clinica.routes'));
+//app.use('/admin-citas-medicas', require('./routes/modulo-clinica/citas.routes'));
+//app.use('/admin-configuracion-clinica', require('./routes/modulo-tv/modulo-general/clinica.routes'));
 app.use('/admin-clinica', require('./routes/modulo-tv/modulo-clinica/clinica.routes'));
-// app.use("/admin-companias-seguros", require("./routes/modulo-clinica/companias-seguros.routes"));
-// app.use("/admin-cetratamientos", require("./routes/modulo-clinica/tratamientos.routes"));
-// app.use("/admin-pacientes", require('./routes/modulo-clinica/pacientes.routes'));
-// app.use("/admin-medicos", require("./routes/modulo-clinica/medicos.routes"));
-// app.use("/admin-especialidades", require("./routes/modulo-clinica/especialidad.routes"));
-// app.use("/admin-clinica/sedes", require("./routes/modulo-clinica/sedes.routes"));
-// app.use("/admin-visitas-medicas", require("./routes/modulo-clinica/visitas-medicas.routes"));
-// app.use("/admin-citas-medicas", require("./routes/modulo-clinica/citas.routes"));
-
+app.use("/admin-companias-seguros", require("./routes/modulo-clinica/companias-seguros.routes"));
+app.use("/admin-cetratamientos", require("./routes/modulo-clinica/tratamientos.routes"));
+app.use("/admin-pacientes", require('./routes/modulo-clinica/pacientes.routes'));
+app.use("/admin-medicos", require("./routes/modulo-clinica/medicos.routes"));
+app.use("/admin-especialidades", require("./routes/modulo-clinica/especialidad.routes"));
+app.use("/admin-clinica/sedes", require("./routes/modulo-clinica/sedes.routes"));
+app.use("/admin-visitas-medicas", require("./routes/modulo-clinica/visitas-medicas.routes"));
+app.use("/admin-citas-medicas", require("./routes/modulo-clinica/citas.routes"));
 app.use('/admin-empresa-datatable', require('./routes/modulo-tv/modulo-general/empresa-datatable.routes'));
 
-// modulos
-app.use("/admin-ceredes", require("./routes/modulo-marketing/ce-redes.routes"));
-app.use('/admin-faqs', require('./routes/modulo-tv/modulo-faqs/faq.routes'));
-app.use('/admin-sitios-web', require('./routes/modulo-tv/modulo-sitios-web/sitios-web.routes'));
-app.use('/admin-blog', require('./routes/modulo-tv/modulo-blog/blog.routes'));
+// *************************** MODULOS MARKETING ***************************
+
+app.use("/admin-portadas", access_marketing, require("./routes/modulo-marketing/portadas.routes"));
+app.use("/admin-newsletter", access_marketing, require("./routes/modulo-marketing/newsletter.routes"));
+app.use("/admin-ceredes", access_marketing, require("./routes/modulo-marketing/ce-redes.routes"));
 app.use("/admin-banners", access_marketing, require("./routes/modulo-marketing/banner.routes"));
+app.use("/admin-sliders", access_marketing, require("./routes/modulo-marketing/page-sliders.routes"));
+app.use('/admin-branding',access_marketing, require('./routes/modulo-marketing/branding.routes'));
+app.use("/admin-portadas",access_marketing, require("./routes/modulo-marketing/portadas.routes"));
+
+
+// modulos
+app.use('/admin-faqs', require('./routes/modulo-general/faqs.routes'));
+// app.use('/admin-sitios-web', require('./routes/modulo-tv/modulo-sitios-web/sitios-web.routes'));
+app.use('/admin-sitios-web', require('./routes/modulo-general/sitios-web.routes'));
+app.use("/admin-blog", require("./routes/modulo-blog/index.routes"));
 app.use('/admin-gmaps', require('./routes/modulo-tv/modulo-gmaps/map.routes'));
 app.use('/admin-footer', require("./routes/modulo-tv/modulo-general/footer.routes"));
-
 app.use('/admin-paginas', require("./routes/modulo-tv/modulo-paginas/paginas.routes"));
 app.use('/admin-horarios', require("./routes/modulo-tv/modulo-ha/horarios.routes"));
-app.use("/admin-sliders", require("./routes/modulo-marketing/page-sliders.routes"));
 app.use('/admin-contactos', require('./routes/modulo-tv/modulo-contacto/contacto.routes'));
 app.use('/admin-ceservicios', require('./routes/modulo-tv/modulo-ceservicio/servicios.routes'));
 app.use('/admin-redes-sociales', require('./routes/modulo-tv/modulo-redes-sociales/redes-sociales.routes'));
-app.use('/admin-branding', require('./routes/modulo-tv/modulo-branding/brand.routes'));
 
 // Modulo de barberia
 app.use("/admin-cortes", require("./routes/modulo-peluquerias/index.routes"));

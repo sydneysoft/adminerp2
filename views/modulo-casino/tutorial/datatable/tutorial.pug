@@ -16,16 +16,16 @@ script.
       columns: [
         { data: 'id', name: 'id', title: "ID", orderable: true, searchable: false, visible: false},
         { 
-          data: 'titulo', name: 'titulo', title: "#{translation.FORM.TITULO}", orderable: true, searchable: true
+          data: 'titulo', name: 'titulo', title: "#{translation.TITULO}", orderable: true, searchable: true
         },
         { 
-          data: 'url', name: 'url', title: "#{translation.FORM.URL_EXTERNA}", orderable: true, searchable: true
+          data: 'url', name: 'url', title: "#{translation.URL_EXTERNA}", orderable: true, searchable: true
         },
         { 
-          data: 'video_media', name: 'video_media', title: "#{translation.FORM.URL_INTERNA}", orderable: true, searchable: true
+          data: 'video_media', name: 'video_media', title: "#{translation.URL_INTERNA}", orderable: true, searchable: true
         },
         { 
-          data: 'imagen', name: 'imagen', title: "#{translation.FORM.IMAGE}", orderable: false, searchable: false,
+          data: 'imagen', name: 'imagen', title: "#{translation.IMAGE}", orderable: false, searchable: false,
           render: function (data, type, row) {
             try {
               new URL(row.imagen)
@@ -36,7 +36,7 @@ script.
           }
         },
         { 
-          data: 'id_categoria', name: 'id_categoria', title: "#{translation.FORM.CATEGORY}", orderable: true, searchable: true,
+          data: 'id_categoria', name: 'id_categoria', title: "#{translation.CATEGORY}", orderable: true, searchable: true,
           render: function (data, type, row) {
             let nombre = ""
             $.ajax({
@@ -53,7 +53,7 @@ script.
           }
         },
                 { 
-          data: 'id_subcategoria', name: 'id_subcategoria', title: "#{translation.FORM.SUBCATEGORY}", orderable: true, searchable: true,
+          data: 'id_subcategoria', name: 'id_subcategoria', title: "#{translation.SUBCATEGORY}", orderable: true, searchable: true,
           render: function (data, type, row) {
             let nombre = ""
             $.ajax({

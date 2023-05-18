@@ -18,11 +18,11 @@ block contenido
                     table.table.table-miscitas
                         thead
                             tr
-                                th.text-center(scope="col") #{translation.FORM.NAME}
-                                th.text-center(scope="col") #{translation.FORM.DESCRIPTION}
-                                th.text-center(scope="col") #{translation.FORM.IMAGE}
-                                th.text-center(scope="col") #{translation.FORM.STATUS}
-                                th.text-center(scope="col") #{translation.FORM.ACTIONS}
+                                th.text-center(scope="col") #{translation.NAME}
+                                th.text-center(scope="col") #{translation.DESCRIPTION}
+                                th.text-center(scope="col") #{translation.IMAGE}
+                                th.text-center(scope="col") #{translation.STATUS}
+                                th.text-center(scope="col") #{translation.ACTIONS}
                         tbody
                             each book in bookStore
                                 -var finalStatusRoles= (book.activado=="0" ? 'Desactivado': 'Activado')
@@ -46,26 +46,26 @@ block contenido
                             .row
                                 .col-md-6
                                     .form-group
-                                        h5 #{translation.FORM.NAME}:
+                                        h5 #{translation.NAME}:
                                         .controls
                                             input#nombreNuevo-admin-rol.form-control(type="text")
                                 .col-md-6
                                     .form-group
-                                        h5 #{translation.FORM.DESCRIPTION}:
+                                        h5 #{translation.DESCRIPTION}:
                                         .controls
                                             input#descripcionNuevo-admin-rol.form-control(type="text")
                                 .col-md-6
                                     .form-group
-                                        h5 #{translation.FORM.IMAGE_URL}:
+                                        h5 #{translation.IMAGE_URL}:
                                         .controls
                                             input#imgNuevo-admin-rol.form-control(type="text")
                                 .col-md-6
                                     .form-group
-                                        h5 #{translation.FORM.STATE}:
+                                        h5 #{translation.STATE}:
                                         .controls
                                             select#estadoNuevo-admin-rol.form-control()
-                                                option(value="1") #{translation.FORM.ACTIVE}
-                                                option(value="0") #{translation.FORM.DEACTIVATED}
+                                                option(value="1") #{translation.ACTIVE}
+                                                option(value="0") #{translation.DEACTIVATED}
                                 .col-md-12.text-center
                                     button.btn.btn-success.nuevo(type="button", style="margin-left:7px;margin-right:7px;",onClick="AgregarRolAdmin()") #{translation.ADD}
                                     button.btn.btn-danger(type="buton", data-dismiss="modal") #{translation.CLOSE}
@@ -78,27 +78,27 @@ block contenido
                             .row
                                 .col-md-6
                                     .form-group
-                                        h5 #{translation.FORM.NAME}:
+                                        h5 #{translation.NAME}:
                                         .controls
                                             input#idActualizar-admin-rol(type="hidden")
                                             input#nombreActualizar-admin-rol.form-control(type="text")
                                 .col-md-6
                                     .form-group
-                                        h5 #{translation.FORM.DESCRIPTION}:
+                                        h5 #{translation.DESCRIPTION}:
                                         .controls
                                             input#descripcionActualizar-admin-rol.form-control(type="text")
                                 .col-md-6
                                     .form-group
-                                        h5 #{translation.FORM.IMAGE_URL}:
+                                        h5 #{translation.IMAGE_URL}:
                                         .controls
                                             input#imgActualizar-admin-rol.form-control(type="text")
                                 .col-md-6
                                     .form-group
-                                        h5 #{translation.FORM.STATE}:
+                                        h5 #{translation.STATE}:
                                         .controls
                                             select#estadoActualizar-admin-rol.form-control()
-                                                option(value="1") #{translation.FORM.ACTIVE}
-                                                option(value="0") #{translation.FORM.STATE}
+                                                option(value="1") #{translation.ACTIVE}
+                                                option(value="0") #{translation.STATE}
                                 .col-md-12.text-center
                                     button.btn.btn-success.editar(type="button", style="margin-left:7px;margin-right:7px;",onClick="EditAdminRoles()") #{translation.UPDATE_DATA}
                                     button.btn.btn-danger(type="buton", data-dismiss="modal") #{translation.CLOSE}

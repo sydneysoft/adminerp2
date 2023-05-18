@@ -16,11 +16,11 @@ append contenido
         table.table.table-bordered#tabla-categorias
           thead.thead-dark
             tr
-              th.text-center #{translation.FORM.TITLE}
-              th.text-center #{translation.FORM.PHOTO}
-              th.text-center #{translation.FORM.DATE}
-              th.text-center #{translation.FORM.STATUS}
-              th.text-center #{translation.FORM.ACTIONS}
+              th.text-center #{translation.TITLE}
+              th.text-center #{translation.PHOTO}
+              th.text-center #{translation.DATE}
+              th.text-center #{translation.STATUS}
+              th.text-center #{translation.ACTIONS}
           tbody
             each book in bookStore
               -var finalStatusCategoria = (book.estado=="0" ? 'Desactivado': 'Activado')
@@ -53,24 +53,24 @@ append contenido
               form.dropzone(action="/file-upload" id="my-awesome-dropzone" method="post" enctype="multipart/form-data")  
             .col-md-6.col-12
               .form-group
-                label #{translation.FORM.TITLE}:
+                label #{translation.TITLE}:
                 .controls
                   input#titulo-catalogo-new-imagenes.form-control(type="text")
             .col-md-6.col-12
               .form-group
-                label #{translation.FORM.STATUS}:
+                label #{translation.STATUS}:
                 .controls
                   select#estado-catalogo-new-imagenes.form-control
-                    option(value="1") #{translation.FORM.ACTIVE}
-                    option(value="0") #{translation.FORM.DEACTIVATED}
+                    option(value="1") #{translation.ACTIVE}
+                    option(value="0") #{translation.DEACTIVATED}
             .col-md-6.col-12
               .form-group
-                label #{translation.FORM.BEGIN_DATE}:
+                label #{translation.BEGIN_DATE}:
                 .controls
                   input#estado-fecha-inicio-new-imagenes.form-control(type="date")
             .col-md-6.col-12
               .form-group
-                label #{translation.FORM.END_DATE}:
+                label #{translation.END_DATE}:
                 .controls
                   input#estado-fecha-final-new-imagenes.form-control(type="date")
         .modal-footer

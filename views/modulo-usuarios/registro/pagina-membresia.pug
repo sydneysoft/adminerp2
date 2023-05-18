@@ -33,12 +33,12 @@ block formRegister
                                         each item in marketplaces
                                             option(value=item.id)= item.nombre
                             li
-                                label #{translation.FORM.BUSINESS_NAME}
+                                label #{translation.BUSINESS_NAME}
                                 .errorTxt(id="nombre-error")
                                 input#nombre(type='text' name='nombre' required='' aria-describedby="nombre-error")
   
                             li
-                                label #{translation.FORM.RUC}
+                                label #{translation.RUC}
                                 .errorTxt(id="documento-error")
                                 input#documento(type='text' name='documento' minlength=8 aria-describedby="documento-error")
                              
@@ -57,11 +57,11 @@ block formRegister
                                         option(value=item.categoria)= item.categoria
                                     
                             li
-                            label #{translation.FORM.CORPORATE_EMAIL}
+                            label #{translation.CORPORATE_EMAIL}
                             .errorTxt(id="email-error")
                             input#email(type='email' name='email' placeholder='Correo Electrónico' required='' aria-describedby="email-error")
                             li
-                            label #{translation.FORM.PASSWORD}
+                            label #{translation.PASSWORD}
                             .errorTxt(id="password-error")
                             input#password(type='Password' name='pswd' required='' aria-describedby="password-error")
                             li
@@ -69,11 +69,11 @@ block formRegister
                     #step3.tab-pane
                         ul
                             li
-                            label #{translation.FORM.CONTACT_NAME}
+                            label #{translation.CONTACT_NAME}
                             .errorTxt(id="contacto-error")
                             input#contacto(type='text' name='bf_fullname' required='' aria-describedby="contacto-error")
                             li
-                            label #{translation.FORM.CORPORATE_MOBILE}
+                            label #{translation.CORPORATE_MOBILE}
                             .errorTxt(id="telefono-error")
                             input#telefono(type='phone' name='phone' required='' aria-describedby="telefono-error")
                             p.form__terms

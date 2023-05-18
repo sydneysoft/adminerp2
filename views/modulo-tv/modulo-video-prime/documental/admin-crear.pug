@@ -7,7 +7,7 @@ append contenido
         i.fas.fa-arrow-left
         span.px-3 #{translation.BACK}
     h1.text-center.mb-5 
-      | #{translation.FORM.CREATE_DOCUMENTAL} 
+      | #{translation.CREATE_DOCUMENTAL} 
   .my-3 
     form#nuevaPelicula(action=`/admin-video-prime/documentales` method="post")
       input#empresa_id(type="text" value=empresa.id hidden)
@@ -17,36 +17,36 @@ append contenido
         .col-12.my-3
         .col-12 
           .form-group
-            label(for='nombre') #{translation.FORM.NAME}
+            label(for='nombre') #{translation.NAME}
             input#nombre.form-control(type='text' aria-describedby='nombreHelp' placeholder="Nombre de la documental.")
-            small#nombreHelp.form-text.text-muted.d-none #{translation.FORM.WRITE_THE_NAME}
+            small#nombreHelp.form-text.text-muted.d-none #{translation.WRITE_THE_NAME}
         .col-12.my-3
         .col-12.col-md-8 
           .form-group 
-            label(for="estracto") #{translation.FORM.EXTRACT} 
-            textarea#estracto.form-control(name="estracto" placeholder=#{translation.FORM.WRITE_SHORT_DESCRIPTION} )
+            label(for="estracto") #{translation.EXTRACT} 
+            textarea#estracto.form-control(name="estracto" placeholder=translation.WRITE_SHORT_DESCRIPTION )
               |
         .col-12.col-md-4 
           .form-check
             input#external.form-check-input(type='checkbox' value='')
             label.form-check-label(for='external')
-              | #{translation.FORM.EXTERNAL_LINK}
+              | #{translation.EXTERNAL_LINK}
 
         .col-12.my-3
         .col-12
-          label(for='thumbnail') #{translation.FORM.THUMBNAIL}
-          input#thumbnail.form-control(type='text'  placeholder=#{translation.FORM.THUMBNAIL})
+          label(for='thumbnail') #{translation.THUMBNAIL}
+          input#thumbnail.form-control(type='text'  placeholder=translation.THUMBNAIL)
         .col-12.my-3
         .col-12.col-md-6
-          label(for='trailer') #{translation.FORM.TRAILER}
-          input#trailer.form-control(type='text'  placeholder=#{translation.FORM.TRAILER})
+          label(for='trailer') #{translation.TRAILER}
+          input#trailer.form-control(type='text'  placeholder=translation.TRAILER)
         .col-12.col-md-6
-          label(for='url') #{translation.FORM.URL_DOCUMENTAL}
-          input#url.form-control(type='text'  placeholder=#{translation.FORM.URL_DOCUMENTAL})
+          label(for='url') #{translation.URL_DOCUMENTAL}
+          input#url.form-control(type='text'  placeholder=translation.URL_DOCUMENTAL)
         .col-12.my-3
         .col-12
           .form-group 
-            label(for="body") #{translation.FORM.BODY} 
+            label(for="body") #{translation.BODY} 
             textarea#body(name="body") 
 
 

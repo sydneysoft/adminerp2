@@ -1,0 +1,49 @@
+extends ../layout.pug
+
+append contenido 
+  .border-bottom.border-left.border-right.rounded-bottom.p-3
+    .row.justify-content-end
+      if empresa_id 
+        input#empresa_id(type="text" value=empresa_id hidden)
+        include /mixins/btn/back.pug
+        .col-6
+          +btn-back()
+      .col-6.text-right 
+        button.btn.btn-primary(type="button" data-toggle="modal" data-target="#nuevaCategoriaModal") #{translation.CREATE} 
+          i.fas.fa-plus
+    .container.mt-3
+      .row
+        .col-3
+          .form-group
+            label(for="lista-estado-blog") #{translation.STATUS}
+            select#lista-estado-blog(name="lista")
+              option(value="") #{translation.SELECT}
+              option(value="publish") #{translation.PUBLISH}
+              option(value="draft") #{translation.DRAFT}
+              option(value="delete") #{translation.DELETE}
+              option(value="pending") #{translation.PENDING}
+              option(value="nuevo") #{translation.NEW}  
+    
+    .container.mt-3
+      .row 
+        .col-12 
+          .table-responsive
+            table#tabla-blog-paginas.table
+              thead.thead-dark
+              tbody 
+              tfoo
+  script 
+    include /js/modulo-tv/delete.js
+
+  script.
+    const lista_estado = $("#lista-estado-blog").select2({});
+
+    lista_estado.on('change', function () {
+      if (this.value != "") {
+        tablaPaginas.column(4).search(this.value).draw();
+      } else {
+        tablaPaginas.column(4).search("").draw();
+      }
+    })
+
+  include ./datatable/paginas.pug

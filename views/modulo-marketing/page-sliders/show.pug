@@ -11,26 +11,26 @@ append contenido
         .col-12
           .input-group.mb-3
             .input-group-prepend
-              span.input-group-text #{translation.FORM.NAME}
-            input.form-control(type='text' aria-describedby='basic-addon1' placeholder=translation.FORM.NAME value=data.nombre readonly)
+              span.input-group-text #{translation.NAME}
+            input.form-control(type='text' aria-describedby='basic-addon1' placeholder=translation.NAME value=data.nombre readonly)
         .col-12
           .input-group.mb-3
             .input-group-prepend
-              span.input-group-text #{translation.FORM.THUMBNAIL}
-            input.form-control(type='text' aria-describedby='basic-addon1' placeholder=translation.FORM.THUMBNAIL value=data.url readonly)
+              span.input-group-text #{translation.THUMBNAIL}
+            input.form-control(type='text' aria-describedby='basic-addon1' placeholder=translation.THUMBNAIL value=data.url readonly)
         .col-12
           .input-group.mb-3
             .input-group-prepend
-              span.input-group-text #{translation.FORM.ALTERNATIVE_TEXT}
-            input.form-control(type='text' aria-describedby='basic-addon1' placeholder=translation.FORM.ALTERNATIVE_TEXT value=data.alt readonly)
+              span.input-group-text #{translation.ALTERNATIVE_TEXT}
+            input.form-control(type='text' aria-describedby='basic-addon1' placeholder=translation.ALTERNATIVE_TEXT value=data.alt readonly)
         .col-12 
           .form-group   
-            label() #{translation.FORM.DESCRIPTION}
+            label() #{translation.DESCRIPTION}
             .card 
               .card-body 
                   div
                     | #{data.descripcion}
     else 
       .alert.alert-info.mt-3(role="alert")
-        | #{translation.ALERTS.NO_DATA}
+        | #{translation.NO_DATA}
 

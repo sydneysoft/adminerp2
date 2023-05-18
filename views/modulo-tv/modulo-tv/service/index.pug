@@ -12,9 +12,9 @@ append contenido
         thead#headTable 
           tr 
             th ID 
-            th #{translation.FORM.NAME} 
-            th #{translation.FORM.ICON} 
-            th #{translation.FORM.ACTIONS} 
+            th #{translation.NAME} 
+            th #{translation.ICON} 
+            th #{translation.ACTIONS} 
         tbody#programasTable 
           each item, key in data 
             tr 
@@ -32,7 +32,7 @@ append contenido
  
   else 
     .alert.alert-primary(role='alert')
-      | #{translation.ALERTS.NO_SERVICES_YET}
+      | #{translation.NO_SERVICES_YET}
 
   nav(aria-label='...')
     ul.pagination

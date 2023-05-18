@@ -56,7 +56,7 @@ const handleInvoiceMethod = (id) => {
                 Swal.fire({
                     position: "center",
                     icon: "success",
-                    html: "<b>#{translation.ALERTS.CREDENTIALS_SUCCESS_UPDATE}</b>",
+                    html: "<b>#{translation.CREDENTIALS_SUCCESS_UPDATE}</b>",
                     showConfirmButton: false,
                     timer: 2500,
                 });
@@ -65,7 +65,7 @@ const handleInvoiceMethod = (id) => {
                 Swal.fire({
                     position: "center",
                     icon: "error",
-                    html: "<b>#{translation.ALERTS.WRONG}</b>",
+                    html: "<b>#{translation.WRONG}</b>",
                     showConfirmButton: false,
                     timer: 2500,
                 });
@@ -77,7 +77,7 @@ const handleInvoiceMethod = (id) => {
             Swal.fire({
                 position: "center",
                 icon: "error",
-                html: "<b>#{translation.ALERTS.WRONG}</b>",
+                html: "<b>#{translation.WRONG}</b>",
                 showConfirmButton: false,
                 timer: 2500,
             });

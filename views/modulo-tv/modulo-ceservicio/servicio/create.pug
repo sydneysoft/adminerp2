@@ -12,27 +12,27 @@ append contenido
       .row 
         .col-12.col-md-8 
           .form-group
-            label(for='nombre') #{translation.FORM.NAME}
-            input#nombre.form-control(type='text' placeholder=translation.FORM.NAME name="nombre" required)
+            label(for='nombre') #{translation.NAME}
+            input#nombre.form-control(type='text' placeholder=translation.NAME name="nombre" required)
           .form-group 
-            label(for='estracto') #{translation.FORM.EXCERPT}
-            textarea#estracto.form-control(name="estracto" placeholder=translation.FORM.EXCERPT)
+            label(for='estracto') #{translation.EXCERPT}
+            textarea#estracto.form-control(name="estracto" placeholder=translation.EXCERPT)
         .col-12.col-md-2
           .form-group
-            label(for='icono') #{translation.FORM.ICON}
+            label(for='icono') #{translation.ICON}
             .controls
               button.btn.btn-info#icono(data-iconset="fontawesome5" data-icon="fas fa-wifi" role="iconpicker")
         .col-12.col-md-2
           .form-group
-            label(for='iconoImagen') #{translation.FORM.ICON_IMAGE}
+            label(for='iconoImagen') #{translation.ICON_IMAGE}
             .controls
               button.btn.btn-info#iconoImagen(data-iconset="fontawesome5" data-icon="fas fa-wifi" role="iconpicker")
 
       .row 
         .col-12.col-md-8
           .form-group   
-            label(for="body") #{translation.FORM.BODY}
-            textarea#body(name="body" placeholder=translation.FORM.BODY)
+            label(for="body") #{translation.BODY}
+            textarea#body(name="body" placeholder=translation.BODY)
         .col-12.col-md-4
           include ../../modulo-general/galeria-fotos/modal-galeria.pug
           include ../../modulo-general/galeria-fotos/partial-modal-galeria.pug

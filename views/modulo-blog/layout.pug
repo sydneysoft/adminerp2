@@ -1,0 +1,23 @@
+extends /extends/menu-superior-admin
+
+block contenido
+  h1 #{translation.BLOGS}
+  ul.nav.nav-tabs
+    li.nav-item
+      a.nav-link(href='/admin-blog/paginas') #{translation.PAGES}
+    li.nav-item
+      a.nav-link(href='/admin-blog/categorias') #{translation.CATEGORIES}
+
+  script.
+    const currentPath = window.location.pathname
+    const navLinks = $(".nav .nav-link");
+    $.each(navLinks, function (index, value) {
+      if((currentPath == '/admin-blog' || currentPath == '/admin-blog/') && index === 0) {
+        value.classList.toggle('active')
+      } else {
+        if(currentPath.startsWith(value.getAttribute('href')) && index !== 0) {
+          value.classList.toggle('active')
+        }
+      }
+    });
+   

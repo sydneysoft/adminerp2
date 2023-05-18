@@ -26,24 +26,24 @@
             .row
               .col-12
                 .form-group 
-                  label(for="nombre_item") #{translation.FORM.NAME} *
-                  input#nombre_item.form-control(type="text" placeholder=translation.FORM.NAME name="nombre_item" required)
+                  label(for="nombre_item") #{translation.NAME} *
+                  input#nombre_item.form-control(type="text" placeholder=translation.NAME name="nombre_item" required)
               .col-12
                 .form-group
-                  label(for="icono_item") #{translation.FORM.ICON} *
+                  label(for="icono_item") #{translation.ICON} *
                   select#icono_item.form-control
               .col-12
                 .form-group
-                  label(for="href_item") #{translation.FORM.URL} *
-                  input#href_item.form-control(type="text" placeholder=translation.FORM.URL name="href_item" required)
+                  label(for="href_item") #{translation.URL} *
+                  input#href_item.form-control(type="text" placeholder=translation.URL name="href_item" required)
               //- .col-12.col-md-8
               //-   .form-group
-              //-     label(for='name_section_edit') #{translation.FORM.NAME_SECTION} *
-              //-     input#name_section.form-control(type='text' placeholder=translation.FORM.NAME_SECTION name="name_section" required)
+              //-     label(for='name_section_edit') #{translation.NAME_SECTION} *
+              //-     input#name_section.form-control(type='text' placeholder=translation.NAME_SECTION name="name_section" required)
               //- .col-12.col-md-4 
               //-   .form-group
-              //-     label(for="description_section_edit") #{translation.FORM.DESCRIPTION_SECTION}
-              //-     input#description_section.form-control(type="text" placeholder=translation.FORM.DESCRIPTION_SECTION name="description_section")
+              //-     label(for="description_section_edit") #{translation.DESCRIPTION_SECTION}
+              //-     input#description_section.form-control(type="text" placeholder=translation.DESCRIPTION_SECTION name="description_section")
           .modal-footer(style="padding:8px;")
               .row(style="margin:0;")
                   .col-md-12.text-right
@@ -126,12 +126,12 @@ script.
         //- label
         let label = document.createElement('label');
         label.setAttribute('for', `name_section_${section.identificador}`);
-        label.innerHTML = '#{translation.FORM.NAME}';
+        label.innerHTML = '#{translation.NAME}';
         //- input
         let input = document.createElement('input');
         input.classList.add('form-control');
         input.setAttribute('type', 'text');
-        input.setAttribute('placeholder', '#{translation.FORM.NAME}');
+        input.setAttribute('placeholder', '#{translation.NAME}');
         input.setAttribute('name', `name_section_${section.identificador}`);
         input.setAttribute('id', `name_section_${section.identificador}`);
         input.value = section.nombre;
@@ -147,11 +147,11 @@ script.
         //- label
         let labelDescription = document.createElement('label');
         labelDescription.setAttribute('for', `description_section_${section.identificador}`);
-        labelDescription.innerHTML = '#{translation.FORM.DESCRIPTION}';
+        labelDescription.innerHTML = '#{translation.DESCRIPTION}';
         //- input
         let inputDescription = document.createElement('textarea');
         inputDescription.classList.add('form-control');
-        inputDescription.setAttribute('placeholder', '#{translation.FORM.DESCRIPTION}');
+        inputDescription.setAttribute('placeholder', '#{translation.DESCRIPTION}');
         inputDescription.setAttribute('name', `description_section_${section.identificador}`);
         inputDescription.setAttribute('id', `description_section_${section.identificador}`);
         inputDescription.innerHTML = section.descripcion;

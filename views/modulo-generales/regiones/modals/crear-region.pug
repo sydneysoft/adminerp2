@@ -11,7 +11,7 @@
                 input#nuevo-coordenandas-regiones.form-control(type="hidden")
           .col-md-6.col-12
             .form-group
-              label Pais:
+              label #{translation.COUNTRY}:
               .controls
                 select#nuevo-pais-regiones.form-control.seleccionar(onChange="seleccionPais()")
                   option(value=0) Seleccione
@@ -21,7 +21,7 @@
 
           .col-md-12.col-12
             .form-group
-              label Ciudad:
+              label #{translation.CITY}:
               .controls
 
                 select#nuevo-ciudad-regiones.form-control.seleccionar(type="text" name="states[]" multiple="multiple" disabled) 
@@ -29,5 +29,5 @@
 
 
       .modal-footer
-        button.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;",onClick=`AgregarRegionAdmin(${token})`) Añadir
-        button.btn.btn-danger(type="buton" data-dismiss="modal") Cerrar
+        button.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;",onClick=`AgregarRegionAdmin(${token})`) #{translation.ADD}
+        button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}

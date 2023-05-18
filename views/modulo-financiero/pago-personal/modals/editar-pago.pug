@@ -15,24 +15,24 @@
           input#itemId(type="text" value="" hidden)
           .col-md-12.col-12
             .form-group
-              label #{translation.FORM.NAME}
+              label #{translation.NAME}
               .controls
                 input#editarNombre.form-control(type="text")
           .col-md-6.col-12
             .form-group
-              label(for #{translation.DOCUMENT_TYPES}) #{translation.FORM.DOCUMENT_TYPE}:
+              label(for #{translation.DOCUMENT_TYPES}) #{translation.DOCUMENT_TYPE}:
               select#editarTipoDoc.form-control
-                option(value="null") #{translation.FORM.SELECT}
-                option(value #{translation.DOCUMENT_NUMBERS}) #{translation.FORM.DOCUMENT_NUMBER} 
-                option(value #{translation.FOREGINER_CARD}) 	#{translation.FORM.FOREGINER_CARD}
-                option(value #{translation.UNIQUE_REGISTRATION_NUMBER}) #{translation.FORM.UNIQUE_REGISTRATION_NUMBER}
-                option(value #{translation.FORM.PASSPORT}) #{translation.FORM.PASSPORT}
-                option(value #{translation.FORM.BIRTH_REGISTRATION}) #{translation.FORM.BIRTH_REGISTRATION}
-                option(value #{translation.OTHERS}) #{translation.OTHERS}
+                option(value="null") -Seleccione-
+                option(value="L.E / DNI") #{translation.DOCUMENT_NUMBER} 
+                option(value="CARNET DE EXTRANJERIA") 	#{translation.FOREGINER_CARD}
+                option(value="REG. UNICO DE CONTRIBUYENTES") #{translation.UNIQUE_REGISTRATION_NUMBER}
+                option(value="PASAPORTE") #{translation.PASSPORT}
+                option(value="PART. DE NACIMIENTO") #{translation.BIRTH_REGISTRATION}
+                option(value="OTROS") #{translation.OTHERS}
 
           .col-md-6.col-12
             .form-group
-              label #{translation.FORM.DOCUMENT_NUMBER}
+              label #{translation.DOCUMENT_NUMBER}
               .controls
                 input#editarNroDocumento.form-control(type="text")
 
@@ -49,7 +49,7 @@
 
           .col-md-6.col-12
             .form-group
-              label #{translation.FORM.AMOUNT}
+              label #{translation.AMOUNT}
               .controls   
                 input#editarMonto.text-center.form-control(type="number" ) 
 

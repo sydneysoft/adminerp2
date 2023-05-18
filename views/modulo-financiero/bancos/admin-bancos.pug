@@ -16,9 +16,9 @@ block contenido
             .col-md-4.col-6
                 div(style="display: inline-flex")
                     .form-group
-                        label.font-weight-bold.datev-label #{translation.FORM.BANK}
+                        label.font-weight-bold.datev-label #{translation.BANK}
                         select#empresas
-                            option(value=0) #{translation.FORM.SELECT_BANK}
+                            option(value=0) #{translation.SELECT_BANK}
                     //- +empresas-select2('empresas')
                             //- select#filtroNombre.form-control.seleccionar
                                 option(value=0) Seleccione
@@ -43,15 +43,15 @@ block contenido
                     thead.thead-dark
                         tr.table-head
                             th.text-center 
-                            th.text-left #{translation.FORM.BANK_NAME}
-                            th.text-left #{translation.FORM.BANK_ABREVIATION}
-                            th.text-center #{translation.FORM.ADDRESS}
-                            th.text-center #{translation.FORM.PHONE}
-                            th.text-center #{translation.FORM.WEBSITE}
-                            th.text-center #{translation.FORM.COUNTRY}
-                            th.text-center #{translation.FORM.PROVINCE}
-                            th.text-center #{translation.FORM.UPDATED_AT}
-                            th.text-center #{translation.FORM.ACTIONS}
+                            th.text-left #{translation.BANK_NAME}
+                            th.text-left #{translation.BANK_ABREVIATION}
+                            th.text-center #{translation.ADDRESS}
+                            th.text-center #{translation.PHONE}
+                            th.text-center #{translation.WEBSITE}
+                            th.text-center #{translation.COUNTRY}
+                            th.text-center #{translation.PROVINCE}
+                            th.text-center #{translation.UPDATED_AT}
+                            th.text-center #{translation.ACTIONS}
                     tbody
                         each store in stores
                             tr(id= store.id)

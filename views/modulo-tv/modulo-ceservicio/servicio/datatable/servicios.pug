@@ -26,14 +26,14 @@ script.
         { 
           data: "nombre",
           name: 'nombre',
-          title: #{translation.FORM.NAME},
+          title: "#{translation.NAME}",
           orderable: true,
           searchable: true
         },
         {
           data: "icono", 
           name: "icono",
-          title: #{translation.FORM.ICON},
+          title: "#{translation.ICON}",
           render: function (data, type, row) {
             return `<i class="${data}"></i>`;
           },
@@ -43,7 +43,7 @@ script.
         {
           data: "icono_imagen", 
           name: "icono_imagen",
-          title: #{translation.FORM.ICON_IMAGE},
+          title: "#{translation.ICON_IMAGE}",
           render: function (data, type, row) {
             return `<i class="${data}"></i>`
           },
@@ -53,7 +53,7 @@ script.
         {
           data: "imagen",
           name: "imagen",
-          title: #{translation.FORM.IMAGE},
+          title: "#{translation.IMAGE}",
           render: function (data, type, row) {
             try {
               new URL(data);
@@ -68,7 +68,7 @@ script.
         {
           data: "acciones",
           name: "acciones",
-          title: #{translation.FORM.ACTIONS},
+          title: "#{translation.ACTIONS}",
           render: function (data, type, row) {
             return `
               <div class="btn-group" role="group" aria-label="Actions buttons">

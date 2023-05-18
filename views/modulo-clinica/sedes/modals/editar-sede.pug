@@ -11,24 +11,24 @@
         .row
           .col-md-6
             .form-group
-              label(for="nombre_editar") #{translation.FORM.NAME}
-              input#nombre_editar.form-control(type="text" placeholder=translation.FORM.NAME)
+              label(for="nombre_editar") #{translation.NAME}
+              input#nombre_editar.form-control(type="text" placeholder=translation.NAME)
           .col-md-6
             .form-group
-              label(for="direccion_editar") #{translation.FORM.ADDRESS}
-              input#direccion_editar.form-control(type="text" placeholder=translation.FORM.ADDRESS)
+              label(for="direccion_editar") #{translation.ADDRESS}
+              input#direccion_editar.form-control(type="text" placeholder=translation.ADDRESS)
         .row.mt-3
           .col-md-6
             .form-group
-              label(for="googlemap_editar") #{translation.FORM.GOOGLEMAP}
-              textarea#googlemap_editar.form-control(placeholder=translation.FORM.GOOGLEMAP)
+              label(for="googlemap_editar") #{translation.GOOGLEMAP}
+              textarea#googlemap_editar.form-control(placeholder=translation.GOOGLEMAP)
           .col-md-6
             //- .form-group
-            //-   label(for="imagen_editar") #{translation.FORM.IMAGE}
-            //-   input#imagen_editar.form-control(type="text" placeholder="#{translation.FORM.IMAGE}")
+            //-   label(for="imagen_editar") #{translation.IMAGE}
+            //-   input#imagen_editar.form-control(type="text" placeholder="#{translation.IMAGE}")
             .row.mb-3.align-items-end
               .col-8
-                span #{translation.FORM.IMAGE}
+                span #{translation.IMAGE}
                 br
                 .btn-group
                   label.btn.btn-info.m-0(for="preFavicon") #{translation.UPLOAD}
@@ -41,29 +41,29 @@
         .row.mt-3 
           .col-md-6
             .form-group
-              label(for="telefono_editar") #{translation.FORM.PHONE}
-              input#telefono_editar.form-control(type="text" placeholder=translation.FORM.PHONE)
+              label(for="telefono_editar") #{translation.PHONE}
+              input#telefono_editar.form-control(type="text" placeholder=translation.PHONE)
           .col-md-6
             .form-group
-              label(for="activado_editar") #{translation.FORM.ACTIVATED}
+              label(for="activado_editar") #{translation.ACTIVATED}
               select#activado_editar.form-control
-                option(value="1") #{translation.FORM.ACTIVE}
-                option(value="0") #{translation.FORM.INACTIVE}
+                option(value="1") #{translation.ACTIVE}
+                option(value="0") #{translation.INACTIVE}
         .row.mt-3
           .col-md-4
             .form-group
-              label(for="estado_editar") #{translation.FORM.STATUS}
+              label(for="estado_editar") #{translation.STATUS}
               select#estado_editar.form-control
-                option(value="1") #{translation.FORM.ACTIVE}
-                option(value="0") #{translation.FORM.INACTIVE}
+                option(value="1") #{translation.ACTIVE}
+                option(value="0") #{translation.INACTIVE}
 
           .col-md-8
             .row.align-items-end
               .col-8 
                 .form-group
-                  label(for="atencion_editar") #{translation.FORM.ATTENTION}
-                  //- input#atencion_editar.form-control(type="text" placeholder=translation.FORM.ATTENTION)
-                  select#atencion_editar.form-crontrol(type="text" placeholder=translation.FORM.ATTENTION)
+                  label(for="atencion_editar") #{translation.ATTENTION}
+                  //- input#atencion_editar.form-control(type="text" placeholder=translation.ATTENTION)
+                  select#atencion_editar.form-crontrol(type="text" placeholder=translation.ATTENTION)
                     each item in horarios
                       option(value=item.id) #{item.text}
               .col-4 

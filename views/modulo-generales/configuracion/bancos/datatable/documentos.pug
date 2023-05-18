@@ -22,8 +22,8 @@ script.
       order: [[1, "asc"]],
       language: {
         buttons: {
-          selectAll: '#{translation.FORM.SELECT_EVERYTHING}',
-          selectNone: '#{translation.FORM.ERASE_SELECTION}',
+          selectAll: '#{translation.SELECT_EVERYTHING}',
+          selectNone: '#{translation.ERASE_SELECTION}',
         },
         url: "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json",
         select: {
@@ -43,11 +43,11 @@ script.
             return ``;
           }
         },
-        { data: 'pais', name: 'pais', title: '#{translation.FORM.COUNTRY}', orderable: true, searchable: true},
-        { data: 'nombre', name: 'nombre', title: '#{translation.FORM.NAME}', orderable: true, searchable: true},
+        { data: 'pais', name: 'pais', title: '#{translation.COUNTRY}', orderable: true, searchable: true},
+        { data: 'nombre', name: 'nombre', title: '#{translation.NAME}', orderable: true, searchable: true},
         { data: 'abreviatura', name: 'abreviatura', title: "Abreviatura", orderable: true, searchable: true },
         { 
-          data: 'acciones', name: 'acciones', title: '#{translation.FORM.ACTIONS}', orderable: false, searchable: false,
+          data: 'acciones', name: 'acciones', title: '#{translation.ACTIONS}', orderable: false, searchable: false,
           render: function (data, type, row) {
             let strRow = JSON.stringify(row);
             return `

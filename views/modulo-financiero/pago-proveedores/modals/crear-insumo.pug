@@ -4,7 +4,7 @@
       .modal-header 
         .row 
           .col-12
-            h5.strong(style="font-size:1rem;") #{translation.FORM.ADD_INGREDIENTS}
+            h5.strong(style="font-size:1rem;") #{translation.ADD_INGREDIENTS}
       .modal-body-almacen
         .row(style="padding:20px;")
           //- if activo_marketplace===1
@@ -19,10 +19,10 @@
 
           .col-md-12.col-12
             .form-group#add
-              label #{translation.FORM.NEW_INGREDIENTS_SERVICE}
+              label #{translation.NEW_INGREDIENTS_SERVICE}
               .controls
                 input#insumoAgregar.form-control(type="text")
             .modal-footer      
               button.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;" onClick=`guardarInsumo(${token})`) #{translation.SAVE}
 
-              button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.FORM.CLOSE}
+              button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}

@@ -2,7 +2,7 @@
   .modal-dialog(role="document")
     .modal-content
       .modal-header
-        h4="#{translation.FORM.FILTERS_VALUE}"
+        h4="#{translation.FILTERS_VALUE}"
         input#id-grupoFiltros-values(type="hidden")
         input#type-action-values(type="hidden")
       .modal-body
@@ -11,11 +11,11 @@
             img(class="image-loading-spinner" src="https://ceisantagema.com/wp-content/plugins/gallery-by-supsystic/src/GridGallery/Galleries/assets/img/loading.gif")
           .col-12#dataCompleteValue(style="display:none;") 
             .input-group
-              input.form-control.m-input(type='text' name='filtros[]' id="firstValueFilter" placeholder='#{translation.FORM.ENTER_VALUE}' autocomplete='off')
+              input.form-control.m-input(type='text' name='filtros[]' id="firstValueFilter" placeholder='#{translation.ENTER_VALUE}' autocomplete='off')
               .input-group-append
                 button#addRowDynamic.btn.btn-info(type='button')
                   i.fas.fa-plus
             div#newRow(style="width:100%") 
       .modal-footer#footerLoadValues
-        button.btn.btn-success(type="buton" onClick="handleFilterDataSubcategorias()")="#{translation.FORM.SAVE_VALUE}" 
-        button.btn.btn-danger(type="buton" data-dismiss="modal")="#{translation.FORM.CANCEL}" 
+        button.btn.btn-success(type="buton" onClick="handleFilterDataSubcategorias()")="#{translation.SAVE_VALUE}" 
+        button.btn.btn-danger(type="buton" data-dismiss="modal")="#{translation.CANCEL}" 

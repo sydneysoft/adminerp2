@@ -18,21 +18,21 @@ append contenido
           table.table 
             thead
               tr
-                th(scope='col') #{translation.FORM.NAME}
-                th(scope='col') #{translation.FORM.DESCRIPTION}
+                th(scope='col') #{translation.NAME}
+                th(scope='col') #{translation.DESCRIPTION}
 
             tbody
               tr
                 th(scope='row') ID
                 td #{data.id}
               tr
-                th(scope='row') #{translation.FORM.NAME}
+                th(scope='row') #{translation.NAME}
                 td #{data.nombre}
               tr
-                th(scope='row') #{translation.FORM.TYPE}
+                th(scope='row') #{translation.TYPE}
                 td #{data.tipo}
               tr
-                th(scope='row') #{translation.FORM.EXTRACT}
+                th(scope='row') #{translation.EXTRACT}
                 td #{data.estracto}
               tr
                 th(scope='row') #{translation.THUMBNAIL}

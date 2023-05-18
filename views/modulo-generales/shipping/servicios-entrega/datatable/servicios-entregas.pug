@@ -44,13 +44,13 @@ script.
           }
         },
         {
-          data: 'nombre', name: 'nombre', title: "#{translation.FORM.NAME}", orderable: true, searchable: true,
+          data: 'nombre', name: 'nombre', title: "#{translation.NAME}", orderable: true, searchable: true,
         },
         {
-          data: 'telefono', name: 'telefono', title: "#{translation.FORM.CELULAR}", orderable: true, searchable: true
+          data: 'telefono', name: 'telefono', title: "#{translation.CELULAR}", orderable: true, searchable: true
         },
         { 
-          data: 'acciones', name: 'acciones', title: '#{translation.FORM.ACTIONS}', orderable: false, searchable: false,
+          data: 'acciones', name: 'acciones', title: '#{translation.ACTIONS}', orderable: false, searchable: false,
           render: function (data, type, row) {
             let strRow = JSON.stringify(row);
             return `

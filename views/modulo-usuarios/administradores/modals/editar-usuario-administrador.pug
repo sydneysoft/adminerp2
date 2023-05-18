@@ -8,27 +8,27 @@
                             .controls
                                 input#id-user-editar(type="hidden")
                                 select.form-control#tipo_documento_user_editar
-                                    option(value #{translation.FORM.DOCUMENT_NUMBER}) #{translation.FORM.DOCUMENT_NUMBER}
-                                    option(value #{translation.FORM.FOREIGNER_CARD}) #{translation.FORM.FOREIGNER_CARD}
-                                    option(value #{translation.FORM.OTHER}) #{translation.FORM.OTHER}
+                                    option(value #{translation.DOCUMENT_NUMBER}) #{translation.DOCUMENT_NUMBER}
+                                    option(value #{translation.FOREIGNER_CARD}) #{translation.FOREIGNER_CARD}
+                                    option(value #{translation.OTHER}) #{translation.OTHER}
                         .col-md-6.mt-2
-                            label #{translation.FORM.DOCUMENT_NUMBER}
+                            label #{translation.DOCUMENT_NUMBER}
                             .controls
                                 input.form-control#numero_documento_user_editar(type="number" autoComplete="new-password")
                         .col-md-6.mt-2 
-                            label #{translation.FORM.NAMES}
+                            label #{translation.NAMES}
                             .controls
                                 input.form-control#nombres_user_editar(type="text" autoComplete="new-password")
                         .col-md-6.mt-2 
-                            label #{translation.FORM.LAST_NAMES}
+                            label #{translation.LAST_NAMES}
                             .controls
                                 input.form-control#apellidos_user_editar(type="text" autoComplete="new-password")
                         .col-md-6.mt-2 
-                            label #{translation.FORM.PHONE}
+                            label #{translation.PHONE}
                             .controls
                                 input.form-control#telefono_user_editar(type="tel")
                         .col-md-6.mt-2 
-                            label #{translation.FORM.EMAIL}
+                            label #{translation.EMAIL}
                             .controls
                                 input.form-control#correo_user_editar(disabled type="text" autoComplete="new-password")
                        

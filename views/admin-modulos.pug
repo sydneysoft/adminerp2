@@ -12,11 +12,11 @@ block contenido
         div.table.table-hover.table-miscitas(style="display:table;width:100%;")
             div.table-head(style="display:table-row;")
                 div.text-center(style="display:table-cell;vertical-align: bottom;border-bottom: 2px solid #ddd;padding: 8px;line-height: 1.42857143;font-weight:bold;")
-                    span #{translation.FORM.NAME}
+                    span #{translation.NAME}
                 div.text-center(style="display:table-cell;vertical-align: bottom;border-bottom: 2px solid #ddd;padding: 8px;line-height: 1.42857143;font-weight:bold;")
-                    span #{translation.FORM.ACTIVE}
+                    span #{translation.ACTIVE}
                 div.text-center(style="display:table-cell;vertical-align: bottom;border-bottom: 2px solid #ddd;padding: 8px;line-height: 1.42857143;font-weight:bold;")
-                    span #{translation.FORM.URL}
+                    span #{translation.URL}
             - var i=0;
             each book in bookStore.modulos
                 - i++;
@@ -156,29 +156,29 @@ block contenido
                         .row
                             .col-md-6
                                 .form-group
-                                    h5(style="margin:0px;opacity:0;") #{translation.FORM.NAME}
+                                    h5(style="margin:0px;opacity:0;") #{translation.NAME}
                                     .controls(style="position:relative;")
-                                        input#nombreNuevo-modulo-admin.inputFormulario(type="text", placeholder #{translation.FORM.NAME})
-                                        h5.tituloInput #{translation.FORM.NAME}:
+                                        input#nombreNuevo-modulo-admin.inputFormulario(type="text", placeholder #{translation.NAME})
+                                        h5.tituloInput #{translation.NAME}:
                             .col-md-6
                                 .form-group
-                                    h5(style="margin:0px;opacity:0;") #{translation.FORM.URL}
+                                    h5(style="margin:0px;opacity:0;") #{translation.URL}
                                     .controls(style="position:relative;")
                                         input#urlNuevo-modulo-admin.inputFormulario(type="text", placeholder="URL")
-                                        h5.tituloInput #{translation.FORM.URL}:
+                                        h5.tituloInput #{translation.URL}:
                         .row
                             .col-md-6
                                 .form-group
-                                    h5(style="margin:0px;opacity:0;") #{translation.FORM.ICON}
+                                    h5(style="margin:0px;opacity:0;") #{translation.ICON}
                                     .controls(style="position:relative;")
                                         input#iconoNuevo-modulo-admin.inputFormulario(type="text", placeholder="Icono")
-                                        h5.tituloInput #{translation.FORM.ICON}:
+                                        h5.tituloInput #{translation.ICON}:
                             .col-md-6
                                 .form-group
-                                    h5(style="margin:0px;opacity:0;") #{translation.FORM.TEXT}
+                                    h5(style="margin:0px;opacity:0;") #{translation.TEXT}
                                     .controls(style="position:relative;")
                                         input#textoNuevo-modulo-admin.inputFormulario(type="text" placeholder="Texto")
-                                        h5.tituloInput #{translation.FORM.TEXT}:
+                                        h5.tituloInput #{translation.TEXT}:
                         .row
                             .col-md-6
                                 .form-group
@@ -200,12 +200,12 @@ block contenido
                                         span#rolesNuevo-admin-modulos
                             .col-md-6
                                 .form-group
-                                    h5(style="margin:0px;opacity:0;") #{translation.FORM.STATUS}
+                                    h5(style="margin:0px;opacity:0;") #{translation.STATUS}
                                     .controls(style="position:relative;")
                                         select#activadoNuevo-modulo-admin.inputFormulario(name="activadoNuevo")
-                                            option(value="1") #{translation.FORM.ACTIVE}
-                                            option(value="0") #{translation.FORM.DEACTIVATED}
-                                        h5.tituloInput #{translation.FORM.STATUS}:
+                                            option(value="1") #{translation.ACTIVE}
+                                            option(value="0") #{translation.DEACTIVATED}
+                                        h5.tituloInput #{translation.STATUS}:
                 .modal-footer(style="padding:8px;")
                     .row(style="margin:0;")
                         .col-md-12.text-right
@@ -223,55 +223,55 @@ block contenido
                         .row
                             .col-md-6
                                 .form-group
-                                    h5(style="margin:0px;opacity:0;") #{translation.FORM.NAME}
+                                    h5(style="margin:0px;opacity:0;") #{translation.NAME}
                                     .controls(style="position:relative;")
                                         input#idEditar-modulo-admin(type="hidden")
                                         input#nombreEditar-modulo-admin.inputFormularioEditar(type="text")
-                                        h5.tituloInput #{translation.FORM.NAME}:
+                                        h5.tituloInput #{translation.NAME}:
                             .col-md-6
                                 .form-group
-                                    h5(style="margin:0px;opacity:0;") #{translation.FORM.URL}
+                                    h5(style="margin:0px;opacity:0;") #{translation.URL}
                                     .controls(style="position:relative;")
                                         input#urlEditar-modulo-admin.inputFormularioEditar(type="text")
-                                        h5.tituloInput #{translation.FORM.URL}:
+                                        h5.tituloInput #{translation.URL}:
                             .col-md-6
                                 .form-group
-                                    h5(style="margin:0px;opacity:0;") #{translation.FORM.ICON}
+                                    h5(style="margin:0px;opacity:0;") #{translation.ICON}
                                     .controls(style="position:relative;")
                                         input#iconoEditar-modulo-admin.inputFormularioEditar(type="text")
-                                        h5.tituloInput #{translation.FORM.ICON}:
+                                        h5.tituloInput #{translation.ICON}:
                             .col-md-6
                                 .form-group
-                                    h5(style="margin:0px;opacity:0;") #{translation.FORM.TEXT}
+                                    h5(style="margin:0px;opacity:0;") #{translation.TEXT}
                                     .controls(style="position:relative;")
                                         input#textoEditar-modulo-admin.inputFormularioEditar(name="", cols="30", rows="5")
-                                        h5.tituloInput #{translation.FORM.TEXT}:
+                                        h5.tituloInput #{translation.TEXT}:
                             .col-md-6
                                 .form-group
-                                    h5(style="margin:0px;opacity:0;") #{translation.FORM.ORDER}
+                                    h5(style="margin:0px;opacity:0;") #{translation.ORDER}
                                     .controls(style="position:relative;")
                                         input#ordenEditar-modulo-admin.inputFormularioEditar(type="number")
-                                        h5.tituloInput #{translation.FORM.ORDER}:
+                                        h5.tituloInput #{translation.ORDER}:
                             .col-md-6
                                 .form-group
-                                    h5(style="margin:0px;opacity:0;") #{translation.FORM.FONT}
+                                    h5(style="margin:0px;opacity:0;") #{translation.FONT}
                                     .controls(style="position:relative;")
                                         input#fuenteEditar-modulo-admin.inputFormularioEditar(type="text")
-                                        h5.tituloInput #{translation.FORM.FONT}:
+                                        h5.tituloInput #{translation.FONT}:
                             .col-md-6
                                 .form-group
-                                    h5(style="font-weight:600;margin: 0 0 5px;") #{translation.FORM.ROLES}:
+                                    h5(style="font-weight:600;margin: 0 0 5px;") #{translation.ROLES}:
                                     input#roleshiddenDataModulos(type="hidden")
                                     div#controlerEditarModulos.controls
                                         span#rolesEditar-admin-modulos
                             .col-md-6
                                 .form-group
-                                    h5(style="margin:0px;opacity:0;") #{translation.FORM.STATUS}
+                                    h5(style="margin:0px;opacity:0;") #{translation.STATUS}
                                     .controls(style="position:relative;")
                                         select#activadoEditar-modulo-admin.inputFormularioEditar(name="activadoNuevo")
-                                            option(value="1") #{translation.FORM.ACTIVE}
-                                            option(value="0") #{translation.FORM.DEACTIVATED}
-                                        h5.tituloInput #{translation.FORM.STATUS}:
+                                            option(value="1") #{translation.ACTIVE}
+                                            option(value="0") #{translation.DEACTIVATED}
+                                        h5.tituloInput #{translation.STATUS}:
 
                 .modal-footer(style="padding:8px;")
                     .row(style="margin:0;")

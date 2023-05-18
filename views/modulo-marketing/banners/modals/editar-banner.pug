@@ -8,7 +8,7 @@
               img(id="imagen-data-banner-editar" src="https://www.cuba.travel/images/noimage.png" class="content-img-banner" onClick="handleModal()")
           .col-6
             .form-group
-              h5 #{translation.FORM.NAME}:
+              h5 #{translation.NAME}:
               .controls
                 input#idEditar-banners-admin.form-control(type="hidden")
                 input#nombreEditar-banners-admin.form-control(type="text")
@@ -19,16 +19,16 @@
                 input#urlEditar-banners-admin.form-control(type="text")
           .col-md-6
             .form-group
-              h5 #{translation.FORM.STATUS}:
+              h5 #{translation.STATUS}:
               .controls
                 select#activadoEditar-banners-admin.form-control
-                  option(value="1") #{translation.FORM.ACTIVE}
-                  option(value="0") #{translation.FORM.DEACTIVE}
+                  option(value="1") #{translation.ACTIVE}
+                  option(value="0") #{translation.DEACTIVE}
           .col-md-6
             .form-group
-              h5 #{translation.FORM.DESCRIPTION}:
+              h5 #{translation.DESCRIPTION}:
               .controls
                 textarea#descripcionEditar-banners-admin.form-control(name="" cols="30" rows="5")
           .col-md-12.text-center
-            button.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;",onClick=`updateBannerAdmin(${token})`) #{translation.FORM.UPDATE_DATA}
+            button.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;",onClick=`updateBannerAdmin(${token})`) #{translation.UPDATE_DATA}
             button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}

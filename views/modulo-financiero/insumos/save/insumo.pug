@@ -23,17 +23,17 @@ script.
             if (typeof tablaGestionarInsumos != 'undefined' && tablaGestionarInsumos) {
               tablaGestionarInsumos.ajax.reload();
             }
-            toastSweet('Exito', "#{translation.ALERTS.CREATED}", 'success');
+            toastSweet('Exito', "#{translation.CREATED}", 'success');
             $("#nuevoInsumoModal").modal("hide");
           } else {
-            toastSweet('Error', "#{translation.ALERTS.WRONG}", 'error');
+            toastSweet('Error', "#{translation.WRONG}", 'error');
           }
         },
         error: function (data) {
-          toastSweet('Error', "#{translation.ALERTS.WRONG}", 'error');
+          toastSweet('Error', "#{translation.WRONG}", 'error');
         }
       });
     } else {
-      toastSweet('Error', "#{translation.ALERTS.REQUIRED_FIELDS}", 'error');
+      toastSweet('Error', "#{translation.REQUIRED_FIELDS}", 'error');
     }
   });

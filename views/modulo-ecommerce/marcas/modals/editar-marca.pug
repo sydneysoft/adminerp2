@@ -9,18 +9,18 @@
           if marketplace
             .col-12
               .form-group
-                label(for="lista-empresas-editar") #{translation.FORM.COMPANY}
+                label(for="lista-empresas-editar") #{translation.COMPANY}
                 select#lista-empresas-editar
 
           .col-md-6.col-12
             .form-group
-              h5 #{translation.FORM.NAME}:
+              h5 #{translation.NAME}:
               .controls
-                input#idEditarMarcasAdmin(type="hidden" placeholder=translation.FORM.NAME)
+                input#idEditarMarcasAdmin(type="hidden" placeholder=translation.NAME)
                 input#nombreEditar-marcas.form-control(type="text")
           .col-md-6.col-12
             .form-group
-              h5 #{translation.FORM.CATEGORY}:
+              h5 #{translation.CATEGORY}:
               .controls
                 select#lista-categorias-editar
                 //- select#categoriaEditar-marcas.form-control
@@ -30,20 +30,20 @@
 
           .col-md-6.col-6
             .form-group
-              h5 #{translation.FORM.STATUS}:
+              h5 #{translation.STATUS}:
               .controls
                 select#activadoEditar-marcas.form-control
-                  option(value="1") #{translation.FORM.ACTIVATED}
-                  option(value="0") #{translation.FORM.DEACTIVATED}
+                  option(value="1") #{translation.ACTIVATED}
+                  option(value="0") #{translation.DEACTIVATED}
           .col-md-6.col-6
             .form-group
-              h5 #{translation.FORM.HIGHLIGHT}}:
+              h5 #{translation.HIGHLIGHT}}:
               .controls
                 select#destacadoEditar-marcas.form-control
-                  option(value="1") #{translation.FORM.YES}
-                  option(value="0") #{translation.FORM.NO}
+                  option(value="1") #{translation.YES}
+                  option(value="0") #{translation.NO}
       .modal-footer
-        button.btn.btn-success.editar(type="button" style="margin-left:7px;margin-right:7px;",onClick=`updateMarcasAdmin(${token})`) #{translation.FORM.UPDATE}
+        button.btn.btn-success.editar(type="button" style="margin-left:7px;margin-right:7px;",onClick=`updateMarcasAdmin(${token})`) #{translation.UPDATE}
           i.fas.fa-save.ml-2
-        button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.FORM.CLOSE}
+        button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}
           i.fas.fa-times-circle.ml-2

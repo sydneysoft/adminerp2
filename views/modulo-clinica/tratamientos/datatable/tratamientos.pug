@@ -22,8 +22,8 @@ script.
       order: [[1, "asc"]],
       language: {
         buttons: {
-          selectAll: '#{translation.FORM.SELECT_EVERYTHING}',
-          selectNone: '#{translation.FORM.ERASE_SELECTION}',
+          selectAll: '#{translation.SELECT_EVERYTHING}',
+          selectNone: '#{translation.ERASE_SELECTION}',
         },
         url: "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json",
         select: {
@@ -43,14 +43,14 @@ script.
             return ``;
           }
         },
-        { data: 'nombre', name: 'nombre', title: '#{translation.FORM.NAME}', orderable: true, searchable: true},
-        { data: 'costo', name: 'costo', title: '#{translation.FORM.COST}', orderable: true, searchable: true},
-        { data: 'duracion', name: 'duracion', title: '#{translation.FORM.DURATION}', orderable: true, searchable: true},
-        { data: 'frecuencia', name: 'frecuencia', title: '#{translation.FORM.FREQUENCY}', orderable: true, searchable: true},
-        { data: 'modo_aplicacion', name: 'modo_aplicacion', title: '#{translation.FORM.APPLICATION_MODE}', orderable: true, searchable: true},
-        { data: 'dosificacion', name: 'dosificacion', title: '#{translation.FORM.DOSE}', orderable: true, searchable: true},
+        { data: 'nombre', name: 'nombre', title: '#{translation.NAME}', orderable: true, searchable: true},
+        { data: 'costo', name: 'costo', title: '#{translation.COST}', orderable: true, searchable: true},
+        { data: 'duracion', name: 'duracion', title: '#{translation.DURATION}', orderable: true, searchable: true},
+        { data: 'frecuencia', name: 'frecuencia', title: '#{translation.FREQUENCY}', orderable: true, searchable: true},
+        { data: 'modo_aplicacion', name: 'modo_aplicacion', title: '#{translation.APPLICATION_MODE}', orderable: true, searchable: true},
+        { data: 'dosificacion', name: 'dosificacion', title: '#{translation.DOSE}', orderable: true, searchable: true},
         { 
-          data: 'acciones', name: 'acciones', title: '#{translation.FORM.ACTIONS}', orderable: false, searchable: false,
+          data: 'acciones', name: 'acciones', title: '#{translation.ACTIONS}', orderable: false, searchable: false,
           render: function (data, type, row) {
             let strRow = JSON.stringify(row);
             return `<button type="button" class="btn btn-primary btn-sm" onclick='editarTratamiento(${strRow})'>Editar</button>

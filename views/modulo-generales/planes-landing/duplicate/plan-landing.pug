@@ -22,7 +22,7 @@ script.
       const obj = await response.json();
       console.log(obj);
       if (obj.ok) {
-        Swal.fire('#{translation.ALERTS.DUPLICATED_REGISTERED}', '', 'success');
+        Swal.fire('#{translation.DUPLICATED_REGISTERED}', '', 'success');
 
         action = 'new';
 
@@ -31,6 +31,6 @@ script.
 
     } catch (error) {
       console.log(error)
-      Swal.fire('Oops!', '#{translation.ALERTS.ERROR_DUPLICATING_REGISTERED}', 'error');
+      Swal.fire('Oops!', '#{translation.ERROR_DUPLICATING_REGISTERED}', 'error');
     }
   }

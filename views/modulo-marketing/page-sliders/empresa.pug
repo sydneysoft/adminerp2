@@ -15,10 +15,10 @@ append contenido
           thead.thead-dark
             tr
               th(scope='col') ID
-              th(scope='col') #{translation.FORM.NAME}
-              th(scope='col') #{translation.FORM.IMAGE}
-              th(scope='col') #{translation.FORM.ALTERNATIVE_TEXT}
-              th(scope='col') #{translation.FORM.ACTIONS}
+              th(scope='col') #{translation.NAME}
+              th(scope='col') #{translation.IMAGE}
+              th(scope='col') #{translation.ALTERNATIVE_TEXT}
+              th(scope='col') #{translation.ACTIONS}
           tbody
             if Array.isArray(data) && data.length > 0 
               each item in data 

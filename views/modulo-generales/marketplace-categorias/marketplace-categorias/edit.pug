@@ -20,8 +20,8 @@ append contenido
       .row
         .col-12.col-md-8
           .form-group
-            label(for="nombre") #{translation.FORM.NAME} *
-            input#nombre.form-control(type="text" placeholder=translation.FORM.NAME name="nombre" required value=marketplace[0].nombre)
+            label(for="nombre") #{translation.NAME} *
+            input#nombre.form-control(type="text" placeholder=translation.NAME name="nombre" required value=marketplace[0].nombre)
         .col-12.col-md-8
           .row.align-items-end
             .col-9
@@ -41,28 +41,28 @@ append contenido
           include /modulo-tv/modulo-general/galeria-fotos/favicon.pug
         .col-12.col-md-4 
           .form-group
-            label(for="tipo_telefono") #{translation.FORM.PHONE_TYPE}
+            label(for="tipo_telefono") #{translation.PHONE_TYPE}
             select#tipo_telefono.form-control(name="tipo_telefono")
-              option(value="") #{translation.FORM.PHONE_TYPE}
+              option(value="") #{translation.PHONE_TYPE}
               option(value="whatsapp" selected=marketplace[0].tipo_telefono == 'whatsapp' ? 'selected': null) Whatsapp
               option(value="telefono" selected=marketplace[0].tipo_telefono == 'telefono' ? 'selected': null) Telefono
               option(value="celular" selected=marketplace[0].tipo_telefono == 'celular' ? 'selected': null) Celular
               option(value="otro" selected=marketplace[0].tipo_telefono == 'otro' ? 'selected': null) Otro
         .col-12.col-md-4
           .form-group
-            label(for="telefono") #{translation.FORM.PHONE}
-            input#telefono.form-control(type="number" placeholder=translation.FORM.PHONE name="telefono" value=marketplace[0].telefono)
+            label(for="telefono") #{translation.PHONE}
+            input#telefono.form-control(type="number" placeholder=translation.PHONE name="telefono" value=marketplace[0].telefono)
         .col-12.col-md-4 
           .form-group
-            label(for="url_telefono") #{translation.FORM.PHONE_URL}
-            input#url_telefono.form-control(type="text" placeholder=translation.FORM.PHONE_URL name="url_telefono" value=marketplace[0].url_telefono)
+            label(for="url_telefono") #{translation.PHONE_URL}
+            input#url_telefono.form-control(type="text" placeholder=translation.PHONE_URL name="url_telefono" value=marketplace[0].url_telefono)
         .col-12.col-md-8
           .form-group
-            label(for="eslogan") #{translation.FORM.SLOGAN}
-            textarea#eslogan.form-control(placeholder=translation.FORM.SLOGAN name="eslogan") #{marketplace[0].eslogan}
+            label(for="eslogan") #{translation.SLOGAN}
+            textarea#eslogan.form-control(placeholder=translation.SLOGAN name="eslogan") #{marketplace[0].eslogan}
         .col-12.col-md-4
           .form-group(style="overflow: hidden;")
-            label(for="logo") #{translation.FORM.LOGO}
+            label(for="logo") #{translation.LOGO}
             include /modulo-tv/modulo-general/galeria-fotos/modal-galeria.pug
 
   include ./navbar.pug

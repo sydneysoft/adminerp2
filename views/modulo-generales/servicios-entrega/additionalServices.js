@@ -18,7 +18,7 @@ const AgregarServicioAdmin = (token) => {
                     Swal.fire({
                         position: "center",
                         icon: "error",
-                        title: "#{translation.ALERTS.WRONG}", 
+                        title: "#{translation.WRONG}", 
                         showConfirmButton: false,
                         timer: 2500,
                     });
@@ -29,7 +29,7 @@ const AgregarServicioAdmin = (token) => {
                 Swal.fire({
                     position: "center",
                     icon: "error",
-                    title: "#{translation.ALERTS.WRONG}",
+                    title: "#{translation.WRONG}",
                     showConfirmButton: false,
                     timer: 2500,
                 });
@@ -39,7 +39,7 @@ const AgregarServicioAdmin = (token) => {
         Swal.fire({
             position: "center",
             icon: "info",
-            html: "<b>#{translation.ALERTS.MUST_COMPLETE_DATA_TO_ADD_DELIVERY_SERVICE}</b>",
+            html: "<b>#{translation.MUST_COMPLETE_DATA_TO_ADD_DELIVERY_SERVICE}</b>",
             showConfirmButton: false,
             timer: 2500,
         });
@@ -51,13 +51,13 @@ const AgregarServicioAdmin = (token) => {
 //Eliminar Servicios
 const handleDeleteServicio = (val) => {
     Swal.fire({
-        title: "#{translation.ALERTS.ARE_YOU_SURE}",
-        text: "#{translation.ALERTS.YOU_COULD_NOT_REVERT}", 
+        title: "#{translation.ARE_YOU_SURE}",
+        text: "#{translation.YOU_COULD_NOT_REVERT}", 
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "#{translation.ALERTS.YES_DELETE}",
+        confirmButtonText: "#{translation.YES_DELETE}",
     }).then((result) => {
         if (result.isConfirmed) {
             deleteServicioJoin(val);
@@ -81,7 +81,7 @@ const deleteServicioJoin = (val) => {
                 Swal.fire({
                     position: "center",
                     icon: "error",
-                    title: "#{translation.ALERTS.WRONG}",
+                    title: "#{translation.WRONG}",
                     showConfirmButton: false,
                     timer: 2500,
                 });
@@ -92,7 +92,7 @@ const deleteServicioJoin = (val) => {
             Swal.fire({
                 position: "center",
                 icon: "error",
-                title: "#{translation.ALERTS.WRONG}",
+                title: "#{translation.WRONG}",
                 showConfirmButton: false,
                 timer: 2500,
             });
@@ -138,7 +138,7 @@ const ActualizarServicioAdmin = () => {
                     Swal.fire({
                         position: "center",
                         icon: "error",
-                        title: "#{translation.ALERTS.WRONG}",
+                        title: "#{translation.WRONG}",
                         showConfirmButton: false,
                         timer: 2500,
                     });
@@ -150,7 +150,7 @@ const ActualizarServicioAdmin = () => {
                 Swal.fire({
                     position: "center",
                     icon: "error",
-                    title: "#{translation.ALERTS.WRONG}",
+                    title: "#{translation.WRONG}",
                     showConfirmButton: false,
                     timer: 2500,
                 });
@@ -161,7 +161,7 @@ const ActualizarServicioAdmin = () => {
         Swal.fire({
             position: "center",
             icon: "error",
-            html: "<b>#{translation.ALERTS.COMPLETE_FORM_DATA_ADD_SERVICE}</b>",
+            html: "<b>#{translation.COMPLETE_FORM_DATA_ADD_SERVICE}</b>",
             showConfirmButton: false,
             timer: 2500,
         });

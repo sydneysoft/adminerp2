@@ -16,12 +16,12 @@ script.
         {
           data: 'nombre',
           name: 'nombre',
-          title: "#{translation.FORM.NAME}",
+          title: "#{translation.NAME}",
         },
         {
           data: 'logo',
           name: 'logo',
-          title: "#{translation.FORM.LOGO}",
+          title: "#{translation.LOGO}",
           render: function (data, type, row) { 
             try {
               new URL(data);
@@ -36,7 +36,7 @@ script.
         {
           data: 'favicon',
           name: 'favicon',
-          title: "#{translation.FORM.FAVICON}",
+          title: "#{translation.FAVICON}",
           render: function (data, type, row) {
             try {
               new URL(data);
@@ -51,7 +51,7 @@ script.
         {
           data: 'eslogan',
           name: 'eslogan',
-          title: "#{translation.FORM.SLOGAN}",
+          title: "#{translation.SLOGAN}",
           render: function (data, type, row) {
             if (data.length > 50)
               return `<p>${data.substring(0, 50)}...</p>`
@@ -64,12 +64,12 @@ script.
         {
           data: 'telefono',
           name: 'telefono',
-          title: "#{translation.FORM.PHONE}",
+          title: "#{translation.PHONE}",
         },
         {
           data: 'id',
           name: 'id',
-          title: "#{translation.FORM.ACTIONS}",
+          title: "#{translation.ACTIONS}",
           render: function (data, type, row) {
             let strRow = JSON.stringify(row);
             return `<a href="/admin-marketplace-categorias/${row.id}" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></a>

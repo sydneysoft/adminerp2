@@ -18,31 +18,31 @@ append contenido
         .col-12.my-3
         .col-12 
           .form-group
-            label(for='nombre') #{translation.FORM.NAME}
+            label(for='nombre') #{translation.NAME}
             input#nombre.form-control(type='text' aria-describedby='nombreHelp' placeholder="Nombre de la página." value=data.nombre)
             small#nombreHelp.form-text.text-muted.d-none #{translation.WRITE_THE_NAME}
         .col-12.my-3
         .col-12.col-md-8 
           .form-group 
-            label(for="estracto") #{translation.FORM.EXTRACT} 
+            label(for="estracto") #{translation.EXTRACT} 
             textarea#estracto.form-control(name="estracto" placeholder="Escriba una descripción corta.")
               |#{data.estracto}
         .col-12.col-md-4 
           .form-group 
-            label(for="tipo") #{translation.FORM.TYPE} 
+            label(for="tipo") #{translation.TYPE} 
             select#tipo.form-control(name="tipo")
-              option(value="post") #{translation.FORM.POST}
+              option(value="post") #{translation.POST}
         .col-12.my-3
         .col-12.col-md-8
-          label(for='thumbnail') #{translation.FORM.THUMBNAIL}
-          input#thumbnail.form-control(type='text'  placeholder #{translation.FORM.THUMBNAIL} value=data.thumbnail)
+          label(for='thumbnail') #{translation.THUMBNAIL}
+          input#thumbnail.form-control(type='text'  placeholder=translation.THUMBNAIL value=data.thumbnail)
         .col-12.col-md-4
-          label(for='identificador') #{translation.FORM.IDENTIFIER}
-          input#identificador.form-control(type='text'  placeholder #{translation.FORM.IDENTIFIER} value=data.indentificador)
+          label(for='identificador') #{translation.IDENTIFIER}
+          input#identificador.form-control(type='text'  placeholder=translation.IDENTIFIER value=data.indentificador)
         .col-12.my-3
         .col-12
           .form-group 
-            label(for="body") #{translation.FORM.BODY} 
+            label(for="body") #{translation.BODY} 
             textarea#body(name="body")
               |#{data.body}
 

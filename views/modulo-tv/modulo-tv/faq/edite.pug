@@ -14,19 +14,19 @@ append contenido
       input#idFAQ(name="id" value=data.id hidden)
       .row
         .col-12.text-right 
-          button.btn.btn-primary(type="submit") #{translation.FORM.SAVE}
+          button.btn.btn-primary(type="submit") #{translation.SAVE}
         .col-12.my-3
         .col-12.col-md-8
           .form-group
-            label(for='pregunta') #{translation.FORM.QUESTION}
+            label(for='pregunta') #{translation.QUESTION}
             input#pregunta.form-control(type='text' placeholder="Pregunta" value=data.pregunta)
         .col-12.col-md-4 
-          label(for='icono') #{translation.FORM.ICON}
+          label(for='icono') #{translation.ICON}
             input#icono.form-control(type='text' placeholder="Icono (font awesome)" value=data.icono)
         .col-12.my-3
         .col-12
           .form-group 
-            label(for="respuesta") #{translation.FORM.ANSWER} 
+            label(for="respuesta") #{translation.ANSWER} 
             textarea#respuesta(name="respuesta" placeholder="Respuesta") 
               |#{data.respuesta}
 

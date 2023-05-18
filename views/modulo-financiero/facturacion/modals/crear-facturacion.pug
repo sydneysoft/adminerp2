@@ -29,27 +29,27 @@
                   option(value="4")="CÉDULA DIPLOMÁTICA DE "
           .col-md-4.col-12
             .form-group
-              label #{translation.FORM.DOCUMENT_NUMBER}
+              label #{translation.DOCUMENT_NUMBER}
               .controls
                 input#numeroDocumentoNuevo-factura.form-control(type="text")
           .col-md-4.col-12
             .form-group
-              label #{translation.FORM.EMAIL}
+              label #{translation.EMAIL}
               .controls
                 input#emailNuevo-factura.form-control(type="text")
           .col-md-4.col-12
             .form-group
-              label #{translation.FORM.MOBILE_PHONE}
+              label #{translation.MOBILE_PHONE}
               .controls
                 input#celularNuevo-factura.form-control(type="number")
           .col-md-6.col-12
             .form-group
-              label #{translation.FORM.ADDRESS}
+              label #{translation.ADDRESS}
               .controls
                 input#direccionNuevo-factura.form-control(type="text")
           .col-md-6.col-12
             .form-group
-              label #{translation.FORM.PRODUCT}
+              label #{translation.PRODUCT}
               .controls(style="position:relative;")
                 .input-group
                   input#productoNuevo-factura.form-control(type="text" autocomplete="password" placeholder=translation.ENTER_PRODUCT)
@@ -63,11 +63,11 @@
                 thead
                   tr.bg-primary
                     th.text-center(style="color:#fff") #
-                    th.text-center(style="color:#fff") #{translation.FORM.PRODUCT}
-                    th.text-center(style="color:#fff") #{translation.FORM.QUANTITY}
-                    th.text-center(style="color:#fff") #{translation.FORM.PERCENTAGE_DISCOUNT}
-                    th.text-center(style="color:#fff") #{translation.FORM.PRICE} 
-                    th.text-center(style="color:#fff") #{translation.FORM.SUBTOTAL} 
+                    th.text-center(style="color:#fff") #{translation.PRODUCT}
+                    th.text-center(style="color:#fff") #{translation.QUANTITY}
+                    th.text-center(style="color:#fff") #{translation.PERCENTAGE_DISCOUNT}
+                    th.text-center(style="color:#fff") #{translation.PRICE} 
+                    th.text-center(style="color:#fff") #{translation.SUBTOTAL} 
                 tbody#idAddedBody
       .modal-footer
         button.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;", onClick=`generateInvoice(${token})`) #{translation.SAVE}

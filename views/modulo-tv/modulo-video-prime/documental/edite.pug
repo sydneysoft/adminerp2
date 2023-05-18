@@ -17,14 +17,14 @@ append contenido
         .col-12.my-3
         .col-12 
           .form-group
-            label(for='nombre') #{translation.FORM.NAME}
-            input#nombre.form-control(type='text' aria-describedby='nombreHelp' placeholder #{translation.FORM.NAME} value=data.nombre)
-            small#nombreHelp.form-text.text-muted.d-none #{translation.FORM.WRITE_THE_NAME}
+            label(for='nombre') #{translation.NAME}
+            input#nombre.form-control(type='text' aria-describedby='nombreHelp' placeholder=translation.NAME value=data.nombre)
+            small#nombreHelp.form-text.text-muted.d-none #{translation.WRITE_THE_NAME}
         .col-12.my-3
         .col-12.col-md-8 
           .form-group 
-            label(for="estracto") #{translation.FORM.EXTRACT} 
-            textarea#estracto.form-control(name="estracto" placeholder #{translation.FORM.WRITE_SHORT_DESCRIPTION})
+            label(for="estracto") #{translation.EXTRACT} 
+            textarea#estracto.form-control(name="estracto" placeholder=translation.WRITE_SHORT_DESCRIPTION)
               |#{data.estracto}
         .col-12.col-md-4 
           .form-check
@@ -33,23 +33,23 @@ append contenido
             else 
               input#external.form-check-input(type='checkbox' value='')
             label.form-check-label(for='external')
-              | #{translation.FORM.EXTERNAL_LINK}
+              | #{translation.EXTERNAL_LINK}
 
         .col-12.my-3
         .col-12
-          label(for='thumbnail') #{translation.FORM.THUMBNAIL}
-          input#thumbnail.form-control(type='text'  placeholder #{translation.FORM.THUMBNAIL} value=data.thumbnail)
+          label(for='thumbnail') #{translation.THUMBNAIL}
+          input#thumbnail.form-control(type='text'  placeholder=translation.THUMBNAIL value=data.thumbnail)
         .col-12.my-3
         .col-12.col-md-6
-          label(for='trailer') #{translation.FORM.TRAILER}
-          input#trailer.form-control(type='text'  placeholder #{translation.FORM.TRAILER} value=data.trailer)
+          label(for='trailer') #{translation.TRAILER}
+          input#trailer.form-control(type='text'  placeholder=translation.TRAILER value=data.trailer)
         .col-12.col-md-6
-          label(for='url') #{translation.FORM.EXTERNAL_LINK}
-          input#url.form-control(type='text'  placeholder #{translation.FORM.EXTERNAL_LINK} value=data.url)
+          label(for='url') #{translation.EXTERNAL_LINK}
+          input#url.form-control(type='text'  placeholder=translation.EXTERNAL_LINK value=data.url)
         .col-12.my-3
         .col-12
           .form-group 
-            label(for="body") #{translation.FORM.BODY} 
+            label(for="body") #{translation.BODY} 
             textarea#body(name="body") 
               | #{data.body}
 

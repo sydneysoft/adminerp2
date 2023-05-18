@@ -14,10 +14,10 @@ block contenido
                     thead.thead-dark
                         tr
                             th.text-center ID
-                            th.text-center #{translation.FORM.CLIENT}
-                            th.text-center #{translation.FORM.PRICE} 
-                            th.text-center #{translation.FORM.TYPE} 
-                            th.text-center #{translation.FORM.DATE}
+                            th.text-center #{translation.CLIENT}
+                            th.text-center #{translation.PRICE} 
+                            th.text-center #{translation.TYPE} 
+                            th.text-center #{translation.DATE}
                     tbody
                         if (items.facturas!="")
                             each book in items.facturas
@@ -34,9 +34,9 @@ block contenido
                                                 i.fas.fa-ban
                                         else 
                                             if(book.tipo=="2")
-                                                b #{translation.ALERTS.BILLED_ANULED}
+                                                b #{translation.BILLED_ANULED}
                                             else 
-                                                b #{translation.ALERTS.BILLED_ANULED}
+                                                b #{translation.BILLED_ANULED}
 
     include ./modals/crear-facturacion.pug
 
@@ -56,7 +56,7 @@ block contenido
                     Swal.fire({
                         position: 'center',
                         icon: 'info',
-                        html: "#{translation.ALERTS.NO_STOCK}",
+                        html: "#{translation.NO_STOCK}",
                         showConfirmButton: false,
                         timer: 2500
                     });  
@@ -97,7 +97,7 @@ block contenido
                                 Swal.fire({
                                     position: 'center',
                                     icon: 'info',
-                                    html: "#{translation.ALERTS.NO_STOCK}",
+                                    html: "#{translation.NO_STOCK}",
                                     showConfirmButton: false,
                                     timer: 2500
                                 });  
@@ -118,7 +118,7 @@ block contenido
                 Swal.fire({
                     position: 'center',
                     icon: 'info',
-                    html: #{translation.ALERTS.ARE_YOU_SURE_ADD_PRODUCT},
+                    html: "#{translation.ARE_YOU_SURE_ADD_PRODUCT}",
                     showConfirmButton: true,
                     showCancelButton: true,
                     confirmButtonText:'<i class="fa fa-thumbs-up"></i> Continuar!',

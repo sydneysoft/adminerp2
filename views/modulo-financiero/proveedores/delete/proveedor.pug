@@ -20,15 +20,15 @@ script.
               if (typeof tablaProveedores != 'undefined' && tablaProveedores) {
                 tablaProveedores.ajax.reload();
               }
-              toastSweet('Success', #{translation.ALERTS.DELETED}, 'success');
+              toastSweet('Success', "#{translation.DELETED}", 'success');
 
             } else {
-              toastSweet('Error', #{translation.ALERTS.WRONG}, 'error');
+              toastSweet('Error', "#{translation.WRONG}", 'error');
             }
           })
           .catch(() => {
             Swal.close();
-            toastSweet('Error', #{translation.ALERTS.WRONG}, 'error');
+            toastSweet('Error', "#{translation.WRONG}", 'error');
           });
       }
     });

@@ -14,17 +14,17 @@ append contenido
         .row 
           .col-12.col-md-8
             .form-group
-              label(for='nombre') #{translation.FORM.NAME} *
-              input#nombre.form-control(type='text' placeholder=translation.FORM.NAME name="nombre" value=data.nombre required)
+              label(for='nombre') #{translation.NAME} *
+              input#nombre.form-control(type='text' placeholder=translation.NAME name="nombre" value=data.nombre required)
             .form-group 
-              label(for='alt') #{translation.FORM.ALTERNATIVE_TEXT}
-              textarea#alt.form-control(name="alt" placeholder=translation.FORM.ALTERNATIVE_TEXT) #{data.alt}
+              label(for='alt') #{translation.ALTERNATIVE_TEXT}
+              textarea#alt.form-control(name="alt" placeholder=translation.ALTERNATIVE_TEXT) #{data.alt}
             .form-group   
-              label(for="descripcion") #{translation.FORM.DESCRIPTION}
-              textarea#descripcion(placeholder=translation.FORM.DESCRIPTION) #{data.descripcion}
+              label(for="descripcion") #{translation.DESCRIPTION}
+              textarea#descripcion(placeholder=translation.DESCRIPTION) #{data.descripcion}
           .col-12.col-md-4
             .form-group 
-              label(for='imagen') #{translation.FORM.IMAGE} *
+              label(for='imagen') #{translation.IMAGE} *
               include /modulo-generales/galeria-fotos/modal-galeria.pug
     include /modulo-generales/galeria-fotos/partial-modal-galeria.pug
     script.
@@ -48,7 +48,7 @@ append contenido
           Swal.fire({
             icon: 'error',
             title: 'Oops...',
-            text: '#{translation.FORM.REQUIRED_FIELDS}',
+            text: '#{translation.REQUIRED_FIELDS}',
           })
         }
       });
@@ -62,4 +62,4 @@ append contenido
       });
   else 
     .alert.alert-info(role="alert")
-      | #{translation.ALERTS.NO_DATA}
+      | #{translation.NO_DATA}

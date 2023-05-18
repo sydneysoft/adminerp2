@@ -34,7 +34,7 @@ script.
         if (typeof tablaProveedores != 'undefined' && tablaProveedores) {
           tablaProveedores.ajax.reload();
         }
-        toastSweet('Success', '#{translation.ALERTS.CREATED}', 'success');
+        toastSweet('Success', '#{translation.CREATED}', 'success');
         
         $("#guardarProveedoreModal").modal("hide");
         //- window.location.reload(true);
@@ -45,7 +45,7 @@ script.
         } else {
 
           Swal.close();
-          toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+          toastSweet('Error', '#{translation.WRONG}', 'error');
         }
       }
     });

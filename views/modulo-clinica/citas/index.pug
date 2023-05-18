@@ -27,14 +27,14 @@ append contenido
               .form-group 
                 label(for="estado-citas-admin-filtro")="Estado"
                 select.form-control(id="estado-citas-admin-filtro")
-                  option(value="0") #{translation.FORM.SELECT_STATUS}
-                  option(value="pendiente") #{translation.FORM.PENDING}
-                  option(value="confirmada") #{translation.FORM.CONFIRMED}
-                  option(value="cancelada") #{translation.FORM.CANCELED}
-                  option(value="atendida") #{translation.FORM.ATTENDED}
+                  option(value="0") #{translation.SELECT_STATUS}
+                  option(value="pendiente") #{translation.PENDING}
+                  option(value="confirmada") #{translation.CONFIRMED}
+                  option(value="cancelada") #{translation.CANCELED}
+                  option(value="atendida") #{translation.ATTENDED}
             .col-12.col-md-3 
               .form-group 
-                label(for="paciente-citas-admin-filtro") #{translation.FORM.PATIENT}
+                label(for="paciente-citas-admin-filtro") #{translation.PATIENT}
                 select2#lista-pacientes-filtro
             .col-12.col-md-3 
               .form-group 

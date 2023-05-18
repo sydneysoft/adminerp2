@@ -11,31 +11,31 @@
         .row 
           .col-12.col-md-9
             .form-group 
-              label(for="nombre_editar") #{translation.FORM.NAME}
-              input#nombre_editar.form-control(type="text" placeholder=translation.FORM.NAME)
+              label(for="nombre_editar") #{translation.NAME}
+              input#nombre_editar.form-control(type="text" placeholder=translation.NAME)
           .col-12.col-md-3
             .form-group
-              label(for="codigoexterno_editar") #{translation.FORM.EXTERNAL_CODE}
-              input#codigoexterno_editar.form-control(type="text" placeholder=translation.FORM.EXTERNAL_CODE)
+              label(for="codigoexterno_editar") #{translation.EXTERNAL_CODE}
+              input#codigoexterno_editar.form-control(type="text" placeholder=translation.EXTERNAL_CODE)
         .row.mt-3
           .col-12.col-md-6
             .form-group 
-              label(for="estado_editar") #{translation.FORM.STATE}
-              //- input#estado.form-control(type="text" placeholder=translation.FORM.STATE)
+              label(for="estado_editar") #{translation.STATE}
+              //- input#estado.form-control(type="text" placeholder=translation.STATE)
               select#estado_editar.form-control(name="estado")
-                option(value="1") #{translation.FORM.ACTIVE}
-                option(value="2") #{translation.FORM.INACTIVE}
+                option(value="1") #{translation.ACTIVE}
+                option(value="2") #{translation.INACTIVE}
           .col-12.col-md-6 
             .form-group
-              label(for="sede_editar") #{translation.FORM.BRANCH}
+              label(for="sede_editar") #{translation.BRANCH}
               select#sede_editar.form-control
-                option(value="0") #{translation.FORM.NO_BRANCH}
+                option(value="0") #{translation.NO_BRANCH}
                 each sede in sedes
                   option(value=sede.id) #{sede.nombre}
         .row.mt-3
           .col-12.col-md-6
             .form-group 
-              label(for="categoria_editar") #{translation.FORM.CATEGORY}
+              label(for="categoria_editar") #{translation.CATEGORY}
               select#categoria_editar.form-control(name="categoria")
                 //- Categorias medicas
                 option(value="1") Angiología
@@ -97,20 +97,20 @@
 
           .col-12.col-md-6
             .form-group
-              label(for="icono_editar") #{translation.FORM.ICON}
+              label(for="icono_editar") #{translation.ICON}
                 span#showIcono_editar.ml-1
               select#icono_editar.form-control
-                option(value="0") #{translation.FORM.NO_ICON}
+                option(value="0") #{translation.NO_ICON}
 
         .row.mt-3
           .col-12.col-md-6
             .form-group 
-              label(for="descriptionlarga_editar") #{translation.FORM.LONG_DESCRIPTION}
-              textarea#descriptionlarga_editar.form-control(placeholder=translation.FORM.LONG_DESCRIPTION)
+              label(for="descriptionlarga_editar") #{translation.LONG_DESCRIPTION}
+              textarea#descriptionlarga_editar.form-control(placeholder=translation.LONG_DESCRIPTION)
           .col-12.col-md-6
             .form-group
-              label(for="descripcioncorta_editar") #{translation.FORM.SHORT_DESCRIPTION}
-              textarea#descripcioncorta_editar.form-control(placeholder=translation.FORM.SHORT_DESCRIPTION)
+              label(for="descripcioncorta_editar") #{translation.SHORT_DESCRIPTION}
+              textarea#descripcioncorta_editar.form-control(placeholder=translation.SHORT_DESCRIPTION)
 
         .row.mt-3 
           .col-12.col-md-6
@@ -130,7 +130,7 @@
             //- Checkbox
             .form-check 
               input#activado_editar.form-check-input(type="checkbox" value="")
-              label.form-check-label(for="activado_editar") #{translation.FORM.ENABLED}
+              label.form-check-label(for="activado_editar") #{translation.ENABLED}
           input#itemId(type="text" value="" hidden)
       .modal-footer(style="padding:8px;")
         .row(style="margin:0;")

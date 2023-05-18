@@ -7,53 +7,53 @@ append contenido
         .row
           .col-12.col-md-6 
             .form-group 
-              label(for="paciente_nombre" ) #{translation.FORM.NAME}
+              label(for="paciente_nombre" ) #{translation.NAME}
               input#paciente_nombre.form-control(type="text" value=`${pacientes[0].nombre} ${pacientes[0].apellido_paterno} ${pacientes[0].apellido_materno}` disabled)
           .col-12.col-md-3 
             .form-group
-              label(for="numero_documento") #{translation.FORM.DOCUMENT_NUMBER}
+              label(for="numero_documento") #{translation.DOCUMENT_NUMBER}
               input#numero_documento.form-control(type="text" value=`${pacientes[0].numero_documento}` disabled)
           .col-12.col-md-3 
             .form-group
-              label(for="tipo_documento") #{translation.FORM.DOCUMENT_TYPE}
+              label(for="tipo_documento") #{translation.DOCUMENT_TYPE}
               input#tipo_documento.form-control(type="text" value=`${pacientes[0].tipo_documento}` disabled) 
           .col-12.col-md-3
             .form-group 
-              label(for="fecha_nacimiento") #{translation.FORM.BIRTH_DATE}
+              label(for="fecha_nacimiento") #{translation.BIRTH_DATE}
               input#fecha_nacimiento.form-control(type="text" value=`${moment(pacientes[0].fecha_nacimiento).format('DD/MM/YYYY')}` disabled)
           .col-12.col-md-3 
             .form-group
-              label(for="gender") #{translation.FORM.GENRE}
+              label(for="gender") #{translation.GENRE}
               input#gender.form-control(type="text" value=`${pacientes[0].sexo}` disabled)
           .col-12.col-md-3 
             .form-group 
-              label(for="estado_civil") #{translation.FORM.CIVIL_STATUS}
+              label(for="estado_civil") #{translation.CIVIL_STATUS}
               input#estado_civil.form-control(type="text" value=`${pacientes[0].estado_civil}` disabled)
           .col-12.col-md-3 
             .form-group 
-              label(for="telefono") #{translation.FORM.CELULAR}
+              label(for="telefono") #{translation.CELULAR}
               input#telefono.form-control(type='text' value=`${pacientes[0].celular}` disabled)
           .col-12.col-md-6 
             .form-group 
-              label(for="correo") #{translation.FORM.EMAIL}
+              label(for="correo") #{translation.EMAIL}
               input#correo.form-control(type='text' value=`${pacientes[0].correo}` disabled)
           .col-12.col-md-6  
             .form-group 
-              label(for="direccion") #{translation.FORM.ADDRESS}
+              label(for="direccion") #{translation.ADDRESS}
               input#direccion.form-control(type='text' value=`${pacientes[0].direccion}` disabled)
           .col-12.col-md-6 
             .form-group 
-              label(for="nota") #{translation.FORM.NOTE}
+              label(for="nota") #{translation.NOTE}
               textarea#nota.form-control(type='text' disabled) #{pacientes[0].nota}
           .col-12.col-md-6 
             .form-group
-              label(for="diagnostico") #{translation.FORM.DIAGNOSTIC}
+              label(for="diagnostico") #{translation.DIAGNOSTIC}
               textarea#diagnostico.form-control(type='text' disabled) #{pacientes[0].diagnostico}
     if Array.isArray(citas) && citas.length > 0
       .container-fluid 
         .row
           .col-12 
-            h2 #{translation.FORM.APPOINTMENTS}
+            h2 #{translation.APPOINTMENTS}
       .list-group 
         each item, i in citas
           button.list-group-item.lisit-group-action.text-left(type="button" data-toggle="modal" data-target="#modalCitas" onclick='mostrarCita(' + JSON.stringify(item) + ')')
@@ -76,59 +76,59 @@ append contenido
           button.close(type="button" data-dismiss="modal" aria-label="Close")
             span(aria-hidden="true") ×
         .modal-body
-          p #{translation.FORM.DELETE_CONFIRM}
+          p #{translation.DELETE_CONFIRM}
 
           .row
             .col-12.col-md-3
               .form-group
-                label(for="fecha_registro") #{translation.FORM.REGISTER_DATE}
-                input#fecha_registro.form-control(type="text" placeholder=translation.FORM.REGISTER_DATE disabled)
+                label(for="fecha_registro") #{translation.REGISTER_DATE}
+                input#fecha_registro.form-control(type="text" placeholder=translation.REGISTER_DATE disabled)
             .col-12.col-md-3
               .form-group
-                label(for="fecha_cita") #{translation.FORM.APPOINTMENT_DATE}
-                input#fecha_cita.form-control(type="text" placeholder=translation.FORM.APPOINTMENT_DATE disabled)
+                label(for="fecha_cita") #{translation.APPOINTMENT_DATE}
+                input#fecha_cita.form-control(type="text" placeholder=translation.APPOINTMENT_DATE disabled)
             .col-12.col-md-2 
               .form-group 
-                label(for="tipo_cita") #{translation.FORM.APPOINTMENT_TYPE}
-                input#tipo_cita.form-control(type="text" placeholder=translation.FORM.APPOINTMENT_TYPE disabled)
+                label(for="tipo_cita") #{translation.APPOINTMENT_TYPE}
+                input#tipo_cita.form-control(type="text" placeholder=translation.APPOINTMENT_TYPE disabled)
             .col-12.col-md-2 
               .form-group
-                label(for="hora_inicio") #{translation.FORM.START_TIME}
-                input#hora_inicio.form-control(type="text" placeholder=translation.FORM.START_TIME disabled)
+                label(for="hora_inicio") #{translation.START_TIME}
+                input#hora_inicio.form-control(type="text" placeholder=translation.START_TIME disabled)
             .col-12.col-md-2
               .form-group
-                label(for="hora_fin") #{translation.FORM.END_TIME}
-                input#hora_fin.form-control(type="text" placeholder=translation.FORM.END_TIME disabled)
+                label(for="hora_fin") #{translation.END_TIME}
+                input#hora_fin.form-control(type="text" placeholder=translation.END_TIME disabled)
             .col-12.col-md-8
               .form-group
-                label(for="medico") #{translation.FORM.DOCTOR}
-                input#medico.form-control(type="text" placeholder=translation.FORM.DOCTOR disabled)
+                label(for="medico") #{translation.DOCTOR}
+                input#medico.form-control(type="text" placeholder=translation.DOCTOR disabled)
             .col-12.col-md-4 
               .form-group
-                label(for="especialidad") #{translation.FORM.SPECIALTY}
-                input#especialidad.form-control(type="text" placeholder=translation.FORM.SPECIALTY disabled)
+                label(for="especialidad") #{translation.SPECIALTY}
+                input#especialidad.form-control(type="text" placeholder=translation.SPECIALTY disabled)
             .col-12
               .form-group
-                label(for="sede") #{translation.FORM.BRANCH} - #{translation.FORM.ADDRESS}
-                input#sede.form-control(type="text" placeholder=translation.FORM.BRANCH disabled)
+                label(for="sede") #{translation.BRANCH} - #{translation.ADDRESS}
+                input#sede.form-control(type="text" placeholder=translation.BRANCH disabled)
             .col-12.col-md-4 
               .form-group
-                label(for="estado") #{translation.FORM.STATUS}
-                input#estado.form-control(type="text" placeholder=translation.FORM.STATUS disabled)
+                label(for="estado") #{translation.STATUS}
+                input#estado.form-control(type="text" placeholder=translation.STATUS disabled)
             .col-12.col-md-4 
               .form-group
-                label(for="precio") #{translation.FORM.PRICE}
-                input#precio.form-control(type="text" placeholder=translation.FORM.PRICE disabled)
+                label(for="precio") #{translation.PRICE}
+                input#precio.form-control(type="text" placeholder=translation.PRICE disabled)
             .col-12.col-md-4 
               .form-group 
-                label(for="dia") #{translation.FORM.DAY}
-                input#dia.form-control(type="text" placeholder=translation.FORM.DAY disabled)
+                label(for="dia") #{translation.DAY}
+                input#dia.form-control(type="text" placeholder=translation.DAY disabled)
           .row 
             .col-12 
               #mostrar_reprogramacion
         .modal-footer
-          //- button.btn.btn-secondary(type="button" data-dismiss="modal") #{translation.FORM.CLOSE}
-          //- button.btn.btn-danger(type="button" data-dismiss="modal" id="delete") #{translation.FORM.DELETE}
+          //- button.btn.btn-secondary(type="button" data-dismiss="modal") #{translation.CLOSE}
+          //- button.btn.btn-danger(type="button" data-dismiss="modal" id="delete") #{translation.DELETE}
           //- closs
           button#regresar_dato.btn.btn-primary.d-none(type="button" class="btn btn-secondary") #{translation.MAIN_DATA}
           button.btn.btn-danger(type="button" data-dismiss="modal") #{translation.CLOSE}
@@ -151,25 +151,25 @@ append contenido
       $('#sede').val(data.sede.nombre + ' - ' + data.sede.direccion);
       switch(data.tipoCita.toString().trim().toLowerCase()) {
         case 'virtual':
-          $('#tipo_cita').val('#{translation.FORM.VIRTUAL}');
+          $('#tipo_cita').val('#{translation.VIRTUAL}');
           break;
         case 'presencial':
-          $('#tipo_cita').val('#{translation.FORM.FACE_TO_FACE}');
+          $('#tipo_cita').val('#{translation.FACE_TO_FACE}');
           break;
       }
 
       switch(data.estado.toString().trim().toLowerCase()) {
         case 'pendiente':
-          $('#estado').val('#{translation.FORM.PENDING}');
+          $('#estado').val('#{translation.PENDING}');
           break;
         case 'confirmada':
-          $('#estado').val('#{translation.FORM.CONFIRMED}');
+          $('#estado').val('#{translation.CONFIRMED}');
           break;
         case 'cancelada':
-          $('#estado').val('#{translation.FORM.CANCELED}');
+          $('#estado').val('#{translation.CANCELED}');
           break;
         case 'atendida':
-          $('#estado').val('#{translation.FORM.ATTENDED}');
+          $('#estado').val('#{translation.ATTENDED}');
           break;
       }
 
@@ -220,9 +220,9 @@ append contenido
             </div>
           `;
             //- <p class="mb-1">
-            //-   #{translation.FORM.DOCTOR}: ${reprogramacion.profesional.nombre} <br>
-            //-   #{translation.FORM.SPECIALTY}: ${reprogramacion.especialidad.nombre} <br>
-            //-   #{translation.FORM.BRANCH}: ${reprogramacion.sede.nombre} - ${reprogramacion.sede.direccion} <br>
+            //-   #{translation.DOCTOR}: ${reprogramacion.profesional.nombre} <br>
+            //-   #{translation.SPECIALTY}: ${reprogramacion.especialidad.nombre} <br>
+            //-   #{translation.BRANCH}: ${reprogramacion.sede.nombre} - ${reprogramacion.sede.direccion} <br>
             //- </p>
           listgroup.appendChild(listgroupitem);
         });
@@ -230,7 +230,7 @@ append contenido
 
         //-   mostrar_reprogramacion.innerHTML = `
         //-     <div class="form-group">
-        //-       <label for="reprogramacion">#{translation.FORM.REPROGRAMATION}</label>
+        //-       <label for="reprogramacion">#{translation.REPROGRAMATION}</label>
         //-       <select class="form-control" id="reprogramacion">
         //-         ${data.reprogramacion.map((reprogramacion, index) => {
         //-           return `
@@ -256,25 +256,25 @@ append contenido
       $('#sede').val(data.sede.nombre + ' - ' + data.sede.direccion);
       switch(data.tipoCita.toString().trim().toLowerCase()) {
         case 'virtual':
-          $('#tipo_cita').val('#{translation.FORM.VIRTUAL}');
+          $('#tipo_cita').val('#{translation.VIRTUAL}');
           break;
         case 'presencial':
-          $('#tipo_cita').val('#{translation.FORM.FACE_TO_FACE}');
+          $('#tipo_cita').val('#{translation.FACE_TO_FACE}');
           break;
       }
 
       switch(data.estado.toString().trim().toLowerCase()) {
         case 'pendiente':
-          $('#estado').val('#{translation.FORM.PENDING}');
+          $('#estado').val('#{translation.PENDING}');
           break;
         case 'confirmada':
-          $('#estado').val('#{translation.FORM.CONFIRMED}');
+          $('#estado').val('#{translation.CONFIRMED}');
           break;
         case 'cancelada':
-          $('#estado').val('#{translation.FORM.CANCELED}');
+          $('#estado').val('#{translation.CANCELED}');
           break;
         case 'atendida':
-          $('#estado').val('#{translation.FORM.ATTENDED}');
+          $('#estado').val('#{translation.ATTENDED}');
           break;
       }
 

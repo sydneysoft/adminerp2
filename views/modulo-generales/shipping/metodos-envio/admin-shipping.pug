@@ -3,16 +3,16 @@ block contenido
     .row
         .col-12.text-grey(style="margin-bottom:10px;")
             h1.display-1
-                strong #{translation.FORM.SHIPPING_METHODS}
+                strong #{translation.SHIPPING_METHODS}
                    span.light=items.metodos.length
 
         .col-12
             button.btn.btn-success(style="margin-bottom:25px;", type="button", data-toggle="modal" data-target="#nuevoMetodoAdministrador")
                 i.fas-fa-plus
-                span #{translation.FORM.NEW_METHOD}
+                span #{translation.NEW_METHOD}
 
 
-            a.gestionarBtn.btn(href='/admin-regiones' role='button' )   #{translation.FORM.REGIONS}
+            a.gestionarBtn.btn(href='/admin-regiones' role='button' )   #{translation.REGIONS}
                  
         .col-12
             div.table-responsive
@@ -20,12 +20,12 @@ block contenido
                     thead.thead-dark
                         tr  
                             th.text-center Id
-                            th.text-center #{translation.FORM.NAME}
-                            th.text-center #{translation.FORM.STATE}
-                            th.text-center #{translation.FORM.ACTIONS} 
+                            th.text-center #{translation.NAME}
+                            th.text-center #{translation.STATE}
+                            th.text-center #{translation.ACTIONS} 
                     tbody
                         each book in items.metodos
-                            -var finalStatusMetodo = (book.activado=="0" ? '#{translation.FORM.DEACTIVATED}': '#{translation.FORM.ACTIVATED}')
+                            -var finalStatusMetodo = (book.activado=="0" ? '#{translation.DEACTIVATED}': '#{translation.ACTIVATED}')
                             tr
                                 td.text-center=book.id
                                 td.text-center=book.nombre

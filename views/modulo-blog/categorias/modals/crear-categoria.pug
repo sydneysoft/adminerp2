@@ -1,0 +1,28 @@
+//- Modal para crear cita
+.modal.fade.justify-content-center.align-items-center(tabindex="-1" role="dialog" id="nuevaCategoriaModal")
+  .modal-dialog.modal-lg
+    .modal-content.modalContent
+      .modal-header 
+        .row(style="margin:0;")
+          .col-md-12
+            h3(style="margin:0px 0;") #{translation.ADD}
+
+      .modal-body.borderBottom
+        .row
+          .col-12
+            .form-group
+              label(for="nombre") #{translation.NAME}
+              input#nombre.form-control(type="text" placeholder=translation.NAME)
+          .col-12
+            .form-group
+              label(for="descripcion") #{translation.DESCRIPTION}
+              textarea#descripcion.form-control(type="text" placeholder=translation.DESCRIPTION)
+
+      .modal-footer(style="padding:8px;")
+        .row(style="margin:0;")
+          .col-md-12.text-right
+            button#nuevaCategoria.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;") #{translation.ADD}
+              i.fas.fa-save.ml-2
+            button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}
+              i.fas.fa-times.ml-2
+

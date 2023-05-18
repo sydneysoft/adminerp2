@@ -15,9 +15,9 @@ append contenido
               thead.thead-dark
                 tr
                   th(scope='col') ID
-                  th(scope='col') #{translation.FORM.NAME}
-                  th(scope='col') #{translation.FORM.ICON}
-                  th(scope='col') #{translation.FORM.ACTIONS}
+                  th(scope='col') #{translation.NAME}
+                  th(scope='col') #{translation.ICON}
+                  th(scope='col') #{translation.ACTIONS}
               tbody
   
     if empresa_id 
@@ -38,15 +38,15 @@ append contenido
               .row 
                 .col-12
                   .form-group 
-                    label(for="descripcion") #{translation.FORM.DESCRIPTION}
+                    label(for="descripcion") #{translation.DESCRIPTION}
                     textarea#descripcion.form-control(name="descripcion")
                     span#textAreaCounter.text-sm
                 .col-12 
                   .form-group 
-                    label(for="icono") #{translation.FORM.ICON}
+                    label(for="icono") #{translation.ICON}
                       span#showIcono.ml-3
                     select#icono.form-control
-                      option(value="") #{translation.FORM.ICON}
+                      option(value="") #{translation.ICON}
             .modal-footer(style="padding:8px;")
                 .row(style="margin:0;")
                     .col-md-12.text-right
@@ -67,15 +67,15 @@ append contenido
               .row 
                 .col-12
                   .form-group 
-                    label(for="descripcion_editar") #{translation.FORM.DESCRIPTION}
+                    label(for="descripcion_editar") #{translation.DESCRIPTION}
                     textarea#descripcion_editar.form-control(name="descripcion")
                     span#textAreaCounter.text-sm
                 .col-12 
                   .form-group 
-                    label(for="icono_editar") #{translation.FORM.ICON}
+                    label(for="icono_editar") #{translation.ICON}
                       span#showIcono_editar.ml-3
                     select#icono_editar.form-control
-                      option(value="") #{translation.FORM.ICON}
+                      option(value="") #{translation.ICON}
                 .col-12 
                   #id_editar(type="text" value="" hidden)
             .modal-footer(style="padding:8px;")
@@ -97,15 +97,15 @@ append contenido
               .row 
                 .col-12
                   .form-group 
-                    label(for="descripcion_mostrar") #{translation.FORM.DESCRIPTION}
+                    label(for="descripcion_mostrar") #{translation.DESCRIPTION}
                     textarea#descripcion_mostrar.form-control(name="descripcion" readonly)
                     span#textAreaCounter.text-sm
                 .col-12 
                   .form-group 
-                    label(for="icono_mostrar") #{translation.FORM.ICON}
+                    label(for="icono_mostrar") #{translation.ICON}
                       span#showIcono_mostrar.ml-3
                     select#icono_mostrar.form-control(disabled)
-                      option(value="") #{translation.FORM.ICON}
+                      option(value="") #{translation.ICON}
                 .col-12 
                   #id_editar(type="text" value="" hidden)
             .modal-footer(style="padding:8px;")

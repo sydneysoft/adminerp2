@@ -16,15 +16,15 @@ script.
       success: function (data) {
         Swal.close();
         if (data.success == true) {
-          toastSweet('success', '#{translation.ALERTS.TAX_SUCCESS}', 'success');
+          toastSweet('success', '#{translation.TAX_SUCCESS}', 'success');
           $("#agregarImpuesto").modal("hide");
         } else {
-          toastSweet('warning', '#{translation.ALERTS.TAX_EXIST}', 'warning');
+          toastSweet('warning', '#{translation.TAX_EXIST}', 'warning');
         }
       },
       error: function (err) {
         Swal.close();
-        toastSweet('error', '#{translation.ALERTS.WRONG}', 'error');
+        toastSweet('error', '#{translation.WRONG}', 'error');
       },
     });
   });

@@ -12,21 +12,21 @@ append contenido
         .col-12
           .input-group.mb-3
             .input-group-prepend
-              span.input-group-text #{translation.FORM.NAME}
-            input.form-control(type='text' aria-describedby='basic-addon1' placeholder=translation.FORM.NAME value=data.nombre readonly)
+              span.input-group-text #{translation.NAME}
+            input.form-control(type='text' aria-describedby='basic-addon1' placeholder=translation.NAME value=data.nombre readonly)
         .col-12
           .input-group.mb-3
             .input-group-prepend
-              span.input-group-text #{translation.FORM.IDENTIFIER}
-            input.form-control(type='text' placeholder=translation.FORM.IDENTIFIER aria-describedby='basic-addon1' value=data.image readonly)
+              span.input-group-text #{translation.IDENTIFIER}
+            input.form-control(type='text' placeholder=translation.IDENTIFIER aria-describedby='basic-addon1' value=data.image readonly)
         .col-12
           .input-group.mb-3
             textarea.form-control(type='text' aria-describedby='basic-addon1' readonly)
               |#{data.estracto} 
         .col-12 
-          p.text-label.mb-3 #{translation.FORM.BODY}
+          p.text-label.mb-3 #{translation.BODY}
           div.border.p-3.rounded!= data.body
     else 
       .alert.alert-info.mt-3(role="alert")
-        | #{translation.ALERTS.NO_DATA}
+        | #{translation.NO_DATA}
 

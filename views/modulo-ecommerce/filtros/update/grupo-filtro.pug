@@ -23,15 +23,15 @@ script.
               window.location.reload(true);
             } else {
               Swal.close();
-              toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+              toastSweet('Error', '#{translation.WRONG}', 'error');
             }
           },
           error: function () {
             Swal.close();
-            toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+            toastSweet('Error', '#{translation.WRONG}', 'error');
           },
         });
       } else {
-        toastSweet('Error', '#{translation.ALERTS.FORM_EMPTY}', 'error');
+        toastSweet('Error', '#{translation.FORM_EMPTY}', 'error');
       }
   }

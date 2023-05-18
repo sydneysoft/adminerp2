@@ -15,7 +15,7 @@ script.
       columns: [
         { data: 'id', name: 'id', title: 'ID', orderable: false, searchable: true, visible: false},
         { 
-          data: 'imagen', name: 'imagen', title: '#{translation.FORM.IMAGE}',
+          data: 'imagen', name: 'imagen', title: '#{translation.IMAGE}',
           render: function (data, type, row) {
             try {
               new URL(row.imagen)
@@ -27,21 +27,21 @@ script.
           orderable: false, searchable: false,
         },
         {
-          data: 'nombre', name: 'nombre', title: "#{translation.FORM.NAME}", orderable: true, searchable: true,
+          data: 'nombre', name: 'nombre', title: "#{translation.NAME}", orderable: true, searchable: true,
         },
         {
-          data: 'descripcion_corta', name: 'descripcion_corta', title: "#{translation.FORM.SHORT_DESCRIPTION}", orderable: true, searchable: true,
+          data: 'descripcion_corta', name: 'descripcion_corta', title: "#{translation.SHORT_DESCRIPTION}", orderable: true, searchable: true,
         },
         {
-          data: 'activado', name: 'activado', title: "#{translation.FORM.STATUS}",
+          data: 'activado', name: 'activado', title: "#{translation.STATUS}",
           render: function (data, type, row) {
             console.log(data == "0")
-            return (data == "0" ? '#{translation.FORM.DISABLED}': '#{translation.FORM.ENABLED}');
+            return (data == "0" ? '#{translation.DISABLED}': '#{translation.ENABLED}');
           },
           orderable: true, searchable: true,
         },
         {
-          data: 'acciones', name: 'acciones', title: '#{translation.FORM.ACTIONS}',
+          data: 'acciones', name: 'acciones', title: '#{translation.ACTIONS}',
           render: function (data, type, row) {
             let strRow = JSON.stringify(row);
             return `

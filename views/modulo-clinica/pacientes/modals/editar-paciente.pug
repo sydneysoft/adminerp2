@@ -10,47 +10,47 @@
         .row
           .col-12.col-md-4 
             .form-group 
-              label(for="nombreEditar") #{translation.FORM.NAME} *
-              input#nombreEditar.form-control(type="text" placeholder=translation.FORM.NAME)
+              label(for="nombreEditar") #{translation.NAME} *
+              input#nombreEditar.form-control(type="text" placeholder=translation.NAME)
           .col-12.col-md-4
             .form-group 
-              label(for="apellido_paternoEditar") #{translation.FORM.FATHER_LASTNAME}*
-              input#apellido_paternoEditar.form-control(type="text" placeholder=translation.FORM.FATHER_LASTNAME)
+              label(for="apellido_paternoEditar") #{translation.FATHER_LASTNAME}*
+              input#apellido_paternoEditar.form-control(type="text" placeholder=translation.FATHER_LASTNAME)
           .col-12.col-md-4
             .form-group 
-              label(for="apellido_maternoEditar") #{translation.FORM.MOTHER_LASTNAME}
-              input#apellido_maternoEditar.form-control(type="text" placeholder=translation.FORM.MOTHER_LASTNAME)
+              label(for="apellido_maternoEditar") #{translation.MOTHER_LASTNAME}
+              input#apellido_maternoEditar.form-control(type="text" placeholder=translation.MOTHER_LASTNAME)
         .row.mt-3
           .col-12.col-md-6
             .form-group
-              label(for="tipo_documentoEditar") #{translation.FORM.DOCUMENT_TYPE}
+              label(for="tipo_documentoEditar") #{translation.DOCUMENT_TYPE}
               select#lista-documentos-editar
               //- select#tipo_documentoEditar.form-control
-              //-   option(value="pasaporte") #{translation.FORM.PASSPORT}
-              //-   option(value="cedula") #{translation.FORM.CEDULA}
-              //-   option(value="carnet_extranjeria") #{translation.FORM.CARNET_EXTRANJERIA}
-              //-   option(value="dni") #{translation.FORM.DNI}
-              //-   option(value="otro") #{translation.FORM.OTHER}
+              //-   option(value="pasaporte") #{translation.PASSPORT}
+              //-   option(value="cedula") #{translation.CEDULA}
+              //-   option(value="carnet_extranjeria") #{translation.CARNET_EXTRANJERIA}
+              //-   option(value="dni") #{translation.DNI}
+              //-   option(value="otro") #{translation.OTHER}
           .col-12.col-md-6
             .form-group
-              label(for="numero_documentoEditar") #{translation.FORM.DOCUMENT_NUMBER}
-              input#numero_documentoEditar.form-control(type="text" placeholder=translation.FORM.DOCUMENT_NUMBER)
+              label(for="numero_documentoEditar") #{translation.DOCUMENT_NUMBER}
+              input#numero_documentoEditar.form-control(type="text" placeholder=translation.DOCUMENT_NUMBER)
 
         .row.mt-3 
           .col-12.col-md-4 
             .form-group
-              label(for="sexoEditar") #{translation.FORM.GENRE}
+              label(for="sexoEditar") #{translation.GENRE}
               select#sexoEditar.form-control
-                option(value="masculino") #{translation.FORM.MALE}
-                option(value="femenino") #{translation.FORM.FEMALE}
+                option(value="masculino") #{translation.MALE}
+                option(value="femenino") #{translation.FEMALE}
 
           .col-12.col-md-4 
             .form-group
-              label(for="fecha_nacimientoEditar") #{translation.FORM.BIRTH_DATE}
-              input#fecha_nacimientoEditar.form-control(type="date" placeholder=translation.FORM.BIRTH_DATE)    
+              label(for="fecha_nacimientoEditar") #{translation.BIRTH_DATE}
+              input#fecha_nacimientoEditar.form-control(type="date" placeholder=translation.BIRTH_DATE)    
           .col-12.col-md-4 
             .form-group
-              label(for="estado_civilEditar") #{translation.FORM.CIVIL_STATUS}
+              label(for="estado_civilEditar") #{translation.CIVIL_STATUS}
               select#estado_civilEditar.form-control
                 if Array.isArray(estado_civil) && estado_civil.length > 0
                   each tipo in sexo[0].valor
@@ -61,7 +61,7 @@
         .row.mt-3 
           .col-12.col-md-4
             .form-group
-              label(for="tipo_seguroEditar") #{translation.FORM.INSURANCE_TYPE}
+              label(for="tipo_seguroEditar") #{translation.INSURANCE_TYPE}
               select#tipo_seguroEditar.form-control
                 if Array.isArray(tipo_seguro) && tipo_seguro.length > 0
                   each tipo in tipo_seguro[0].valor
@@ -71,7 +71,7 @@
                   option(value="0") No hay tipos de seguro
           .col-12.col-md-4
             .form-group
-              label(for="nombre_seguroEditar") #{translation.FORM.INSURANCE_NAME}
+              label(for="nombre_seguroEditar") #{translation.INSURANCE_NAME}
               select#lista-companias-seguros-editar
               //- select#nombre_seguroEditar.form-control
               //-   if Array.isArray(aseguradoras) && aseguradoras.length > 0
@@ -82,29 +82,29 @@
               //-     option(value="0") No hay aseguradoras
           .col-12.col-md-4
             .form-group
-              label(for="numero_seguroEditar") #{translation.FORM.INSURANCE_NUMBER}
-              input#numero_seguroEditar.form-control(type="text" placeholder=translation.FORM.INSURANCE_NUMBER)
+              label(for="numero_seguroEditar") #{translation.INSURANCE_NUMBER}
+              input#numero_seguroEditar.form-control(type="text" placeholder=translation.INSURANCE_NUMBER)
 
         .row.mt-3 
           .col-12.col-md-4 
             .form-group 
-              label(for="celularEditar") #{translation.FORM.CELULAR}
-              input#celularEditar.form-control(type="text" placeholder=translation.FORM.CELULAR)
+              label(for="celularEditar") #{translation.CELULAR}
+              input#celularEditar.form-control(type="text" placeholder=translation.CELULAR)
           .col-12.col-md-4 
             .form-group 
-              label(for="correoEditar") #{translation.FORM.EMAIL}
-              input#correoEditar.form-control(type="email" placeholder=translation.FORM.EMAIL)
+              label(for="correoEditar") #{translation.EMAIL}
+              input#correoEditar.form-control(type="email" placeholder=translation.EMAIL)
           .col-12.col-md-4
             +pais('paisEditar')
         .row.mt-3 
           .col-12.col-md-6 
             .form-group
-              label(for="direccionEditar") #{translation.FORM.ADDRESS}
-              input#direccionEditar.form-control(type="text" placeholder=translation.FORM.ADDRESS)
+              label(for="direccionEditar") #{translation.ADDRESS}
+              input#direccionEditar.form-control(type="text" placeholder=translation.ADDRESS)
           .col-12.col-md-6
             .form-group
-              label(for="notaEditar") #{translation.FORM.OBSERVATION}
-              textarea#notaEditar.form-control.h-100(placeholder=translation.FORM.OBSERVATION)
+              label(for="notaEditar") #{translation.OBSERVATION}
+              textarea#notaEditar.form-control.h-100(placeholder=translation.OBSERVATION)
 
         input#idEditar(type="text" hidden)
       .modal-footer(style="padding:8px;")

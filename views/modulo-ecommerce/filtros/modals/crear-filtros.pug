@@ -6,31 +6,31 @@
           //- if items.marketplace==1
             .col-md-12.col-12
               .form-group          
-              h5  #{translation.FORM.BUSINESS}:
+              h5  #{translation.BUSINESS}:
                 select#empresaNuevaFiltros.form-control.seleccionar(onChange="cambiarCategoriaPorEmpresaNuevo()")
-                  option(disabled selected value=0)  #{translation.FORM.SELECT_BUSINESS}   
-                  option(value=0)  #{translation.FORM.UNASSIGNED}
+                  option(disabled selected value=0)  #{translation.SELECT_BUSINESS}   
+                  option(value=0)  #{translation.UNASSIGNED}
                     each item in items.empresas
                       option(value=item.id)= item.nombre
           .col-md-6.col-12
             .form-group
-              h5 #{translation.FORM.NAME}:
+              h5 #{translation.NAME}:
               .controls
                 input#nombreNuevo-filtros.form-control(type="text")
           .col-md-6.col-12
             .form-group
-              h5 #{translation.FORM.CATEGORY}:
+              h5 #{translation.CATEGORY}:
               select#lista-categorias
               //- .controls
                 if items.marketplace==1
                   select#categoriaNuevo-filtros.form-control(disabled)
                 else
                   select#categoriaNuevo-filtros.form-control 
-                    option(value=0 disabled)  #{translation.FORM.SELECT_CATEGORY}
+                    option(value=0 disabled)  #{translation.SELECT_CATEGORY}
                     each  categoria in items.categorias
                       option(value= categoria.id)= categoria.name
 
 
       .modal-footer
-        button.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;", onClick=`AddGroupFilter(${token})`)  #{translation.FORM.ADD}
+        button.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;", onClick=`AddGroupFilter(${token})`)  #{translation.ADD}
         button.btn.btn-danger(type="buton" data-dismiss="modal") Cerrar

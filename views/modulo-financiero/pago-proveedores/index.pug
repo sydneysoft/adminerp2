@@ -34,7 +34,7 @@ block contenido
     .col-md-4.col-6
       div 
         .form-group
-          label.font-weight-bold.datev-label #{translation.FORM.NAME} 
+          label.font-weight-bold.datev-label #{translation.NAME} 
             select#lista-filtro-nombre-proveedores
               //- select#filtroNombre.form-control.seleccionar 
                 option(value=0) Seleccione
@@ -44,7 +44,7 @@ block contenido
     .col-md-4.col-6
       div 
         .form-group
-          label.font-weight-bold.datev-label #{translation.FORM.CUIT}
+          label.font-weight-bold.datev-label #{translation.CUIT}
             select#lista-filtro-cuit-proveedores
               //- select#filtroDocumento.form-control.seleccionar  
                 option(value=0) Seleccione
@@ -55,17 +55,17 @@ block contenido
     .col-md-4.col-sm-6
       div 
         .form-group
-          label.font-weight-bold.datev-label(for='dateFrom') #{translation.FORM.DATE_CREATED}
+          label.font-weight-bold.datev-label(for='dateFrom') #{translation.DATE_CREATED}
             input#dateFrom.form-control(type='date' name='dateFrom' min='2010-01-01')
 
 
     .col-md-4.col-12(style="max-width: 400px")
       div(style="display: inline-flex")
         select#acciones.form-control
-          option(value=null) #{translation.FORM.MASSIVE_ACTIONS}
-          option(value="0") #{translation.FORM.DELETE}
+          option(value=null) #{translation.MASSIVE_ACTIONS}
+          option(value="0") #{translation.DELETE}
 
-        button#accionesBoton(class="btn btn-success-2") #{translation.FORM.CONFIRM} 
+        button#accionesBoton(class="btn btn-success-2") #{translation.CONFIRM} 
 
     .col-12(style="margin-top: 5px;")
       div.table-responsive
@@ -101,11 +101,11 @@ block contenido
           tfoot 
             tr 
               th
-              th.text-left #{translation.FORM.INGREDIENTS_SERVICE}
-              th.text-center #{translation.FORM.CUIT}
-              th.text-center #{translation.FORM.PROVIDER_NAME}
-              th.text-center #{translation.FORM.DATE}
-              th.text-center #{translation.FORM.ACTION}
+              th.text-left #{translation.INGREDIENTS_SERVICE}
+              th.text-center #{translation.CUIT}
+              th.text-center #{translation.PROVIDER_NAME}
+              th.text-center #{translation.DATE}
+              th.text-center #{translation.ACTION}
   script
     include /js/toast.sweet.js
   script.

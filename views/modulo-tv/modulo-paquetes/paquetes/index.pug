@@ -16,9 +16,9 @@ append contenido
               //- thead.thead-dark
               //-   tr
               //-     th(scope='col') ID
-              //-     th(scope='col') #{translation.FORM.NAME}
-              //-     th(scope='col') #{translation.FORM.ICON}
-              //-     th(scope='col') #{translation.FORM.ACTIONS}
+              //-     th(scope='col') #{translation.NAME}
+              //-     th(scope='col') #{translation.ICON}
+              //-     th(scope='col') #{translation.ACTIONS}
               //- tbody
   if empresa_id
     input#empresa_id(type="text" value=empresa_id hidden)
@@ -37,22 +37,22 @@ append contenido
               .row 
                 .col-12.col-md-6 
                   .form-group
-                    label(for="nombre") #{translation.FORM.NAME}
-                    input#nombre.form-control(type="text" name="nombre" placeholder=`${translation.FORM.NAME}`)
+                    label(for="nombre") #{translation.NAME}
+                    input#nombre.form-control(type="text" name="nombre" placeholder=`${translation.NAME}`)
                   .form-group.mt-3 
-                    label(for="price") #{translation.FORM.PRICE}
-                    input#price.form-control(type="number" name="price" placeholder=`${translation.FORM.PRICE}`)
+                    label(for="price") #{translation.PRICE}
+                    input#price.form-control(type="number" name="price" placeholder=`${translation.PRICE}`)
                 .col-12.col-md-6 
                   .form-group
-                    label(for="descripcion") #{translation.FORM.DESCRIPTION}
-                    textarea#descripcion.form-control(type="text" name="descripcion" placeholder=`${translation.FORM.DESCRIPTION}`)
+                    label(for="descripcion") #{translation.DESCRIPTION}
+                    textarea#descripcion.form-control(type="text" name="descripcion" placeholder=`${translation.DESCRIPTION}`)
               
               .row.mt-3.align-items-end
                 .col-8
                   .form-group 
-                    label(for="caracteristica") #{translation.FORM.CHARACTERISTICS}
+                    label(for="caracteristica") #{translation.CHARACTERISTICS}
                     select#caracteristica.form-control
-                      option(value="") #{translation.FORM.CHARACTERISTICS}
+                      option(value="") #{translation.CHARACTERISTICS}
                       if Array.isArray(caracteristicas) && caracteristicas.length > 0
                         each caracteristica in caracteristicas
                           option(value=caracteristica.id target-data=JSON.stringify(caracteristica)) #{caracteristica.nombre}
@@ -86,22 +86,22 @@ append contenido
               .row 
                 .col-12.col-md-6 
                   .form-group
-                    label(for="nombre_editar") #{translation.FORM.NAME}
-                    input#nombre_editar.form-control(type="text" name="nombre" placeholder=`${translation.FORM.NAME}`)
+                    label(for="nombre_editar") #{translation.NAME}
+                    input#nombre_editar.form-control(type="text" name="nombre" placeholder=`${translation.NAME}`)
                   .form-group.mt-3 
-                    label(for="price_editar") #{translation.FORM.PRICE}
-                    input#price_editar.form-control(type="number" name="price" placeholder=`${translation.FORM.PRICE}`)
+                    label(for="price_editar") #{translation.PRICE}
+                    input#price_editar.form-control(type="number" name="price" placeholder=`${translation.PRICE}`)
                 .col-12.col-md-6 
                   .form-group
-                    label(for="descripcion_editar") #{translation.FORM.DESCRIPTION}
-                    textarea#descripcion_editar.form-control(type="text" name="descripcion" placeholder=`${translation.FORM.DESCRIPTION}`)
+                    label(for="descripcion_editar") #{translation.DESCRIPTION}
+                    textarea#descripcion_editar.form-control(type="text" name="descripcion" placeholder=`${translation.DESCRIPTION}`)
               
               .row.mt-3.align-items-end
                 .col-8
                   .form-group 
-                    label(for="caracteristica_editar") #{translation.FORM.CHARACTERISTICS}
+                    label(for="caracteristica_editar") #{translation.CHARACTERISTICS}
                     select#caracteristica_editar.form-control
-                      option(value="") #{translation.FORM.CHARACTERISTICS}
+                      option(value="") #{translation.CHARACTERISTICS}
                       if Array.isArray(caracteristicas) && caracteristicas.length > 0
                         each caracteristica in caracteristicas
                           option(value=caracteristica.id target-data=JSON.stringify(caracteristica)) #{caracteristica.nombre}
@@ -135,22 +135,22 @@ append contenido
               .row 
                 .col-12.col-md-6 
                   .form-group
-                    label(for="nombre_mostrar") #{translation.FORM.NAME}
-                    input#nombre_mostrar.form-control(type="text" name="nombre" placeholder=`${translation.FORM.NAME}` readonly)
+                    label(for="nombre_mostrar") #{translation.NAME}
+                    input#nombre_mostrar.form-control(type="text" name="nombre" placeholder=`${translation.NAME}` readonly)
                   .form-group.mt-3 
-                    label(for="price_mostrar") #{translation.FORM.PRICE}
-                    input#price_mostrar.form-control(type="number" name="price" placeholder=`${translation.FORM.PRICE}` readonly)
+                    label(for="price_mostrar") #{translation.PRICE}
+                    input#price_mostrar.form-control(type="number" name="price" placeholder=`${translation.PRICE}` readonly)
                 .col-12.col-md-6 
                   .form-group
-                    label(for="descripcion_mostrar") #{translation.FORM.DESCRIPTION}
-                    textarea#descripcion_mostrar.form-control(type="text" name="descripcion" placeholder=`${translation.FORM.DESCRIPTION}` readonly)
+                    label(for="descripcion_mostrar") #{translation.DESCRIPTION}
+                    textarea#descripcion_mostrar.form-control(type="text" name="descripcion" placeholder=`${translation.DESCRIPTION}` readonly)
               
               .row.mt-3.align-items-end
                 .col-8
                   .form-group 
-                    label(for="caracteristica_mostrar") #{translation.FORM.CHARACTERISTICS}
+                    label(for="caracteristica_mostrar") #{translation.CHARACTERISTICS}
                     select#caracteristica_mostrar.form-control(disabled)
-                      option(value="") #{translation.FORM.CHARACTERISTICS}
+                      option(value="") #{translation.CHARACTERISTICS}
                       if Array.isArray(caracteristicas) && caracteristicas.length > 0
                         each caracteristica in caracteristicas
                           option(value=caracteristica.id target-data=JSON.stringify(caracteristica)) #{caracteristica.nombre}

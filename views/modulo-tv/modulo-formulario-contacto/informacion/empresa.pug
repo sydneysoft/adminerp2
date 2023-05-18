@@ -9,11 +9,11 @@ append contenido
       thead.thead-dark
         tr
           th(scope='col') ID
-          th(scope='col') #{translation.FORM.NAME}
-          th(scope='col') #{translation.FORM.COMPANY}
-          th(scope='col') #{translation.FORM.EMAIL}
-          th(scope='col') #{translation.FORM.PHONE}
-          th(scope='col') #{translation.FORM.ACTIONS}
+          th(scope='col') #{translation.NAME}
+          th(scope='col') #{translation.COMPANY}
+          th(scope='col') #{translation.EMAIL}
+          th(scope='col') #{translation.PHONE}
+          th(scope='col') #{translation.ACTIONS}
       tbody
     
     .modal.justify-content-center.align-items-center(tabindex="-1" role="dialog" id="nuevoPacienteModal")
@@ -29,23 +29,23 @@ append contenido
                 .row
                   .col-12 
                     .form-group 
-                      label(for="nombre") #{translation.FORM.NAME}
+                      label(for="nombre") #{translation.NAME}
                       input#nombre.form-control(type="text" disabled)
                   .col-12
                     .form-group 
-                      label(for="compania") #{translation.FORM.COMPANY}
+                      label(for="compania") #{translation.COMPANY}
                       input#compania.form-control(type="text" disabled)
                   .col-12.col-md-8 
                     .form-group 
-                      label(for="email") #{translation.FORM.EMAIL}
+                      label(for="email") #{translation.EMAIL}
                       input#email.form-control(type="text" disabled)
                   .col-12.col-md-4 
                     .form-group 
-                      label(for="telefono") #{translation.FORM.PHONE}
+                      label(for="telefono") #{translation.PHONE}
                       input#telefono.form-control(type="text" disabled)
                   .col-12 
                     .form-group 
-                      label(for="mensaje") #{translation.FORM.MESSAGE}
+                      label(for="mensaje") #{translation.MESSAGE}
                       textarea#mensaje.form-control(type="text" disabled)
 
               .modal-footer(style="padding:8px;")

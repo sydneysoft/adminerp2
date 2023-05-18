@@ -58,22 +58,22 @@ script.
           Swal.close();
           if (data.ok) {
             $("#editarBannerAdministrador").modal("hide");
-            toastSweet('Success', '#{translation.ALERTS.UPDATED}', 'success');
+            toastSweet('Success', '#{translation.UPDATED}', 'success');
             if(typeof tablaMarcas != 'undefined') {
               tablaMarcas.ajax.reload();
               $("#empresa_id").val("");
             }
             $("#editarBannerAdministrador").modal("hide");
           } else {
-            toastSweet('Error', '#{translation.ALERTS.REGISTER_CANNOT_UPDATE}', 'error');
+            toastSweet('Error', '#{translation.REGISTER_CANNOT_UPDATE}', 'error');
           }
         },
         error: function () {
           Swal.close();
-          toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+          toastSweet('Error', '#{translation.WRONG}', 'error');
         },
       });
     } else {
-      toastSweet('Error', '#{translation.ALERTS.FORM_EMPTY}', 'error');
+      toastSweet('Error', '#{translation.FORM_EMPTY}', 'error');
     }
   };

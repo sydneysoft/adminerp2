@@ -10,28 +10,28 @@ block contenido
       | #{data.nombre}
 
     .my-3.text-right 
-      a.btn.btn-primary(href=`/admin-tv/programas/edite/${data.id}`) #{translation.FORM.EDIT} 
+      a.btn.btn-primary(href=`/admin-tv/programas/edite/${data.id}`) #{translation.EDIT} 
 
     .card 
       .card-body 
         table.table
           thead
             tr
-              th(scope='col') #{translation.FORM.NAME}
-              th(scope='col') #{translation.FORM.DESCRIPTION}
+              th(scope='col') #{translation.NAME}
+              th(scope='col') #{translation.DESCRIPTION}
           tbody
             tr
               th(scope='row') ID
               td #{data.id}
             tr
-              th(scope='row') #{translation.FORM.NAME}
+              th(scope='row') #{translation.NAME}
               td #{data.nombre}
             tr
-              th(scope='row') #{translation.FORM.SLOGAN}
+              th(scope='row') #{translation.SLOGAN}
               td #{data.slogan}
             tr
-              th(scope='row') #{translation.FORM.BACKGROUND_PHOTO}
+              th(scope='row') #{translation.BACKGROUND_PHOTO}
               td #{data.foto_portada}
             tr
-              th(scope='row') #{translation.FORM.SEASONS_NUMBER}
+              th(scope='row') #{translation.SEASONS_NUMBER}
               td #{data.num_temporadas}

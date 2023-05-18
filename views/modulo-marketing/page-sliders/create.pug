@@ -11,17 +11,17 @@ append contenido
       .row 
         .col-12.col-md-8
           .form-group
-            label(for='nombre') #{translation.FORM.NAME}
-            input#nombre.form-control(type='text' placeholder=translation.FORM.NAME name="nombre" required)
+            label(for='nombre') #{translation.NAME}
+            input#nombre.form-control(type='text' placeholder=translation.NAME name="nombre" required)
           .form-group 
-            label(for='alt') #{translation.FORM.ALTERNATIVE_TEXT}
-            textarea#alt.form-control(name="ubicacion" placeholder=translation.FORM.ALTERNATIVE_TEXT)
+            label(for='alt') #{translation.ALTERNATIVE_TEXT}
+            textarea#alt.form-control(name="ubicacion" placeholder=translation.ALTERNATIVE_TEXT)
           .form-group   
-            label(for="descripcion") #{translation.FORM.DESCRIPTION}
-            textarea#descripcion(placeholder=translation.FORM.DESCRIPTION)
+            label(for="descripcion") #{translation.DESCRIPTION}
+            textarea#descripcion(placeholder=translation.DESCRIPTION)
         .col-12.col-md-4
           .form-group 
-            label(for='imagen') #{translation.FORM.IMAGE} *
+            label(for='imagen') #{translation.IMAGE} *
             include /modulo-general/galeria-fotos/modal-galeria.pug
 
   include /modulo-general/galeria-fotos/partial-modal-galeria.pug
@@ -55,7 +55,7 @@ append contenido
         Swal.fire({
           icon: 'error',
           title: 'Oops...',
-          text: '#{translation.FORM.REQUIRED_FIELDS}',
+          text: '#{translation.REQUIRED_FIELDS}',
         })
       }
     });

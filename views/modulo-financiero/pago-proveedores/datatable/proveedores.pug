@@ -39,7 +39,7 @@ script.
           data: 'cuit', name: 'cuit', title: '#{translation.CUIT}', orderable: true, searchable: true
         },
         {
-          data: 'nombre_proveedor', name: 'nombre_proveedor', title: '#{translation.FORM.PROVIDERS_NAME}', orderable: true, searchable: true
+          data: 'nombre_proveedor', name: 'nombre_proveedor', title: '#{translation.PROVIDERS_NAME}', orderable: true, searchable: true
         },
         {
           data: 'monto', name: 'monto', title: "Monto", orderable: true, searchable: true,
@@ -48,13 +48,13 @@ script.
           }
         },
         {
-          data: 'created_at', name: 'created_at', title: '#{translation.FORM.PAYMENT_DATE}', orderable: true, searchable: true,
+          data: 'created_at', name: 'created_at', title: '#{translation.PAYMENT_DATE}', orderable: true, searchable: true,
           render: function (data, type, row) {
             return moment(data).format('DD/MM/YYYY');
           }
         },
         { 
-          data: 'actions', name: 'actions', title: '#{translation.FORM.ACTIONS}', orderable: false, searchable: false,
+          data: 'actions', name: 'actions', title: '#{translation.ACTIONS}', orderable: false, searchable: false,
           render: function (data, type, row) {
             let strRow = JSON.stringify(row);
             return `

@@ -35,14 +35,14 @@ script.
               tablaCompaniasSeguros.ajax.reload();
             }
             $("#nuevo").modal("hide");
-            toastSweet('Success', '#{translation.ALERTS.CREATED}', 'success');
+            toastSweet('Success', '#{translation.CREATED}', 'success');
           } else {
-            toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+            toastSweet('Error', '#{translation.WRONG}', 'error');
           }
         },
         error: function (err) {
           Swal.close();
-          toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+          toastSweet('Error', '#{translation.WRONG}', 'error');
         }
       })
     }

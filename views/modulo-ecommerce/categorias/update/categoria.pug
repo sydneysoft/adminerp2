@@ -69,21 +69,21 @@ script.
             if (typeof tablaCategorias != 'undefined') {
               tablaCategorias.ajax.reload();
             }
-            toastSweet('Success', '#{translation.ALERTS.UPDATED}', 'success');
+            toastSweet('Success', '#{translation.UPDATED}', 'success');
           } else {
-            toastSweet('Error', '#{translation.ALERTS.CATEGORY_NOT_UPDATED}', 'error');
+            toastSweet('Error', '#{translation.CATEGORY_NOT_UPDATED}', 'error');
           }
         },
         error: function () {
           Swal.close();
-          toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+          toastSweet('Error', '#{translation.WRONG}', 'error');
         },
       });
     } else {
       if (!imagenEditarCategoria) {
-        toastSweet('Error', '#{translation.ALERTS.SELECT_ICON}', 'error');
+        toastSweet('Error', '#{translation.SELECT_ICON}', 'error');
       } else {
-        toastSweet('Error', '#{translation.ALERTS.REQUIRED_FIELDS}', 'error');
+        toastSweet('Error', '#{translation.REQUIRED_FIELDS}', 'error');
       }
     }
   };

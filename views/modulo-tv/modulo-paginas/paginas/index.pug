@@ -14,14 +14,14 @@ append contenido
         .row 
           .col-12.col-md-8 
             .form-group
-              label(for='nombre') #{translation.FORM.NAME} *
+              label(for='nombre') #{translation.NAME} *
               input#nombre.form-control(type='text' placeholder="Nombre" value=pagina.nombre name="nombre" required)
             .form-group 
-              label(for='estracto') #{translation.FORM.EXCERPT}
-              textarea#estracto.form-control(name="estracto" placeholder=translation.FORM.EXCERPT) #{pagina.estracto}
+              label(for='estracto') #{translation.EXCERPT}
+              textarea#estracto.form-control(name="estracto" placeholder=translation.EXCERPT) #{pagina.estracto}
             .form-group 
-              label(for='body') #{translation.FORM.BODY}
-              textarea#body(name="body" placeholder=translation.FORM.BODY) #{pagina.body}
+              label(for='body') #{translation.BODY}
+              textarea#body(name="body" placeholder=translation.BODY) #{pagina.body}
           .col-12.col-md-4
             .row
               .col-12
@@ -49,9 +49,9 @@ append contenido
                 .col-12.col-md-4
                   .row 
                     .col-12 
-                      label(for='identificadorSection') #{translation.FORM.IDENTIFIER}
+                      label(for='identificadorSection') #{translation.IDENTIFIER}
                       select#identificadorSection.form-control(name="identificadorSection")
-                        option(value="vacio") #{translation.FORM.SELECT_SOMETHING}
+                        option(value="vacio") #{translation.SELECT_SOMETHING}
                         option(value="formulario_contactos") #{translation.CONTACT_FORM}
               .row.mt 
                 .col-12 
@@ -94,7 +94,7 @@ append contenido
     identificadorSection.addEventListener('change', (event) => {
       switch (event.target.value) {
         case 'formulario_contactos':
-          //- #{translation.ALERTS.ERROR_CONTACT_FORM}
+          //- #{translation.ERROR_CONTACT_FORM}
           showSelected.innerHTML = '';
           contactFormRender();
           break;
@@ -157,7 +157,7 @@ append contenido
       } else {
         html = `
           <div class="alert alert-danger" role="alert">
-            #{translation.ALERTS.ERROR_CONTACT_FORM}
+            #{translation.ERROR_CONTACT_FORM}
           </div>
         `
         showSelected.innerHTML = html;
@@ -227,7 +227,7 @@ append contenido
         toast: true,
         position: 'top-end',
         icon: 'error',
-        title: #{translation.ALERTS.SECTION_EXISTS},
+        title: "#{translation.SECTION_EXISTS}",
         showConfirmButton: false,
         timer: 2000
       })
@@ -238,7 +238,7 @@ append contenido
         toast: true,
         position: 'top-end',
         icon: 'error',
-        title: #{translation.ALERTS.ERROR_SELECT_SECTION},
+        title: "#{translation.ERROR_SELECT_SECTION}",
         showConfirmButton: false,
         timer: 2000
       })
@@ -257,7 +257,7 @@ append contenido
         Swal.fire({
           icon: 'error',
           title: 'Oops...',
-          text: #{translation.FORM.REQUIRED_FIELDS},
+          text: "#{translation.REQUIRED_FIELDS}",
         });
       }
     });

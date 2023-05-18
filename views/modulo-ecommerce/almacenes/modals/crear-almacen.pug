@@ -10,22 +10,22 @@
         .row(style="padding:15px;")
           .col-md-6.col-12
             .form-group
-              label #{translation.FORM.WAREHOUSE_NAME} *
+              label #{translation.WAREHOUSE_NAME} *
               .controls
-                input#nombreNuevo.form-control(type="text" placeholder=translation.FORM.WAREHOUSE_NAME)
+                input#nombreNuevo.form-control(type="text" placeholder=translation.WAREHOUSE_NAME)
           .col-md-6.col-12
             .form-group
-              label #{translation.FORM.ADDRESS} *
+              label #{translation.ADDRESS} *
               .controls
-                input#direccionNuevo.form-control(type="text" placeholder=translation.FORM.ADDRESS)
+                input#direccionNuevo.form-control(type="text" placeholder=translation.ADDRESS)
           .col-md-6.col-12
             .form-group
-              label(for="Pais") #{translation.FORM.COUNTRY} :
+              label(for="Pais") #{translation.COUNTRY} :
               select#lista-paises
                            
           .col-md-6.col-12
             .form-group#seleccionarProvincia
-              label #{translation.FORM.PROVINCE}
+              label #{translation.PROVINCE}
               .controls
               select#lista-estados
 

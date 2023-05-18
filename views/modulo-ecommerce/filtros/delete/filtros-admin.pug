@@ -2,13 +2,13 @@ script.
   //Handle Data DELETE
   function eliminarFiltrosAdmin (val) {
     Swal.fire({
-      title: "#{translation.ALERTS.ARE_YOU_SURE}",
-      text: "#{translation.ALERTS.YOU_COULD_NOT_REVERT}", 
+      title: "#{translation.ARE_YOU_SURE}",
+      text: "#{translation.YOU_COULD_NOT_REVERT}", 
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "#{translation.ALERTS.YES_DELETE}",
+      confirmButtonText: "#{translation.YES_DELETE}",
     }).then((result) => {
       if (result.isConfirmed) {
         handleDeleteFiltroAdmin(val);
@@ -28,12 +28,12 @@ script.
           window.location.reload(true);
         } else {
           Swal.close();
-          toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+          toastSweet('Error', '#{translation.WRONG}', 'error');
         }
       },
       error: function () {
         Swal.close();
-        toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+        toastSweet('Error', '#{translation.WRONG}', 'error');
       },
     });
   }

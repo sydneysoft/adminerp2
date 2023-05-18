@@ -34,26 +34,26 @@ script.
             if (typeof tablaSubcategorias != 'undefined') {
               tablaSubcategorias.ajax.reload();
             }
-            toastSweet('Success', '#{translation.ALERTS.CREATED}', 'success');
+            toastSweet('Success', '#{translation.CREATED}', 'success');
             $("#crearSubcategoriaModal").modal("hide");
             //- window.location.reload(true);
           } else {
             Swal.close();
-            toastSweet('Error', '#{translation.ALERTS.CANNOT_ADD_SUBCATEGORY}', 'error');
+            toastSweet('Error', '#{translation.CANNOT_ADD_SUBCATEGORY}', 'error');
           }
         },
         error: function (data) {
           if (data.status == 409) {
             Swal.close();
-            toastSweet('Error', '#{translation.ALERTS.SUBCATEGORY_EXIST}', 'error');
+            toastSweet('Error', '#{translation.SUBCATEGORY_EXIST}', 'error');
           } else {
             Swal.close();
-            toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+            toastSweet('Error', '#{translation.WRONG}', 'error');
           }
         },
       });
     } else {
       Swal.close();
-      toastSweet('Error', '#{translation.ALERTS.COMPLETE_FORM}', 'error');
+      toastSweet('Error', '#{translation.COMPLETE_FORM}', 'error');
     }
   };

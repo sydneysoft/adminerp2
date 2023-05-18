@@ -17,7 +17,7 @@ block contenido
                     .form-group
                         label.font-weight-bold.datev-label #{translation.BUSINESS} 
                             select#filtroEmpresa.form-control.seleccionar
-                                option(value=0)#{translation.SELECT_BUSINESS} 
+                                option(value=0) #{translation.SELECT_BUSINESS} 
                                 option(value="-") #{translation.UNASSIGNED} 
                                     each cx in empresa
                                         option(value= cx.nombre)= cx.nombre 

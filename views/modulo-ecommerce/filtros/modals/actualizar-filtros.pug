@@ -6,27 +6,27 @@
           //- if items.marketplace==1
             .col-md-12.col-12
               .form-group   
-                h5  #{translation.FORM.BUSINESS}   
+                h5  #{translation.BUSINESS}   
                   select#empresaEditarFiltros.form-control.seleccionar(onChange="cambiarCategoriaPorEmpresaEdita()")
-                    option(disabled selected value=0)  #{translation.FORM.SELECT_BUSINESS}    
-                    option(value=0)  #{translation.FORM.UNASSIGNED}
+                    option(disabled selected value=0)  #{translation.SELECT_BUSINESS}    
+                    option(value=0)  #{translation.UNASSIGNED}
                     each item in items.empresas
                       option(value=item.empresa_id)= item.nombre
 
           .col-md-6.col-12
             .form-group
-              h5  #{translation.FORM.NAME}:
+              h5  #{translation.NAME}:
               .controls
                 input#idEditar-filtros.form-control(type="hidden")
                 input#nombreEditar-filtros.form-control(type="text")
           .col-md-6.col-12
             .form-group
-              h5  #{translation.FORM.CATEGORY}:
+              h5  #{translation.CATEGORY}:
               .controls
                 select#categoriaEditar-filtros.form-control
-                  option(value=0 disabled) #{translation.FORM.SELECT_CATEGORY}
+                  option(value=0 disabled) #{translation.SELECT_CATEGORY}
                   //- each  categoria in items.categorias
                     option(value= categoria.id)= categoria.name
       .modal-footer
-        button.btn.btn-success.editar(type="button" style="margin-left:7px;margin-right:7px;" onClick="updateDataGrupoFiltros()")  #{translation.FORM.UPDATE_DATA}
+        button.btn.btn-success.editar(type="button" style="margin-left:7px;margin-right:7px;" onClick="updateDataGrupoFiltros()")  #{translation.UPDATE_DATA}
         button.btn.btn-danger(type="buton" data-dismiss="modal") Cerrar

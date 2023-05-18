@@ -14,9 +14,9 @@ block contenido
                     thead.thead-dark
                         tr
                             th.text-center Id
-                            th.text-center #{translation.FORM.NAME}
-                            th.text-center #{translation.FORM.PHONE} 
-                            th.text-center #{translation.FORM.OPERATION}
+                            th.text-center #{translation.NAME}
+                            th.text-center #{translation.PHONE} 
+                            th.text-center #{translation.OPERATION}
                     tbody
                         each book in items.servicios_entrega
                             tr
@@ -35,16 +35,16 @@ block contenido
                     .row(style="padding:10px;margin-bottom:8px;")
                         .col-md-6.col-12
                             .form-group
-                                label #{translation.FORM.NAME}:
+                                label #{translation.NAME}:
                                 .controls
                                     input#nombreNuevo-servicio.form-control(type="text")
                         .col-md-6.col-12
                             .form-group
-                                label #{translation.FORM.PHONE}:
+                                label #{translation.PHONE}:
                                 .controls
                                     input#telefonoNuevo-servicio.form-control(type="text")
                         .col-md-12.col-12
-                            label #{translation.FORM.SHIPPING_METHODS}
+                            label #{translation.SHIPPING_METHODS}
                             .controls
                                 span#metodosNuevo-servicio-modulos
                 .modal-footer
@@ -57,18 +57,18 @@ block contenido
                     .row(style="padding:10px;margin-bottom:8px;")
                         .col-md-6.col-12
                             .form-group
-                                label #{translation.FORM.NAME}:
+                                label #{translation.NAME}:
                                 .controls
                                     input#nombreEditar-servicio.form-control(type="text")
                                     input#idEditar-servicio(type="hidden")
                                     input#arrDatosSelectEdit(type="hidden")
                         .col-md-6.col-12
                             .form-group
-                                label #{translation.FORM.PHONE}:
+                                label #{translation.PHONE}:
                                 .controls
                                     input#telefonoEditar-servicio.form-control(type="text")
                         .col-md-12.col-12
-                            label #{translation.FORM.SHIPPING_METHODS}
+                            label #{translation.SHIPPING_METHODS}
                             .controls
                                 div#dataEditSelect
                 .modal-footer

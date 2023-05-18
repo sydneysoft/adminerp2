@@ -20,26 +20,26 @@ append contenido
             .col-12.mb-3.text-right 
             .col-12.col-md-8
               .form-group
-                label.form-label(for='nombre') #{translation.FORM.NAME}
-                input#nombre.form-control(type='text' value='' required='' placeholder=translation.FORM.NAME name="nombre")
+                label.form-label(for='nombre') #{translation.NAME}
+                input#nombre.form-control(type='text' value='' required='' placeholder=translation.NAME name="nombre")
             .col-12.col-md-2
               .form-group
-                label.form-label(for='numero_temporadas') #{translation.FORM.NUMBER_SEASONS}
-                input#numero_temporadas.form-control(type='number' value='' required='' placeholder=translation.FORM.NUMBER_SEASONS name="num_temporadas")
+                label.form-label(for='numero_temporadas') #{translation.NUMBER_SEASONS}
+                input#numero_temporadas.form-control(type='number' value='' required='' placeholder=translation.NUMBER_SEASONS name="num_temporadas")
             .col-12.col-md-2
               
             .col-12.col-md-8
               .form-group
-                label.form-label(for='slogan') #{translation.FORM.SLOGAN}
-                textarea#slogan.form-control(value='' required='' placeholder=translation.FORM.SLOGAN name="slogan")
+                label.form-label(for='slogan') #{translation.SLOGAN}
+                textarea#slogan.form-control(value='' required='' placeholder=translation.SLOGAN name="slogan")
               .form-group
-                label.form-label(for='slogan') #{translation.FORM.EXCERPT}
-                textarea#estracto.form-control(required='' placeholder=translation.FORM.EXCERPT name="estracto")
+                label.form-label(for='slogan') #{translation.EXCERPT}
+                textarea#estracto.form-control(required='' placeholder=translation.EXCERPT name="estracto")
             .col-12.col-md-4
               //- Imagen
               .row.mb-3.align-items-end
                 .col-8
-                  span #{translation.FORM.COVER} 
+                  span #{translation.COVER} 
                   br
                   .btn-group
                     label.btn.btn-info.m-0(for="preImagen") #{translation.UPLOAD}
@@ -56,7 +56,7 @@ append contenido
                     .modal-header 
                       .row(style="margin:0;")
                         .col-md-12.text-center
-                          h3(style="margin:0px 0;") #{translation.FORM.GALLERY}
+                          h3(style="margin:0px 0;") #{translation.GALLERY}
 
                     .modal-body.borderBottom
                       #showModalTarget.row
@@ -67,8 +67,8 @@ append contenido
                           button.btn.btn-danger(type="buton" onclick="$('#modalFavicon').modal('hide');") #{translation.CLOSE}
 
             .col-12.col-md-4
-              label.form-label(for='lanzamiento') #{translation.FORM.RELEASE_DATE}
-              input#lanzamiento.form-control(type='date' required='' placeholder=translation.FORM.RELEASE_DATE name="lanzamiento")
+              label.form-label(for='lanzamiento') #{translation.RELEASE_DATE}
+              input#lanzamiento.form-control(type='date' required='' placeholder=translation.RELEASE_DATE name="lanzamiento")
           
             .col-12.my-3
 
@@ -76,13 +76,13 @@ append contenido
               .row.align-items-end
                 .col-9
                   .form-group
-                    label.form-label(for="genero") #{translation.FORM.GENRE}
+                    label.form-label(for="genero") #{translation.GENRE}
                     select#genero.form-control(name="genero")
                       if Array.isArray(generos)
                         each genero in generos
                           option(value=genero.id data-attr=JSON.stringify(genero)) #{genero.nombre}
                       else
-                        option(value="0") #{translation.FORM.NO_GENRES}
+                        option(value="0") #{translation.NO_GENRES}
                 .col-3
                   .form-group
                     button.btn.btn-primary(type="button" onclick="agregarGenero()")
@@ -94,13 +94,13 @@ append contenido
               .row.align-items-end
                 .col-9
                   .form-group
-                    label.form-label(for="director") #{translation.FORM.DIRECTORS}
+                    label.form-label(for="director") #{translation.DIRECTORS}
                     select#director.form-control
                       if Array.isArray(directores)
                         each director in directores
                           option(value=director.id data-attr=JSON.stringify(director)) #{director.nombre}
                       else
-                        option(value="0") #{translation.FORM.NO_DIRECTORS}
+                        option(value="0") #{translation.NO_DIRECTORS}
                 .col-3
                   .form-group
                     button.btn.btn-primary(type="button" onclick="agregarDirector()")
@@ -112,13 +112,13 @@ append contenido
               .row.align-items-end
                 .col-9
                   .form-group
-                    label.form-label(for="productor") #{translation.FORM.PRODUCERS}
+                    label.form-label(for="productor") #{translation.PRODUCERS}
                     select#productor.form-control
                       if Array.isArray(productores)
                         each productor in productores
                           option(value=productor.id data-attr=JSON.stringify(productor)) #{productor.nombre}
                       else
-                        option(value="0") #{translation.FORM.NO_PRODUCERS}
+                        option(value="0") #{translation.NO_PRODUCERS}
                 .col-3
                   .form-group
                     button.btn.btn-primary(type="button" onclick="agregarProductor()")

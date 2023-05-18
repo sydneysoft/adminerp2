@@ -16,7 +16,7 @@ block contenido
             .col-md-4.col-6
                 div(style="display: inline-flex")
                     .form-group
-                        label.font-weight-bold.datev-label #{translation.FORM.COMPANY}
+                        label.font-weight-bold.datev-label #{translation.COMPANY}
                         select#empresas
                             option(value=0) #{translation.SELECT_BUSINESS}
                     //- +empresas-select2('empresas')
@@ -30,7 +30,7 @@ block contenido
         .col-md-4.col-sm-6
            div(style="display: inline-flex")
                 .form-group
-                      label.font-weight-bold.datev-label(for='dateFrom') #{translation.FORM.CREATED_AT}
+                      label.font-weight-bold.datev-label(for='dateFrom') #{translation.CREATED_AT}
                          input#dateFrom.form-control(type='date' name='dateFrom' min='2010-01-01')
         .col-md-4.col-6(style="max-width: 400px")
      
@@ -51,13 +51,13 @@ block contenido
                         tr.table-head
                             th.text-center 
                             if  activo_marketplace===1       
-                                 th.text-left #{translation.FORM.COMPANY}
-                            th.text-left #{translation.FORM.WAREHOUSE_NAME}
-                            th.text-center #{translation.FORM.ADDRESS}
-                            th.text-center #{translation.FORM.COUNTRY}
-                            th.text-center #{translation.FORM.DISTRICT}
-                            th.text-center #{translation.FORM.UPDATED_AT}
-                            th.text-center #{translation.FORM.ACTIONS}
+                                 th.text-left #{translation.COMPANY}
+                            th.text-left #{translation.WAREHOUSE_NAME}
+                            th.text-center #{translation.ADDRESS}
+                            th.text-center #{translation.COUNTRY}
+                            th.text-center #{translation.DISTRICT}
+                            th.text-center #{translation.UPDATED_AT}
+                            th.text-center #{translation.ACTIONS}
                     tbody
                         each store in stores
                             tr(id= store.id)

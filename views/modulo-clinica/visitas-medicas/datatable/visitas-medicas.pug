@@ -22,8 +22,8 @@ script.
       order: [[1, "asc"]],
       language: {
         buttons: {
-          selectAll: '#{translation.FORM.SELECT_EVERYTHING}',
-          selectNone: '#{translation.FORM.ERASE_SELECTION}',
+          selectAll: '#{translation.SELECT_EVERYTHING}',
+          selectNone: '#{translation.ERASE_SELECTION}',
         },
         url: "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json",
         select: {
@@ -45,10 +45,10 @@ script.
           }
         },
         {
-          data: 'fecha', name: 'fecha', title: '#{translation.FORM.DATE}', searchable: false, orderable: false
+          data: 'fecha', name: 'fecha', title: '#{translation.DATE}', searchable: false, orderable: false
         },
         {
-          data: 'hora', name: 'hora', title: '#{translation.FORM.TIME}', searchable: false, orderable: false
+          data: 'hora', name: 'hora', title: '#{translation.TIME}', searchable: false, orderable: false
         },
         {
           data: 'motivo', name: 'motivo', title: "motivo",
@@ -62,7 +62,7 @@ script.
         { 
           data: 'actions',
           name: 'actions',
-          title: '#{translation.FORM.ACTIONS}',
+          title: '#{translation.ACTIONS}',
           searchable: false,
           orderable: false,
           render: function (data, type, row) {

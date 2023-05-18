@@ -7,14 +7,14 @@ append contenido
         thead.thead-dark
           tr
             th(scope='col') ID
-            th(scope='col') #{translation.FORM.NAME}
-            th(scope='col') #{translation.FORM.ADDRESS}
-            th(scope='col') #{translation.FORM.SOCIAL_REASON}
-            th(scope='col') #{translation.FORM.COMPANY_EMAIL}
-            th(scope='col') #{translation.FORM.CONTACT_EMAIL}
-            th(scope='col') #{translation.FORM.CONTACT_PHONE}
-            th(scope='col') #{translation.FORM.CONTACT_NAME}
-            th(scope='col') #{translation.FORM.ACTIONS}
+            th(scope='col') #{translation.NAME}
+            th(scope='col') #{translation.ADDRESS}
+            th(scope='col') #{translation.SOCIAL_REASON}
+            th(scope='col') #{translation.COMPANY_EMAIL}
+            th(scope='col') #{translation.CONTACT_EMAIL}
+            th(scope='col') #{translation.CONTACT_PHONE}
+            th(scope='col') #{translation.CONTACT_NAME}
+            th(scope='col') #{translation.ACTIONS}
         tbody
   script.
     let tablaSocial;
@@ -57,7 +57,7 @@ append contenido
             Swal.fire({
               icon: 'error',
               title: 'Oops...',
-              text: '#{translation.ALERTS.ERROR_DATA}'
+              text: '#{translation.ERROR_DATA}'
             })
           }
         },
@@ -65,7 +65,7 @@ append contenido
           Swal.fire({
             icon: 'error',
             title: 'Oops...',
-            text: '#{translation.ALERTS.ERROR_DATA}'
+            text: '#{translation.ERROR_DATA}'
           })
         }
       });

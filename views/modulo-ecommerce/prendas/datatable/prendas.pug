@@ -52,7 +52,7 @@ script.
           }
         },
         { 
-          data: 'imagen', name: 'imagen', title: "#{translation.FORM.IMAGE}", orderable: false, searchable: false,
+          data: 'imagen', name: 'imagen', title: "#{translation.IMAGE}", orderable: false, searchable: false,
           render: function (data, type, row) {
             try {
               new URL(row.imagen)
@@ -63,20 +63,20 @@ script.
           }
         },
         {
-          data: 'name', name: 'name', title: '#{translation.FORM.NAME}', orderable: true, searchable: true,
+          data: 'name', name: 'name', title: '#{translation.NAME}', orderable: true, searchable: true,
         },
         {
           data: 'stock', name: 'stock', title: '#{translation.STOCK}', orderable: true, searchable: false,
         },
         {
-          data: 'subcategoria', name: 'subcategoria', title: '#{translation.FORM.SUBCATEGORY}', orderable: true, searchable: true, visible: false
+          data: 'subcategoria', name: 'subcategoria', title: '#{translation.SUBCATEGORY}', orderable: true, searchable: true, visible: false
         },
         {
-          data: 'categoria', name: 'categoria', title: '#{translation.FORM.CATEGORY}', orderable: true, searchable: true, visible: false,
+          data: 'categoria', name: 'categoria', title: '#{translation.CATEGORY}', orderable: true, searchable: true, visible: false,
           search: { value: '9999' }
         },
         {
-          data: 'precio', name: 'precio', title: '#{translation.FORM.PRICE}', orderable: true, searchable: false,
+          data: 'precio', name: 'precio', title: '#{translation.PRICE}', orderable: true, searchable: false,
           render: function (data, type, row) {
             return `$ ${data}`;
           }
@@ -88,19 +88,19 @@ script.
           }
         },
         {
-          data: 'z_timestamp_create', name: 'z_timestamp_create', title: '#{translation.FORM.CREATED_AT}', orderable: true, searchable: true,
+          data: 'z_timestamp_create', name: 'z_timestamp_create', title: '#{translation.CREATED_AT}', orderable: true, searchable: true,
           render: function (data, type, row) {
             return moment(data).format('DD/MM/YYYY');
           }
         },
         {
-          data: 'activado', name: 'activado', title: '#{translation.FORM.STATUS}', orderable: true, searchable: true,
+          data: 'activado', name: 'activado', title: '#{translation.STATUS}', orderable: true, searchable: true,
           render: function (data, type, row) {
-            return data == 1 ? "#{translation.FORM.ACTIVE}" : "#{translation.FORM.INACTIVE}";
+            return data == 1 ? "#{translation.ACTIVE}" : "#{translation.INACTIVE}";
           }
         },
         {
-          data: 'almacen', name: 'almacen', title: '#{translation.FORM.STORE}', orderable: false, searchable: false,
+          data: 'almacen', name: 'almacen', title: '#{translation.STORE}', orderable: false, searchable: false,
           render: function (data, type, row) {
             //- return items.stock.filter((item) => item.producto_id == row.id).map(i => i.almacen_id);
             let almacenes = [];
@@ -127,7 +127,7 @@ script.
           }
         },
         { 
-          data: 'acciones', name: 'acciones', title: '#{translation.FORM.ACTIONS}', orderable: false, searchable: false,
+          data: 'acciones', name: 'acciones', title: '#{translation.ACTIONS}', orderable: false, searchable: false,
           render: function (data, type, row) {
             let strRow = JSON.stringify(row);
             return `

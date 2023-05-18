@@ -22,8 +22,8 @@ script.
       order: [[1, "asc"]],
       language: {
         buttons: {
-          selectAll: '#{translation.FORM.SELECT_EVERYTHING}',
-          selectNone: '#{translation.FORM.ERASE_SELECTION}',
+          selectAll: '#{translation.SELECT_EVERYTHING}',
+          selectNone: '#{translation.ERASE_SELECTION}',
         },
         url: "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json",
         select: {
@@ -43,12 +43,12 @@ script.
             return ``;
           }
         },       
-        { data: 'nombre', name: 'nombre', title: '#{translation.FORM.NAME}', orderable: true, searchable: true},
+        { data: 'nombre', name: 'nombre', title: '#{translation.NAME}', orderable: true, searchable: true},
         { data: 'apellido_paterno', name: 'apellido_paterno', title: 'Apellido paterno', orderable: true, searchable: true},
-        { data: 'celular', name: 'celular', title: '#{translation.FORM.CELLPHONE}', orderable: true, searchable: true},
-        { data: 'correo', name: 'correo', title: '#{translation.FORM.EMAIL}', orderable: true, searchable: true},
+        { data: 'celular', name: 'celular', title: '#{translation.CELLPHONE}', orderable: true, searchable: true},
+        { data: 'correo', name: 'correo', title: '#{translation.EMAIL}', orderable: true, searchable: true},
         { 
-          data: 'acciones', name: 'acciones', title: '#{translation.FORM.ACTIONS}', orderable: false, searchable: false,
+          data: 'acciones', name: 'acciones', title: '#{translation.ACTIONS}', orderable: false, searchable: false,
           render: function (data, type, row) {
             let strRow = JSON.stringify(row);
             return `

@@ -22,8 +22,8 @@ script.
       order: [[1, "asc"]],
       language: {
         buttons: {
-          selectAll: '#{translation.FORM.SELECT_EVERYTHING}',
-          selectNone: '#{translation.FORM.ERASE_SELECTION}',
+          selectAll: '#{translation.SELECT_EVERYTHING}',
+          selectNone: '#{translation.ERASE_SELECTION}',
         },
         url: "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json",
         select: {
@@ -48,13 +48,13 @@ script.
           data: 'titulo', name: 'titulo', title: '#{translation.TITLE}',
         },
         {
-          data: 'nombre', name: 'nombre', title: '#{translation.FORM.NAME}',
+          data: 'nombre', name: 'nombre', title: '#{translation.NAME}',
         },
         {
-          data: 'apellido', name: 'apellido', title: '#{translation.FORM.LASTNAME}',
+          data: 'apellido', name: 'apellido', title: '#{translation.LASTNAME}',
         },
         {
-          data: 'imagen', name: 'imagen', title: '#{translation.FORM.IMAGE}',
+          data: 'imagen', name: 'imagen', title: '#{translation.IMAGE}',
           render: function (data, type, row) {
             try {
               new URL(row.imagen)
@@ -65,16 +65,16 @@ script.
           }
         },
         {
-          data: 'fecha', name: 'fecha', title: '#{translation.FORM.DATE}',
+          data: 'fecha', name: 'fecha', title: '#{translation.DATE}',
         },
         {
-          data: 'texto', name: 'texto', title: '#{translation.FORM.TEXT}',
+          data: 'texto', name: 'texto', title: '#{translation.TEXT}',
           render: function (data, type, row) {
             return data.substring(0, 50) + '...';
           }
         },
         {
-          data: 'calificacion', name: 'calificacion', title: '#{translation.FORM.RATING}',
+          data: 'calificacion', name: 'calificacion', title: '#{translation.RATING}',
         },
         {
           data: 'acciones',

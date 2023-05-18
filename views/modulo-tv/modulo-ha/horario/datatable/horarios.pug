@@ -19,12 +19,12 @@ script.
         { 
           data: 'nombre', 
           name: 'nombre', 
-          title: #{translation.FORM.NAME}
+          title: "#{translation.NAME}"
         },
         { 
           data: 'horario', 
           name: 'horario', 
-          title: #{translation.FORM.SCHEDULE},
+          title: "#{translation.SCHEDULE}",
           render: function (data, type, row) {
             return `${parseDay(row.dia_de)} - ${parseDay(row.dia_a)}, ${row.hora_de} - ${row.hora_a}`
           },
@@ -34,7 +34,7 @@ script.
         {
           data: 'acciones',
           name: 'acciones',
-          title: #{translation.FORM.ACTIONS},
+          title: "#{translation.ACTIONS}",
           render: function (data, type, row) {
             let strRow = JSON.stringify(row);
             return `

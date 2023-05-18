@@ -14,6 +14,7 @@ script.
         }
       } else {
         if ($(this).val() != "") {
+          dataCategoria = $("#category-data-filtros").val();
           values.push([idGrupoFiltros, $(this).val(), dataCategory]);
         }
       }
@@ -37,16 +38,16 @@ script.
               window.location.reload(true);
             } else {
               Swal.close();
-              toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+              toastSweet('Error', '#{translation.WRONG}', 'error');
             }
           },
           error: function () {
             Swal.close();
-            toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+            toastSweet('Error', '#{translation.WRONG}', 'error');
           },
         });
       } else {
-        toastSweet('Error', '#{translation.ALERTS.MIN_ERROR_DATA}', 'error');
+        toastSweet('Error', '#{translation.MIN_ERROR_DATA}', 'error');
       }
     } else {
       if (values.length > 0) {
@@ -62,16 +63,16 @@ script.
               window.location.reload(true);
             } else {
               Swal.close();
-              toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+              toastSweet('Error', '#{translation.WRONG}', 'error');
             }
           },
           error: function () {
             Swal.close();
-            toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+            toastSweet('Error', '#{translation.WRONG}', 'error');
           },
         });
       } else {
-        toastSweet('Error', '#{translation.ALERTS.MIN_ERROR_DATA}', 'error');
+        toastSweet('Error', '#{translation.MIN_ERROR_DATA}', 'error');
       }
     }
   };

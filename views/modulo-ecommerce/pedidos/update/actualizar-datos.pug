@@ -47,7 +47,7 @@ script.
 
           $("#envio").append(`
           <b>#{translation.SHIPPING}</b>
-            <p>${info.valor_env == 0 ? "#{translation.FORM.IN_PERSON}" : "#{translation.FORM.WITH_SHIPPING} "}<p>
+            <p>${info.valor_env == 0 ? "#{translation.IN_PERSON}" : "#{translation.WITH_SHIPPING} "}<p>
             <p>${info.moneda} ${info.valor_env}<p>
           `)
 

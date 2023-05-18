@@ -9,50 +9,50 @@
           if  marketplace==true     
             .col-md-12.col-12
               .form-group          
-              label.form-label(style="display:block") #{translation.FORM.COMPANY}:  
+              label.form-label(style="display:block") #{translation.COMPANY}:  
                 select#lista-empresas-editar.form-control
-                  option(disabled selected value=null) #{translation.FORM.SELECT_BUSINESS}     
-                  option(value=0) #{translation.FORM.UNASSIGNED}
+                  option(disabled selected value=null) #{translation.SELECT_BUSINESS}     
+                  option(value=0) #{translation.UNASSIGNED}
                   //- each item in empresas
                     option(value=item.id)= item.nombre
 
           .col-md-6.col-12
             .form-group
-              label #{translation.FORM.NAME} *:
+              label #{translation.NAME} *:
               .controls
                 input#idEditarCategoriaAdmin(type="hidden")
-                input#nombreEditar-categoria.form-control(type="text" placeholder=translation.FORM.NAME)
+                input#nombreEditar-categoria.form-control(type="text" placeholder=translation.NAME)
           .col-md-6.col-12
             .form-group
-              label #{translation.FORM.DESCRIPTION}
+              label #{translation.DESCRIPTION}
               .controls
-                input#descripcionEditar-categoria.form-control(type="text" placeholder=translation.FORM.DESCRIPTION)
+                input#descripcionEditar-categoria.form-control(type="text" placeholder=translation.DESCRIPTION)
           .col-md-4.col-12
             .form-group
-              label #{translation.FORM.STATUS} *:
+              label #{translation.STATUS} *:
               .controls
                 select#activadoEditar-categoria.form-control
-                  option(value="1") #{translation.FORM.ACTIVATED}
-                  option(value="0") #{translation.FORM.DEACTIVATED}
+                  option(value="1") #{translation.ACTIVATED}
+                  option(value="0") #{translation.DEACTIVATED}
           .col-md-4.col-12
             .form-group
-              label #{translation.FORM.HIGHLIGHT} *:
+              label #{translation.HIGHLIGHT} *:
               .controls
                 select#destacadoEditar-categoria.form-control
-                  option(value="1") #{translation.FORM.YES}
-                  option(value="0") #{translation.FORM.NO}
+                  option(value="1") #{translation.YES}
+                  option(value="0") #{translation.NO}
           .col-md-3.col-12 
-            label #{translation.FORM.ICON}
+            label #{translation.ICON}
             .controls
               button.btn.btn-info#btn-icon-data-edit(data-iconset="fontawesome5" data-icon="fas fa-wifi" role="iconpicker")
           .col-md-5 
-            label #{translation.FORM.ACTIVE_NAVBAR} *:
+            label #{translation.ACTIVE_NAVBAR} *:
             .controls 
               select#headerEditar-categoria.form-control
-                option(value="1") #{translation.FORM.YES}
-                option(value="0") #{translation.FORM.NO}
+                option(value="1") #{translation.YES}
+                option(value="0") #{translation.NO}
       .modal-footer
-        button.btn.btn-success.editar(type="button" style="margin-left:7px;margin-right:7px;",onClick=`editarCategoriaAdmin(${token})`) #{translation.FORM.UPDATE}
+        button.btn.btn-success.editar(type="button" style="margin-left:7px;margin-right:7px;",onClick=`editarCategoriaAdmin(${token})`) #{translation.UPDATE}
           i.fas.fa-save.ml-2
-        button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.FORM.CLOSE}
+        button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}
           i.fas.fa-times-circle.ml-2

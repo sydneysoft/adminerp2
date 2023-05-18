@@ -12,9 +12,9 @@ append contenido
         thead#headTable 
           tr 
             th ID 
-            th #{translation.FORM.NAME} 
-            th #{translation.FORM.NATIONALITY} 
-            th #{translation.FORM.GENRE} 
+            th #{translation.NAME} 
+            th #{translation.NATIONALITY} 
+            th #{translation.GENRE} 
         tbody#programasTable 
           each item, key in data 
             tr(id=`delete${item.id}`)
@@ -33,7 +33,7 @@ append contenido
  
   else 
     .alert.alert-primary(role='alert')
-      | #{translation.ALERTS.NO_PRODUCERS_YET}
+      | #{translation.NO_PRODUCERS_YET}
 
   nav(aria-label='...')
     ul.pagination

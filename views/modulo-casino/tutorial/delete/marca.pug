@@ -25,18 +25,18 @@ script.
       success: function (data) {
         if (data.ok) {
           Swal.close();
-          toastSweet('Success', '#{translation.ALERTS.DELETED}', 'success');
+          toastSweet('Success', '#{translation.DELETED}', 'success');
           if(typeof tablaMarcas != 'undefined') {
             tablaMarcas.ajax.reload();
           }
         } else {
           Swal.close();
-          toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+          toastSweet('Error', '#{translation.WRONG}', 'error');
         }
       },
       error: function () {
         Swal.close();
-        toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+        toastSweet('Error', '#{translation.WRONG}', 'error');
       },
     });
   };

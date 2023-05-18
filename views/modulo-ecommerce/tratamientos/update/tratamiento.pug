@@ -52,19 +52,19 @@ script.
           if (data.ok) {
             $("#editarBannerAdministrador").modal("hide");
             Swal.close();
-            toastSweet('Success', '#{translation.ALERTS.TREATMENT_UPDATED}', 'success');
+            toastSweet('Success', '#{translation.TREATMENT_UPDATED}', 'success');
             tablaTratamientos.ajax.reload();
           } else {
             Swal.close();
-            toastSweet('Error', '#{translation.ALERTS.CANNOT_UPDATE_TREATMENT}', 'error');
+            toastSweet('Error', '#{translation.CANNOT_UPDATE_TREATMENT}', 'error');
           }
         },
         error: function () {
           Swal.close();
-          toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+          toastSweet('Error', '#{translation.WRONG}', 'error');
         },
       });
     } else {
-      toastSweet('Error', '#{translation.ALERTS.FORM_EMPTY}', 'error');
+      toastSweet('Error', '#{translation.FORM_EMPTY}', 'error');
     }
   };

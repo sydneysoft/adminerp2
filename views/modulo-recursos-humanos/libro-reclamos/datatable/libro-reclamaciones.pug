@@ -15,28 +15,28 @@ script.
       columns: [
         { data: 'id', name: 'id', title: 'ID', orderable: false, searchable: false, visible: false},
         {
-          data: 'nombres', name: 'nombres', title: '#{translation.FORM.NAMES}', orderable: true, searchable: true,
+          data: 'nombres', name: 'nombres', title: '#{translation.NAMES}', orderable: true, searchable: true,
         },
         {
-          data: 'apellidos', name: 'apellidos', title: '#{translation.FORM.LAST_NAMES}', orderable: true, searchable: true,
+          data: 'apellidos', name: 'apellidos', title: '#{translation.LAST_NAMES}', orderable: true, searchable: true,
         },
         {
-          data: 'telefono', name: 'telefono', title: '#{translation.FORM.PHONE}', orderable: true, searchable: true,
+          data: 'telefono', name: 'telefono', title: '#{translation.PHONE}', orderable: true, searchable: true,
         },
         {
-          data: 'monto_reclamado', name: 'monto_reclamado', title: '#{translation.FORM.CLAIMED_AMOUNT}', orderable: true, searchable: true,
+          data: 'monto_reclamado', name: 'monto_reclamado', title: '#{translation.CLAIMED_AMOUNT}', orderable: true, searchable: true,
         },
         {
-          data: 'nombre_producto', name: 'nombre_producto', title: '#{translation.FORM.PRODUCT_NAME}', orderable: true, searchable: true,
+          data: 'nombre_producto', name: 'nombre_producto', title: '#{translation.PRODUCT_NAME}', orderable: true, searchable: true,
         },
         {
-          data: 'tipo_reclamo', name: 'tipo_reclamo', title: '#{translation.FORM.CLAIM_TYPE}', orderable: true, searchable: true,
+          data: 'tipo_reclamo', name: 'tipo_reclamo', title: '#{translation.CLAIM_TYPE}', orderable: true, searchable: true,
         },
         {
-          data: 'motivo', name: 'motivo', title: '#{translation.FORM.REASON}', orderable: true, searchable: true,
+          data: 'motivo', name: 'motivo', title: '#{translation.REASON}', orderable: true, searchable: true,
         },
         {
-          data: 'acciones', name: 'acciones', title: '#{translation.FORM.ACTIONS}', orderable: false, searchable: false,
+          data: 'acciones', name: 'acciones', title: '#{translation.ACTIONS}', orderable: false, searchable: false,
           render: function (data, type, row) {
             let strRow = JSON.stringify(row);
             return `

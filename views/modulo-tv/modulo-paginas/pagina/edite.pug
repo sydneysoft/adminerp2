@@ -17,52 +17,52 @@ append contenido
         input#urlImagen(type="text" value=data.imagen hidden)
         .col-12.col-md-8 
           .form-group
-            label(for='nombre') #{translation.FORM.NAME} *
-            input#nombre.form-control(type='text' placeholder=translation.FORM.NAME name="nombre" value=data.nombre required)
+            label(for='nombre') #{translation.NAME} *
+            input#nombre.form-control(type='text' placeholder=translation.NAME name="nombre" value=data.nombre required)
         .col-12.col-md-4 
           .form-group 
-            label(for='identificador') #{translation.FORM.IDENTIFIER} #{data.identificador}
+            label(for='identificador') #{translation.IDENTIFIER} #{data.identificador}
             
             select#identificador.form-control(name="identificador")
               if data.identificador == 'post'
-                option(value="post"  selected) #{translation.FORM.POST}
+                option(value="post"  selected) #{translation.POST}
               else
-                option(value="post") #{translation.FORM.POST}
+                option(value="post") #{translation.POST}
               if data.identificador == 'contacto'
-                option(value="contacto" selected) #{translation.FORM.CONTACT}
+                option(value="contacto" selected) #{translation.CONTACT}
               else
-                option(value="contacto") #{translation.FORM.CONTACT}
+                option(value="contacto") #{translation.CONTACT}
               if data.identificador == 'nosotros'
-                option(value="nosotros" selected) #{translation.FORM.ABOUT}
+                option(value="nosotros" selected) #{translation.ABOUT}
               else
-                option(value="nosotros") #{translation.FORM.ABOUT}
+                option(value="nosotros") #{translation.ABOUT}
               if data.identificador == 'faqs'
-                option(value="faqs" selected) #{translation.FORM.FAQS}
+                option(value="faqs" selected) #{translation.FAQS}
               else 
-                option(value="faqs") #{translation.FORM.FAQS}
+                option(value="faqs") #{translation.FAQS}
               if data.identificador == 'politica'
-                option(value="politica" selected) #{translation.FORM.PRIVACY}
+                option(value="politica" selected) #{translation.PRIVACY}
               else 
-                option(value="politica") #{translation.FORM.PRIVACY}
+                option(value="politica") #{translation.PRIVACY}
               if data.identificador == 'cookie'
-                option(value="cookie" selected) #{translation.FORM.COOKIES}
+                option(value="cookie" selected) #{translation.COOKIES}
               else 
-                option(value="cookie") #{translation.FORM.COOKIES}
+                option(value="cookie") #{translation.COOKIES}
               if data.identificador == 'mision'
-                option(value="mision" selected) #{translation.FORM.MISSION}
+                option(value="mision" selected) #{translation.MISSION}
               else
-                option(value="mision") #{translation.FORM.MISSION}
+                option(value="mision") #{translation.MISSION}
                 
       .row 
         .col-12.col-md-8 
             .form-group 
-              label(for='estracto') #{translation.FORM.EXCERPT}
-              textarea#estracto.form-control(name="estracto" placeholder=translation.FORM.EXCERPT) #{data.estracto}
+              label(for='estracto') #{translation.EXCERPT}
+              textarea#estracto.form-control(name="estracto" placeholder=translation.EXCERPT) #{data.estracto}
       .row 
         .col-12.col-md-8
           .form-group 
-            label(for='body') #{translation.FORM.BODY}
-            textarea#body(name="body" placeholder=translation.FORM.BODY)
+            label(for='body') #{translation.BODY}
+            textarea#body(name="body" placeholder=translation.BODY)
               |#{data.body}
         .col-12.col-md-4 
           .row
@@ -97,9 +97,9 @@ append contenido
                 .col-12.col-md-4
                   .row 
                     .col-12 
-                      label(for='identificadorSection') #{translation.FORM.IDENTIFIER}
+                      label(for='identificadorSection') #{translation.IDENTIFIER}
                       select#identificadorSection.form-control(name="identificadorSection")
-                        option(value="vacio") #{translation.FORM.SELECT_SOMETHING}
+                        option(value="vacio") #{translation.SELECT_SOMETHING}
                         option(value="formulario_contactos") #{translation.CONTACT_FORM}
               .row.mt 
                 .col-12 
@@ -165,7 +165,7 @@ append contenido
     identificadorSection.addEventListener('change', (event) => {
       switch (event.target.value) {
         case 'formulario_contactos':
-          //- #{translation.ALERTS.ERROR_CONTACT_FORM}
+          //- #{translation.ERROR_CONTACT_FORM}
           showSelected.innerHTML = '';
           contactFormRender();
           break;
@@ -228,7 +228,7 @@ append contenido
       } else {
         html = `
           <div class="alert alert-danger" role="alert">
-            #{translation.ALERTS.ERROR_CONTACT_FORM}
+            #{translation.ERROR_CONTACT_FORM}
           </div>
         `
         showSelected.innerHTML = html;
@@ -298,7 +298,7 @@ append contenido
         toast: true,
         position: 'top-end',
         icon: 'error',
-        title: #{translation.ALERTS.SECTION_EXISTS},
+        title: "#{translation.SECTION_EXISTS}",
         showConfirmButton: false,
         timer: 2000
       })
@@ -309,7 +309,7 @@ append contenido
         toast: true,
         position: 'top-end',
         icon: 'error',
-        title: #{translation.ALERTS.ERROR_SELECT_SECTION},
+        title: "#{translation.ERROR_SELECT_SECTION}",
         showConfirmButton: false,
         timer: 2000
       })

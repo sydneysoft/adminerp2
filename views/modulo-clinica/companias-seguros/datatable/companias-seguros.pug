@@ -22,8 +22,8 @@ script.
       order: [[1, "asc"]],
       language: {
         buttons: {
-          selectAll: '#{translation.FORM.SELECT_EVERYTHING}',
-          selectNone: '#{translation.FORM.ERASE_SELECTION}',
+          selectAll: '#{translation.SELECT_EVERYTHING}',
+          selectNone: '#{translation.ERASE_SELECTION}',
         },
         url: "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json",
         select: {
@@ -43,20 +43,20 @@ script.
             return ``;
           }
         },
-        { data: 'pais', name: 'pais', title: '#{translation.FORM.COUNTRY}', orderable: true, searchable: true},
-        { data: 'nombre', name: 'nombre', title: '#{translation.FORM.NAME}', orderable: true, searchable: true},
+        { data: 'pais', name: 'pais', title: '#{translation.COUNTRY}', orderable: true, searchable: true},
+        { data: 'nombre', name: 'nombre', title: '#{translation.NAME}', orderable: true, searchable: true},
         {
-          data: 'direccion', name: 'direccion', title: '#{translation.FORM.ADDRESS}', orderable: true, searchable: true,
+          data: 'direccion', name: 'direccion', title: '#{translation.ADDRESS}', orderable: true, searchable: true,
           render: function (data, type, row) {
             return `${row.direccion} - ${row.provincia} - ${row.pais}`;
           }
         },
-        //- { data: 'provincia', name: 'provincia', title: '#{translation.FORM.PROVINCE}', orderable: true, searchable: true},
-        { data: 'correo', name: 'correo', title: '#{translation.FORM.EMAIL}', orderable: true, searchable: true},
-        { data: 'telefono', name: 'telefono', title: '#{translation.FORM.PHONE}', orderable: true, searchable: true},
-        { data: 'sitio_web', name: 'sitio_web', title: '#{translation.FORM.WEBSITE}', orderable: true, searchable: true},
+        //- { data: 'provincia', name: 'provincia', title: '#{translation.PROVINCE}', orderable: true, searchable: true},
+        { data: 'correo', name: 'correo', title: '#{translation.EMAIL}', orderable: true, searchable: true},
+        { data: 'telefono', name: 'telefono', title: '#{translation.PHONE}', orderable: true, searchable: true},
+        { data: 'sitio_web', name: 'sitio_web', title: '#{translation.WEBSITE}', orderable: true, searchable: true},
         { 
-          data: 'acciones', name: 'acciones', title: '#{translation.FORM.ACTIONS}', orderable: false, searchable: false,
+          data: 'acciones', name: 'acciones', title: '#{translation.ACTIONS}', orderable: false, searchable: false,
           render: function (data, type, row) {
             let strRow = JSON.stringify(row);
             return `

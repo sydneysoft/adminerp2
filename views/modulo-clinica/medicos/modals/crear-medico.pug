@@ -11,32 +11,32 @@
         .row 
           .col-12.col-md-3
             .form-group
-              label(for="first_name") #{translation.FORM.FIRST_NAME} *
-              input#first_name.form-control(type="text" placeholder=translation.FORM.FIRST_NAME)
+              label(for="first_name") #{translation.FIRST_NAME} *
+              input#first_name.form-control(type="text" placeholder=translation.FIRST_NAME)
           .col-12.col-md-3
             .form-group
-              label(for="middle_name") #{translation.FORM.MIDDLE_NAME}
-              input#middle_name.form-control(type="text" placeholder=translation.FORM.MIDDLE_NAME)
+              label(for="middle_name") #{translation.MIDDLE_NAME}
+              input#middle_name.form-control(type="text" placeholder=translation.MIDDLE_NAME)
           .col-12.col-md-6
             .form-group
-              label(for="surnames") #{translation.FORM.SURNAMES} *
-              input#surnames.form-control(type="text" placeholder=translation.FORM.SURNAMES)
+              label(for="surnames") #{translation.SURNAMES} *
+              input#surnames.form-control(type="text" placeholder=translation.SURNAMES)
 
         .row 
           .col-12.col-md-4
             .form-group 
-              label(for="especialidad") #{translation.FORM.SPECIALTY} *
-              //- input#especialidad.form-control(type="text" placeholder=translation.FORM.SPECIALTY)
+              label(for="especialidad") #{translation.SPECIALTY} *
+              //- input#especialidad.form-control(type="text" placeholder=translation.SPECIALTY)
               select#lista-especialidades
               //- select#especialidad.form-control(name="especialidad")
               //-   if Array.isArray(especialidades) && especialidades.length > 0
               //-     each especialidad in especialidades
               //-       option(value=especialidad.id) #{especialidad.nombre}
               //-   else
-              //-     option(value="0") #{translation.FORM.NO_SPECIALTY}
+              //-     option(value="0") #{translation.NO_SPECIALTY}
           .col-12.col-md-4
             .form-group 
-              label(for="tipo_documento") #{translation.FORM.DOCUMENT_TYPE} *
+              label(for="tipo_documento") #{translation.DOCUMENT_TYPE} *
               select#lista-documentos
               //- select#tipo_documento.form-control
               //-   if Array.isArray(tipo_documento) && tipo_documento.length === 1
@@ -44,24 +44,24 @@
               //-       option(value=tipo)
               //-         span.text-capitalize #{tipo}
               //-   else
-              //-     option(value="0") #{translation.FORM.NO_DOCUMENT_TIME}
+              //-     option(value="0") #{translation.NO_DOCUMENT_TIME}
           .col-12.col-md-4
             .form-group 
-              label(for="numero_documento") #{translation.FORM.DOCUMENT_NUMBER} *
-              input#numero_documento.form-control(placeholder=translation.FORM.DOCUMENT_NUMBER)
+              label(for="numero_documento") #{translation.DOCUMENT_NUMBER} *
+              input#numero_documento.form-control(placeholder=translation.DOCUMENT_NUMBER)
 
         .row
           .col-12.col-md-4
             .form-group 
-              label(for="celular") #{translation.FORM.CELULAR} *
-              input#celular.form-control(type="text" placeholder=translation.FORM.CELULAR)
+              label(for="celular") #{translation.CELULAR} *
+              input#celular.form-control(type="text" placeholder=translation.CELULAR)
           .col-12.col-md-4
             .form-group 
-              label(for="correo") #{translation.FORM.EMAIL}
-              input#correo.form-control(type="email" placeholder=translation.FORM.EMAIL)
+              label(for="correo") #{translation.EMAIL}
+              input#correo.form-control(type="email" placeholder=translation.EMAIL)
           .col-12.col-md-4 
             .form-group
-              label(for="tiempo_cita") #{translation.FORM.APPOINTMENT_MINUTES}
+              label(for="tiempo_cita") #{translation.APPOINTMENT_MINUTES}
               input#tiempo_cita.form-control(type="number" placeholder="0 (tiempo por defecto 30 minutos)")
 
         .row.align-items-end
@@ -110,13 +110,13 @@
                   #show_horarios 
               .col-7
                 .btn-group
-                  button#upload_cv.btn.btn-info(type="button" ) #{translation.FORM.UPLOAD_CV}
+                  button#upload_cv.btn.btn-info(type="button" ) #{translation.UPLOAD_CV}
                     i.fas.fa-upload.ml-2
                   button.btn.btn-primary.d-flex.align-items-center
-                    label.d-block(for="subir_archivo" style="position: relative;") #{translation.FORM.SEARCH_FILES} 
+                    label.d-block(for="subir_archivo" style="position: relative;") #{translation.SEARCH_FILES} 
                   input#subir_archivo(type="file" text="Subir archivo" value="Subir archivo" hidden)
                   input#cv.form-control(type='text' value='' disabled hidden)
-                  a#linkCv.btn.btn-success.disabled(href="" target="_blank" aria-disabled=true) #{translation.FORM.SEE_CV}
+                  a#linkCv.btn.btn-success.disabled(href="" target="_blank" aria-disabled=true) #{translation.SEE_CV}
                 #showLink
 
 

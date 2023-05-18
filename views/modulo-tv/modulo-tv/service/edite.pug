@@ -18,20 +18,20 @@ append contenido
         .col-12.my-3
         .col-12 
           .form-group
-            label(for='nombre') #{translation.FORM.NAME}
+            label(for='nombre') #{translation.NAME}
             input#nombre.form-control(type='text' aria-describedby='nombreHelp' placeholder="Nombre del servicio." name="nombre" value=data.nombre)
-            small#nombreHelp.form-text.text-muted.d-none #{translation.FORM.WRITE_THE_NAME}
+            small#nombreHelp.form-text.text-muted.d-none #{translation.WRITE_THE_NAME}
         .col-12.my-3
         .col-12.col-md-8
-          label(for='thumbnail') #{translation.FORM.THUMBNAIL}
+          label(for='thumbnail') #{translation.THUMBNAIL}
           input#thumbnail.form-control(type='text'  placeholder="Imagen miniatura" name="thumbnail" value=data.thumbnail) 
         .col-12.col-md-4
-          label(for='icono') #{translation.FORM.ICON_FA})
+          label(for='icono') #{translation.ICON_FA})
           input#icono.form-control(type='text'  placeholder="Icono" name="icono" value=data.icono)
         .col-12.my-3
         .col-12
           .form-group 
-            label(for="body") #{translation.FORM.EXTRACT}  
+            label(for="body") #{translation.EXTRACT}  
             textarea#estracto(name="body")
               | #{data.estracto}
 

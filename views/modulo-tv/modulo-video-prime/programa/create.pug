@@ -16,57 +16,57 @@ block contenido
               .col-12.mb-3.text-right 
                 button.btn.btn-primary(type="submit") #{translation.SAVE} 
               .col-12.col-md-8
-                label.form-label(for='nombre') #{translation.FORM.TV_SHOW_NAME}
-                input#nombre.form-control(type='text' value='' required='' placeholder #{translation.FORM.TV_SHOW_NAME} name="")
+                label.form-label(for='nombre') #{translation.TV_SHOW_NAME}
+                input#nombre.form-control(type='text' value='' required='' placeholder=translation.TV_SHOW_NAME name="")
                 .valid-feedback
-                  |  #{translation.FORM.NAME}
+                  |  #{translation.NAME}
 
               .col-12.col-md-4
-                label.form-label(for='numero_temporadas') #{translation.FORM.SEASONS_NUMBER}
-                input#numero_temporadas.form-control(type='number' value='' required='' placeholder #{translation.FORM.SEASONS_NUMBER} name="num_temporadas")
+                label.form-label(for='numero_temporadas') #{translation.SEASONS_NUMBER}
+                input#numero_temporadas.form-control(type='number' value='' required='' placeholder=translation.SEASONS_NUMBER name="num_temporadas")
                 .valid-feedback
-                  | #{translation.FORM.SEASONS_NUMBER}
+                  | #{translation.SEASONS_NUMBER}
                 
               .col-12.my-3
               .col-12.col-md-6 
-                label.form-label(for='slogan') #{translation.FORM.SLOGAN}
-                input#slogan.form-control(type='text' value='' required='' placeholder #{translation.FORM.SLOGAN} name="slogan")
+                label.form-label(for='slogan') #{translation.SLOGAN}
+                input#slogan.form-control(type='text' value='' required='' placeholder=translation.SLOGAN name="slogan")
                 .valid-feedback
-                  | #{translation.FORM.SLOGAN}
+                  | #{translation.SLOGAN}
               .col-12.col-md-6 
-                label.form-label(for='slogan') #{translation.FORM.SHORT_DESCRIPTION}
-                textarea#estracto.form-control(required='' placeholder #{translation.FORM.SHORT_DESCRIPTION} name="estracto")
+                label.form-label(for='slogan') #{translation.SHORT_DESCRIPTION}
+                textarea#estracto.form-control(required='' placeholder=translation.SHORT_DESCRIPTION name="estracto")
                   |
                 .valid-feedback
-                  | #{translation.FORM.SLOGAN}
+                  | #{translation.SLOGAN}
               .col-12.my-3 
 
               .col-12.col-md-8
-                label.form-label(for='portada') #{translation.FORM.BAKGROUND_PHOTO}
-                input#portada.form-control(type='text' value='' required='' placeholder #{translation.FORM.BAKGROUND_PHOTO} name="foto_portada")
+                label.form-label(for='portada') #{translation.BAKGROUND_PHOTO}
+                input#portada.form-control(type='text' value='' required='' placeholder=translation.BAKGROUND_PHOTO name="foto_portada")
                 .valid-feedback
-                  | #{translation.FORM.BAKGROUND_PHOTO}
+                  | #{translation.BAKGROUND_PHOTO}
 
               .col-12.col-md-4
-                label.form-label(for='lanzamiento') #{translation.FORM.LAUNCHING_DATE}
-                input#lanzamiento.form-control(type='text' value='' required='' placeholder #{translation.FORM.LAUNCHING_DATE})
+                label.form-label(for='lanzamiento') #{translation.LAUNCHING_DATE}
+                input#lanzamiento.form-control(type='text' value='' required='' placeholder=translation.LAUNCHING_DATE)
                 .valid-feedback
-                  | #{translation.FORM.LAUNCHING_DATE}
+                  | #{translation.LAUNCHING_DATE}
             
               .col-12.my-3
 
               .col-12.col-md-4
-                label.form-label() #{translation.FORM.GENRE} 
+                label.form-label() #{translation.GENRE} 
                 select#idGenero.custom-select(name="id_genero")
-                  option(selected='0') #{translation.FORM.SELECT_GENRE}
+                  option(selected='0') #{translation.SELECT_GENRE}
               .col-12.col-md-4
-                label.form-label() #{translation.FORM.DIRECTOR} 
+                label.form-label() #{translation.DIRECTOR} 
                 select#idDirector.custom-select(name="id_director")
-                  option(selected='0') #{translation.FORM.SELECT_GENRE}
+                  option(selected='0') #{translation.SELECT_GENRE}
               .col-12.col-md-4
-                label.form-label() #{translation.FORM.PRODUCER} 
+                label.form-label() #{translation.PRODUCER} 
                 select#idProductor.custom-select(name="id_productor")
-                  option(selected='0') #{translation.FORM.SELECT_GENRE}
+                  option(selected='0') #{translation.SELECT_GENRE}
 
   script 
     include ./programa.js

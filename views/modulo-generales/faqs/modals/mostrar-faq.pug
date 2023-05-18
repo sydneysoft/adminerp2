@@ -1,0 +1,32 @@
+//- Modal para crear una nuevo faq
+.modal.fade.justify-content-center.align-items-center(tabindex="-1" role="dialog" id="showModal")
+  .modal-dialog.modal-md
+    .modal-content.modalContent(style="height: 100%;")
+      .modal-header 
+        .row(style="margin:0;")
+          .col-md-12
+            h3(style="margin:0px 0;") #{translation.ADD}
+
+      .modal-body.borderBottom
+        .row 
+          .col-12.col-md-8
+            .form-group
+              label(for='pregunta_mostrar') #{translation.QUESTION}
+              input#pregunta_mostrar.form-control(type='text' placeholder="Pregunta" disabled)
+          .col-12.col-md-4
+            .form-group
+              label(for='icono_mostrar') #{translation.ICON}
+              .controls
+                button.btn.btn-info#icono_mostrar(data-iconset="fontawesome5" data-icon="fas fa-wifi" role="iconpicker" disabled)
+          .col-12.my-3
+          .col-12
+            .form-group 
+              label(for="respuesta_mostrar") #{translation.ANSWER} 
+              textarea#respuesta_mostrar(name="respuesta_mostrar" placeholder="Respuesta" disabled)
+
+      .modal-footer(style="padding:8px;")
+        .row(style="margin:0;")
+          .col-md-12.text-right
+            button#saveItem.btn.btn-primary.nuevo(type="button" data-dismiss="modal" data-toggle="modal" data-target="#updateModal" style="margin-left:7px;margin-right:7px;") #{translation.EDIT}
+              i.fas.fa-pen.ml-3
+            button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}

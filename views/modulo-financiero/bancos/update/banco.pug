@@ -35,17 +35,17 @@ script.
               tablaAlmacenes.ajax.reload();
             }
             $("#editar").modal("hide");
-            toastSweet('Success', '#{translation.ALERTS.UPDATED}', 'success');
+            toastSweet('Success', '#{translation.UPDATED}', 'success');
           } else {
-            toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+            toastSweet('Error', '#{translation.WRONG}', 'error');
           }
         })
         .catch(() => {
           Swal.close();
-          toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+          toastSweet('Error', '#{translation.WRONG}', 'error');
         });
     } else {
-      toastSweet('Error', '#{translation.ALERTS.REQUIRED_FIELDS}', 'error');
+      toastSweet('Error', '#{translation.REQUIRED_FIELDS}', 'error');
     }
   }
 

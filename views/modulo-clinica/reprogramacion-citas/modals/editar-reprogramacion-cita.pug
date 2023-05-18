@@ -19,90 +19,90 @@
                   label(for="doctor_editar")
                   select#lista-medicos-editar
                   //- select#doctor_editar.form-control(name="doctor")
-                    option(value="0" selected) -#{translation.FORM.DOCTOR}-
+                    option(value="0" selected) -#{translation.DOCTOR}-
                     if Array.isArray(medicos) && medicos.length > 0
                       each item in medicos
                         option(value=`${item.id}`) #{item.nombre} #{item.apellido}
                     else
-                      option(value="0") -#{translation.FORM.NO_DOCTORS}- 
+                      option(value="0") -#{translation.NO_DOCTORS}- 
 
               .col-md-6
                 .form-group
                   label(for="sedes_editar")
                   select#lista-sedes-editar(name="sedes") 
                   //- select#sedes_editar.form-control(name="sedes")
-                    option(value="0" selected) -#{translation.FORM.BRANCH}-
+                    option(value="0" selected) -#{translation.BRANCH}-
                     if Array.isArray(sedes) && sedes.length > 0
                       each item in sedes
                         option(value=`${item.id}`) #{item.nombre} - #{item.direccion}
                     else
-                      option(value="0") -#{translation.FORM.NO_BRANCHES}-
+                      option(value="0") -#{translation.NO_BRANCHES}-
 
         .row
           .col-12.col-md-4
             .form-group
-              label(for="fecha_editar") #{translation.FORM.DATE}
-              input#fecha_editar.form-control(type="date" placeholder=translation.FORM.DATE)
+              label(for="fecha_editar") #{translation.DATE}
+              input#fecha_editar.form-control(type="date" placeholder=translation.DATE)
           .col-12.col-md-4
             .form-group
-              label(for="estado_editar") #{translation.FORM.STATUS} 
+              label(for="estado_editar") #{translation.STATUS} 
               select#estado_editar.form-control
-                option(value="pendiente" selected) #{translation.FORM.PENDING}
-                option(value="confirmada") #{translation.FORM.CONFIRMED}
-                option(value="cancelada") #{translation.FORM.CANCELED}
-                option(value="atendida") #{translation.FORM.ATTENDED}
+                option(value="pendiente" selected) #{translation.PENDING}
+                option(value="confirmada") #{translation.CONFIRMED}
+                option(value="cancelada") #{translation.CANCELED}
+                option(value="atendida") #{translation.ATTENDED}
 
           .col-12.col-md-4
             .form-group
-              label(for="tipoCita_editar") #{translation.FORM.APPOINTMENT_TYPE}
+              label(for="tipoCita_editar") #{translation.APPOINTMENT_TYPE}
               select#tipoCita_editar.form-control
-                option(value="virtual") #{translation.FORM.VIRTUAL}
-                option(value="presencial") #{translation.FORM.FACE_TO_FACE}
+                option(value="virtual") #{translation.VIRTUAL}
+                option(value="presencial") #{translation.FACE_TO_FACE}
 
         .row
           .col-12.col-md-2
             .form-group
-              label(for="hora_editar") #{translation.FORM.START_TIME}
+              label(for="hora_editar") #{translation.START_TIME}
               input#hora_editar.form-control(type="time")
           .col-12.col-md-2 
             .form-group
-              label(for="hora_fin_editar") #{translation.FORM.END_TIME}
+              label(for="hora_fin_editar") #{translation.END_TIME}
               input#hora_fin_editar.form-control(type="time" )
           .col-12.col-md-2
             .form-group
-              label(for="colorpicker_editar") #{translation.FORM.COLOR}
+              label(for="colorpicker_editar") #{translation.COLOR}
               input#colorpicker_editar.form-control(type="color" value="#0000ff")
               input#itemId(type="text" hidden)
           .col-12.col-md-2
             .form-group
-              label(for="precio_editar") #{translation.FORM.PRICE} 
-              input#precio_editar.form-control(type="number" placeholder=translation.FORM.PRICE)
+              label(for="precio_editar") #{translation.PRICE} 
+              input#precio_editar.form-control(type="number" placeholder=translation.PRICE)
           .col-12.col-md-4 
             .form-group 
-              label(for="especialidad_editar") #{translation.FORM.SPECIALTY} 
+              label(for="especialidad_editar") #{translation.SPECIALTY} 
               select#lista-especialidades-editar(name="especialidades") 
               //- select#especialidad_editar.form-control
                 if Array.isArray(especialidades) && especialidades.length > 0
                   each item in especialidades
                     option(value=`${item.id}`) #{item.nombre}
                 else
-                  option(value="0") -#{translation.FORM.NO_SPECIALTIES}-
+                  option(value="0") -#{translation.NO_SPECIALTIES}-
         .row 
           .col-12 
             .form-group 
-              label(for="paciente_editar") #{translation.FORM.PATIENT} 
+              label(for="paciente_editar") #{translation.PATIENT} 
               select#lista-pacientes-editar(name="pacientes") 
               //- select#paciente_editar.form-control
-                option(value="0") -#{translation.FORM.SELECT_PATIENT}-
+                option(value="0") -#{translation.SELECT_PATIENT}-
                 if Array.isArray(pacientes) && pacientes.length > 0
                   each item in pacientes
                     option(value=`${item.id}`) #{item.nombre} #{item.apellido_paterno} #{item.apellido_materno}
                 else
-                  option(value="0") -#{translation.FORM.NO_PATIENTS}-
+                  option(value="0") -#{translation.NO_PATIENTS}-
           .col-12
             .form-group
-              label(for="nota_editar") #{translation.FORM.NOTE} 
-              textarea#nota_editar.form-control(name="" cols="30" rows="10" placeholder=translation.FORM.NOTE)  
+              label(for="nota_editar") #{translation.NOTE} 
+              textarea#nota_editar.form-control(name="" cols="30" rows="10" placeholder=translation.NOTE)  
 
       .modal-footer(style="padding:8px;")
         .row(style="margin:0;")

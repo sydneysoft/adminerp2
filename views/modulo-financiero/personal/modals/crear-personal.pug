@@ -5,23 +5,22 @@
         .row
           .col-12
             .form-group
-              label(for="nombre") #{translation.FORM.NAME} *
-              input#nombre.form-control(type="text" placeholder=translation.FORM.NAME)
+              label(for="nombre") #{translation.NAME} *
+              input#nombre.form-control(type="text" placeholder=translation.NAME)
           .col-12.col-md-6
             .form-group
-              label(for="tipo-documento") #{translation.FORM.DOCUMENT_TYPE} *
+              label(for="tipo-documento") #{translation.DOCUMENT_TYPE} *
               select#tipo-documento.form-control
-                option(value="") #{translation.FORM.DOCUMENT_TYPE} 
-                option(value #{translation.FORM.DOCUMENT_NUMBER}) #{translation.DOCUMENT_NUMBER}
-                option(value #{translation.FORM.FOREIGNER_CARD}) 	#{translation.FOREIGNER_CARD}
-                option(value #{translation.FORM.UNIQUE_REGISTRATION_NUMBER}) #{translation.UNIQUE_REGISTRATION_NUMBER}
-                option(value #{translation.FORM.PASSPORT}) #{translation.PASSPORT}
-                option(value #{translation.FORM.BIRTH_DATE}) #{translation.BIRTH_DATE}
+                option(value="L.E / DNI") #{translation.DOCUMENT_NUMBER}
+                option(value="CARNET DE EXTRANJERIA") 	#{translation.FOREIGNER_CARD}
+                option(value="REG. UNICO DE CONTRIBUYENTES") #{translation.UNIQUE_REGISTRATION_NUMBER}
+                option(value="PASAPORTE") #{translation.PASSPORT}
+                option(value="PART. DE NACIMIENTO") #{translation.BIRTH_REGISTRATION} 
                 option(value="OTROS") #{translation.OTHERS}
           .col-12.col-md-6
             .form-group
-              label(for="nro-documento") #{translation.FORM.DOCUMENT_NUMBER} *
-              input#nro-documento.form-control(type="number" placeholder=translation.FORM.DOCUMENT_NUMBER)
+              label(for="nro-documento") #{translation.DOCUMENT_NUMBER} *
+              input#nro-documento.form-control(type="number" placeholder=translation.DOCUMENT_NUMBER)
       .modal-footer
         button#guardarPersonal.btn.btn-success.nuevo(type="button" onclick="") #{translation.ADD}
           i.fas.fa-save.ml-2

@@ -7,7 +7,7 @@ script.
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "#{translation.ALERTS.YES_DELETE}",
+      confirmButtonText: "#{translation.YES_DELETE}",
     })
     .then((willDelete) => {
       if (willDelete.isConfirmed) {
@@ -25,13 +25,13 @@ script.
               if (typeof tablaGestionarInsumos != 'undefined' && tablaGestionarInsumos) {
                 tablaGestionarInsumos.ajax.reload();
               }
-              toastSweet('Exito', "#{translation.ALERTS.DELETED}", 'success');
+              toastSweet('Exito', "#{translation.DELETED}", 'success');
             } else {
-              toastSweet('Error', "#{translation.ALERTS.WRONG}", 'error');
+              toastSweet('Error', "#{translation.WRONG}", 'error');
             }
           },
           error: function (data) {
-            toastSweet('Error', "#{translation.ALERTS.WRONG}", 'error');
+            toastSweet('Error', "#{translation.WRONG}", 'error');
           }
         });
       }

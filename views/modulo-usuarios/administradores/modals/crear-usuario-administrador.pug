@@ -4,38 +4,38 @@
       .modal-body
         .row(style="padding:10px;margin-bottom:8px;")
           .col-md-6.mt-2
-            label #{translation.FORM.DOCUMENT_TYPE}
+            label #{translation.DOCUMENT_TYPE}
             .controls
               select.form-control#tipo_documento_user
                 option(value="DNI")="DNI"
                 option(value="Carnet de Extranjeria")="Carnet de Extranjeria" 
                 option(value="Otro")="Otro" 
           .col-md-6.mt-2
-            label #{translation.FORM.DOCUMENT_NUMBER}
+            label #{translation.DOCUMENT_NUMBER}
             .controls
               input.form-control#numero_documento_user(type="number" autoComplete="new-password")
           .col-md-6.mt-2 
-            label #{translation.FORM.NAMES}
+            label #{translation.NAMES}
             .controls
               input.form-control#nombres_user(type="text" autoComplete="new-password")
           .col-md-6.mt-2 
-            label #{translation.FORM.SURNAMES}
+            label #{translation.SURNAMES}
             .controls
               input.form-control#apellidos_user(type="text" autoComplete="new-password")
           .col-md-6.mt-2 
-            label #{translation.FORM.PHONE}
+            label #{translation.PHONE}
             .controls
               input.form-control#telefono_user(type="tel")
           .col-md-6.mt-2 
-            label #{translation.FORM.EMAIL}
+            label #{translation.EMAIL}
             .controls
               input.form-control#correo_user(type="text" autoComplete="new-password")
           .col-md-6.mt-2 
-            label #{translation.FORM.PASSWORD}
+            label #{translation.PASSWORD}
             .controls
               input.form-control#password_user(type="password" autoComplete="new-password")  
           .col-md-6.mt-2 
-            label #{translation.FORM.CONFIRM_PASSWORD}
+            label #{translation.CONFIRM_PASSWORD}
             .controls
               input.form-control#password_repeat_password(type="password" autoComplete="new-password")
 

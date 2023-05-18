@@ -44,16 +44,16 @@ script.
           }
         },
         {
-          data: 'nombre', name: 'nombre', title: "#{translation.FORM.NAME}", orderable: true, searchable: true,
+          data: 'nombre', name: 'nombre', title: "#{translation.NAME}", orderable: true, searchable: true,
         },
         {
           data: 'activado', name: 'activado', title: "{ACTIVADO}", orderable: true, searchable: true,
           render: function (data, type, row) {
-            return data == 1 ? '<span class="badge badge-success">#{translation.FORM.ACTIVE}</span>' : '<span class="badge badge-danger">#{translation.FORM.DEACTIVATE}</span>';
+            return data == 1 ? '<span class="badge badge-success">#{translation.ACTIVE}</span>' : '<span class="badge badge-danger">#{translation.DEACTIVATE}</span>';
           }
         },
         { 
-          data: 'acciones', name: 'acciones', title: '#{translation.FORM.ACTIONS}', orderable: false, searchable: false,
+          data: 'acciones', name: 'acciones', title: '#{translation.ACTIONS}', orderable: false, searchable: false,
           render: function (data, type, row) {
             let strRow = JSON.stringify(row);
             return `

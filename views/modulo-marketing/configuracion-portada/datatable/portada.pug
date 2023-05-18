@@ -15,7 +15,7 @@ script.
       columns: [
         { data: 'id', name: 'id', title: 'ID', orderable: false, searchable: false, visible: false},
         { 
-          data: 'imagen', name: 'imagen', title: '#{translation.FORM.IMAGE}',
+          data: 'imagen', name: 'imagen', title: '#{translation.IMAGE}',
           render: function (data, type, row) {
             try {
               new URL(row.imagen)
@@ -27,10 +27,10 @@ script.
           orderable: false, searchable: false,
         },
         {
-          data: 'nombre', name: 'nombre', title: "#{translation.FORM.NAME}", orderable: true, searchable: true
+          data: 'nombre', name: 'nombre', title: "#{translation.NAME}", orderable: true, searchable: true
         },
         {
-          data: 'acciones', name: 'acciones', title: '#{translation.FORM.ACTIONS}', orderable: false, searchable: false,
+          data: 'acciones', name: 'acciones', title: '#{translation.ACTIONS}', orderable: false, searchable: false,
           render: function (data, type, row) {
             let strRow = JSON.stringify(row);
             return `

@@ -11,22 +11,22 @@
         .row 
           .col-12 
             .form-group
-              label(for="nombre_editar") #{translation.FORM.NAME}
-              input#nombre_editar.form-control(type="text" placeholder=translation.FORM.NAME)
+              label(for="nombre_editar") #{translation.NAME}
+              input#nombre_editar.form-control(type="text" placeholder=translation.NAME)
         .row.mt-2 
           .col-12 
             .alert.alert-info 
-              | #{translation.FORM.CORTE_MESSAGE_INFO}  
+              | #{translation.CORTE_MESSAGE_INFO}  
         .row.mt-2 
           .col-12
             .form-group 
-              label(for="descripcion_editar") #{translation.FORM.DESCRIPTION}
-              textarea#descripcion_editar.form-control(type="text" placeholder=translation.FORM.DESCRIPTION)
+              label(for="descripcion_editar") #{translation.DESCRIPTION}
+              textarea#descripcion_editar.form-control(type="text" placeholder=translation.DESCRIPTION)
         .row.mt-2 
           .col-12
             .form-group
-              label(for="precio_editar") #{translation.FORM.PRICE}
-              input#precio_editar.form-control(type="number" placeholder=translation.FORM.PRICE) 
+              label(for="precio_editar") #{translation.PRICE}
+              input#precio_editar.form-control(type="number" placeholder=translation.PRICE) 
           input#itemId(type="text" value="" hidden)
       .modal-footer(style="padding:8px;")
         .row(style="margin:0;")

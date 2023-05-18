@@ -4,16 +4,16 @@ extends ../layout.pug
 append contenido 
   .my-3
     .d-grid
-      a#aCrear.btn.btn-primary.btn-block(type='button' href="/admin-tv/faqs/crear") #{translation.FORM.CREATE_NEW}
-        span#spanCrear #{translation.FORM.QUESTION} 
+      a#aCrear.btn.btn-primary.btn-block(type='button' href="/admin-tv/faqs/crear") #{translation.CREATE_NEW}
+        span#spanCrear #{translation.QUESTION} 
   if data && data.length > 0
     .table-responsive
       table.table
         thead#headTable 
           tr 
             th ID 
-            th #{translation.FORM.QUESTION} 
-            th #{translation.FORM.ACTIONS}
+            th #{translation.QUESTION} 
+            th #{translation.ACTIONS}
         tbody#programasTable 
           each item, key in data 
             tr 
@@ -34,7 +34,7 @@ append contenido
   
   else 
     .alert.alert-primary(role='alert')
-      | #{translation.FORM.NO_FAQ}
+      | #{translation.NO_FAQ}
 
   
 

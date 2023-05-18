@@ -10,7 +10,7 @@ script.
 
     try {
       Swal.fire({
-        title: '#{translation.ALERTS.ARE_YOU_SURE}',
+        title: '#{translation.ARE_YOU_SURE}',
         showDenyButton: true,
         showCancelButton: false,
         confirmButtonText: 'Si',
@@ -22,10 +22,10 @@ script.
             const { ok } = await fetch(`/admin-planes-landing/${$(currentTarget).attr('data-id')}`, { method: 'DELETE' })
             if (ok) {
               table.row(':eq(' + rowIndex + ')').remove().draw();
-              Swal.fire('Exito!', '#{translation.ALERTS.REGISTER_DELETED}', 'success')
+              Swal.fire('Exito!', '#{translation.REGISTER_DELETED}', 'success')
             }
           } else if (result.isDenied) {
-            Swal.fire('#{translation.ALERTS.ACTION_STOPPED}', '', 'info')
+            Swal.fire('#{translation.ACTION_STOPPED}', '', 'info')
           }
 
 

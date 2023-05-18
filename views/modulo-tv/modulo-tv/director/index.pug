@@ -40,21 +40,21 @@ append contenido
                 .col-12
                   .row
                     .col-12.col-md-8
-                      label(for="nombre") #{translation.FORM.NAME} *
-                      input#nombre.form-control(type="text" value="" placeholder=translation.FORM.NAME)
+                      label(for="nombre") #{translation.NAME} *
+                      input#nombre.form-control(type="text" value="" placeholder=translation.NAME)
                     .col-12.col-md-4
                       +select-pais('pais')
                   .row.mt-3
                     .col-12.col-md-6
-                      label(for="fecha_nacimiento") #{translation.FORM.BIRTH_DATE} *
-                      input#fecha_nacimiento.form-control(type="date" value="" placeholder=translation.FORM.BIRTH_DATE)
+                      label(for="fecha_nacimiento") #{translation.BIRTH_DATE} *
+                      input#fecha_nacimiento.form-control(type="date" value="" placeholder=translation.BIRTH_DATE)
                     .col-12.col-md-6
                       +select-sexo('sexo')
                   .row.mt-3
                     .col-12
                       .form-group
-                        label(for='biografia') #{translation.FORM.BIOGRAPHY}
-                        textarea#biografia.form-control(name="biografia" placeholder=translation.FORM.BIOGRAPHY) 
+                        label(for='biografia') #{translation.BIOGRAPHY}
+                        textarea#biografia.form-control(name="biografia" placeholder=translation.BIOGRAPHY) 
 
             .modal-footer(style="padding:8px;")
                 .row(style="margin:0;")
@@ -77,21 +77,21 @@ append contenido
                 .col-12
                   .row
                     .col-12.col-md-8
-                      label(for="nombre_editar") #{translation.FORM.NAME} *
-                      input#nombre_editar.form-control(type="text" value="" placeholder=translation.FORM.NAME)
+                      label(for="nombre_editar") #{translation.NAME} *
+                      input#nombre_editar.form-control(type="text" value="" placeholder=translation.NAME)
                     .col-12.col-md-4
                       +select-pais('pais_editar')
                   .row.mt-3
                     .col-12.col-md-6
-                      label(for="fecha_nacimiento_editar") #{translation.FORM.BIRTH_DATE} *
-                      input#fecha_nacimiento_editar.form-control(type="date" value="" placeholder=translation.FORM.BIRTH_DATE)
+                      label(for="fecha_nacimiento_editar") #{translation.BIRTH_DATE} *
+                      input#fecha_nacimiento_editar.form-control(type="date" value="" placeholder=translation.BIRTH_DATE)
                     .col-12.col-md-6
                       +select-sexo('sexo_editar')
                   .row.mt-3
                     .col-12
                       .form-group
-                        label(for='biografia') #{translation.FORM.BIOGRAPHY}
-                        textarea#biografia_editar.form-control(name="biografia" placeholder=translation.FORM.BIOGRAPHY) 
+                        label(for='biografia') #{translation.BIOGRAPHY}
+                        textarea#biografia_editar.form-control(name="biografia" placeholder=translation.BIOGRAPHY) 
 
               input#itemId(type="text" value="" hidden)
             .modal-footer(style="padding:8px;")
@@ -115,21 +115,21 @@ append contenido
                 .col-12
                   .row
                     .col-12.col-md-8
-                      label(for="nombre_mostrar") #{translation.FORM.NAME} *
-                      input#nombre_mostrar.form-control(type="text" value="" placeholder=translation.FORM.NAME)
+                      label(for="nombre_mostrar") #{translation.NAME} *
+                      input#nombre_mostrar.form-control(type="text" value="" placeholder=translation.NAME)
                     .col-12.col-md-4
                       +select-pais('pais_mostrar')
                   .row.mt-3
                     .col-12.col-md-6
-                      label(for="fecha_nacimiento_mostrar") #{translation.FORM.BIRTH_DATE} *
-                      input#fecha_nacimiento_mostrar.form-control(type="date" value="" placeholder=translation.FORM.BIRTH_DATE)
+                      label(for="fecha_nacimiento_mostrar") #{translation.BIRTH_DATE} *
+                      input#fecha_nacimiento_mostrar.form-control(type="date" value="" placeholder=translation.BIRTH_DATE)
                     .col-12.col-md-6
                       +select-sexo('sexo_mostrar')
                   .row.mt-3
                     .col-12
                       .form-group
-                        label(for='biografia') #{translation.FORM.BIOGRAPHY}
-                        textarea#biografia_mostrar.form-control(name="biografia" placeholder=translation.FORM.BIOGRAPHY) 
+                        label(for='biografia') #{translation.BIOGRAPHY}
+                        textarea#biografia_mostrar.form-control(name="biografia" placeholder=translation.BIOGRAPHY) 
 
             .modal-footer(style="padding:8px;")
                 .row(style="margin:0;")
@@ -185,12 +185,12 @@ append contenido
           { 
             data: 'nombre', 
             name: 'nombre',
-            title: '#{translation.FORM.NAME}'
+            title: '#{translation.NAME}'
           },
           {
             data: 'nacionalidad',
             name: 'nacionalidad',
-            title: '#{translation.FORM.NATIONALITY}',
+            title: '#{translation.NATIONALITY}',
             render: function (data, type, row) {
               return paisParse(row.nacionalidad);
             }
@@ -198,17 +198,17 @@ append contenido
           {
             data: 'genero',
             name: 'genero',
-            title: '#{translation.FORM.GENDER}',
+            title: '#{translation.GENDER}',
             render: function (data, type, row) {
               switch(row.genero) {
                 case 'male': 
-                  return '#{translation.FORM.MALE}'
+                  return '#{translation.MALE}'
                   break;
                 case 'female':
-                  return '#{translation.FORM.FEMALE}'
+                  return '#{translation.FEMALE}'
                   break;
                 default:
-                  return '#{translation.FORM.OTHER}'
+                  return '#{translation.OTHER}'
               }
             },
             orderable: false,
@@ -217,7 +217,7 @@ append contenido
           {
             data: 'fecha_naciemiento',
             name: 'fecha_naciemiento',
-            title: '#{translation.FORM.BIRTH_DATE}',
+            title: '#{translation.BIRTH_DATE}',
             render: function (data, type, row) {
               return moment(row.fecha_naciemiento).format('DD/MM/YYYY');
             },
@@ -227,7 +227,7 @@ append contenido
           { 
             data: 'acciones',
             name: 'acciones',
-            title: '#{translation.FORM.ACTIONS}',
+            title: '#{translation.ACTIONS}',
             render: function (data, type, row) {
               let strRow = JSON.stringify(row);
               return `
@@ -274,7 +274,7 @@ append contenido
           position: 'top-end',
           icon: 'error',
           title: 'Error',
-          text: '#{translation.FORM.REQUIRED_FIELDS}',
+          text: '#{translation.REQUIRED_FIELDS}',
           showConfirmButton: false,
           timer: 3000
         })
@@ -297,7 +297,7 @@ append contenido
           position: 'top-end',
           icon: 'error',
           title: 'Error',
-          text: '#{translation.FORM.REQUIRED_FIELDS}',
+          text: '#{translation.REQUIRED_FIELDS}',
           showConfirmButton: false,
           timer: 3000
         })

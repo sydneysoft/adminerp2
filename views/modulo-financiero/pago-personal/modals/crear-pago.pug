@@ -4,7 +4,7 @@
       .modal-header 
         .row 
           .col-12
-            h5.strong(style="font-size:1rem;") #{translation.FORM.ADD_PAYMENT}
+            h5.strong(style="font-size:1rem;") #{translation.ADD_PAYMENT}
       .modal-body-almacen
         .row(style="padding:15px;")
           //- if activo_marketplace===1
@@ -19,7 +19,7 @@
 
           .col-md-12.col-12
             .form-group
-              label  #{translation.FORM.WORKERS}:
+              label  #{translation.WORKERS}:
                 select#lista-personal
                 //- select#campoPersonal.seleccionar
                   option(value=null) --SELECCIONE-- 
@@ -30,17 +30,17 @@
 
           .col-md-6.col-12
             .form-group
-              label(for="Tipo de Pago") #{translation.FORM.PAYMENT_TYPE}
+              label(for="Tipo de Pago") #{translation.PAYMENT_TYPE}
               select#nuevoTipoPago.form-control
-                option(value="null") #{translation.FORM.SELECT}
-                option(value="sueldo") #{translation.FORM.SALARY}
-                option(value="afp") #{translation.FORM.AFP}
-                option(value="CTS") #{translation.FORM.CTS}
-                option(value="otros") #{translation.FORM.OTHERS}
+                option(value="null") #{translation.SELECT}
+                option(value="sueldo") #{translation.SALARY}
+                option(value="afp") #{translation.AFP}
+                option(value="CTS") #{translation.CTS}
+                option(value="otros") #{translation.OTHERS}
 
           .col-md-6.col-12
             .form-group
-              label #{translation.FORM.AMOUNT}
+              label #{translation.AMOUNT}
               .controls
                 input#nuevoMonto.text-center.form-control(type="number" )
 

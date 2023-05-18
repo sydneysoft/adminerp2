@@ -18,7 +18,7 @@ script.
       const obj = await response.json();
 
       if (obj.ok) {
-        Swal.fire('#{translation.ALERTS.DUPLICATED_REGISTER}', '', 'success');
+        Swal.fire('#{translation.DUPLICATED_REGISTER}', '', 'success');
 
         action = 'new';
 
@@ -27,6 +27,6 @@ script.
 
     } catch (error) {
       console.log(error)
-      Swal.fire('Oops!', '#{translation.ALERTS.ERROR_DUPLICATING_REGISTER}', 'error');
+      Swal.fire('Oops!', '#{translation.ERROR_DUPLICATING_REGISTER}', 'error');
     }
   }

@@ -10,27 +10,27 @@
           .col-md-6
             .form-group
               input#idEditar-modulo-admin(type="hidden")
-              label(for="nombreEditar-modulo-admin") #{translation.FORM.NAME}
+              label(for="nombreEditar-modulo-admin") #{translation.NAME}
               input#nombreEditar-modulo-admin.form-control(type="text" placeholder="Nombre" name="nombre") 
           .col-md-6
             .form-group
-              label(for="urlEditar-modulo-admin") #{translation.FORM.URL}
+              label(for="urlEditar-modulo-admin") #{translation.URL}
               input#urlEditar-modulo-admin.form-control(type="text" placeholder="URL" name="url")
           .col-md-6
             .form-group
-              label(for="iconoEditar-modulo-admin") #{translation.FORM.ICON}
+              label(for="iconoEditar-modulo-admin") #{translation.ICON}
               input#iconoEditar-modulo-admin.form-control(type="text" placeholder="Icono" name="icono")
           .col-md-6
             .form-group
-              label(for="textoEditar-modulo-admin") #{translation.FORM.TEXT}
+              label(for="textoEditar-modulo-admin") #{translation.TEXT}
               textarea#textoEditar-modulo-admin.form-control(name="texto" placeholder="Texto")
           .col-md-6
             .form-group
-              label(for="ordenEditar-modulo-admin") #{translation.FORM.ORDER}
+              label(for="ordenEditar-modulo-admin") #{translation.ORDER}
               input#ordenEditar-modulo-admin.form-control(type="number" placeholder="Orden" name="orden")
           .col-md-6
             .form-group
-              label(for="fuenteEditar-modulo-admin") #{translation.FORM.FONT}
+              label(for="fuenteEditar-modulo-admin") #{translation.FONT}
               select#fuenteEditar-modulo-admin.form-control(name="fuente")
                 option(value="Roboto Condensed, sans-serif") Roboto Condensed, sans-serif
                 option(value="Roboto, sans-serif") Roboto, sans-serif
@@ -66,18 +66,18 @@
                 span#rolesEditar-admin-modulos
           .col-md-6
             .form-group
-              label(for="activadoEditar-modulo-admin") #{translation.FORM.STATUS}
+              label(for="activadoEditar-modulo-admin") #{translation.STATUS}
               select#activadoEditar-modulo-admin.form-control(name="activado")
-                option(value="1") #{translation.FORM.ACTIVE}
-                option(value="0") #{translation.FORM.DEACTIVATED}
+                option(value="1") #{translation.ACTIVE}
+                option(value="0") #{translation.DEACTIVATED}
         .row
           .col-md-6
             .form-group
-              label(for="lista-modulo-categorias-editar") #{translation.FORM.CATEGORY}
+              label(for="lista-modulo-categorias-editar") #{translation.CATEGORY}
               select#lista-modulo-categorias-editar.form-control
 
       .modal-footer(style="padding:8px;")
         .row(style="margin:0;")
           .col-md-12.text-right
-            button.btn.btn-success.nuevo(type="button" onClick="actualizarModulosAdminPanel()") #{translation.FORM.UPDATE_DATA}
+            button.btn.btn-success.nuevo(type="button" onClick="actualizarModulosAdminPanel()") #{translation.UPDATE_DATA}
             button.btn.btn-danger.ml-2(type="buton" data-dismiss="modal") #{translation.CLOSE}           

@@ -16,12 +16,12 @@ script.
     let urlFotoPrincipal = $("#imagen-data-banner-editar").attr("src");
 
     if (!nombreTienda) {
-      toastSweet('Error', '#{translation.ALERTS.NO_STORE_NAME}', 'error');
+      toastSweet('Error', '#{translation.NO_STORE_NAME}', 'error');
       return;
     }
 
     if (!correoTienda) {
-      toastSweet('Error', '#{translation.ALERTS.NO_STORE_EMAIL}', 'error');
+      toastSweet('Error', '#{translation.NO_STORE_EMAIL}', 'error');
       return;
     }
     if (
@@ -53,20 +53,20 @@ script.
         success: function (data) {
           Swal.close();
           if (data.ok) {
-            toastSweet('Success', '#{translation.ALERTS.CAMPUS_UPDATED}', 'success');
+            toastSweet('Success', '#{translation.CAMPUS_UPDATED}', 'success');
             tablaSedes.ajax.reload();
             $("#editarTiendaAdmin").modal('hide');
           } else {
-            toastSweet('Error', '#{translation.ALERTS.REGISTER_CANNOT_UPDATE}', 'error');
+            toastSweet('Error', '#{translation.REGISTER_CANNOT_UPDATE}', 'error');
           }
         },
         error: function () {
           Swal.close();
-          toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+          toastSweet('Error', '#{translation.WRONG}', 'error');
         },
       });
     } else {
-      toastSweet('Error', '#{translation.ALERTS.REQUIRED_FIELDS_STORE}', 'error');
+      toastSweet('Error', '#{translation.REQUIRED_FIELDS_STORE}', 'error');
     }
   }
 

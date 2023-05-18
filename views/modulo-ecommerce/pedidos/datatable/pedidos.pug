@@ -16,23 +16,23 @@ script.
       columns: [
         { data: 'id', name: 'id', title: "ID", orderable: true, searchable: false, visible: false},
         { 
-          data: 'fecha_registro', name: 'fecha_registro', title: "#{translation.FORM.DATE}", orderable: false, searchable: false,
+          data: 'fecha_registro', name: 'fecha_registro', title: "#{translation.DATE}", orderable: false, searchable: false,
           render: function (data, type, row) {
             return moment(data).format('DD/MM/YYYY');
           }
         },
-        { data: 'usuario', name: 'usuario', title: "#{translation.FORM.USER}", orderable: true, searchable: true},
+        { data: 'usuario', name: 'usuario', title: "#{translation.USER}", orderable: true, searchable: true},
         { 
-          data: 'total', name: 'total', title: "#{translation.FORM.TOTAL}", orderable: false, searchable: false,
+          data: 'total', name: 'total', title: "#{translation.TOTAL}", orderable: false, searchable: false,
           render: function (data, type, row) {
             return row.moneda + "" + row.suma_subtotal
           }
         },
-        { data: 'tipo_pago', name: 'tipo_pago', title: "#{translation.FORM.PAYMENT}", orderable: true, searchable: true},
-        { data: 'direccion_entrega', name: 'direccion_entrega', title: "#{translation.FORM.ADDRESS}", orderable: true, searchable: true},
-        { data: 'provincia', name: 'provincia', title: "#{translation.FORM.PROVINCE}", orderable: true, searchable: true},
+        { data: 'tipo_pago', name: 'tipo_pago', title: "#{translation.PAYMENT}", orderable: true, searchable: true},
+        { data: 'direccion_entrega', name: 'direccion_entrega', title: "#{translation.ADDRESS}", orderable: true, searchable: true},
+        { data: 'provincia', name: 'provincia', title: "#{translation.PROVINCE}", orderable: true, searchable: true},
         { 
-          data: 'estado', name: 'estado', title: "#{translation.FORM.STATE}", orderable: false, searchable: false,
+          data: 'estado', name: 'estado', title: "#{translation.STATE}", orderable: false, searchable: false,
           render: function (data, type, row) {
             switch (parseInt(data)) {
               case 1:
@@ -47,7 +47,7 @@ script.
           }  
         },
         { 
-          data: 'acciones', name: 'acciones', title: "#{translation.FORM.ACTIONS}", orderable: false, searchable: false,
+          data: 'acciones', name: 'acciones', title: "#{translation.ACTIONS}", orderable: false, searchable: false,
           render: function (data, type, row) {
             return `
               <button class="btn btn-warning" style="margin-right:7px;" type="button" onclick="editarPedido('${row.id}')">

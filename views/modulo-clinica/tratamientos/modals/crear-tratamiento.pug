@@ -4,65 +4,65 @@
       .modal-header 
         .row(style="margin:0;")
           .col-md-12.text-center
-            h3(style="margin:0px 0;") #{translation.FORM.ADD_TREATMENT}
+            h3(style="margin:0px 0;") #{translation.ADD_TREATMENT}
 
 
       .modal-body.borderBottom(style="height: 80vh;overflow-y: scroll")
         .row
           .col-12.col-md-8
             .form-group
-              label(for="paciente") #{translation.FORM.PATIENT_NAME} *
+              label(for="paciente") #{translation.PATIENT_NAME} *
               select#paciente.form-control(name="nombre" placeholder="Nombre de paciente")
 
                 if Array.isArray(pacientes) && pacientes.length > 0
                   each paciente, index in pacientes
                     if index === 0
-                      option(value="0") #{translation.FORM.SELECT_PATIENT} 
+                      option(value="0") #{translation.SELECT_PATIENT} 
                     option(value=paciente.id)= paciente.nombre
                 else
                   option(value="0")  
             .row
               .col-12.col-md-6 
                 .form-group
-                  label(for="nombre") #{translation.FORM.TREATMENT_NAME} *
+                  label(for="nombre") #{translation.TREATMENT_NAME} *
                   input#nombre.form-control(type="text" name="nombre" placeholder="Nombre del tratamiento")
               .col-12.col-md-6
                 .form-group
-                  label(for="dosis") #{translation.FORM.DOSIS} *
+                  label(for="dosis") #{translation.DOSIS} *
                   input#dosis.form-control(type="text" name="dosis" placeholder="Dosis")
               .col-12.col-md-6 
                 .form-group
-                  label(for="inicio_tratamiento") #{translation.FORM.TREATMENT_BEGINNING} *
+                  label(for="inicio_tratamiento") #{translation.TREATMENT_BEGINNING} *
                   input#inicio_tratamiento.form-control(type="date" name="inicio_tratamiento" placeholder="Inicio del tratamiento")
               .col-12.col-md-6
                 .form-group
-                  label(for="fin_tratamiento") #{translation.FORM.END_OF_TREATMENT} *
+                  label(for="fin_tratamiento") #{translation.END_OF_TREATMENT} *
                   input#fin_tratamiento.form-control(type="date" name="fin_tratamiento" placeholder="Fin del tratamiento")
           .col-12.col-md-4
             .form-group
-              label(for="descripcion_corta") #{translation.FORM.SHORT_DESCRIPTION}
+              label(for="descripcion_corta") #{translation.SHORT_DESCRIPTION}
               textarea#descripcion_corta.form-control(name="descripcion_corta" placeholder="Descripción corta")
         .row.mt-3
           .col-12.col-md-4 
             .form-group
-              label(for="costo_tratamiento") #{translation.FORM.TREATMENT_PRICE}
+              label(for="costo_tratamiento") #{translation.TREATMENT_PRICE}
               input#costo_tratamiento.form-control(type="number" name="costo_tratamiento" placeholder="Costo del tratamiento")
           .col-12.col-md-4
             .form-group
-              label(for="duracion") #{translation.FORM.DURATION}Duracion *
+              label(for="duracion") #{translation.DURATION}Duracion *
               input#duracion.form-control(type="text" name="duracion" placeholder="Duracion")
           .col-12.col-md-4
             .form-group
-              label(for="codigoexterno") #{translation.FORM.EXTERNAL_CODE}
+              label(for="codigoexterno") #{translation.EXTERNAL_CODE}
               input#codigoexterno.form-control(type="text" name="codigoexterno" placeholder="Código externo")
         .row.mt-3
           .col-12.col-md-6
             .form-group
-              label(for="descripcion_larga") #{translation.FORM.LONG_DESCRIPTION}
+              label(for="descripcion_larga") #{translation.LONG_DESCRIPTION}
               textarea#descripcion_larga.form-control(name="descripcion_larga" placeholder="Descripción larga")
           .col-12.col-md-6 
             .form-group
-              label(for="resultado") #{translation.FORM.RESULTS}
+              label(for="resultado") #{translation.RESULTS}
               textarea#resultado.form-control(name="resultado" placeholder="Resultados")
         .row.mt-3
           .col-12.col-md-6
@@ -72,29 +72,29 @@
             include /modulo-tv/modulo-general/galeria-fotos/modal-galeria.pug
           .col-12.col-md-6 
             .form-group 
-              label(for="sede") #{translation.FORM.BRANCH}
+              label(for="sede") #{translation.BRANCH}
               select#sede.form-control(name="sede" placeholder="Sede")
                 if Array.isArray(sedes) && sedes.length > 0
                   each sede, index in sedes
                     if index === 0
-                      option(value="0") #{translation.FORM.SELECT_BRANCH}e
+                      option(value="0") #{translation.SELECT_BRANCH}e
                     option(value=sede.id)= sede.nombre
                 else
-                  option(value="0") #{translation.FORM.NO_BRANCHS_REGISTERED}
+                  option(value="0") #{translation.NO_BRANCHS_REGISTERED}
         .row.mt-3
           .col-12.col-md-8
             .form-group 
-              label(for="sintomas") #{translation.FORM.SINTOMS}
+              label(for="sintomas") #{translation.SINTOMS}
               textarea#sintomas.form-control.h-100(name="sintomas" placeholder="Sintomas")
           .col-12.col-md-4 
             .form-group 
-              label(for="estado") #{translation.FORM.STATE} 
+              label(for="estado") #{translation.STATE} 
               select#estado.form-control(name="estado" placeholder="Estado")
                 if Array.isArray(estado_tratamiento) && estado_tratamiento.length > 0
                   each valor in estado_tratamiento[0].valor
                     option(value=valor)= valor
                 else
-                  option(value="0") #{translation.FORM.NO_BRANCHS_REGISTERED}
+                  option(value="0") #{translation.NO_BRANCHS_REGISTERED}
       .modal-footer(style="padding:8px;")
         .row(style="margin:0;")
           .col-md-12.text-right

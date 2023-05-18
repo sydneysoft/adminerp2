@@ -11,21 +11,21 @@
         .row 
           .col-12
             .form-group
-              label(for='nombre') #{translation.FORM.NAME} *
-              input#nombre.form-control(type='text' placeholder=translation.FORM.NAME name="nombre" required)
+              label(for='nombre') #{translation.NAME} *
+              input#nombre.form-control(type='text' placeholder=translation.NAME name="nombre" required)
         .row 
           .col-12
             .form-group
-              label(for='url') #{translation.FORM.URL} *
-              input#url.form-control(type='text' placeholder=translation.FORM.URL name="url" required)
+              label(for='url') #{translation.URL} *
+              input#url.form-control(type='text' placeholder=translation.URL name="url" required)
           .col-12
             .form-group
-              //- label(for='identificador') #{translation.FORM.IDENTIFIER} (#{translation.OPTIONAL})
+              //- label(for='identificador') #{translation.IDENTIFIER} (#{translation.OPTIONAL})
               select#identificador.form-control( name="identificador" hidden)
                 option(value="footer" selected) #{translation.FOOTER}
         .row(style="padding:10px;margin-bottom:8px;")
           .col-12
-            label(for='icono') #{translation.FORM.ICON}
+            label(for='icono') #{translation.ICON}
             .controls
               button.btn.btn-info#icono(data-iconset="fontawesome5" data-icon="fas fa-wifi" role="iconpicker")
 

@@ -5,19 +5,19 @@ script.
       Swal.close();
       Swal.fire({
         icon: "error",
-        title: "#{translation.ALERTS.CANT_DELETE_CLOTHES_CATEGORY}",
+        title: "#{translation.CANT_DELETE_CLOTHES_CATEGORY}",
         showConfirmButton: false,
         timer: 2500,
       });
     } else {
       Swal.fire({
-        title: "#{translation.ALERTS.ARE_YOU_SURE}",
-        text: "#{translation.ALERTS.YOU_CANT_REVERT_THIS_ACTION}",
+        title: "#{translation.ARE_YOU_SURE}",
+        text: "#{translation.YOU_CANT_REVERT_THIS_ACTION}",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "#{translation.ALERTS.YES_DELETE}",
+        confirmButtonText: "#{translation.YES_DELETE}",
       }).then((result) => {
         if (result.isConfirmed) {
           handleDeleteCategoria(id);
@@ -39,15 +39,15 @@ script.
           if (typeof tablaCategorias != 'undefined') {
             tablaCategorias.ajax.reload();
           }
-          toastSweet('Success', '#{translation.ALERTS.DELETED}', 'success');
+          toastSweet('Success', '#{translation.DELETED}', 'success');
         } else {
           Swal.close();
-          toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+          toastSweet('Error', '#{translation.WRONG}', 'error');
         }
       },
       error: function () {
         Swal.close();
-        toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+        toastSweet('Error', '#{translation.WRONG}', 'error');
       },
     });
   };

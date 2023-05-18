@@ -14,7 +14,7 @@ append contenido
         input#item_id(type="text" value=data[0].id hidden)
         .col-12.col-md-8 
           .form-group 
-            label(for="embed") #{translation.FORM.EMBED_CODE} *
+            label(for="embed") #{translation.EMBED_CODE} *
             textarea#embed.form-control(type="text" placeholder="Embed Code" style="height: 250px;") #{data[0].embed}
         .col-12.col-md-4 
           .border.p-3.rounded 
@@ -27,13 +27,13 @@ append contenido
           .mt-3 
             .alert.alert-info 
               i.fas.fa-info-circle 
-              | #{translation.MODULOTV.GOOGLE_MAPS_INSTRUCTION} 
+              | #{translation.GOOGLE_MAPS_INSTRUCTION} 
               a(href="https://support.google.com/maps/answer/144361?co=GENIE.Platform%3DDesktop&hl=es" target="_blank") #{translation.MORE_INFORMATION}
             .alert.alert-warning.alert-dismissible.fade.show(role="alert")
               button.close(type="button" data-dismiss="alert" aria-label="Close")
                 span(aria-hidden="true") ×
               i.fas.fa-exclamation-triangle 
-              | #{translation.MODULOTV.GOOGLE_MAPS_WARNING}
+              | #{translation.GOOGLE_MAPS_WARNING}
               a(href="https://support.google.com/maps/answer/144361?co=GENIE.Platform%3DDesktop&hl=es" target="_blank") #{translation.MORE_INFORMATION}
     
   script 
@@ -58,7 +58,7 @@ append contenido
         Swal.fire({
           icon: 'error',
           title: 'Oops...',
-          text: '#{translation.FORM.REQUIRED_FIELDS}',
+          text: '#{translation.REQUIRED_FIELDS}',
         });
         return;
       }

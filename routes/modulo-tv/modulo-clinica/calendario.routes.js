@@ -816,7 +816,7 @@ router.get('/get-data-date', async (req, res) => {
     let especialidadesData = await especialidadService.getTable().select(['id', 'nombre']).whereIn('id', idEspecialidades);
     let sedesData = await sedeService.getTable().select(['id', 'nombre', 'direccion']).whereIn('id', idSedes);
     let pacientesData = await pacienteService.getTable().select(['id', 'nombre', 'numero_documento', 'tipo_documento', 'celular', 'correo']).whereIn('id', idPacientes);
-    let medicosData = await medicoService.getTable().select(['id', 'nombre']).whereIn('id', idMedicos);
+    let medicosData = await medicoService.getTable().select(['id', 'primer_nombre as nombre']).whereIn('id', idMedicos);
     // console.log(especialidadesData, sedesData, pacientesData, medicosData)
 
 

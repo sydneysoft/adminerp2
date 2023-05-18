@@ -11,31 +11,31 @@
         .row 
           .col-12.col-md-9
             .form-group 
-              label(for="nombre_mostrar") #{translation.FORM.NAME}
-              input#nombre_mostrar.form-control(type="text" placeholder=translation.FORM.NAME readonly)
+              label(for="nombre_mostrar") #{translation.NAME}
+              input#nombre_mostrar.form-control(type="text" placeholder=translation.NAME readonly)
           .col-12.col-md-3
             .form-group
-              label(for="codigoexterno_mostrar") #{translation.FORM.EXTERNAL_CODE}
-              input#codigoexterno_mostrar.form-control(type="text" placeholder=translation.FORM.EXTERNAL_CODE readonly)
+              label(for="codigoexterno_mostrar") #{translation.EXTERNAL_CODE}
+              input#codigoexterno_mostrar.form-control(type="text" placeholder=translation.EXTERNAL_CODE readonly)
         .row.mt-3
           .col-12.col-md-6
             .form-group 
-              label(for="estado_mostrar") #{translation.FORM.STATE}
-              //- input#estado.form-control(type="text" placeholder=translation.FORM.STATE)
+              label(for="estado_mostrar") #{translation.STATE}
+              //- input#estado.form-control(type="text" placeholder=translation.STATE)
               select#estado_mostrar.form-control(name="estado" disabled)
-                option(value="1") #{translation.FORM.ACTIVE}
-                option(value="2") #{translation.FORM.INACTIVE}
+                option(value="1") #{translation.ACTIVE}
+                option(value="2") #{translation.INACTIVE}
           .col-12.col-md-6 
             .form-group
-              label(for="sede_mostrar") #{translation.FORM.BRANCH}
+              label(for="sede_mostrar") #{translation.BRANCH}
               select#sede_mostrar.form-control(disabled)
-                option(value="0") #{translation.FORM.NO_BRANCH}
+                option(value="0") #{translation.NO_BRANCH}
                 each sede in sedes
                   option(value=sede.id) #{sede.nombre}
         .row.mt-3
           .col-12.col-md-6
             .form-group 
-              label(for="categoria_mostrar") #{translation.FORM.CATEGORY}
+              label(for="categoria_mostrar") #{translation.CATEGORY}
               select#categoria_mostrar.form-control(name="categoria" disabled)
                 //- Categorias medicas
                 option(value="1") Angiología
@@ -96,25 +96,25 @@
                 option(value="53") Fisioterapia del Trastorno del Espectro Autista
           .col-12.col-md-6
             .form-group
-              label(for="icono_mostrar") #{translation.FORM.ICON}
+              label(for="icono_mostrar") #{translation.ICON}
                 span#showIcono_mostrar
-              input#icono_mostrar.form-control(type="text" placeholder=translation.FORM.ICON readonly)
+              input#icono_mostrar.form-control(type="text" placeholder=translation.ICON readonly)
 
         .row.mt-3
           .col-12.col-md-6
             .form-group 
-              label(for="descriptionlarga_mostrar") #{translation.FORM.LONG_DESCRIPTION}
-              textarea#descriptionlarga_mostrar.form-control(placeholder=translation.FORM.LONG_DESCRIPTION readonly)
+              label(for="descriptionlarga_mostrar") #{translation.LONG_DESCRIPTION}
+              textarea#descriptionlarga_mostrar.form-control(placeholder=translation.LONG_DESCRIPTION readonly)
           .col-12.col-md-6
             .form-group
-              label(for="descripcioncorta_mostrar") #{translation.FORM.SHORT_DESCRIPTION}
-              textarea#descripcioncorta_mostrar.form-control(placeholder=translation.FORM.SHORT_DESCRIPTION readonly)
+              label(for="descripcioncorta_mostrar") #{translation.SHORT_DESCRIPTION}
+              textarea#descripcioncorta_mostrar.form-control(placeholder=translation.SHORT_DESCRIPTION readonly)
 
         .row.mt-3 
           .col-12.col-md-6
             .row.mb-3.align-items-end
               .col-8
-                span #{translation.FORM.IMAGE}
+                span #{translation.IMAGE}
                 br
               .col-4
                 #mostrarImagen_mostrar
@@ -122,7 +122,7 @@
             //- Checkbox
             .form-check 
               input#activado_mostrar.form-check-input(type="checkbox" value="" disabled)
-              label.form-check-label(for="activado") #{translation.FORM.ENABLED}
+              label.form-check-label(for="activado") #{translation.ENABLED}
 
       .modal-footer(style="padding:8px;")
         .row(style="margin:0;")

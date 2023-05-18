@@ -16,11 +16,11 @@ append contenido
             +btn-back()
         .col-6.text-right
           if empresa_id
-            a#btnCrear.btn.btn-primary(type='button' href=`/admin-tv/programas/empresa/${empresa_id}/crear`) #{translation.FORM.CREATE_NEW_TV_SHOW} 
-              span#spanCrear #{translation.FORM.TV_SHOW} 
+            a#btnCrear.btn.btn-primary(type='button' href=`/admin-tv/programas/empresa/${empresa_id}/crear`) #{translation.CREATE_NEW_TV_SHOW} 
+              span#spanCrear #{translation.TV_SHOW} 
           else
-            a#aCrear.btn.btn-primary(type='button' href="/admin-tv/programas/crear") #{translation.FORM.CREATE_NEW_TV_SHOW} 
-              span#spanCrear #{translation.FORM.TV_SHOW}
+            a#aCrear.btn.btn-primary(type='button' href="/admin-tv/programas/crear") #{translation.CREATE_NEW_TV_SHOW} 
+              span#spanCrear #{translation.TV_SHOW}
       .row.mt-3
         .col-12
           .table-responsive
@@ -48,7 +48,7 @@ append contenido
           { data: 'id', name: 'id', title: "ID", orderable: false, searchable: false, visible: false },
           { data: 'nombre', name: 'nombre' },
           { 
-            data: 'estracto', name: 'estracto', title: '#{translation.FORM.EXCERPT}',
+            data: 'estracto', name: 'estracto', title: '#{translation.EXCERPT}',
             render: function (data, type, row) {
               if (data.length < 50) {
                 return data;
@@ -57,7 +57,7 @@ append contenido
             }
           },
           {
-            data: 'foto_portada', name: 'foto_portada', title: '#{translation.FORM.COVER}',
+            data: 'foto_portada', name: 'foto_portada', title: '#{translation.COVER}',
             render: function (data, type, row) {
               try {
                 new URL(data);
@@ -71,7 +71,7 @@ append contenido
           {
             data: 'genero',
             name: 'genero',
-            title: '#{translation.FORM.GENRE}',
+            title: '#{translation.GENRE}',
             render: function (data, type, row) {
               if (typeof data == 'string') {
                 data = JSON.parse(data);
@@ -83,7 +83,7 @@ append contenido
                 });
                 return generos.join(', ');
               } else if (Array.isArray(data) && data.length == 0) {
-                return '#{translation.FORM.NO_GENRES}';
+                return '#{translation.NO_GENRES}';
               }
               return data;
             },
@@ -93,7 +93,7 @@ append contenido
           {
             data: 'fecha_lanzamiento',
             name: 'fecha_lanzamiento',
-            title: '#{translation.FORM.LAUNCH_DATE}',
+            title: '#{translation.LAUNCH_DATE}',
             render: function (data, type, row) {
               return moment(data).format('DD/MM/YYYY');
             },
@@ -103,7 +103,7 @@ append contenido
           {
             data: 'fecha',
             name: 'fecha',
-            title: '#{translation.FORM.DATE}',
+            title: '#{translation.DATE}',
             render: function (data, type, row) {
               return moment(data).format('DD/MM/YYYY');
             },

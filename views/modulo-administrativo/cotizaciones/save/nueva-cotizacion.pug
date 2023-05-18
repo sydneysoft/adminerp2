@@ -82,14 +82,14 @@ script.
             window.location.href = `/cotizaciones/cliente/${data.data}`;
           } else {
             Swal.close();
-            toastSweet('error', '#{translation.ALERTS.WRONG}', 'error');
+            toastSweet('error', '#{translation.WRONG}', 'error');
           }
         })
         .catch(() => {
           Swal.close();
-          toastSweet('error', '#{translation.ALERTS.WRONG}', 'error');
+          toastSweet('error', '#{translation.WRONG}', 'error');
         });
     } else {
-      toastSweet('error', '#{translation.ALERTS.QUOTE_ERROR}', 'error');
+      toastSweet('error', '#{translation.QUOTE_ERROR}', 'error');
     }
   }

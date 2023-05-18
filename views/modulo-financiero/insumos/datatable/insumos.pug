@@ -16,22 +16,22 @@ script.
       columns: [
         { data: 'id', name: 'id', title: "ID", orderable: true, searchable: false, visible: false},
         { 
-          data: 'insumo', name: 'insumo', title: "#{translation.FORM.NAME}", orderable: true, searchable: true
+          data: 'insumo', name: 'insumo', title: "#{translation.NAME}", orderable: true, searchable: true
         },
         {
-          data: 'created_at', name: 'created_at', title: "#{translation.FORM.CREATED_AT}", orderable: true, searchable: false,
+          data: 'created_at', name: 'created_at', title: "#{translation.CREATED_AT}", orderable: true, searchable: false,
           render: function (data, type, row) {
             return moment(data).format('DD/MM/YYYY');
           }
         },
         {
-          data: 'updated_at', name: 'updated_at', title: "#{translation.FORM.UPDATED_AT}", orderable: true, searchable: false,
+          data: 'updated_at', name: 'updated_at', title: "#{translation.UPDATED_AT}", orderable: true, searchable: false,
           render: function (data, type, row) {
             return moment(data).format('DD/MM/YYYY');
           }
         },
         { 
-          data: 'actions', name: 'actions', title: "#{translation.FORM.ACTIONS}", orderable: false, searchable: false,
+          data: 'actions', name: 'actions', title: "#{translation.ACTIONS}", orderable: false, searchable: false,
           render: function (data, type, row) {
             let strRow = JSON.stringify(row);
             return `

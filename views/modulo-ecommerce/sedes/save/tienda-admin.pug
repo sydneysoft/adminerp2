@@ -11,15 +11,15 @@ script.
     let urlFotoPrincipal = $("#imagen-data-banner").attr("src");
 
     if (urlFotoPrincipal == "/images/image-default.jog") {
-      toastSweet('Error', '#{translation.ALERTS.NO_IMAGE_STORE}', 'error');
+      toastSweet('Error', '#{translation.NO_IMAGE_STORE}', 'error');
       return;
     }
     if (!nombreTienda) {
-      toastSweet('Error', '#{translation.ALERTS.NO_STORE_NAME}', 'error');
+      toastSweet('Error', '#{translation.NO_STORE_NAME}', 'error');
       return;
     }
     if (!correoTienda) {
-      toastSweet('Error', '#{translation.ALERTS.NO_STORE_EMAIL}', 'error');
+      toastSweet('Error', '#{translation.NO_STORE_EMAIL}', 'error');
       return;
     }
     const auxData = {
@@ -48,23 +48,23 @@ script.
         success: function (data) {
           if (data.ok) {
             Swal.close();
-            toastSweet('Success', '#{translation.ALERTS.CAMPUS_CREATED}', 'success');
+            toastSweet('Success', '#{translation.CAMPUS_CREATED}', 'success');
             if (typeof tablaSedes !== 'undefined') {
               tablaSedes.ajax.reload();
             }
             $("#nuevoTiendaAdmin").modal('hide');
           } else {
             Swal.close();
-            toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+            toastSweet('Error', '#{translation.WRONG}', 'error');
           }
         },
         error: function () {
           Swal.close();
-          toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+          toastSweet('Error', '#{translation.WRONG}', 'error');
         },
       });
     } else {
-      toastSweet('Error', '#{translation.ALERTS.REQUIRED_FIELDS_PRODUCT}', 'error');
+      toastSweet('Error', '#{translation.REQUIRED_FIELDS_PRODUCT}', 'error');
     }
   } 
 

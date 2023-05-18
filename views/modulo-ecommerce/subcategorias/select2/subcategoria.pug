@@ -46,7 +46,7 @@ script.
   })
   .on("select2:open", () => {
     $(".select2-results:not(:has(a))").append(
-      '<a href="#" style="padding: 6px;height: 20px;display: inline-table;" data-toggle="modal" data-target="#crearSubcategoriaModal" onclick="closeSubcategoriasSelect2()">#{translation.FORM.ADD_SUBCATEGORY}</a>'
+      '<a href="#" style="padding: 6px;height: 20px;display: inline-table;" data-toggle="modal" data-target="#crearSubcategoriaModal" onclick="closeSubcategoriasSelect2()">#{translation.ADD_SUBCATEGORY}</a>'
     );
   }); //- No se debe crear
 

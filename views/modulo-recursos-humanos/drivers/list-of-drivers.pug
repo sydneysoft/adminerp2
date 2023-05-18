@@ -19,24 +19,24 @@ block contenido
                     thead.thead-dark
                         tr.table-head
                             th.text-center id
-                            th.text-center #{translation.FORM.FIRST_NAME}
-                            th.text-center #{translation.FORM.SECOND_NAME}
-                            th.text-center #{translation.FORM.LAST_NAME}
-                            th.text-center #{translation.FORM.MOTHERS_NAME}
-                            th.text-center #{translation.FORM.DOCUMENT_TYPE}
-                            th.text-center #{translation.FORM.DOCUMENT_NUMBER}
-                            th.text-center #{translation.FORM.DOCUMENT_PHOTO_FRONT}
-                            th.text-center #{translation.FORM.DOCUMENT_PHOTO_BACK}
-                            th.text-center #{translation.FORM.LICENCE_TYPE}
-                            th.text-center #{translation.FORM.LICENCE_NUMBER}
-                            th.text-center #{translation.FORM.PHOTO_LICENCE_FRONT}
-                            th.text-center #{translation.FORM.PHOTO_LICENCE_BACK}
-                            th.text-center #{translation.FORM.HIRED_DATE}
-                            th.text-center #{translation.FORM.STATE}
-                            th.text-center #{translation.FORM.FIRED_DATE}
-                            th.text-center #{translation.FORM.OBSERVATIONS}
-                            th.text-center #{translation.FORM.TYPE_VEHICLE}
-                            th.text-center #{translation.FORM.ACTIONS}
+                            th.text-center #{translation.FIRST_NAME}
+                            th.text-center #{translation.SECOND_NAME}
+                            th.text-center #{translation.LAST_NAME}
+                            th.text-center #{translation.MOTHERS_NAME}
+                            th.text-center #{translation.DOCUMENT_TYPE}
+                            th.text-center #{translation.DOCUMENT_NUMBER}
+                            th.text-center #{translation.DOCUMENT_PHOTO_FRONT}
+                            th.text-center #{translation.DOCUMENT_PHOTO_BACK}
+                            th.text-center #{translation.LICENCE_TYPE}
+                            th.text-center #{translation.LICENCE_NUMBER}
+                            th.text-center #{translation.PHOTO_LICENCE_FRONT}
+                            th.text-center #{translation.PHOTO_LICENCE_BACK}
+                            th.text-center #{translation.HIRED_DATE}
+                            th.text-center #{translation.STATE}
+                            th.text-center #{translation.FIRED_DATE}
+                            th.text-center #{translation.OBSERVATIONS}
+                            th.text-center #{translation.TYPE_VEHICLE}
+                            th.text-center #{translation.ACTIONS}
                     tbody
 
                         each book in bookStore
@@ -78,36 +78,36 @@ block contenido
                         #step-one.step.step-active
                             .row
                                 .col-md-6.mb-3
-                                    label.form-label(for='primer_nombre' ) #{translation.FORM.FIRST_NAME}
+                                    label.form-label(for='primer_nombre' ) #{translation.FIRST_NAME}
                                     input.form-control(type='text' name='primer_nombre' id='primer_nombre' )
                                 .col-md-6.mb-3
-                                    label.form-label(for='segundo_nombre') #{translation.FORM.SECOND_NAME}
+                                    label.form-label(for='segundo_nombre') #{translation.SECOND_NAME}
                                     input.form-control(type='text' name='segundo_nombre' id='segundo_nombre' )
                             .row
                                 .col-md-6.mb-3
-                                    label.form-label(for='apellido_paterno') #{translation.FORM.FATHERS_NAME}
+                                    label.form-label(for='apellido_paterno') #{translation.FATHERS_NAME}
                                     input.form-control(type='text' name='apellido_paterno' id='apellido_paterno' )
                                 .col-md-6.mb-3
-                                    label.form-label(for='apellido_materno') #{translation.FORM.MOTHERS_NAME}
+                                    label.form-label(for='apellido_materno') #{translation.MOTHERS_NAME}
                                     input.form-control(type='text' name='apellido_materno' id='apellido_materno' )
 
                             .row
                                 .col-md-6.mb-3
-                                    label.form-label(for='tipo_de_documento') #{translation.FORM.DOCUMENT_TYPE}
+                                    label.form-label(for='tipo_de_documento') #{translation.DOCUMENT_TYPE}
                                     select.form-control(name='tipo_de_documento' id='tipo_de_documento' )
-                                        option(value="") #{translation.FORM.SELECT_OPTION}
-                                        option(value="DNI") #{translation.FORM.DOCUMENT_NUMBER}
-                                        option(value="Carnet de Extranjería") #{translation.FORM.FOREIGN_CARD}
-                                        option(value="Pasaporte") #{translation.FORM.PASSPORT}
+                                        option(value="") #{translation.SELECT_OPTION}
+                                        option(value="DNI") #{translation.DOCUMENT_NUMBER}
+                                        option(value="Carnet de Extranjería") #{translation.FOREIGN_CARD}
+                                        option(value="Pasaporte") #{translation.PASSPORT}
                                 .col-md-6.mb-3
-                                    label.form-label(for='numero_de_documento') #{translation.FORM.DOCUMENT_NUMBER}
+                                    label.form-label(for='numero_de_documento') #{translation.DOCUMENT_NUMBER}
                                     input.form-control(type='text' name='numero_de_documento' id='numero_de_documento' )
                             .row
                                 .col-md-6.mb-3
-                                    label.form-label(for='foto_de_documento_cara_frontal') #{translation.FORM.DOCUMENT_PHOTO_FRONT}
+                                    label.form-label(for='foto_de_documento_cara_frontal') #{translation.DOCUMENT_PHOTO_FRONT}
                                     input.form-control(type='file' name='foto_de_documento_cara_frontal' id='foto_de_documento_cara_frontal' )
                                 .col-md-6.mb-3
-                                    label.form-label(for='foto_de_documento_cara_trasera') #{translation.FORM.DOCUMENT_PHOTO_BACK}
+                                    label.form-label(for='foto_de_documento_cara_trasera') #{translation.DOCUMENT_PHOTO_BACK}
                                     input.form-control(type='file' name='foto_de_documento_cara_trasera' id='foto_de_documento_cara_trasera' )
 
                             .row.justify-content-end.mt-3
@@ -118,48 +118,48 @@ block contenido
                         #step-two.step.hidden
                             .row
                                 .col-md-6.mb-3
-                                    label.form-label(for='numero_de_licencia') #{translation.FORM.LICENCE_NUMBER}
+                                    label.form-label(for='numero_de_licencia') #{translation.LICENCE_NUMBER}
                                     input.form-control(type='text' name='numero_de_licencia' id='numero_de_licencia')
                                 .col-md-6.mb-3
-                                    label.form-label(for='tipo_de_licencia') #{translation.FORM.LICENCE_TYPE}
+                                    label.form-label(for='tipo_de_licencia') #{translation.LICENCE_TYPE}
                                     select.form-control( name='tipo_de_licencia' id='tipo_de_licencia')
-                                        option(value="tipo 1") #{translation.FORM.TYPE1}
-                                        option(value="tipo 2") #{translation.FORM.TYPE2}
-                                        option(value="tipo 3") #{translation.FORM.TYPE3}
+                                        option(value="tipo 1") #{translation.TYPE1}
+                                        option(value="tipo 2") #{translation.TYPE2}
+                                        option(value="tipo 3") #{translation.TYPE3}
                             .row
                                 .col-md-6.mb-3
-                                    label.form-label(for='foto_de_licencia_cara_trasera') #{translation.FORM.PHOTO_LICENCE_FRONT}
+                                    label.form-label(for='foto_de_licencia_cara_trasera') #{translation.PHOTO_LICENCE_FRONT}
                                     input.form-control(type='file' name='foto_de_licencia_cara_frontal' id='foto_de_licencia_cara_frontal')
                                 .col-md-6.mb-3
-                                    label.form-label(for='foto_de_licencia_cara_trasera') #{translation.FORM.PHOTO_LICENCE_BACK}
+                                    label.form-label(for='foto_de_licencia_cara_trasera') #{translation.PHOTO_LICENCE_BACK}
                                     input.form-control(type='file' name='foto_de_licencia_cara_trasera' id='foto_de_licencia_cara_trasera')
                             .row
                                 .col-md-6.mb-3
-                                    label.form-label(for='observaciones') #{translation.FORM.OBSERVATIONS}
+                                    label.form-label(for='observaciones') #{translation.OBSERVATIONS}
                                     input.form-control(type='text' name='observaciones' id='observaciones')
                                 .col-md-6.mb-3
-                                    label.form-label(for='estado') #{translation.FORM.OBSERVATIONS}#{translation.FORM.STATE}
+                                    label.form-label(for='estado') #{translation.OBSERVATIONS}#{translation.STATE}
                                     select.form-control( name='estado' id='estado')
-                                        option(value="ACTIVO") #{translation.FORM.ACTIVE} 
-                                        option(value="SUSPENDIDO") #{translation.FORM.SUSPENDED} 
-                                        option(value="DESPEDIDO") #{translation.FORM.FIRED} 
-                                        option(value="RENUNCIA") #{translation.FORM.QUIT} 
+                                        option(value="ACTIVO") #{translation.ACTIVE} 
+                                        option(value="SUSPENDIDO") #{translation.SUSPENDED} 
+                                        option(value="DESPEDIDO") #{translation.FIRED} 
+                                        option(value="RENUNCIA") #{translation.QUIT} 
 
                             .row
                                 .col-md-6.mb-3
-                                    label.form-label(for='fecha_de_contratacion' ) #{translation.FORM.HIRED_DATE}
+                                    label.form-label(for='fecha_de_contratacion' ) #{translation.HIRED_DATE}
                                     input.form-control.date-picker(type='text'  name='fecha_de_contratacion' id='fecha_de_contratacion' data-provide="datepicker" data-date-language="es")
                                 .col-md-6.mb-3
-                                    label.form-label(for='fecha_de_despido' ) #{translation.FORM.FIRED_DATE}
+                                    label.form-label(for='fecha_de_despido' ) #{translation.FIRED_DATE}
                                     input.form-control.date-picker(type='text' name='fecha_de_despido' id='fecha_de_despido' data-provide="datepicker" data-date-language="es")
 
                             .row 
                                 .col-md-6.mb-3
-                                    label.form-label(for='estado') #{translation.FORM.VEHICLE_TYPE}
+                                    label.form-label(for='estado') #{translation.VEHICLE_TYPE}
                                     select.form-control( name='tipo_de_vehiculo' id='estado')
-                                        option(value="tipo 1") #{translation.FORM.TYPE1} 
-                                        option(value="tipo 2") #{translation.FORM.TYPE2} 
-                                        option(value="tipo 3") #{translation.FORM.TYPE3} 
+                                        option(value="tipo 1") #{translation.TYPE1} 
+                                        option(value="tipo 2") #{translation.TYPE2} 
+                                        option(value="tipo 3") #{translation.TYPE3} 
 
                             .row.justify-content-end.mt-3
                                 .col-md-3

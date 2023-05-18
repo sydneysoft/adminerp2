@@ -29,10 +29,10 @@ block contenido
             .col-5.col-md-5.my-1.input-group
                 - var date =  paginationOp && paginationOp.date ? paginationOp.date : [null, null];
                 .col-6.px-0.mx-0
-                    span.py-0.my-0.mx-2 #{translation.FORM.DATE_FROM}
+                    span.py-0.my-0.mx-2 #{translation.DATE_FROM}
                     input#filterDateFrom.form-control.mx-2(type="date", value=date[0],  name="date-from", max=date[1])
                 .col-6.px-0.mx-0
-                    span.py-0.my-0.mx-2 #{translation.FORM.DATE_UNTIL}
+                    span.py-0.my-0.mx-2 #{translation.DATE_UNTIL}
                     input#filterDateUntil.form-control.mx-2(type="date", value=date[1], name="date-until", min=date[0])
             .col-12.col-md-1.my-1.d-flex.justify-content-center.align-items-end
                 .col-12
@@ -43,14 +43,14 @@ block contenido
                 table.table.table-bordered(style="font-size: 14px;")
                     thead.thead-dark
                         tr
-                            th.text-center #{translation.FORM.DATE_TIME}
-                            th.text-center #{translation.FORM.USER}
-                            th.text-center #{translation.FORM.EMAIL}
-                            th.text-center #{translation.FORM.IP_ADDRESS}
-                            th.text-center #{translation.FORM.DEVICE}
-                            th.text-center #{translation.FORM.BROWSER}
-                            th.text-center #{translation.FORM.PLATFORM}
-                            th.text-center #{translation.FORM.STATE}
+                            th.text-center #{translation.DATE_TIME}
+                            th.text-center #{translation.USER}
+                            th.text-center #{translation.EMAIL}
+                            th.text-center #{translation.IP_ADDRESS}
+                            th.text-center #{translation.DEVICE}
+                            th.text-center #{translation.BROWSER}
+                            th.text-center #{translation.PLATFORM}
+                            th.text-center #{translation.STATE}
 
 
                     tbody(style="font-size: 14px;")
@@ -65,9 +65,9 @@ block contenido
                                 td.text-center.align-middle=user.browser
                                 td.text-center.align-middle=user.platform
                                 if user.session_status === 'online'
-                                    td.text-center.text-success.align-middle #{translation.FORM.ACTIVE}
+                                    td.text-center.text-success.align-middle #{translation.ACTIVE}
                                 else 
-                                    td.text-center.text-danger.align-middle #{translation.FORM.CLOSED}: #{user.session_status}
+                                    td.text-center.text-danger.align-middle #{translation.CLOSED}: #{user.session_status}
             .col-12 
                 ul.pagination.justify-content-center
                     - var pageNumber = 1;

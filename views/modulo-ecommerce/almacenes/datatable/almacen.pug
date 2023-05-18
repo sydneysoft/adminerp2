@@ -22,8 +22,8 @@ script.
       order: [[1, "asc"]],
       language: {
         buttons: {
-          selectAll: '#{translation.FORM.SELECT_EVERYTHING}',
-          selectNone: '#{translation.FORM.ERASE_SELECTION}',
+          selectAll: '#{translation.SELECT_EVERYTHING}',
+          selectNone: '#{translation.ERASE_SELECTION}',
         },
         url: "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json",
         select: {
@@ -44,18 +44,18 @@ script.
             `;
           }
         },
-        { data: 'nombre', name: 'nombre', title: '#{translation.FORM.NAME}', orderable: true, searchable: true},
-        { data: 'direccion', name: 'direccion', title: '#{translation.FORM.DIRECTION}', orderable: true, searchable: true},
-        { data: 'pais', name: 'pais', title: '#{translation.FORM.COUNTRY}', orderable: true, searchable: true},
-        { data: 'provincia', name: 'provincia', title: '#{translation.FORM.STATE}', orderable: true, searchable: true},
+        { data: 'nombre', name: 'nombre', title: '#{translation.NAME}', orderable: true, searchable: true},
+        { data: 'direccion', name: 'direccion', title: '#{translation.DIRECTION}', orderable: true, searchable: true},
+        { data: 'pais', name: 'pais', title: '#{translation.COUNTRY}', orderable: true, searchable: true},
+        { data: 'provincia', name: 'provincia', title: '#{translation.STATE}', orderable: true, searchable: true},
         { 
-          data: 'updated_at', name: 'updated_at', title: '#{translation.FORM.UPDATED_AT}', orderable: true, searchable: true,
+          data: 'updated_at', name: 'updated_at', title: '#{translation.UPDATED_AT}', orderable: true, searchable: true,
           render: function (data, type, row) {
             return moment(data).format('DD/MM/YYYY');
           }
         },
         { 
-          data: 'acciones', name: 'acciones', title: '#{translation.FORM.ACTIONS}', orderable: false, searchable: false,
+          data: 'acciones', name: 'acciones', title: '#{translation.ACTIONS}', orderable: false, searchable: false,
           render: function (data, type, row) {
             let strRow = JSON.stringify(row);
             return `

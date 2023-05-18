@@ -6,19 +6,19 @@ block formlogin
         h2.logo-login
             strong #{translation.LOGIN}
         .form-group
-            label(for="username") #{translation.FORM.EMAIL}
+            label(for="username") #{translation.EMAIL}
             input#dataIpUser(type="hidden",name="dataIp")
             input#idRegistroTerminal(type="hidden",name="id_registro")
             input#username.con__input(type="text", name="text" value="")
         .form-group
-            label(for="password") #{translation.FORM.PASSWORD}
+            label(for="password") #{translation.PASSWORD}
             input#password.con__input(type="password", name="pswd" value="")
 
         .my-3 
             .h-captcha(data-sitekey="10000000-ffff-ffff-ffff-000000000001")
             //.h-captcha(data-sitekey="8d180735-7413-447d-9db5-fed468f77f4e")
             <input type="hidden" id="h-captcha-response" name="_token">
-        button.btn.btn__green(type="button", onClick="validateForm()" value="") #{translation.FORM.ACCESS}
+        button.btn.btn__green(type="button", onClick="validateForm()" value="") #{translation.ACCESS}
         
     script.
         const getUniqueValue = (strength = 1, int = false) => {
@@ -99,7 +99,7 @@ block formlogin
                         Swal.fire({
                             position: 'center',
                             icon: 'error',
-                            title: '#{translation.ALERTS.WRONG}',
+                            title: '#{translation.WRONG}',
                             showConfirmButton: false,
                             timer: 2500
                         });

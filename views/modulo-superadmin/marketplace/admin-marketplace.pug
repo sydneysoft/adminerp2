@@ -13,7 +13,7 @@ block contenido
                         .form-group
                             input(id="toggleMarket" type="checkbox" data-toggle="toggle" data-on="Activo" data-off="Desactivado" data-onstyle="success" data-offstyle="danger")
                     .col-12.mt-4
-                        button.btn.btn-info(type="button" onClick="actualizarMarket()")=#{translation.SAVE_CHANGES}
+                        button.btn.btn-info(type="button" onClick="actualizarMarket()") #{translation.SAVE_CHANGES}
 
     script
         include ./script.js

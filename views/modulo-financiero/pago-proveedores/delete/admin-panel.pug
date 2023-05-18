@@ -8,7 +8,7 @@ script.
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: #{translation.ALERTS.YES_DELETE},
+      confirmButtonText: "#{translation.YES_DELETE}",
     }).then((result) => {
       if (result.isConfirmed) {
         Swal.showLoading();
@@ -21,14 +21,14 @@ script.
               if (typeof tablaPagoProveedores != 'undefined' && tablaPagoProveedores) {
                 tablaPagoProveedores.ajax.reload();
               }
-              toastSweet('Success', '#{translation.ALERTS.DELETED}', 'success');
+              toastSweet('Success', '#{translation.DELETED}', 'success');
             } else {
-              toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+              toastSweet('Error', '#{translation.WRONG}', 'error');
             }
           })
           .catch(() => {
             Swal.close();
-            toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+            toastSweet('Error', '#{translation.WRONG}', 'error');
           });
       }
     });

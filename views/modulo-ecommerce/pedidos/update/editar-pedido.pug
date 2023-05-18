@@ -20,15 +20,15 @@ script.
             window.location.reload(true);
           } else {
             Swal.close();
-            toastSweet('Error', '#{translation.ALERTS.REGISTER_CANNOT_UPDATE}', 'error')
+            toastSweet('Error', '#{translation.REGISTER_CANNOT_UPDATE}', 'error')
           }
         },
         error: function () {
           Swal.close();
-          toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error')
+          toastSweet('Error', '#{translation.WRONG}', 'error')
         },
       });
     } else {
-      toastSweet('Error', '#{translation.ALERTS.NO_STATE_SELECTED}', 'error')
+      toastSweet('Error', '#{translation.NO_STATE_SELECTED}', 'error')
     }
   };

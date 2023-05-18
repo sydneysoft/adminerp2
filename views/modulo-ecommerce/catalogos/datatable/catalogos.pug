@@ -44,10 +44,10 @@ script.
           }
         },
         {
-          data: 'titulo', name: 'titulo', title: "#{translation.FORM.TITLE}", orderable: true, searchable: true,
+          data: 'titulo', name: 'titulo', title: "#{translation.TITLE}", orderable: true, searchable: true,
         },
         { 
-          data: 'foto', name: 'foto', title: "#{translation.FORM.PHOTO}", orderable: false, searchable: false,
+          data: 'foto', name: 'foto', title: "#{translation.PHOTO}", orderable: false, searchable: false,
           render: function (data, type, row) {
             try {
               new URL(row.imagen)
@@ -58,19 +58,19 @@ script.
           }
         },
         {
-          data: 'date', name: 'date', title: "#{translation.FORM.DATE}", orderable: false, searchable: false,
+          data: 'date', name: 'date', title: "#{translation.DATE}", orderable: false, searchable: false,
           render: function (data, type, row) {
             return `Desde el ${moment(row.fecha_inicio).format('D [de] MMMM')} al ${moment(row.fecha_fin).format('D [de] MMMM')}`;
           }
         },
         {
-          data: 'estado', name: 'estado', title: "#{translation.FORM.STATUS}", orderable: true, searchable: true,
+          data: 'estado', name: 'estado', title: "#{translation.STATUS}", orderable: true, searchable: true,
           render: function (data, type, row) {
-            return data == 1 ? '<span class="badge badge-success">#{translation.FORM.ACTIVE}</span>' : '<span class="badge badge-danger">#{translation.FORM.DEACTIVATE}</span>';
+            return data == 1 ? '<span class="badge badge-success">#{translation.ACTIVE}</span>' : '<span class="badge badge-danger">#{translation.DEACTIVATE}</span>';
           }
         },
         { 
-          data: 'acciones', name: 'acciones', title: '#{translation.FORM.ACTIONS}', orderable: false, searchable: false,
+          data: 'acciones', name: 'acciones', title: '#{translation.ACTIONS}', orderable: false, searchable: false,
           render: function (data, type, row) {
               //- button.btn.btn-warning(type="button" onClick="handleStateCatalogo('"+book.id+"','0')")
               //-         i.fas.fa-error

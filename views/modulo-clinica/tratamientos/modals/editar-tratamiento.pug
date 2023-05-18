@@ -11,58 +11,58 @@
         .row
           .col-12.col-md-8
             .form-group
-              label(for="paciente")  #{translation.FORM.PATIENT_NAME} *
+              label(for="paciente")  #{translation.PATIENT_NAME} *
               select#pacienteEditar.form-control(name="nombre" placeholder="Nombre de paciente")
 
                 if Array.isArray(pacientes) && pacientes.length > 0
                   each paciente, index in pacientes
                     if index === 0
-                      option(value="0") #{translation.FORM.SELECT_PATIENTS} 
+                      option(value="0") #{translation.SELECT_PATIENTS} 
                     option(value=paciente.id)= paciente.nombre
                 else
-                  option(value="0") #{translation.FORM.NO_PATIENTS_REGISTERED} 
+                  option(value="0") #{translation.NO_PATIENTS_REGISTERED} 
             .row
               .col-12.col-md-6 
                 .form-group
-                  label(for="nombreEditar") #{translation.FORM.TREATMENT_NAME} *
+                  label(for="nombreEditar") #{translation.TREATMENT_NAME} *
                   input#nombreEditar.form-control(type="text" name="nombre" placeholder="Nombre del tratamiento")
               .col-12.col-md-6
                 .form-group
-                  label(for="dosisEditar") #{translation.FORM.DOSIS} *
+                  label(for="dosisEditar") #{translation.DOSIS} *
                   input#dosisEditar.form-control(type="text" name="dosis" placeholder="Dosis")
               .col-12.col-md-6 
                 .form-group
-                  label(for="inicio_tratamientoEditar") #{translation.FORM.TREATMENT_BEGINNING} *
+                  label(for="inicio_tratamientoEditar") #{translation.TREATMENT_BEGINNING} *
                   input#inicio_tratamientoEditar.form-control(type="date" name="inicio_tratamiento" placeholder="Inicio del tratamiento")
               .col-12.col-md-6
                 .form-group
-                  label(for="fin_tratamientoEditar") #{translation.FORM.END_OF_TREATMENT} *
+                  label(for="fin_tratamientoEditar") #{translation.END_OF_TREATMENT} *
                   input#fin_tratamientoEditar.form-control(type="date" name="fin_tratamiento" placeholder="Fin del tratamiento")
           .col-12.col-md-4
             .form-group
-              label(for="descripcion_cortaEditar")  #{translation.FORM.END_OF_TREATMENT}
+              label(for="descripcion_cortaEditar")  #{translation.END_OF_TREATMENT}
               textarea#descripcion_cortaEditar.form-control(name="descripcion_corta" placeholder="Descripción corta")
         .row.mt-3
           .col-12.col-md-4 
             .form-group
-              label(for="costo_tratamientoEditar") #{translation.FORM.TREATMENT_PRICE}
+              label(for="costo_tratamientoEditar") #{translation.TREATMENT_PRICE}
               input#costo_tratamientoEditar.form-control(type="number" name="costo_tratamiento" placeholder="Costo del tratamiento")
           .col-12.col-md-4
             .form-group
-              label(for="duracionEditar") #{translation.FORM.DURATION} *
+              label(for="duracionEditar") #{translation.DURATION} *
               input#duracionEditar.form-control(type="text" name="duracion" placeholder="Duracion")
           .col-12.col-md-4
             .form-group
-              label(for="codigoexternoEditar") #{translation.FORM.EXTERNAL_CODE}
+              label(for="codigoexternoEditar") #{translation.EXTERNAL_CODE}
               input#codigoexternoEditar.form-control(type="text" name="codigoexterno" placeholder="Código externo")
         .row.mt-3
           .col-12.col-md-6
             .form-group
-              label(for="descripcion_largaEditar") #{translation.FORM.LONG_DESCRIPTION}
+              label(for="descripcion_largaEditar") #{translation.LONG_DESCRIPTION}
               textarea#descripcion_largaEditar.form-control(name="descripcion_larga" placeholder="Descripción larga")
           .col-12.col-md-6 
             .form-group
-              label(for="resultadoEditar") #{translation.FORM.RESULTS}
+              label(for="resultadoEditar") #{translation.RESULTS}
               textarea#resultadoEditar.form-control(name="resultado" placeholder="Resultados")
         .row.mt-3
           .col-12.col-md-6
@@ -72,23 +72,23 @@
             include /modulo-tv/modulo-general/galeria-fotos/modal-galeria.pug
           .col-12.col-md-6 
             .form-group 
-              label(for="sedeEditar") #{translation.FORM.BRANCH}
+              label(for="sedeEditar") #{translation.BRANCH}
               select#sedeEditar.form-control(name="sede" placeholder="Sede")
                 if Array.isArray(sedes) && sedes.length > 0
                   each sede, index in sedes
                     if index === 0
-                      option(value="0") #{translation.FORM.SELECT_BRANCH}
+                      option(value="0") #{translation.SELECT_BRANCH}
                     option(value=sede.id)= sede.nombre
                 else
-                  option(value="0")  #{translation.FORM.NO_BRANCHES_REGISTERED}
+                  option(value="0")  #{translation.NO_BRANCHES_REGISTERED}
         .row.mt-3
           .col-12.col-md-4
             .form-group 
-              label(for="sintomasEditar")  #{translation.FORM.SINTOMS}
+              label(for="sintomasEditar")  #{translation.SINTOMS}
               textarea#sintomasEditar.form-control.h-100(name="sintomas" placeholder="Sintomas")
           .col-12.col-md-4 
             .form-group 
-              label(for="estadoEditar")  #{translation.FORM.STATE} 
+              label(for="estadoEditar")  #{translation.STATE} 
               select#estadoEditar.form-control(name="estado" placeholder="Estado")
                 if Array.isArray(estado_tratamiento) && estado_tratamiento.length > 0
                   each valor in estado_tratamiento[0].valor

@@ -1,0 +1,86 @@
+extends ../layout.pug
+
+append contenido 
+  .border-bottom.border-left.border-right.p-3 
+    .row.justify-content-end
+      if empresa_id 
+        input#empresa_id(type="text" value=empresa_id hidden)
+        include /mixins/btn/back.pug
+        .col-6
+          +btn-back()
+      .col-6.text-right 
+        button.btn.btn-primary(type="button" data-toggle="modal" data-target="#nuevaCategoriaModal") #{translation.CREATE} 
+          i.fas.fa-plus
+    .container.mt-3
+      .row 
+        .col-12 
+          .table-responsive
+            table#tabla-blog-categorias.table
+              thead.thead-dark
+              tbody 
+              tfoot 
+
+  include ./modals/crear-categoria.pug
+  include ./modals/editar-categoria.pug
+
+  include ./save/categoria.pug
+  include ./update/categoria.pug
+  include ./delete/categoria.pug
+
+  script 
+    include /js/modulo-tv/delete.js
+    include /js/modulo-tv/save.js
+    include /js/modulo-tv/update.js
+
+  script.
+    const editor = CKEditor.replace('descripcion', {
+      language: 'es',
+      toolbar: [
+        'heading',
+        '|',
+        'bold',
+        'italic',
+        'link',
+        'bulletedList',
+        'numberedList',
+        'blockQuote',
+        'insertTable',
+        'undo',
+        'redo'
+      ],
+      image: {
+        toolbar: [
+          'imageStyle:full',
+          'imageStyle:side',
+          '|',
+          'imageTextAlternative'
+        ]
+      }
+    });
+    const editor_editar = CKEditor.replace('descripcion_editar', {
+      language: 'es',
+      toolbar: [
+        'heading',
+        '|',
+        'bold',
+        'italic',
+        'link',
+        'bulletedList',
+        'numberedList',
+        'blockQuote',
+        'insertTable',
+        'undo',
+        'redo'
+      ],
+      image: {
+        toolbar: [
+          'imageStyle:full',
+          'imageStyle:side',
+          '|',
+          'imageTextAlternative'
+        ]
+      }
+    });
+
+  include ./datatable/categorias.pug
+  

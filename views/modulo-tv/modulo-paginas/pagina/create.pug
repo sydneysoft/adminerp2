@@ -12,30 +12,30 @@ append contenido
         .row 
           .col-12.col-md-8 
             .form-group
-              label(for='nombre') #{translation.FORM.NAME} *
+              label(for='nombre') #{translation.NAME} *
               input#nombre.form-control(type='text' placeholder="Nombre" name="nombre" required)
           .col-12.col-md-4 
             .form-group 
-              label(for='identificador') #{translation.FORM.IDENTIFIER}
+              label(for='identificador') #{translation.IDENTIFIER}
               select#identificador.form-control(name="identificador")
-                option(value="post" selected) #{translation.FORM.POST} 
-                option(value="contacto") #{translation.FORM.CONTACT} 
-                option(value="nosotros") #{translation.FORM.ABOUT}
-                option(value="faqs") #{translation.FORM.FAQS}
-                option(value="politica") #{translation.FORM.PRIVACY}
-                option(valu="cookie") #{translation.FORM.COOKIES}
-                option(value="mision") #{translation.FORM.MISSION}
+                option(value="post" selected) #{translation.POST} 
+                option(value="contacto") #{translation.CONTACT} 
+                option(value="nosotros") #{translation.ABOUT}
+                option(value="faqs") #{translation.FAQS}
+                option(value="politica") #{translation.PRIVACY}
+                option(valu="cookie") #{translation.COOKIES}
+                option(value="mision") #{translation.MISSION}
         .row 
           .col-12.col-md-8 
             .form-group 
-              label(for='estracto') #{translation.FORM.EXCERPT}
-              textarea#estracto.form-control(name="estracto" placeholder=translation.FORM.EXCERPT)
+              label(for='estracto') #{translation.EXCERPT}
+              textarea#estracto.form-control(name="estracto" placeholder=translation.EXCERPT)
             
         .row 
           .col-12.col-md-8
             .form-group 
-              label(for='body') #{translation.FORM.BODY}
-              textarea#body(name="body" placeholder=translation.FORM.BODY)
+              label(for='body') #{translation.BODY}
+              textarea#body(name="body" placeholder=translation.BODY)
           .col-12.col-md-4 
             .row
               .col-12
@@ -89,7 +89,7 @@ append contenido
         Swal.fire({
           icon: 'error',
           title: 'Oops...',
-          text: '#{translation.FORM.REQUIRED_FIELDS}',
+          text: '#{translation.REQUIRED_FIELDS}',
         });
       }
     });

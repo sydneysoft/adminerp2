@@ -8,6 +8,7 @@ script.
     $("#dataCompleteValue").empty();
     $("#footerLoadValues").hide();
     $("#category-data-filtros").val(idCategoria);
+    
     $.ajax({
       method: "GET",
       url: "/get-values-filter/" + id,

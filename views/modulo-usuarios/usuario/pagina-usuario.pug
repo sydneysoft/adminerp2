@@ -16,21 +16,21 @@ block contenido
                     .col-12.col-md-6
                             
                                     .form-group
-                                        label(for="nombre") #{translation.FORM.BUSINESS_NAME}
+                                        label(for="nombre") #{translation.BUSINESS_NAME}
                                         input#nombre.con__input(type="text", name="nombre" value=usuario[0].nombre)
                                     .form-group
-                                                label(for="categoria") #{translation.FORM.CATEGORY}
+                                                label(for="categoria") #{translation.CATEGORY}
                                                 .form-group.content-select-multiple
                                                 select.selectpicker(id="categoria" multiple title="Selecciona") 
-                                                    option(value=0 disabled) #{translation.FORM.SELECT_CATEGORY}
+                                                    option(value=0 disabled) #{translation.SELECT_CATEGORY}
                                                         each item in categorias
                                                             option(value= item.categoria)= item.categoria
                     .col-12.col-md-6
                                     .form-group
-                                        label(for="email") #{translation.FORM.EMAIL}
+                                        label(for="email") #{translation.EMAIL}
                                         input#email.con__input(type="email", name="email" value=usuario[0].correo disabled)
                                     .form-group
-                                        label(for="password") #{translation.FORM.PASSWORD}
+                                        label(for="password") #{translation.PASSWORD}
                                         input#password.con__input(type="password", name="pswd" placeholder="Contraseña" )
               
  

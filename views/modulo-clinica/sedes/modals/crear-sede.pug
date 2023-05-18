@@ -12,24 +12,24 @@
         .row
           .col-md-6
             .form-group
-              label(for="nombre") #{translation.FORM.NAME}
-              input#nombre.form-control(type="text" placeholder=translation.FORM.NAME)
+              label(for="nombre") #{translation.NAME}
+              input#nombre.form-control(type="text" placeholder=translation.NAME)
           .col-md-6
             .form-group
-              label(for="direccion") #{translation.FORM.ADDRESS}
-              input#direccion.form-control(type="text" placeholder=translation.FORM.ADDRESS)
+              label(for="direccion") #{translation.ADDRESS}
+              input#direccion.form-control(type="text" placeholder=translation.ADDRESS)
         .row.mt-3 
           .col-md-6
             .form-group
-              label(for="googlemap") #{translation.FORM.GOOGLEMAP}
-              textarea#googlemap.form-control(placeholder=translation.FORM.GOOGLEMAP)
+              label(for="googlemap") #{translation.GOOGLEMAP}
+              textarea#googlemap.form-control(placeholder=translation.GOOGLEMAP)
           .col-md-6
             //- .form-group
-            //- label(for="imagen") #{translation.FORM.IMAGE}
-            //- input#imagen.form-control(type="text" placeholder="#{translation.FORM.IMAGE}")
+            //- label(for="imagen") #{translation.IMAGE}
+            //- input#imagen.form-control(type="text" placeholder="#{translation.IMAGE}")
             .row.mb-3.align-items-end
               .col-8
-                span #{translation.FORM.IMAGE}
+                span #{translation.IMAGE}
                 br
                 .btn-group
                   label.btn.btn-info.m-0(for="preFavicon") #{translation.UPLOAD}
@@ -43,29 +43,29 @@
         .row.mt-3 
           .col-md-6
             .form-group
-              label(for="telefono") #{translation.FORM.PHONE}
-              input#telefono.form-control(type="text" placeholder=translation.FORM.PHONE)
+              label(for="telefono") #{translation.PHONE}
+              input#telefono.form-control(type="text" placeholder=translation.PHONE)
           .col-md-6
             .form-group
-              label(for="activado") #{translation.FORM.ACTIVATED}
+              label(for="activado") #{translation.ACTIVATED}
               select#activado.form-control
-                option(value="1") #{translation.FORM.ACTIVE}
-                option(value="0") #{translation.FORM.INACTIVE}
+                option(value="1") #{translation.ACTIVE}
+                option(value="0") #{translation.INACTIVE}
 
         .row.mt-3
           .col-md-4
             .form-group
-              label(for="estado") #{translation.FORM.STATUS}
+              label(for="estado") #{translation.STATUS}
               select#estado.form-control
-                option(value="1") #{translation.FORM.ACTIVE}
-                option(value="0") #{translation.FORM.INACTIVE}
+                option(value="1") #{translation.ACTIVE}
+                option(value="0") #{translation.INACTIVE}
 
           .col-md-8
             .row.align-items-end 
               .col-8
                 .form-group
-                  label(for="atencion") #{translation.FORM.ATTENTION}
-                  //- input#atencion.form-control(type="text" placeholder=translation.FORM.ATTENTION)
+                  label(for="atencion") #{translation.ATTENTION}
+                  //- input#atencion.form-control(type="text" placeholder=translation.ATTENTION)
                   select#atencion.form-control
                     each item in horarios
                       option(value=item.id) #{item.text}

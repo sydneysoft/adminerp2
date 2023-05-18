@@ -1,13 +1,13 @@
 script.
   function eliminarTratamientoAdmin (val) {
     Swal.fire({
-      title: "#{translation.ALERTS.CONFIRM_DELETE}",
-      text: "#{translation.ALERTS.CANNOT_REVERT}",
+      title: "#{translation.CONFIRM_DELETE}",
+      text: "#{translation.CANNOT_REVERT}",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "#{translation.ALERTS.YES_DELETE} ",
+      confirmButtonText: "#{translation.YES_DELETE} ",
     }).then((result) => {
       if (result.isConfirmed) {
         handleDeleteTratamiento(val);
@@ -24,15 +24,15 @@ script.
         console.log(data);
         Swal.close();
         if (data.ok) {
-          toastSweet('Success', '#{translation.ALERTS.TREATMENT_DELETED}', 'success');
+          toastSweet('Success', '#{translation.TREATMENT_DELETED}', 'success');
           tablaTratamientos.ajax.reload();
         } else {
-          toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+          toastSweet('Error', '#{translation.WRONG}', 'error');
         }
       },
       error: function () {
         Swal.close();
-        toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+        toastSweet('Error', '#{translation.WRONG}', 'error');
       },
     });
   }

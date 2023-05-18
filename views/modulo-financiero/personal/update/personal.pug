@@ -25,18 +25,18 @@ script.
             if (typeof tablaPersonales != 'undefined' && tablaPersonales) {
               tablaPersonales.ajax.reload();
             }
-            toastSweet('Exito', #{translation.ALERTS.UPDATED}, 'success');
+            toastSweet('Exito', "#{translation.UPDATED}", 'success');
             $("#editarPersonalModal").modal("hide");
           } else {
-            toastSweet('Error', #{translation.ALERTS.WRONG}, 'error');
+            toastSweet('Error', "#{translation.WRONG}", 'error');
           }
         },
         error: function (data) {
-          toastSweet('Error', #{translation.ALERTS.WRONG}, 'error');
+          toastSweet('Error', "#{translation.WRONG}", 'error');
         }
       });
     } else {
-      toastSweet('Error', #{translation.ALERTS.REQUIRED_FIELDS}, 'error');
+      toastSweet('Error', "#{translation.REQUIRED_FIELDS}", 'error');
     }
   });
 

@@ -16,15 +16,15 @@ block contenido
 
     .col-md-4.col-6 
       .form-group
-        label.font-weight-bold.datev-label #{translation.FORM.NAME}
+        label.font-weight-bold.datev-label #{translation.NAME}
         select#lista-personal-filtro-nombre
     .col-md-4.col-6 
       .form-group
-        label.font-weight-bold.datev-label #{translation.FORM.DOCUMENT_NUMBER}
+        label.font-weight-bold.datev-label #{translation.DOCUMENT_NUMBER}
         select#lista-personal-filtro-documento
     .col-md-4.col-sm-6 
       .form-group
-        label.font-weight-bold.datev-label(for='dateFrom') #{translation.FORM.CREATION_DATE}
+        label.font-weight-bold.datev-label(for='dateFrom') #{translation.CREATION_DATE}
         input#dateFrom.form-control(type='date' name='dateFrom' min='2010-01-01')
 
 
@@ -32,10 +32,10 @@ block contenido
       div(style="display: inline-flex")
 
         select#acciones.form-control
-          option(value=null)  #{translation.FORM.MASSIVE_ACTIONS}
-          option(value="0")  #{translation.FORM.DELETE}
+          option(value=null)  #{translation.MASSIVE_ACTIONS}
+          option(value="0")  #{translation.DELETE}
 
-        button#accionesBoton(class="btn btn-success-2")  #{translation.FORM.CONFIRM}
+        button#accionesBoton(class="btn btn-success-2")  #{translation.CONFIRM}
 
     .col-12(style="margin-top: 20px;")
       div.table-responsive

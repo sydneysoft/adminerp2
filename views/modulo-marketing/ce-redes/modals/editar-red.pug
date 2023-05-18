@@ -11,23 +11,23 @@
         .row 
           .col-12
             .form-group
-              label(for='nombre_edit') #{translation.FORM.NAME}
+              label(for='nombre_edit') #{translation.NAME}
               input#nombre_edit.form-control(type='text' placeholder=translation.FROM.NAME name="nombre" required)
         .row 
           .col-12
             .form-group
-              label(for='url_edit') #{translation.FORM.URL}
-              input#url_edit.form-control(type='text' placeholder=translation.FORM.URL name="url" required)
+              label(for='url_edit') #{translation.URL}
+              input#url_edit.form-control(type='text' placeholder=translation.URL name="url" required)
           .col-12
             .form-group
-              //- label(for='identificador_edit') #{translation.FORM.IDENTIFIER} (#{translation.OPTIONAL})
+              //- label(for='identificador_edit') #{translation.IDENTIFIER} (#{translation.OPTIONAL})
               select#identificador_edit.form-control(name="identificador" hidden)
                 option(value="footer" selected) #{translation.FOOTER}
           input#itemId(type="text" value="" hidden)
         .row
           .col-12
             .form-group
-              label(for='icono_edit') #{translation.FORM.ICON} 
+              label(for='icono_edit') #{translation.ICON} 
               br
               button.btn.btn-info#icono_edit(data-iconset="fontawesome5" data-icon="fas fa-wifi" role="iconpicker")
                 //- span#showIcon.ml-3

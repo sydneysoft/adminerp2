@@ -16,31 +16,31 @@ script.
       columns: [
         { data: 'id', name: 'id', title: "ID", orderable: true, searchable: false, visible: false},
         { 
-          data: 'nombre', name: 'nombre', title: #{translation.FORM.NAME}, orderable: true, searchable: true
+          data: 'nombre', name: 'nombre', title: "#{translation.NAME}", orderable: true, searchable: true
         },
         {
-          data: 'ruc', name: 'ruc', title: #{translation.FORM.RUC}, orderable: true, searchable: true,
+          data: 'ruc', name: 'ruc', title: "#{translation.RUC}", orderable: true, searchable: true,
         },
         {
-          data: 'nombre', name: 'nombre', title: #{translation.FORM.NAME}, orderable: true, searchable: true,
+          data: 'nombre', name: 'nombre', title: "#{translation.NAME}", orderable: true, searchable: true,
         },
         {
-          data: 'email_corporativo', name: 'email_corporativo', title: #{translation.FORM.EMAIL_CORPORATIVE}, orderable: true, searchable: true,
+          data: 'email_corporativo', name: 'email_corporativo', title: "#{translation.EMAIL_CORPORATIVE}", orderable: true, searchable: true,
         },
         {
-          data: 'direccion', name: 'direccion', title: #{translation.FORM.ADDRESS}, orderable: true, searchable: true,
+          data: 'direccion', name: 'direccion', title: "#{translation.ADDRESS}", orderable: true, searchable: true,
         },
         {
-          data: 'nombre_contacto', name: 'nombre_contacto', title: #{translation.FORM.CONTACT_NAME}, orderable: true, searchable: true,
+          data: 'nombre_contacto', name: 'nombre_contacto', title: "#{translation.CONTACT_NAME}", orderable: true, searchable: true,
         },
         {
-          data: 'email_contacto', name: 'email_contacto', title: #{translation.FORM.CONTACT_EMAIL}, orderable: true, searchable: true,
+          data: 'email_contacto', name: 'email_contacto', title: "#{translation.CONTACT_EMAIL}", orderable: true, searchable: true,
         },
         {
-          data: 'telefono_contacto', name: 'telefono_contacto', title: #{translation.FORM.CONTACT_PHONE}, orderable: true, searchable: true,
+          data: 'telefono_contacto', name: 'telefono_contacto', title: "#{translation.CONTACT_PHONE}", orderable: true, searchable: true,
         },
         {
-          data: 'created_at', name: 'created_at', title: #{translation.FORM.CREATED_AT}, orderable: true, searchable: true,
+          data: 'created_at', name: 'created_at', title: "#{translation.CREATED_AT}", orderable: true, searchable: true,
           render: function (data, type, row) {
             return moment(row.created_at).format('DD/MM/YYYY');
           }

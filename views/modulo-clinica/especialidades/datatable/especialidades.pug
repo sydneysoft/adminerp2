@@ -22,8 +22,8 @@ script.
       order: [[1, "asc"]],
       language: {
         buttons: {
-          selectAll: '#{translation.FORM.SELECT_EVERYTHING}',
-          selectNone: '#{translation.FORM.ERASE_SELECTION}',
+          selectAll: '#{translation.SELECT_EVERYTHING}',
+          selectNone: '#{translation.ERASE_SELECTION}',
         },
         url: "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json",
         select: {
@@ -44,17 +44,17 @@ script.
           }
         },       
         { 
-          data: 'nombre', name: 'nombre', title: '#{translation.FORM.NAME}',
+          data: 'nombre', name: 'nombre', title: '#{translation.NAME}',
           searchable: true,
           orderable: true,
         },
         { 
-          data: 'codigoexterno', name: 'codigoexterno', title: '#{translation.FORM.EXTERNAL_CODE}',
+          data: 'codigoexterno', name: 'codigoexterno', title: '#{translation.EXTERNAL_CODE}',
           searchable: true,
           orderable: true,
         },
         { 
-          data: 'imagen', name: 'imagen', title: '#{translation.FORM.IMAGE}',
+          data: 'imagen', name: 'imagen', title: '#{translation.IMAGE}',
           searchable: false,
           orderable: false,
           render: function (data, type, row) {
@@ -67,31 +67,31 @@ script.
           }
         },
         { 
-          data: 'activado', name: 'activado', title: '#{translation.FORM.ENABLED}',
+          data: 'activado', name: 'activado', title: '#{translation.ENABLED}',
           searchable: false,
           orderable: false,
           render: function (data, type, row) {
             if (row.activado == 1) {
-              return '<span class="badge badge-success">#{translation.FORM.ACTIVE}</span>'
+              return '<span class="badge badge-success">#{translation.ACTIVE}</span>'
             } else {
-              return '<span class="badge badge-danger">#{translation.FORM.INACTIVE}</span>'
+              return '<span class="badge badge-danger">#{translation.INACTIVE}</span>'
             }
           }
         },
         { 
-          data: 'estado', name: 'estado', title: '#{translation.FORM.STATE}',
+          data: 'estado', name: 'estado', title: '#{translation.STATE}',
           searchable: false,
           orderable: false,
           render: function (data, type, row) {
             if (row.estado == 1) {
-              return '<span class="badge badge-success">#{translation.FORM.ACTIVE}</span>'
+              return '<span class="badge badge-success">#{translation.ACTIVE}</span>'
             } else {
-              return '<span class="badge badge-danger">#{translation.FORM.INACTIVE}</span>'
+              return '<span class="badge badge-danger">#{translation.INACTIVE}</span>'
             }
           }
         },
         { 
-          data: 'sede', name: 'sede', title: '#{translation.FORM.BRANCH}',
+          data: 'sede', name: 'sede', title: '#{translation.BRANCH}',
           searchable: true,
           orderable: true,
           render: function (data, type, row) {
@@ -100,19 +100,19 @@ script.
               if (sede)
                 return sede.nombre;
               else
-                return '#{translation.FORM.NO_BRANCH}'
+                return '#{translation.NO_BRANCH}'
             } else {
-              return '#{translation.FORM.NO_BRANCH}'
+              return '#{translation.NO_BRANCH}'
             }
           }
         },
         { 
-          data: 'categoria', name: 'categoria', title: '#{translation.FORM.CATEGORY}',
+          data: 'categoria', name: 'categoria', title: '#{translation.CATEGORY}',
           searchable: true,
           orderable: true,
         },
         { 
-          data: 'icono', name: 'icono', title: '#{translation.FORM.ICON}',
+          data: 'icono', name: 'icono', title: '#{translation.ICON}',
           searchable: false,
           orderable: false,   
           render: function (data, type, row) {
@@ -122,7 +122,7 @@ script.
         { 
           data: 'actions',
           name: 'actions',
-          title: '#{translation.FORM.ACTIONS}',
+          title: '#{translation.ACTIONS}',
           searchable: false,
           orderable: false,
           render: function (data, type, row) {

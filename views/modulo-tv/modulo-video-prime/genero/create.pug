@@ -8,7 +8,7 @@ block contenido
         span.px-3 #{translation.BACK}
 
     h1.text-center.mb-5 
-      | #{translation.FORM.CREATE_MOVIE_GENRE}
+      | #{translation.CREATE_MOVIE_GENRE}
   .card.card-body 
     form#genero-forms
       input#idGeneroEditar(value='' hidden)
@@ -16,16 +16,16 @@ block contenido
         .col-12.mb-3.text-right 
             button.btn.btn-primary(type="submit") #{translation.SAVE}
         .col-12 
-          label.form-label(for='nombre') #{translation.FORM.GENRE_NAME}
-          input#nombre.form-control(type='text' value='' required='' placeholder #{translation.FORM.GENRE_NAME} name="nombre")
+          label.form-label(for='nombre') #{translation.GENRE_NAME}
+          input#nombre.form-control(type='text' value='' required='' placeholder=translation.GENRE_NAME name="nombre")
           .valid-feedback
-            | #{translation.FORM.NAME}
+            | #{translation.NAME}
         .col-12
-          label.form-label(for='estracto') #{translation.FORM.SHORT_DESCRIPTION}
-          textarea#estracto.form-control(required placeholder #{translation.FORM.SHORT_DESCRIPTION} name="estracto")
+          label.form-label(for='estracto') #{translation.SHORT_DESCRIPTION}
+          textarea#estracto.form-control(required placeholder=translation.SHORT_DESCRIPTION name="estracto")
             |
           .valid-feedback
-            | #{translation.FORM.NAME}
+            | #{translation.NAME}
 
   script 
     include ./genero.js

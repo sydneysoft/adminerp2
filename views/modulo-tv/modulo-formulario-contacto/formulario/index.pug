@@ -12,47 +12,47 @@ append contenido
             .col-12 
               input#itemId(type="hidden" value=data[0].id)
               .form-group 
-                label(for="titulo") #{translation.FORM.TITLE}
-                input#titulo.form-control(type="text" placeholder=`${translation.FORM.TITLE}` value=data[0].nombre)
+                label(for="titulo") #{translation.TITLE}
+                input#titulo.form-control(type="text" placeholder=`${translation.TITLE}` value=data[0].nombre)
                 //- input#titulo.form-control(type="text" value="Texto de ejemplo")
               .form-group
-                label(for="descripcion") #{translation.FORM.DESCRIPTION}
-                textarea#descripcion.form-control(type="text" placeholder=`${translation.FORM.DESCRIPTION}`) #{data[0].descripcion}
+                label(for="descripcion") #{translation.DESCRIPTION}
+                textarea#descripcion.form-control(type="text" placeholder=`${translation.DESCRIPTION}`) #{data[0].descripcion}
                 //- textarea#descripcion.form-control(type="text") Texto de ejemplo
               .row 
                 .col-6.col-md-4 
                   //- checkbox
                   label.form-check.p-3.border.rounded-lg.d-flex.justify-content-between(for="nombreCheck")
                     div 
-                      span #{translation.FORM.NAME}
+                      span #{translation.NAME}
                     div
                       input#nombreCheck.form-check-input(type="checkbox")
                 .col-6.col-md-4
                   //- checkbox
                   label.form-check.p-3.border.rounded-lg.d-flex.justify-content-between(for="telefonoCheck")
                     div 
-                      span #{translation.FORM.PHONE}
+                      span #{translation.PHONE}
                     div
                       input#telefonoCheck.form-check-input(type="checkbox")
                 .col-6.col-md-4
                   //- checkbox
                   label.form-check.p-3.border.rounded-lg.d-flex.justify-content-between(for="companiaCheck")
                     div 
-                      span #{translation.FORM.COMPANY}
+                      span #{translation.COMPANY}
                     div
                       input#companiaCheck.form-check-input(type="checkbox")
                 .col-6.col-md-4
                   //- checkbox
                   label.form-check.p-3.border.rounded-lg.d-flex.justify-content-between(for="emailCheck")
                     div 
-                      span #{translation.FORM.EMAIL}
+                      span #{translation.EMAIL}
                     div
                       input#emailCheck.form-check-input(type="checkbox")
                 .col-6.col-md-4
                   //- checkbox
                   label.form-check.p-3.border.rounded-lg.d-flex.justify-content-between(for="mensajeCheck")
                     div 
-                      span #{translation.FORM.MESSAGE}
+                      span #{translation.MESSAGE}
                     div
                       input#mensajeCheck.form-check-input(type="checkbox")
                 .col-6.col-md-4 
@@ -83,7 +83,7 @@ append contenido
       {
         el: 'input',
         type: 'text',
-        placeholder: '#{translation.FORM.NAME}',
+        placeholder: '#{translation.NAME}',
         name: 'nombre',
         value: '',
         estado: false
@@ -91,7 +91,7 @@ append contenido
       {
         el: 'input',
         type: 'text',
-        placeholder: '#{translation.FORM.PHONE}',
+        placeholder: '#{translation.PHONE}',
         name: 'telefono',
         value: '',
         estado: false
@@ -99,7 +99,7 @@ append contenido
       {
         el: 'input',
         type: 'text',
-        placeholder: '#{translation.FORM.COMPANY}',
+        placeholder: '#{translation.COMPANY}',
         name: 'compania',
         value: '',
         estado: false
@@ -107,7 +107,7 @@ append contenido
       {
         el: 'input',
         type: 'email',
-        placeholder: '#{translation.FORM.EMAIL}',
+        placeholder: '#{translation.EMAIL}',
         name: 'email',
         value: '',
         estado: false
@@ -115,9 +115,9 @@ append contenido
       {
         el: 'textarea',
         type: 'text',
-        placeholder: '#{translation.FORM.MESSAGE}',
+        placeholder: '#{translation.MESSAGE}',
         name: 'mensaje',
-        value: '#{translation.FORM.ACCEPT_PRIVACY_COOKIE_POLICY}',
+        value: '#{translation.ACCEPT_PRIVACY_COOKIE_POLICY}',
         estado: false
       },
       {

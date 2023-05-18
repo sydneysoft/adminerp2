@@ -22,8 +22,8 @@ script.
       order: [[1, "asc"]],
       language: {
         buttons: {
-          selectAll: '#{translation.FORM.SELECT_EVERYTHING}',
-          selectNone: '#{translation.FORM.ERASE_SELECTION}',
+          selectAll: '#{translation.SELECT_EVERYTHING}',
+          selectNone: '#{translation.ERASE_SELECTION}',
         },
         url: "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json",
         select: {
@@ -46,28 +46,28 @@ script.
         { 
           data: 'idUser',
           name: 'idUser',
-          title: '#{translation.FORM.PATIENT}'
+          title: '#{translation.PATIENT}'
         },
         { 
           data: 'idProfesional', 
           name: 'idProfesional', 
-          title:  '#{translation.FORM.DOCTOR}'
+          title:  '#{translation.DOCTOR}'
         },
         { 
           data: 'idSede', 
           name: 'idSede', 
-          title: '#{translation.FORM.BRANCH}'
+          title: '#{translation.BRANCH}'
         },
         {
           data: 'idEspecialidad',
           name: 'idEspecialidad',
-          title: '#{translation.FORM.SPECIALTY}',
+          title: '#{translation.SPECIALTY}',
           visible: false
         },  
         { 
           data: 'estado', 
           name: 'estado', 
-          title: '#{translation.FORM.STATUS}',
+          title: '#{translation.STATUS}',
           render: function (data, type, row) {
             console.log(data);
             if (data == 'cancelada') {
@@ -83,21 +83,21 @@ script.
             } else if (data == 'pagado') {
               return `<span class="badge badge-success">${data}</span>`
             } else {
-              return `<span class="badge badge-secondary">#{translation.FORM.STATUS}</span>`
+              return `<span class="badge badge-secondary">#{translation.STATUS}</span>`
             }
 
           }
         },
         {
-          data: 'tipoCita', name: 'tipoCita', title: '#{translation.FORM.APPOINTMENT_TYPE}',  orderable: false
+          data: 'tipoCita', name: 'tipoCita', title: '#{translation.APPOINTMENT_TYPE}',  orderable: false
         },
         {
-          data: 'fechaRegistro', name: 'fechaRegistro', title: '#{translation.FORM.REGISTRATION_DATE}', visible: false, orderable: false
+          data: 'fechaRegistro', name: 'fechaRegistro', title: '#{translation.REGISTRATION_DATE}', visible: false, orderable: false
         },
         { 
           data: 'fechaCita',
           name: 'fechaCita',
-          title: '#{translation.FORM.APPOINTMENT_DATE}',
+          title: '#{translation.APPOINTMENT_DATE}',
           render: function (data, type, row) {
             return moment(data).format('DD/MM/YYYY')
           }

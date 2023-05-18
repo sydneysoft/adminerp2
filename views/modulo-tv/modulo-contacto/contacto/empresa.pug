@@ -9,12 +9,12 @@ append contenido
           thead.thead-dark
             tr
               th(scope='col') ID
-              th(scope='col') #{translation.FORM.NAME}
-              th(scope='col') #{translation.FORM.ADDRESS}
-              th(scope='col') #{translation.FORM.EMAIL}
-              th(scope='col') #{translation.FORM.PHONE}
-              th(scope='col') #{translation.FORM.SCHEDULES}
-              th(scope='col') #{translation.FORM.ACTIONS}
+              th(scope='col') #{translation.NAME}
+              th(scope='col') #{translation.ADDRESS}
+              th(scope='col') #{translation.EMAIL}
+              th(scope='col') #{translation.PHONE}
+              th(scope='col') #{translation.SCHEDULES}
+              th(scope='col') #{translation.ACTIONS}
           tbody
             if Array.isArray(data) && data.length > 0
               each item in data 
@@ -45,28 +45,28 @@ append contenido
               {
                 data: 'nombre',
                 name: 'nombre',
-                title: #{translation.FORM.NAME},
+                title: '#{translation.NAME}',
                 orderable: true,
                 searchable: true
               },
               {
                 data: 'direccion',
                 name: 'direccion',
-                title: #{translation.FORM.ADDRESS},
+                title: '#{translation.ADDRESS}',
                 orderable: true,
                 searchable: true
               },
               {
                 data: 'correo',
                 name: 'correo',
-                title: #{translation.FORM.EMAIL},
+                title: '#{translation.EMAIL}',
                 orderable: true,
                 searchable: true
               },
               {
                 data: 'telefono',
                 name: 'telefono',
-                title: #{translation.FORM.PHONE},
+                title: '#{translation.PHONE}',
                 orderable: true,
                 searchable: true
               },
@@ -87,7 +87,7 @@ append contenido
               {
                 data: 'actions',
                 name: 'actions',
-                title: '#{translation.FORM.ACTIONS}',
+                title: '#{translation.ACTIONS}',
                 orderable: false,
                 searchable: false,
                 render: function (data, type, row) {
@@ -157,7 +157,7 @@ append contenido
         return horariosParsed
       } else {
         return `
-          <span class="badge badge-danger">`#{translation.NO_SCHEDULES}`</span>`
+          <span class="badge badge-danger">#{translation.NO_SCHEDULES}</span>`
         `
       }
     }

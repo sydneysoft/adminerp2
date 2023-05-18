@@ -13,20 +13,20 @@ append contenido
     form#nuevaPregunta(action=`/admin-tv/faqs/index` method="post")
       .row
         .col-12.text-right 
-          button.btn.btn-primary(type="submit") #{translation.FORM.SAVE}
+          button.btn.btn-primary(type="submit") #{translation.SAVE}
         .col-12.my-3
         .col-12.col-md-8
           .form-group
-            label(for='pregunta') #{translation.FORM.QUESTION}
+            label(for='pregunta') #{translation.QUESTION}
             input#pregunta.form-control(type='text' placeholder="Pregunta")
         .col-12.col-md-4 
-          label(for='icono') #{translation.FORM.ICON_FA}
-          input#icono.form-control(type='text' placeholder #{translation.FORM.ICON_FA})
+          label(for='icono') #{translation.ICON_FA}
+          input#icono.form-control(type='text' placeholder=translation.ICON_FA)
         .col-12.my-3
         .col-12
           .form-group 
-            label(for="respuesta") #{translation.FORM.ANSWER} 
-            textarea#respuesta(name="respuesta" placeholder #{translation.FORM.ANSWER}) 
+            label(for="respuesta") #{translation.ANSWER} 
+            textarea#respuesta(name="respuesta" placeholder=translation.ANSWER) 
 
 
   script.

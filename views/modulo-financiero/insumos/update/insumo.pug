@@ -21,18 +21,18 @@ script.
             if (typeof tablaInsumos != 'undefined' && tablaInsumos) {
               tablaInsumos.ajax.reload();
             }
-            toastSweet('Exito', "#{translation.ALERTS.UPDATED}", 'success');
+            toastSweet('Exito', "#{translation.UPDATED}", 'success');
             $("#editarInsumoModal").modal("hide");
           } else {
-            toastSweet('Error', "#{translation.ALERTS.WRONG}", 'error');
+            toastSweet('Error', "#{translation.WRONG}", 'error');
           }
         },
         error: function (data) {
-          toastSweet('Error', "#{translation.ALERTS.WRONG}", 'error');
+          toastSweet('Error', "#{translation.WRONG}", 'error');
         }
       });
     } else {
-      toastSweet('Error', "#{translation.ALERTS.REQUIRED_FIELDS}", 'error');
+      toastSweet('Error', "#{translation.REQUIRED_FIELDS}", 'error');
     }
   });
 

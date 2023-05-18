@@ -32,22 +32,22 @@ script.
           if (data.ok) {
             Swal.close();
             $("#nuevoBannerAdministrador").modal("hide");
-            toastSweet('Success', '#{translation.ALERTS.CREATED}', 'success');
+            toastSweet('Success', '#{translation.CREATED}', 'success');
             if(typeof tablaMarcas != 'undefined') {
               tablaMarcas.ajax.reload();
               $("#empresa_id").val("");
             }
           } else {
             Swal.close();
-            toastSweet('Error', '#{translation.ALERTS.BRAND_ERROR}', 'error');
+            toastSweet('Error', '#{translation.BRAND_ERROR}', 'error');
           }
         },
         error: function () {
           Swal.close();
-          toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+          toastSweet('Error', '#{translation.WRONG}', 'error');
         },
       });
     } else {
-      toastSweet('Error', '#{translation.ALERTS.FORM_EMPTY}', 'error');
+      toastSweet('Error', '#{translation.FORM_EMPTY}', 'error');
     }
   };

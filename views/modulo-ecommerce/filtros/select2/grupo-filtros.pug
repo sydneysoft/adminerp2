@@ -40,7 +40,7 @@ script.
     allowClear: true
   }).on("select2:open", () => {
     $(".select2-results:not(:has(a))").append(
-      '<a href="#" style="padding: 6px;height: 20px;display: inline-table;" data-toggle="modal" data-target="#crearCategoriaModal" onclick="closeCategoriaSelect2()">#{translation.FORM.FILTER_GROUPY}</a>'
+      '<a href="#" style="padding: 6px;height: 20px;display: inline-table;" data-toggle="modal" data-target="#crearCategoriaModal" onclick="closeCategoriaSelect2()">#{translation.FILTER_GROUPY}</a>'
     );
   });
 

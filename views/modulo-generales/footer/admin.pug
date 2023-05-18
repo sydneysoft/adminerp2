@@ -9,9 +9,9 @@ append contenido
             thead.thead-dark
               tr
                 th(scope='col') ID
-                th(scope='col') #{translation.FORM.NAME}
-                th(scope='col') #{translation.FORM.PHONE}
-                th(scope='col') #{translation.FORM.ACTIONS}
+                th(scope='col') #{translation.NAME}
+                th(scope='col') #{translation.PHONE}
+                th(scope='col') #{translation.ACTIONS}
             tbody
               each item in empresas 
                 tr
@@ -30,7 +30,7 @@ append contenido
           });
       else 
         .alert.alert-info(role="alert")
-          |  #{translation.FORM.NO_DATA}
+          |  #{translation.NO_DATA}
 
   script 
     //- include ./both.js

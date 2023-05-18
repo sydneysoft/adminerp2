@@ -18,29 +18,29 @@ append contenido
           table.table 
             thead
               tr
-                th(scope='col') #{translation.FORM.NAME}
-                th(scope='col') #{translation.FORM.DESCRIPTION}
+                th(scope='col') #{translation.NAME}
+                th(scope='col') #{translation.DESCRIPTION}
 
             tbody
               tr
                 th(scope='row') ID
                 td #{data.id}
               tr
-                th(scope='row') #{translation.FORM.NAME}
+                th(scope='row') #{translation.NAME}
                 td #{data.nombre}
               tr
-                th(scope='row') #{translation.FORM.THUMBNAIL}
+                th(scope='row') #{translation.THUMBNAIL}
                 td 
                   img(src=data.thumbnail)
               tr
-                th(scope='row') #{translation.FORM.TRAILER}
+                th(scope='row') #{translation.TRAILER}
                 td #{data.trailer}
               tr
-                th(scope='row') #{translation.FORM.MOVIE_URL}
+                th(scope='row') #{translation.MOVIE_URL}
                 td #{data.url}
               tr
-                th(scope='row') #{translation.FORM.EXTRACT}
+                th(scope='row') #{translation.EXTRACT}
                 td #{data.estracto}
               tr
-                th(scope='row') #{translation.FORM.BODY}
+                th(scope='row') #{translation.BODY}
                 td!= data.body

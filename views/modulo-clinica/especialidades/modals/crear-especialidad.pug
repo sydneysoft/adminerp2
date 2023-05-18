@@ -11,31 +11,31 @@
         .row 
           .col-12.col-md-9
             .form-group 
-              label(for="nombre") #{translation.FORM.NAME}
-              input#nombre.form-control(type="text" placeholder=translation.FORM.NAME)
+              label(for="nombre") #{translation.NAME}
+              input#nombre.form-control(type="text" placeholder=translation.NAME)
           .col-12.col-md-3
             .form-group
-              label(for="codigoexterno") #{translation.FORM.EXTERNAL_CODE}
-              input#codigoexterno.form-control(type="text" placeholder=translation.FORM.EXTERNAL_CODE)
+              label(for="codigoexterno") #{translation.EXTERNAL_CODE}
+              input#codigoexterno.form-control(type="text" placeholder=translation.EXTERNAL_CODE)
         .row.mt-3
           .col-12.col-md-6
             .form-group 
-              label(for="estado") #{translation.FORM.STATE}
-              //- input#estado.form-control(type="text" placeholder=translation.FORM.STATE)
+              label(for="estado") #{translation.STATE}
+              //- input#estado.form-control(type="text" placeholder=translation.STATE)
               select#estado.form-control(name="estado")
-                option(value="1") #{translation.FORM.ACTIVE}
-                option(value="2") #{translation.FORM.INACTIVE}
+                option(value="1") #{translation.ACTIVE}
+                option(value="2") #{translation.INACTIVE}
           .col-12.col-md-6 
             .form-group
-              label(for="sede") #{translation.FORM.BRANCH}
+              label(for="sede") #{translation.BRANCH}
               select#sede.form-control
-                option(value="0") #{translation.FORM.NO_BRANCH}
+                option(value="0") #{translation.NO_BRANCH}
                 each sede in sedes
                   option(value=sede.id) #{sede.nombre}
         .row.mt-3
           .col-12.col-md-6
             .form-group 
-              label(for="categoria") #{translation.FORM.CATEGORY}
+              label(for="categoria") #{translation.CATEGORY}
               select#categoria.form-control(name="categoria")
                 //- Categorias medicas
                 option(value="1") Angiología
@@ -97,27 +97,27 @@
 
           .col-12.col-md-6
             .form-group
-              label(for="icono") #{translation.FORM.ICON}
+              label(for="icono") #{translation.ICON}
                 span#showIcono.ml-1
               select#icono.form-control
-                option(value="0") #{translation.FORM.NO_ICON}
+                option(value="0") #{translation.NO_ICON}
         .row.mt-3
           .col-12.col-md-6
             .form-group 
-              label(for="descriptionlarga") #{translation.FORM.LONG_DESCRIPTION}
-              textarea#descriptionlarga.form-control(placeholder=translation.FORM.LONG_DESCRIPTION)
+              label(for="descriptionlarga") #{translation.LONG_DESCRIPTION}
+              textarea#descriptionlarga.form-control(placeholder=translation.LONG_DESCRIPTION)
           .col-12.col-md-6
             .form-group
-              label(for="descripcioncorta") #{translation.FORM.SHORT_DESCRIPTION}
-              textarea#descripcioncorta.form-control(placeholder=translation.FORM.SHORT_DESCRIPTION)
+              label(for="descripcioncorta") #{translation.SHORT_DESCRIPTION}
+              textarea#descripcioncorta.form-control(placeholder=translation.SHORT_DESCRIPTION)
         .row.mt-3 
           .col-12.col-md-6
             .row.mb-3.align-items-end
               .col-8
-                span #{translation.FORM.IMAGE}
+                span #{translation.IMAGE}
                 br
                 .btn-group
-                  label.btn.btn-info.m-0(for="galeriaImagen") #{translation.FORM.UPLOAD}
+                  label.btn.btn-info.m-0(for="galeriaImagen") #{translation.UPLOAD}
                     i.fas.fa-upload.ml-2
                   button#galeriaImagen.btn.btn-primary(type="button" onclick="getImagePagedGaleria(0, 'imagenModal', 'showImagenModal')") De galeria
               .col-4
@@ -128,7 +128,7 @@
             //- Checkbox
             .form-check 
               input#activado.form-check-input(type="checkbox" value="")
-              label.form-check-label(for="activado") #{translation.FORM.ENABLED}
+              label.form-check-label(for="activado") #{translation.ENABLED}
 
       .modal-footer(style="padding:8px;")
         .row(style="margin:0;")

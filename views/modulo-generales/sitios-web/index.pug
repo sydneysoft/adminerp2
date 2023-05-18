@@ -1,0 +1,117 @@
+extends ./layout.pug
+
+append contenido 
+  if empresa_id
+    input#empresa_id(hidden value=empresa_id)
+  .border-bottom.border-left.border-right.p-3 
+    .my-3.row
+      .col.text-left 
+        button.btn.btn-info(type="button" onclick="window.history.back();") #{translation.BACK}
+      .col.text-right
+        button#updateWeb.btn.btn-primary(type='button' data-empresa=empresa_id) #{translation.SAVE}
+    script.
+      let faviconExist = null;
+    if Array.isArray(data) && data.length === 1
+      script.
+        faviconExist = '#{data[0].favicon}';
+      .row.mt-5.align-items-end
+        .col-12.col-md-8 
+          .form-group 
+            input#idItem(type="text" value=data[0].id hidden)
+            label.label-text(for="nombre") #{translation.NAME} *
+            input#nombre.form-control(type="text" name="" placeholder=translation.NAME value=data[0].nombre)
+        .col-12.col-md-4 
+          include /modulo-tv/modulo-general/galeria-fotos/favicon.pug
+        .col-12.col-md-8 
+          .form-group 
+            label.label-text(for="nombre") #{translation.CELULAR_DESCRIPTION}
+            input#descripcion_telefono.form-control(type="text" name="" placeholder=translation.CELULAR_DESCRIPTION value=data[0].descripcion_telefono)
+        .col-12.col-md-4
+        .col-12.col-md-4 
+          .form-group 
+            label.label-text(for="telefono") #{translation.CELULAR}
+            input#telefono.form-control(type="text" name="" placeholder=translation.CELULAR value=data[0].telefono)
+        .col-12.col-md-4 
+          .form-group 
+            label.label-text(for="link_telefono") #{translation.CELULAR_LINK}
+            input#link_telefono.form-control(type="text" name="" placeholder=translation.CELULAR_LINK value=data[0].link_telefono)
+        .col-12.col-md-4 
+          .form-group 
+            label.label-text(for="tipo") #{translation.TYPE}
+            select#tipo.form-control(name="tipo")
+              if data[0].tipo_telefono == 'local'
+                option(value="local" selected="true") #{translation.CELULAR}
+              else 
+                option(value="local") #{translation.PHONE}
+              if data[0].tipo_telefono == 'whatsapp'
+                option(value="whatsapp" selected="true") Whatsapp 
+              else
+                option(value="whatsapp") Whatsapp 
+              if data[0].tipo_telefono == 'telegram'
+                option(value="telegram" selected="true") Telegram
+              else
+                option(value="telegram") Telegram
+        .col-12.col-md-6 
+          .form-group 
+            label.label-text(for="eslogan") #{translation.SLOGAN} *
+            textarea#eslogan.form-control(name="", cols="30", rows="10" placeholder=translation.SLOGAN) #{data[0].eslogan}
+        .col-12.col-md-6 
+          label(for="logo") #{translation.LOGO}
+          input#urlImagen(type="text" value=data[0].logo hidden)
+          include /modulo-tv/modulo-general/galeria-fotos/modal-galeria.pug
+          include /modulo-tv/modulo-general/galeria-fotos/partial-modal-galeria.pug
+
+        script.
+          const idItem = document.getElementById('idItem');
+ 
+          addEventListener('DOMContentLoaded', () => {
+            imagen.value = document.getElementById('urlImagen').value;
+            $(".imagen_").empty();
+            if (imagen.value !== '') {
+              $(".imagen_").append(`<img src="${imagen.value}" class="img-fluid" alt="Responsive image">`);
+            }
+          });
+    else 
+      .row 
+        .col-12.col-md-8 
+          .form-group 
+            label.label-text(for="nombre") #{translation.NAME} *
+            input#nombre.form-control(type="text" name="" placeholder=translation.NAME value="")
+        .col-12.col-md-4 
+        .col-12.col-md-8 
+          .form-group 
+            label.label-text(for="nombre") #{translation.CELULAR_DESCRIPTION}
+            input#descripcion_telefono.form-control(type="text" name="" placeholder=translation.CELULAR_DESCRIPTION value="")
+        .col-12.col-md-4
+        .col-12.col-md-8 
+          .form-group 
+            label.label-text(for="telefono") #{translation.CELULAR}
+            input#telefono.form-control(type="text" name="" placeholder=translation.CELULAR value="")
+        .col-12.col-md-4 
+          .form-group 
+            label.label-text(for="tipo") #{translation.TYPE}
+            select#tipo.form-control(name="tipo")
+              option(value="local") #{translation.PHONE}
+              option(value="whatsapp") Whatsapp 
+              option(value="telegram") Telegram
+        .col-12.col-md-6 
+          .form-group 
+            label.label-text(for="eslogan") #{translation.SLOGAN} *
+            textarea#eslogan.form-control(name="", cols="30", rows="10" placeholder=translation.SLOGAN)
+        .col-12.col-md-6 
+          label(for="logo") #{translation.LOGO}
+          include /modulo-tv/modulo-general/galeria-fotos/modal-galeria.pug
+          include /modulo-tv/modulo-general/galeria-fotos/partial-modal-galeria.pug
+
+  script 
+    include /js/modulo-tv/template.js
+    include /js/modulo-tv/save.js
+    include /js/modulo-tv/update.js
+    include /modulo-tv/modulo-general/galeria-fotos/modal-galeria.js
+  script.
+    if (typeof faviconExist != 'undefined' && faviconExist) {
+      favicon.value = faviconExist;
+      showFavicon.innerHTML = `<img src="${faviconExist}" class="img-fluid" alt="Responsive image">`;
+    }
+  
+  include ./web.pug

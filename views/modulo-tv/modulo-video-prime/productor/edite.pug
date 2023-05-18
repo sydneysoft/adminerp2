@@ -18,32 +18,32 @@ block contenido
             .col-12.mb-3.text-right 
               button.btn.btn-primary(type="submit") #{translation.SAVE}
             .col-12.col-md-8
-              label.form-label(for='nombre') #{translation.FORM.PRODUCERS_NAME}
-              input#nombre.form-control(type='text' value=data.nombre required='' placeholder #{translation.FORM.PRODUCERS_NAME} name="nombre")
+              label.form-label(for='nombre') #{translation.PRODUCERS_NAME}
+              input#nombre.form-control(type='text' value=data.nombre required='' placeholder #{translation.PRODUCERS_NAME} name="nombre")
               .valid-feedback
-                | #{translation.FORM.NAME} 
+                | #{translation.NAME} 
             .col-12.col-md-4 
-              label.form-label(for="nacionalidad") #{translation.FORM.NATIONALITY}  
-              input#nacionalidad.form-control(type="text" value=data.nacionalidad placeholder #{translation.FORM.NATIONALITY}  name="nacionalidad" required)
+              label.form-label(for="nacionalidad") #{translation.NATIONALITY}  
+              input#nacionalidad.form-control(type="text" value=data.nacionalidad placeholder #{translation.NATIONALITY}  name="nacionalidad" required)
             .col-12.my-3 
             .col-12.col-md-6 
-              label.form-label(form="biografia") #{translation.FORM.BIOGRAPHY} 
-              textarea#biografia.form-control(type="text" placeholder #{translation.FORM.BIOGRAPHY})
+              label.form-label(form="biografia") #{translation.BIOGRAPHY} 
+              textarea#biografia.form-control(type="text" placeholder #{translation.BIOGRAPHY})
                 | #{data.biografia} 
             .col-12.col-md-3 
-              label.form-label(for="fecha_nacimiento") #{translation.FORM.BIRTH_DATE} 
-              input#fecha_nacimiento.form-control(type="date" placeholder #{translation.FORM.BIRTH_DATE} value=data.fecha_nacimiento)
+              label.form-label(for="fecha_nacimiento") #{translation.BIRTH_DATE} 
+              input#fecha_nacimiento.form-control(type="date" placeholder #{translation.BIRTH_DATE} value=data.fecha_nacimiento)
             .col-12.col-md-3 
-              label.form-label(for="genero") #{translation.FORM.GENRE}
+              label.form-label(for="genero") #{translation.GENRE}
               select#genero.custom-select
                 if data.genero == 'Masculino'
-                  option(value='Masculino' selected) #{translation.FORM.MALE}
+                  option(value='Masculino' selected) #{translation.MALE}
                 else 
-                  option(value='Masculino') #{translation.FORM.MALE}
+                  option(value='Masculino') #{translation.MALE}
                 if data.genero == 'Femenino'
-                  option(value='Femenino' selected) #{translation.FORM.FEMALE}
+                  option(value='Femenino' selected) #{translation.FEMALE}
                 else 
-                  option(value='Femenino') #{translation.FORM.FEMALE}
+                  option(value='Femenino') #{translation.FEMALE}
 
   script.
     const editor = CKEDITOR.replace('biografia')

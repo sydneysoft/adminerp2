@@ -53,12 +53,12 @@ script.
             if (typeof tablaProveedores != 'undefined' && tablaProveedores) {
               tablaProveedores.ajax.reload();
             }
-            toastSweet('Success', #{translation.ALERTS.UPDATED}, 'success');
+            toastSweet('Success', "#{translation.UPDATED}", 'success');
 
             $("#editarProveedoreModal").modal("hide");
 
           } else {
-            toastSweet('Error', #{translation.ALERTS.WRONG}, 'error');
+            toastSweet('Error', "#{translation.WRONG}", 'error');
           }
         },
         error: function (err) {
@@ -68,7 +68,7 @@ script.
           } else {
 
             Swal.close();
-            toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+            toastSweet('Error', '#{translation.WRONG}', 'error');
           }
         },
       });

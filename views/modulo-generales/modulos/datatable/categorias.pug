@@ -14,9 +14,9 @@ script.
       lengthMenu: [[5, 10, 20, -1], [5, 10, 20, "Todos"]],
       columns: [
         { data: 'id', name: 'id', title: "ID", orderable: true, searchable: false, visible: false},
-        { data: 'nombre', name: 'nombre', title: "#{translation.FORM.NAME}", orderable: true, searchable: true},
+        { data: 'nombre', name: 'nombre', title: "#{translation.NAME}", orderable: true, searchable: true},
         { 
-          data: 'actions', name: 'actions', title: "#{translation.FORM.ACTIONS}", orderable: false, searchable: false,
+          data: 'actions', name: 'actions', title: "#{translation.ACTIONS}", orderable: false, searchable: false,
           render: function (data, type, row) {
             let strRow = JSON.stringify(row);
             return `

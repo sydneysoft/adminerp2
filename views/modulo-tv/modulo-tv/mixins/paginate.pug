@@ -3,13 +3,13 @@ mixin paginate(next, prev)
         ul.pagination
           if prev 
             li.page-item.disabled
-              a#prevPage.page-link(href='#') #{translation.FORM.PREVIOUS}
+              a#prevPage.page-link(href='#') #{translation.PREVIOUS}
           else 
             li.page-item
-              a#prevPage.page-link(href=prev) #{translation.FORM.PREVIOUS}
+              a#prevPage.page-link(href=prev) #{translation.PREVIOUS}
           if next
             li.page-item.disabled
-              a#nextPage.page-link(href='#') #{translation.FORM.NEXT}
+              a#nextPage.page-link(href='#') #{translation.NEXT}
           else
             li.page-item
-              a#nextPage.page-link(href=next) #{translation.FORM.NEXT} 
+              a#nextPage.page-link(href=next) #{translation.NEXT} 

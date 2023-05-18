@@ -8,53 +8,53 @@ append contenido
       .row.mt-3
         .col-12.col-md-4 
           .form-group 
-            label(for='fecha')  #{translation.FORM.DATE}
+            label(for='fecha')  #{translation.DATE}
             input#fecha.form-control(type='date')
         .col-12.col-md-4 
           .form-group 
-            label(for='hora') #{translation.FORM.TIME}
+            label(for='hora') #{translation.TIME}
             input#hora.form-control(type='time')
         .col-12.col-md-4
           .form-group 
-            label(for='motivo') #{translation.FORM.MOTIVE}
+            label(for='motivo') #{translation.MOTIVE}
             select#motivo.form-control
-              option(value='') #{translation.FORM.SELECT}
-              option(value='1') #{translation.FORM.CONSULT}
-              option(value='2') #{translation.FORM.EXAM}
-              option(value='3') #{translation.FORM.SURGERY}
-              option(value='4') #{translation.FORM.OTHER}
+              option(value='') #{translation.SELECT}
+              option(value='1') #{translation.CONSULT}
+              option(value='2') #{translation.EXAM}
+              option(value='3') #{translation.SURGERY}
+              option(value='4') #{translation.OTHER}
       .row.mt-3
         .col-12.col-md-6 
           .form-group 
-            label(for='anotaciones') #{translation.FORM.ANNOTATIONS}
+            label(for='anotaciones') #{translation.ANNOTATIONS}
             textarea#anotaciones.form-control(placeholder="Anotaciones de la visita")
         .col-12.col-md-6
           .form-group 
-            label(for='resultado') #{translation.FORM.RESULT}
+            label(for='resultado') #{translation.RESULT}
             textarea#resultado.form-control(placeholder="Resultado de la visita")
       .row.mt-3 
         .col-12.col-md-6 
           .form-group 
-            label(for='diagnostico') #{translation.FORM.DIAGNOSE}
+            label(for='diagnostico') #{translation.DIAGNOSE}
             textarea#diagnostico.form-control(placeholder="Diagnóstico de la visita")
         .col-12.col-md-6
           .form-group 
-            label(for='recetas') #{translation.FORM.RECIPES_VISIT}
+            label(for='recetas') #{translation.RECIPES_VISIT}
             textarea#recetas.form-control(placeholder="Recetas de la visita")
       .row.mt-3 
         .col-12.col-md-6
           .form-group 
-            label(for='referencias') #{translation.FORM.REFERENCES}
+            label(for='referencias') #{translation.REFERENCES}
             textarea#referencias.form-control(placeholder="Referencias de la visita")
         .col-12.col-md-3
           .form-group 
-            label(for='estado') #{translation.FORM.STATE}
+            label(for='estado') #{translation.STATE}
             select#estado.form-control
-              option(value='') #{translation.FORM.SELECT}
-              option(value='1') #{translation.FORM.PENDING}
-              option(value='2') #{translation.FORM.DONE}
-              option(value='3') #{translation.FORM.CANCELLED}
+              option(value='') #{translation.SELECT}
+              option(value='1') #{translation.PENDING}
+              option(value='2') #{translation.DONE}
+              option(value='3') #{translation.CANCELLED}
         .col-12.col-md-3
           .form-group 
-            label(for='costo') #{translation.FORM.PRICE}
+            label(for='costo') #{translation.PRICE}
             input#costo.form-control(type='number', placeholder="Costo de la visita")

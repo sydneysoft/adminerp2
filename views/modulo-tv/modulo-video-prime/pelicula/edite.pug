@@ -17,14 +17,14 @@ append contenido
         .col-12.my-3
         .col-12 
           .form-group
-            label(for='nombre') #{translation.FORM.NAME}
+            label(for='nombre') #{translation.NAME}
             input#nombre.form-control(type='text' aria-describedby='nombreHelp' placeholder="Nombre de la pelicula." value=data.nombre)
-            small#nombreHelp.form-text.text-muted.d-none #{translation.FORM.WRITE_THE_NAME}
+            small#nombreHelp.form-text.text-muted.d-none #{translation.WRITE_THE_NAME}
         .col-12.my-3
         .col-12.col-md-8 
           .form-group 
-            label(for="estracto") #{translation.FORM.EXTRACT} 
-            textarea#estracto.form-control(name="estracto" placeholder #{translation.FORM.EXTRACT} )
+            label(for="estracto") #{translation.EXTRACT} 
+            textarea#estracto.form-control(name="estracto" placeholder=translation.EXTRACT )
               |#{data.estracto}
         .col-12.col-md-4 
           .form-check
@@ -33,23 +33,23 @@ append contenido
             else 
               input#external.form-check-input(type='checkbox' value='')
             label.form-check-label(for='external')
-              | #{translation.FORM.URL_EXTERMA;}
+              | #{translation.URL_EXTERMA;}
 
         .col-12.my-3
         .col-12
-          label(for='thumbnail') #{translation.FORM.THUMBNAIL}
-          input#thumbnail.form-control(type='text'  placeholder #{translation.FORM.THUMBNAIL} value=data.thumbnail)
+          label(for='thumbnail') #{translation.THUMBNAIL}
+          input#thumbnail.form-control(type='text'  placeholder=translation.THUMBNAIL value=data.thumbnail)
         .col-12.my-3
         .col-12.col-md-6
-          label(for='trailer') #{translation.FORM.TRAILER}
-          input#trailer.form-control(type='text'  placeholder #{translation.FORM.TRAILER} value=data.trailer)
+          label(for='trailer') #{translation.TRAILER}
+          input#trailer.form-control(type='text'  placeholder=translation.TRAILER value=data.trailer)
         .col-12.col-md-6
-          label(for='url') #{translation.FORM.MOVIE_URL}
-          input#url.form-control(type='text'  placeholder #{translation.FORM.MOVIE_URL} value=data.url)
+          label(for='url') #{translation.MOVIE_URL}
+          input#url.form-control(type='text'  placeholder=translation.MOVIE_URL value=data.url)
         .col-12.my-3
         .col-12
           .form-group 
-            label(for="body") #{translation.FORM.BODY} 
+            label(for="body") #{translation.BODY} 
             textarea#body(name="body") 
               | #{data.body}
 

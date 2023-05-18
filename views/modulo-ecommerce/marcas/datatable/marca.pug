@@ -16,9 +16,9 @@ script.
       columns: [
         { data: 'id', name: 'id', title: "ID", orderable: true, searchable: false, visible: false},
         { 
-          data: 'name', name: 'name', title: "#{translation.FORM.NAME}", orderable: true, searchable: true},
+          data: 'name', name: 'name', title: "#{translation.NAME}", orderable: true, searchable: true},
         { 
-          data: 'imagen', name: 'imagen', title: "#{translation.FORM.IMAGE}", orderable: false, searchable: false,
+          data: 'imagen', name: 'imagen', title: "#{translation.IMAGE}", orderable: false, searchable: false,
           render: function (data, type, row) {
             try {
               new URL(row.imagen)
@@ -29,7 +29,7 @@ script.
           }
         },
         { 
-          data: 'categoria', name: 'categoria', title: "#{translation.FORM.CATEGORY}", orderable: true, searchable: true,
+          data: 'categoria', name: 'categoria', title: "#{translation.CATEGORY}", orderable: true, searchable: true,
           render: function (data, type, row) {
             let nombre = ""
             $.ajax({

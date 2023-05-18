@@ -11,10 +11,10 @@ append contenido
           thead.thead-dark
             tr
               th(scope='col') ID
-              th(scope='col') #{translation.FORM.NAME}
-              th(scope='col') #{translation.FORM.NATIONALITY} 
-              th(scope='col') #{translation.FORM.GENRE}
-              th(scope='col') #{translation.FORM.ACTIONS}
+              th(scope='col') #{translation.NAME}
+              th(scope='col') #{translation.NATIONALITY} 
+              th(scope='col') #{translation.GENRE}
+              th(scope='col') #{translation.ACTIONS}
           tbody
             each item in data 
               tr(id=`delete${item.id}`) 
@@ -37,6 +37,6 @@ append contenido
         });
     else 
       .alert.alert-info(role="alert")
-        | #{translation.ALERT.NO_DATA_YET}
+        | #{translation.NO_DATA_YET}
   script 
     include ../../../js/modulo-tv/delete.js

@@ -1,19 +1,29 @@
-script.
-  const select2Estados = $("#lista-estados-filtro").select2({
-    data: [
-      {
-        id: '',
-        text: 'Todos',
-      },
-      {
-        id: '1',
-        text: 'Activado',
-        selected: false
-      },
-      {
-        id: '0',
-        text: 'Desactivado',
-        selected: false
-      }
-    ],
-  })
+mixin select2-estados(target = "lista-estados-filtro")
+  .form-group
+    label(for=target) Estado
+    select.form-control(id="lista-estados-filtro")
+      option(value="") Todos
+      option(value="1") Activado
+      option(value="0") Desactivado
+
+  script.
+    const select2Estados = $(`#!{target}`).select2()
+//- script.
+//-   const select2Estados = $("#lista-estados-filtro").select2({
+//-     data: [
+//-       {
+//-         id: '',
+//-         text: 'Todos',
+//-       },
+//-       {
+//-         id: '1',
+//-         text: 'Activado',
+//-         selected: false
+//-       },
+//-       {
+//-         id: '0',
+//-         text: 'Desactivado',
+//-         selected: false
+//-       }
+//-     ],
+//-   })

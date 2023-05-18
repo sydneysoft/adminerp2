@@ -22,8 +22,8 @@ script.
       order: [[1, "asc"]],
       language: {
         buttons: {
-          selectAll: '#{translation.FORM.SELECT_EVERYTHING}',
-          selectNone: '#{translation.FORM.ERASE_SELECTION}',
+          selectAll: '#{translation.SELECT_EVERYTHING}',
+          selectNone: '#{translation.ERASE_SELECTION}',
         },
         url: "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json",
         select: {
@@ -44,17 +44,17 @@ script.
           }
         },
         { 
-          data: 'nombre', name: 'nombre', title: '#{translation.FORM.NAME}',
+          data: 'nombre', name: 'nombre', title: '#{translation.NAME}',
           searchable: true,
           orderable: true,
         },
         { 
-          data: 'direccion', name: 'direccion', title: '#{translation.FORM.ADDRESS}',
+          data: 'direccion', name: 'direccion', title: '#{translation.ADDRESS}',
           searchable: true,
           orderable: true,
         },
         { 
-          data: 'imagen', name: 'imagen', title: '#{translation.FORM.IMAGE}',
+          data: 'imagen', name: 'imagen', title: '#{translation.IMAGE}',
           searchable: true,
           orderable: true,
           render: function (data, type, row) {
@@ -67,17 +67,17 @@ script.
           }
         },
         { 
-          data: 'telefono', name: 'telefono', title: '#{translation.FORM.PHONE}',
+          data: 'telefono', name: 'telefono', title: '#{translation.PHONE}',
           searchable: true,
           orderable: true,
         },
         { 
-          data: 'atencion', name: 'atencion', title: '#{translation.FORM.ATTENTION}',
+          data: 'atencion', name: 'atencion', title: '#{translation.ATTENTION}',
           searchable: false,
           orderable: false,
         },
         { 
-          data: 'estado', name: 'estado', title: '#{translation.FORM.STATUS}',
+          data: 'estado', name: 'estado', title: '#{translation.STATUS}',
           searchable: false,
           orderable: false,
           render: function (data, type, row) {
@@ -85,7 +85,7 @@ script.
           }
         },
         { 
-          data: 'activado', name: 'activado', title: '#{translation.FORM.ACTIVATED}',
+          data: 'activado', name: 'activado', title: '#{translation.ACTIVATED}',
           searchable: false,
           orderable: false,
           render: function (data, type, row) {
@@ -95,7 +95,7 @@ script.
         { 
           data: 'actions',
           name: 'actions',
-          title: '#{translation.FORM.ACTIONS}',
+          title: '#{translation.ACTIONS}',
           searchable: false,
           orderable: false,
           render: function (data, type, row) {

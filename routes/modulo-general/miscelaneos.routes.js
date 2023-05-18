@@ -747,6 +747,12 @@ router.post("/add-values-filter", async (req, res) => {
   try {
     if (arrayPost) {
       if (arrayPost.length > 0) {
+        const sql = "SELECT categoria FROM grupo_filtro WHERE id = ?";
+        let result = await db.query(con, sql, [arrayPost[0][0]]);
+        arrayPost.forEach((element) => {
+          element[2] = result[0].categoria
+        });
+        console.log(arrayPost);
         let queryData =
           "INSERT INTO filtros (GrupoFiltro,name,Categoria) VALUES ?";
         await db.query(con, queryData, [arrayPost]);

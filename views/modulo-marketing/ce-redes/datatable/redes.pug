@@ -57,12 +57,12 @@ script.
         {
           data: 'nombre',
           name: 'nombre',
-          title: '#{translation.FORM.NAME}  '
+          title: '#{translation.NAME}  '
         },
         {
           data: 'icono',
           name: 'icono',
-          title: '#{translation.FORM.ICON}',
+          title: '#{translation.ICON}',
           searchable: false,
           orderable: false,
           render: function (data, type, row) {
@@ -72,14 +72,14 @@ script.
         {
           data: 'url',
           name: 'url',
-          title: '#{translation.FORM.URL}',
+          title: '#{translation.URL}',
           searchable: false,
           orderable: false,
         },
         {
           data: 'acciones',
           name: 'acciones',
-          title: '#{translation.FORM.ACTIONS}',
+          title: '#{translation.ACTIONS}',
           render: function (data, type, row) {
             let strRow = JSON.stringify(row);
             return `

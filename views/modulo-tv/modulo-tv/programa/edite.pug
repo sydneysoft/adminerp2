@@ -16,53 +16,53 @@ block contenido
             .col-12.mb-3.text-right 
               button.btn.btn-primary(type="submit") #{translation.SAVE}
             .col-12.col-md-8
-              label.form-label(for='nombre') #{translation.FORM.TV_SHOW_NAME}
+              label.form-label(for='nombre') #{translation.TV_SHOW_NAME}
               input#nombre.form-control(type='text' value=data.nombre required='' placeholder="Nombre del programa" name="nombre")
               .valid-feedback
-                | #{translation.FORM.NAME}
+                | #{translation.NAME}
 
             .col-12.col-md-4
-              label.form-label(for='numero_temporadas') #{translation.FORM.NUMBER_SEASONS}
+              label.form-label(for='numero_temporadas') #{translation.NUMBER_SEASONS}
               input#numero_temporadas.form-control(type='number' value=data.num_temporadas required='' placeholder="numero de temporada" name="num_temporadas")
               .valid-feedback
-                | #{translation.FORM.NUMBER_SEASONS}
+                | #{translation.NUMBER_SEASONS}
               
             .col-12.my-3
             .col-12.col-md-6 
-              label.form-label(for='slogan') #{translation.FORM.SLOGAN}
+              label.form-label(for='slogan') #{translation.SLOGAN}
               input#slogan.form-control(type='text' value=data.slogan required='' placeholder="Eslogan" name="slogan")
               .valid-feedback
-                | #{translation.FORM.SLOGAN}
+                | #{translation.SLOGAN}
             .col-12.col-md-6 
-              label.form-label(for='slogan') #{translation.FORM.SHORT_DESCRIPTION}
+              label.form-label(for='slogan') #{translation.SHORT_DESCRIPTION}
               textarea#estracto.form-control(required='' placeholder="Descripcion corta" name="estracto")
                 | #{data.estracto}
               .valid-feedback
-                | #{translation.FORM.SLOGAN}
+                | #{translation.SLOGAN}
             .col-12.my-3 
 
             .col-12.col-md-8
-              label.form-label(for='portada') #{translation.FORM.BACKGROUND_PHOTO}
+              label.form-label(for='portada') #{translation.BACKGROUND_PHOTO}
               input#portada.form-control(type='text' value=data.foto_portada required='' placeholder="Nombre del programa" name="foto_portada")
               .valid-feedback
-                | #{translation.FORM.BACKGROUND_PHOTO}
+                | #{translation.BACKGROUND_PHOTO}
 
             .col-12.col-md-4
-              label.form-label(for='lanzamiento') #{translation.FORM.RELEASE_DATE}
+              label.form-label(for='lanzamiento') #{translation.RELEASE_DATE}
               input#lanzamiento.form-control(type='text' value=data.fecha_lanzamiento required='' placeholder="Fecha de lanzamiento")
               .valid-feedback
-                | #{translation.FORM.RELEASE_DATE}
+                | #{translation.RELEASE_DATE}
           
             .col-12.my-3
 
             .col-12.col-md-4
-                label.form-label(for='genero') #{translation.FORM.GENRE} 
+                label.form-label(for='genero') #{translation.GENRE} 
                 textarea#genero.form-control(name="genero", cols="30", rows="10" placeholder="Generos ejemplo: ciencia ficcion, comedia") #{data.genero}
             .col-12.col-md-4
-              label.form-label() #{translation.FORM.DIRECTOR} 
+              label.form-label() #{translation.DIRECTOR} 
               textarea#director.form-control(name="director", cols="30", rows="10" placeholder="Directores ejemplo: Juan, Sofia") #{data.director}
             .col-12.col-md-4
-              label.form-label() #{translation.FORM.PRODUCER} 
+              label.form-label() #{translation.PRODUCER} 
               textarea#productor.form-control(name="productor", cols="30", rows="10" placeholder="Productor ejemplo: Elena, Pablo") #{data.productor}
 
       script 

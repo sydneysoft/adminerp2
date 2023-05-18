@@ -30,12 +30,12 @@ append contenido
           .row
             .col-12
               .form-group
-                label(for="nombre") #{translation.FORM.NAME} *
+                label(for="nombre") #{translation.NAME} *
                 input#nombre.form-control(type="text" placeholder="Nombre del rol")
             .col-12
               .form-group 
-                label(for="identificador") #{translation.FORM.IDENTIFIER} *
-                input#identificador.form-control(type="text" placeholder=translation.FORM.IDENTIFIER)
+                label(for="identificador") #{translation.IDENTIFIER} *
+                input#identificador.form-control(type="text" placeholder=translation.IDENTIFIER)
 
         .modal-footer
           button#btn-crear-rol.btn.btn-primary(type="button") #{translation.CREATE}
@@ -77,13 +77,13 @@ append contenido
           {
             data: 'nombre',
             name: 'nombre',
-            title: '#{translation.FORM.NAME}',
+            title: '#{translation.NAME}',
 
           },
           {
             data: 'identificador',
             name: 'identificador',
-            title: '#{translation.FORM.IDENTIFIER}',
+            title: '#{translation.IDENTIFIER}',
           },
           {
             data: 'acciones',
@@ -120,7 +120,7 @@ append contenido
           position: 'top-end',
           icon: 'error',
           title: 'Oops...',
-          text: '#{translation.FORM.REQUIRED_FIELDS}',
+          text: '#{translation.REQUIRED_FIELDS}',
           showConfirmButton: false,
           timer: 3000,
           timerProgressBar: true,
@@ -143,15 +143,15 @@ append contenido
             if (data.ok) {
               Swal.fire({
                 icon: 'success',
-                title: '#{translation.ALERTS.SUCCESS}',
-                text: '#{translation.ALERTS.ROLE_CREATED}'
+                title: '#{translation.SUCCESS}',
+                text: '#{translation.ROLE_CREATED}'
               });
               $('#modal-crear-rol').modal('hide');
             } else {
               Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
-                text: '#{translation.ALERTS.ERROR_DATA}'
+                text: '#{translation.ERROR_DATA}'
               });
             }
           },
@@ -159,7 +159,7 @@ append contenido
             Swal.fire({
               icon: 'error',
               title: 'Oops...',
-              text: '#{translation.ALERTS.ERROR_DATA}'
+              text: '#{translation.ERROR_DATA}'
             });
           }
         });

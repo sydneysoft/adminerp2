@@ -16,12 +16,12 @@ script.
       type: "POST",
       data: auxData,
       success: function () {
-        toastSweet('success', '#{translation.ALERTS.SUCCESS}', 'success');
+        toastSweet('success', '#{translation.SUCCESS}', 'success');
         $("#agregarServicio").modal("hide");
       },
       error: function (err) {
         Swal.close();
-        toastSweet('error', '#{translation.ALERTS.WRONG}', 'error');
+        toastSweet('error', '#{translation.WRONG}', 'error');
       },
     });
   });

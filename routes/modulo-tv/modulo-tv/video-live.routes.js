@@ -79,7 +79,7 @@ const empresaService = new ServiceSQL('usuarios');
     const {  dataSession, dataSistema } = await getAllDataSession(req);
     const id = req.params.id; 
     
-    const data = await VideoService.getbyCompany(id);
+    let data = await VideoService.getbyCompany(id);
 
     if (data.length == 0) {
       await VideoService.save({empresa_id: id });

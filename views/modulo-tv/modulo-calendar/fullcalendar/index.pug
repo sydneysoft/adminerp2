@@ -6,7 +6,7 @@ append contenido
       .col-12.col-md-6 
         .row
           .col-12
-            h3.text-center #{translation.MODULOTV.HOURS_SETTING}
+            h3.text-center #{translation.HOURS_SETTING}
         .row
           .col-12.text-right 
             button#guardarHorario.btn.btn-primary(type="button") #{translation.SAVE}
@@ -15,53 +15,53 @@ append contenido
           .col-12.col-md-4 
             label.form-check.p-3.border.rounded-lg.d-flex.justify-content-between(for="lunesCheck")
               div 
-                span #{translation.DAYS.MONDAY}
+                span #{translation.MONDAY}
               div
                 input#lunesCheck.form-check-input(type="checkbox")
           .col-12.col-md-4
             label.form-check.p-3.border.rounded-lg.d-flex.justify-content-between(for="martesCheck")
               div 
-                span #{translation.DAYS.TUESDAY}
+                span #{translation.TUESDAY}
               div
                 input#martesCheck.form-check-input(type="checkbox")
           .col-12.col-md-4
             label.form-check.p-3.border.rounded-lg.d-flex.justify-content-between(for="miercolesCheck")
               div 
-                span #{translation.DAYS.WEDNESDAY}
+                span #{translation.WEDNESDAY}
               div
                 input#miercolesCheck.form-check-input(type="checkbox")
           .col-12.col-md-4
             label.form-check.p-3.border.rounded-lg.d-flex.justify-content-between(for="juevesCheck")
               div 
-                span #{translation.DAYS.THURSDAY}
+                span #{translation.THURSDAY}
               div
                 input#juevesCheck.form-check-input(type="checkbox")
           .col-12.col-md-4
             label.form-check.p-3.border.rounded-lg.d-flex.justify-content-between(for="viernesCheck")
               div 
-                span #{translation.DAYS.FRIDAY}
+                span #{translation.FRIDAY}
               div
                 input#viernesCheck.form-check-input(type="checkbox")
           .col-12.col-md-4
             label.form-check.p-3.border.rounded-lg.d-flex.justify-content-between(for="sabadoCheck")
               div 
-                span #{translation.DAYS.SATURDAY}
+                span #{translation.SATURDAY}
               div
                 input#sabadoCheck.form-check-input(type="checkbox")
           .col-12.col-md-4
             label.form-check.p-3.border.rounded-lg.d-flex.justify-content-between(for="domingoCheck")
               div 
-                span #{translation.DAYS.SUNDAY}
+                span #{translation.SUNDAY}
               div
                 input#domingoCheck.form-check-input(type="checkbox")
           .col-12.col-md-8
           .col-12.col-md-4 
             .form-group
-              label(for="horaInicio") #{translation.MODULOTV.START_TIME}
+              label(for="horaInicio") #{translation.START_TIME}
               input#horaInicio.form-control(type="time")
           .col-12.col-md-4
             .form-group
-              label(for="horaFin") #{translation.MODULOTV.END_TIME}
+              label(for="horaFin") #{translation.END_TIME}
               input#horaFin.form-control(type="time")
         .row.mt-3
           .col-12.text-right
@@ -167,25 +167,25 @@ append contenido
           span.classList.add('badge', 'badge-pill', 'badge-primary', 'ml-2');
           switch (dia) {
             case 1:
-              span.innerHTML = '#{translation.DAYS.MONDAY}';
+              span.innerHTML = '#{translation.MONDAY}';
               break;
             case 2:
-              span.innerHTML = '#{translation.DAYS.TUESDAY}';
+              span.innerHTML = '#{translation.TUESDAY}';
               break;
             case 3:
-              span.innerHTML = '#{translation.DAYS.WEDNESDAY}';
+              span.innerHTML = '#{translation.WEDNESDAY}';
               break;
             case 4:
-              span.innerHTML = '#{translation.DAYS.THURSDAY}';
+              span.innerHTML = '#{translation.THURSDAY}';
               break;
             case 5:
-              span.innerHTML = '#{translation.DAYS.FRIDAY}';
+              span.innerHTML = '#{translation.FRIDAY}';
               break;
             case 6:
-              span.innerHTML = '#{translation.DAYS.SATURDAY}';
+              span.innerHTML = '#{translation.SATURDAY}';
               break;
             case 0:
-              span.innerHTML = '#{translation.DAYS.SUNDAY}';
+              span.innerHTML = '#{translation.SUNDAY}';
               break;
           }
           horarioDisponible.appendChild(span);
@@ -193,10 +193,10 @@ append contenido
         let div = document.createElement('div');
         div.classList.add('mt-3');
         span = document.createElement('span');
-        span.innerHTML = `#{translation.MODULOTV.START_TIME}: ${horario.startTime} `;
+        span.innerHTML = `#{translation.START_TIME}: ${horario.startTime} `;
         div.appendChild(span);
         span = document.createElement('span');
-        span.innerHTML = `#{translation.MODULOTV.END_TIME}: ${horario.endTime}`;
+        span.innerHTML = `#{translation.END_TIME}: ${horario.endTime}`;
         div.appendChild(span);
         horarioDisponible.appendChild(div);
         horariosDisponibles.appendChild(horarioDisponible);
@@ -271,7 +271,7 @@ append contenido
           position: 'top-end',
           icon: 'error',
           title: 'Oops...',
-          text: '#{translation.ALERTS.CONFIRM_DELETE_MULTIPLE_SELECTED_MESSAGE_TEXT_BUTTON_TEXT_BUTTON_TEXT_BUTTON_TEXT_BUTTON_TITLE}',
+          text: '#{translation.CONFIRM_DELETE_MULTIPLE_SELECTED_MESSAGE_TEXT_BUTTON_TEXT_BUTTON_TEXT_BUTTON_TEXT_BUTTON_TITLE}',
           timer: 2000,
           showConfirmButton: false
         })

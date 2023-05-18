@@ -9,7 +9,7 @@ append contenido
     .col-6.text-right
       button.btn.btn-success(style="margin-bottom:25px;" type="button" onClick="openModalNewRegion()")
         i.fas-fa-plus
-        span #{translation.FORM.ADD_REGION} 
+        span #{translation.ADD_REGION} 
   .row.mt-3
     .col-12.text-grey(style="margin-bottom:10px;")
       h1.display-1
@@ -20,10 +20,10 @@ append contenido
         table.table.table-bordered#tabla-regiones
           thead.thead-dark
             tr
-              th.text-center #{translation.FORM.NAME}
-              th.text-center #{translation.FORM.COUNTRY}
-              th.text-center #{translation.FORM.CITY}
-              th.text-center #{translation.FORM.ACTIONS} 
+              th.text-center #{translation.NAME}
+              th.text-center #{translation.COUNTRY}
+              th.text-center #{translation.CITY}
+              th.text-center #{translation.ACTIONS} 
           tbody
             each book in items.regiones
               tr

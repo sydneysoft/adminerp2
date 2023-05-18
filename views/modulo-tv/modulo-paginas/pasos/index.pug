@@ -14,11 +14,11 @@ append contenido
         .row 
           .col-12.col-md-8 
             .form-group
-              label(for='titulo') #{translation.FORM.NAME} *
+              label(for='titulo') #{translation.NAME} *
               input#nombre.form-control(type='text' placeholder="Nombre" value=pagina.nombre name="nombre" required)
             .form-group 
-              label(for='descripcion') #{translation.FORM.BODY}
-              textarea#body(name="body" placeholder=translation.FORM.BODY) #{pagina.body}
+              label(for='descripcion') #{translation.BODY}
+              textarea#body(name="body" placeholder=translation.BODY) #{pagina.body}
           .col-12.col-md-4
             .row
               .col-12
@@ -58,7 +58,7 @@ append contenido
     identificadorSection.addEventListener('change', (event) => {
       switch (event.target.value) {
         case 'formulario_contactos':
-          //- #{translation.ALERTS.ERROR_CONTACT_FORM}
+          //- #{translation.ERROR_CONTACT_FORM}
           showSelected.innerHTML = '';
           contactFormRender();
           break;
@@ -121,7 +121,7 @@ append contenido
       } else {
         html = `
           <div class="alert alert-danger" role="alert">
-            #{translation.ALERTS.ERROR_CONTACT_FORM}
+            #{translation.ERROR_CONTACT_FORM}
           </div>
         `
         showSelected.innerHTML = html;
@@ -191,7 +191,7 @@ append contenido
         toast: true,
         position: 'top-end',
         icon: 'error',
-        title: '#{translation.ALERTS.SECTION_EXISTS}',
+        title: '#{translation.SECTION_EXISTS}',
         showConfirmButton: false,
         timer: 2000
       })
@@ -202,7 +202,7 @@ append contenido
         toast: true,
         position: 'top-end',
         icon: 'error',
-        title: '#{translation.ALERTS.ERROR_SELECT_SECTION}',
+        title: '#{translation.ERROR_SELECT_SECTION}',
         showConfirmButton: false,
         timer: 2000
       })
@@ -221,7 +221,7 @@ append contenido
         Swal.fire({
           icon: 'error',
           title: 'Oops...',
-          text: '#{translation.FORM.REQUIRED_FIELDS}',
+          text: '#{translation.REQUIRED_FIELDS}',
         });
       }
     });

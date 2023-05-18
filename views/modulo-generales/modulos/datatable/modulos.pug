@@ -12,9 +12,9 @@ script.
       ajax: urlAjaxTablaModulos,
       columns: [
         { data: 'id', name: 'id', title: "ID", orderable: true, searchable: false, visible: false},
-        { data: 'nombre', name: 'nombre', title: "#{translation.FORM.NAME}", orderable: true, searchable: true},
+        { data: 'nombre', name: 'nombre', title: "#{translation.NAME}", orderable: true, searchable: true},
         {
-          data: 'categoria_id', name: 'categoria_id', title: "#{translation.FORM.CATEGORY}", orderable: false, searchable: false,
+          data: 'categoria_id', name: 'categoria_id', title: "#{translation.CATEGORY}", orderable: false, searchable: false,
           render: function (data, type, row) {
             let nombre = "";
             $.ajax({

@@ -1,0 +1,184 @@
+extends ../layout.pug
+
+append contenido 
+  .border-bottom.border-left.border-right.rounded-bottom.p-3
+    .my-3.d-flex.flex-wrap(style="gap: 5px")
+      button.btn.btn-info(type="button" onclick="window.history.back()") #{translation.BACK}
+      button#nuevoitem.btn.btn-primary(type="button") #{translation.CREATE} 
+        i.fas.fa-plus
+      .inline-block
+        select#estadoChange.form-control(name="estado" role="tablist")
+          option.nav-item(data-toggle="tab" data-target="#publish" type="button" role="tab" aria-controls="home" aria-selected="true") #{translation.PUBLISHED}
+          option.nav-item(data-toggle="tab" data-target="#draft" type="button" role="tab" aria-controls="profile" aria-selected="false") #{translation.DRAFT}
+          option.nav-item(data-toggle="tab" data-target="#pending" type="button" role="tab" aria-controls="home" aria-selected="true") #{translation.PENDING}
+          option.nav-item(data-toggle="tab" data-target="#trash" type="button" role="tab" aria-controls="profile" aria-selected="false") #{translation.TRASH}
+      button#publishDraftButton.btn.btn-primary(role="button" disabled onclick="draftPaginas()") #{translation.MOVE_TO_TRASH} 
+      button#draftPublishButton.btn.btn-primary(role="button" disabled onclick="publishPaginas()") #{translation.MOVE_TO_PUBLISHED}
+    #pagina.mt-3
+      #publish.tab-pane.fade.active.show
+        .my-3.table-responsive   
+          table#publishTable.table.rounded-lg.overflow-hidden
+            thead.thead-dark
+              tr
+                th(scope='col') 
+                  div
+                    input#publishTarget(type="checkbox" value="")
+                th(scope='col') #{translation.TITLE}
+                th(scope='col') #{translation.STATE}
+                th(scope='col') #{translation.ACTIONS}
+            tbody
+              each item in publish 
+                tr(id=`delete${item.id}`)
+                  th(scope='row')
+                    input.publishCheck(type="checkbox" value=item.id) 
+                  td #{item.titulo}
+                  td #{item.estado}
+                  td 
+                    .btn-group(role='group' aria-label='Basic example')
+                      a.btn.btn-primary(role="button" href=`/admin-blog/paginas/editar/${item.id}`)
+                        i.fas.fa-pen(aria-hidden='true')
+                      a.btn.btn-info(role='button' href=`/admin-blog/paginas/mostrar/${item.id}`)
+                        i.fas.fa-eye(aria-hidden='true')
+                      a.btn.btn-danger(type='button' onClick=`beforeUpdateItem('/admin-blog/paginas/delete/${item.id}', ${item.id})`)
+                        i.fas.fa-trash(aria-hidden='true')
+      #draft.tab-pane.fade.d-none
+        .my-3.table-responsive   
+          table#draftTable.table.rounded-lg.overflow-hidden
+            thead.thead-dark
+              tr
+                th(scope='col') 
+                  div
+                    input#draftTarget(type="checkbox" value="")
+                th(scope='col') #{translation.TITLE}
+                th(scope='col') #{translation.STATE}
+                th(scope='col') #{translation.ACTIONS}
+            tbody
+              each item in draft 
+                tr(id=`delete${item.id}`)
+                  th(scope='row')
+                    input.draftCheck(type="checkbox" value=item.id) 
+                  td #{item.titulo}
+                  td #{item.estado}
+                  td 
+                    .btn-group(role='group' aria-label='Basic example')
+                      a.btn.btn-primary(role="button" href=`/admin-blog/paginas/editar/${item.id}`)
+                        i.fas.fa-pen(aria-hidden='true')
+                      a.btn.btn-info(role='button' href=`/admin-blog/paginas/mostrar/${item.id}`)
+                        i.fas.fa-eye(aria-hidden='true')
+                      a.btn.btn-danger(type='button' onClick=`beforeUpdateItem('/admin-blog/paginas/delete/${item.id}', ${item.id})`)
+                        i.fas.fa-trash(aria-hidden='true')
+      #pending.tab-pane.fade.d-none
+        .my-3.table-responsive   
+          table#pendingTable.table.rounded-lg.overflow-hidden
+            thead.thead-dark
+              tr
+                th(scope='col') 
+                  div
+                    input#pendingTarget(type="checkbox" value="")
+                th(scope='col') #{translation.TITLE}
+                th(scope='col') #{translation.STATE}
+                th(scope='col') #{translation.ACTIONS}
+            tbody
+              each item in pending
+                tr(id=`delete${item.id}`)
+                  th(scope='row')
+                    input.pendingCheck(type="checkbox" value=item.id)
+                  td #{item.titulo}
+                  td #{item.estado}
+                  td 
+                    .btn-group(role='group' aria-label='Basic example')
+                      a.btn.btn-primary(role="button" href=`/admin-blog/paginas/editar/${item.id}`)
+                        i.fas.fa-pen(aria-hidden='true')
+                      a.btn.btn-info(role='button' href=`/admin-blog/paginas/mostrar/${item.id}`)
+                        i.fas.fa-eye(aria-hidden='true')
+                      a.btn.btn-danger(type='button' onClick=`beforeUpdateItem('/admin-blog/paginas/delete/${item.id}', ${item.id})`)
+                        i.fas.fa-trash(aria-hidden='true')
+      #trash.tab-pane.fade.d-none
+        .my-3.table-responsive   
+          table#deleteTable.table.rounded-lg.overflow-hidden
+            thead.thead-dark
+              tr
+                th(scope='col') 
+                  div
+                    input#deleteTarget(type="checkbox" value="")
+                th(scope='col') #{translation.TITLE}
+                th(scope='col') #{translation.STATE}
+                th(scope='col') #{translation.ACTIONS}
+            tbody
+              each item in deleting
+                tr(id=`delete${item.id}`)
+                  td 
+                    input.deleteCheck(type="checkbox" value=item.id)
+                  td #{item.titulo}
+                  td #{item.estado}
+                  td 
+                    .btn-group(role='group' aria-label='Basic example')
+                      a.btn.btn-primary(role="button" href=`/admin-blog/paginas/editar/${item.id}`)
+                        i.fas.fa-pen(aria-hidden='true')
+                      a.btn.btn-info(role='button' href=`/admin-blog/paginas/mostrar/${item.id}`)
+                        i.fas.fa-eye(aria-hidden='true')
+                      a.btn.btn-danger(type='button' onClick=`beforeDeleteItem('/admin-blog/paginas/pagina/${item.id}', ${item.id})`)
+                        i.fas.fa-trash(aria-hidden='true')
+                      button.btn.btn-success(role="button" onclick=`beforeRestoreItem('/admin-blog/paginas/restore/${item.id}', ${item.id})`) Recuperar
+   
+  script.
+    $(document).ready( function () {
+      $('#publishTable').DataTable();
+      $('#pendingTable').DataTable();
+      $('#deleteTable').DataTable();
+      $('#draftTable').DataTable();
+    });
+    document.getElementById('nuevoitem').addEventListener('click', (event) => {
+      beforeCreate();
+    });
+    document.getElementById('estadoChange').addEventListener('change', (event) => {
+      $('#pagina .tab-pane').each(function (val) {
+        $(this).removeClass('active show').addClass('d-none')
+
+      })
+      event.target.childNodes.forEach(function (val) {
+        if(val.selected) {
+          const auxItem = $(val.getAttribute('data-target'))
+          auxItem.addClass('active show');
+          auxItem.removeClass('d-none');
+        }
+      })
+      console.log($(event.target.getAttribute('data-target')))
+    });
+
+    document.getElementById('publishTarget').addEventListener('change', (event) => {
+      $('.publishCheck').each(function (item) {
+        this.checked = event.target.checked
+      })
+      publishLoop();
+    });
+    document.getElementById('draftTarget').addEventListener('change', (event) => {
+      $('.draftCheck').each(function (item) {
+        this.checked = event.target.checked
+      });
+      draftLoop();
+    });
+    document.getElementById('deleteTarget').addEventListener('change', (event) => {
+      $('.deleteCheck').each(function (item) {
+        this.checked = event.target.checked
+      })
+    });
+    document.getElementById('pendingTarget').addEventListener('change', (event) => {
+      $('.pendingCheck').each(function (item) {
+        this.checked = event.target.checked
+      })
+    });
+    const beforeUpdateItem = (url, id) => {
+      updateItem(url);
+      document.getElementById(`delete${id}`).remove();
+    };
+    const beforeRestoreItem = (url, id) => {
+      updateItem(url);
+      document.getElementById(`delete${id}`).remove();
+    };
+  script 
+    include ./usuario-crear.js
+    include ../../../js/modulo-tv/update.js
+    include ../../../js/modulo-tv/save.js
+    include ../../../js/modulo-tv/delete.js
+    include ./select-paginas.js

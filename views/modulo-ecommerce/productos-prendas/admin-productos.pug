@@ -42,21 +42,21 @@ block contenido
         .col-md-4.col-6
             div(style="display: inline-flex")
                 .form-group
-                    label.font-weight-bold.datev-label #{translation.FORM.STORAGE} 
+                    label.font-weight-bold.datev-label #{translation.STORAGE} 
                       if items.marketplace==false 
                         select#filtroAlmacen.form-control
-                            option(value=0) #{translation.FORM.SELECT_STORAGE} 
+                            option(value=0) #{translation.SELECT_STORAGE} 
                                 each almacen in items.almacenes
                                     option(value= almacen.id)= almacen.nombre
                       else
                          select#filtroAlmacen.form-control(disabled)
-                               option(value=0) #{translation.FORM.SELECT} 
+                               option(value=0) #{translation.SELECT} 
         .col-md-4.col-12(style="max-width: 400px")
             label.font-weight-bold.datev-label #{translation.MASSIVE_ACTIONS} 
                 .row
                     .col-7
                         select#acciones.form-control
-                            option(value=null) #{translation.FORM.SELECT} 
+                            option(value=null) #{translation.SELECT} 
                             option(value="0") #{translation.DELETE} 
                             option(value="1") #{translation.PUBLISH} 
                             option(value="2") #{translation.SAVE_AS_DRAFT} 
@@ -68,15 +68,15 @@ block contenido
                 thead.thead-dark
                     tr.table-head
                         th.text-center  
-                        th.text-center #{translation.FORM.IMAGE} 
-                        th.text-left #{translation.FORM.NAME} 
-                        th.text-center #{translation.FORM.STOCK} 
-                        th.text-center #{translation.FORM.CATEGORY} 
-                        th.text-center #{translation.FORM.PRICE} 
-                        th.text-center #{translation.FORM.DISCOUNT_PRICE} 
-                        th.text-center #{translation.FORM.DATE}  
-                        th.text-center #{translation.FORM.STATE}  
-                        th.text-center #{translation.FORM.STORAGE} 
+                        th.text-center #{translation.IMAGE} 
+                        th.text-left #{translation.NAME} 
+                        th.text-center #{translation.STOCK} 
+                        th.text-center #{translation.CATEGORY} 
+                        th.text-center #{translation.PRICE} 
+                        th.text-center #{translation.DISCOUNT_PRICE} 
+                        th.text-center #{translation.DATE}  
+                        th.text-center #{translation.STATE}  
+                        th.text-center #{translation.STORAGE} 
                         if items.marketplace==true 
                             th.text-center  #{translation.BUSINESS}   
                         th.text-center  #{translation.ACTION} 

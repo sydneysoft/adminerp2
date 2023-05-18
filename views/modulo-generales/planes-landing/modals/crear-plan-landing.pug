@@ -5,18 +5,18 @@
         form
           .row
             .col-md-12.mb-3
-              label.form-label(for='nombre') #{translation.FORM.NAME}
+              label.form-label(for='nombre') #{translation.NAME}
               input.form-control(type='text' name='nombre' id='nombre' required)
             .col-md-12.mb-3
-              label.form-label(for='precio') #{translation.FORM.PRICE}
+              label.form-label(for='precio') #{translation.PRICE}
               input.form-control(type='number' name='precio' id='precio' step=".01" required)
 
             .col-md-12.mb-3
-              label.form-label(for='frecuencia_de_pago') #{translation.FORM.PAYMENT_FREQUENCY}
+              label.form-label(for='frecuencia_de_pago') #{translation.PAYMENT_FREQUENCY}
               select.form-control(name='frecuencia_del_pago' id='frecuencia_del_pago' required)
                 option(value="") --         
-                option(value="MENSUAL") #{translation.FORM.MONTHLY}         
-                option(value="ANUAL") #{translation.FORM.YEARLY}         
+                option(value="MENSUAL") #{translation.MONTHLY}         
+                option(value="ANUAL") #{translation.YEARLY}         
 
 
           .row.mt-3

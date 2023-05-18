@@ -3,7 +3,7 @@ block contenido
     .row
         .col-12.text-grey(style="margin-bottom:10px;")
             h1.display-1
-                strong #{translation.FORM.STORE_LIST}
+                strong #{translation.STORE_LIST}
         .col-12
                 button.btn.btn-success(type="button", onClick="openNewHandleModalTienda()")
                     i.fas-fa-plus
@@ -13,10 +13,10 @@ block contenido
                 table#tabla-tiendas.table.table-bordered
                     thead.thead-dark
                         tr.table-head
-                            th.text-center #{translation.FORM.NAME}
-                            th.text-center #{translation.FORM.SCHEDULE}
-                            th.text-center #{translation.FORM.IMAGE}
-                            th.text-center #{translation.FORM.USER}
+                            th.text-center #{translation.NAME}
+                            th.text-center #{translation.SCHEDULE}
+                            th.text-center #{translation.IMAGE}
+                            th.text-center #{translation.USER}
                             th.text-center
                     tbody
                         each book in bookStore
@@ -42,22 +42,22 @@ block contenido
                                 img(id="imagen-data-banner" src="https://www.cuba.travel/images/noimage.png" class="imagen-data-producto" onClick="handleModalMultimediaSingle()")
                         .col-md-4.col-12
                             .form-group
-                                label #{translation.FORM.NAME}
+                                label #{translation.NAME}
                                 .controls
                                     input#nombreNuevo-tienda-admin.form-control(type="text")
                         .col-md-4.col-12
                             .form-group
-                                label #{translation.FORM.USER}
+                                label #{translation.USER}
                                 .controls
                                     input#usuarioNuevo-tienda-admin.form-control(type="text")
                         .col-md-4.col-12
                             .form-group
-                                label #{translation.FORM.PASSWORD}
+                                label #{translation.PASSWORD}
                                 .controls
                                     input#passwordNuevo-tienda-admin.form-control(type="password")
                         .col-md-4.col-12
                             .form-group
-                                label #{translation.FORM.SITE_WEB}
+                                label #{translation.SITE_WEB}
                                 .controls
                                     input#websiteNuevo-tienda-admin.form-control(type="text")
                         .col-md-4.col-12
@@ -87,56 +87,56 @@ block contenido
                                     input#whatsappNuevo-tienda-admin.form-control(type="number")
                         .col-md-4.col-12
                             .form-group
-                                label #{translation.FORM.PHONE}
+                                label #{translation.PHONE}
                                 .controls
                                     input#telefonoNuevo-tienda-admin.form-control(type="number")
                         .col-md-4.col-12
                             .form-group
-                                label #{translation.FORM.MOBILE}
+                                label #{translation.MOBILE}
                                 .controls
                                     input#telefonoNuevo-tienda-admin.form-control(type="number")
                         .col-md-4.col-12
                             .form-group
-                                label #{translation.FORM.BUSINESS_PHONE}
+                                label #{translation.BUSINESS_PHONE}
                                 .controls
                                     input#telefonoEmpresaNuevo-tienda-admin.form-control(type="number")
                         .col-md-4.col-12
                             .form-group
-                                label #{translation.FORM.EMAIL}
+                                label #{translation.EMAIL}
                                 .controls
                                     input#correoNuevo-tienda-admin.form-control(type="text")
                         .col-md-4.col-12
                             .form-group
-                                label #{translation.FORM.STATE}
+                                label #{translation.STATE}
                                 .controls
                                     select#statusNuevo-tienda-admin.form-control
-                                        option(value="1") #{translation.FORM.ACTIVE}
-                                        option(value="0") #{translation.FORM.DEACTIVATED}
+                                        option(value="1") #{translation.ACTIVE}
+                                        option(value="0") #{translation.DEACTIVATED}
                         .col-md-4.col-12
                             .form-group
-                                label #{translation.FORM.ACTIVE}
+                                label #{translation.ACTIVE}
                                 .controls
                                     select#activadoNuevo-tienda-admin.form-control
-                                        option(value="1") #{translation.FORM.YES}
-                                        option(value="0") #{translation.FORM.NO}
+                                        option(value="1") #{translation.YES}
+                                        option(value="0") #{translation.NO}
                         .col-md-4.col-12
                             .form-group
-                                label #{translation.FORM.SCHEDULE}
+                                label #{translation.SCHEDULE}
                                 .controls
                                     input#horarioNuevo-tienda-admin.form-control(type="text")
                         .col-md-4.col-12
                             .form-group
-                                label #{translation.FORM.ADDRESS}
+                                label #{translation.ADDRESS}
                                 .controls
                                     input#direccionNuevo-tienda-admin.form-control(type="text")
                         .col-md-4.col-12
                             .form-group
-                                label #{translation.FORM.COORDENATES}
+                                label #{translation.COORDENATES}
                                 .controls
                                     input#coordenadasNuevo-tienda-admin.form-control(type="text")                  
                         .col-12 
                             .form-group
-                                label #{translation.FORM.DESCRIPTION}
+                                label #{translation.DESCRIPTION}
                                 textarea#ckeditorarea(name="ckeditorarea")
                 .modal-footer      
                     button.btn.btn-success.nuevo(type="button", style="margin-left:7px;margin-right:7px;",onClick="addTiendaAdmin()") #{translation.ADD}
@@ -169,22 +169,22 @@ block contenido
                         .col-md-4.col-12
                             input#dataIdTienda(type="hidden")
                             .form-group
-                                label #{translation.FORM.NAME}
+                                label #{translation.NAME}
                                 .controls
                                     input#nombreEditar-tienda-admin.form-control(type="text")
                         .col-md-4.col-12
                             .form-group
-                                label #{translation.FORM.USER}
+                                label #{translation.USER}
                                 .controls
                                     input#usuarioEditar-tienda-admin.form-control(type="text")
                         .col-md-4.col-12
                             .form-group
-                                label #{translation.FORM.PASSWORD}
+                                label #{translation.PASSWORD}
                                 .controls
                                     input#passwordEditar-tienda-admin.form-control(type="password")
                         .col-md-4.col-12
                             .form-group
-                                label #{translation.FORM.WEBSITE}
+                                label #{translation.WEBSITE}
                                 .controls
                                     input#websiteEditar-tienda-admin.form-control(type="text")
                         .col-md-4.col-12
@@ -214,56 +214,56 @@ block contenido
                                     input#whatsappEditar-tienda-admin.form-control(type="number")
                         .col-md-4.col-12
                             .form-group
-                                label #{translation.FORM.PHONE}
+                                label #{translation.PHONE}
                                 .controls
                                     input#telefonoEditar-tienda-admin.form-control(type="number")
                         .col-md-4.col-12
                             .form-group
-                                label #{translation.FORM.MOBILE}
+                                label #{translation.MOBILE}
                                 .controls
                                     input#celularEditar-tienda-admin.form-control(type="number")
                         .col-md-4.col-12
                             .form-group
-                                label #{translation.FORM.BUSINESS_PHONE}
+                                label #{translation.BUSINESS_PHONE}
                                 .controls
                                     input#telefonoEmpresaEditar-tienda-admin.form-control(type="number")
                         .col-md-4.col-12
                             .form-group
-                                label #{translation.FORM.EMAIL}
+                                label #{translation.EMAIL}
                                 .controls
                                     input#correoEditar-tienda-admin.form-control(type="text")
                         .col-md-4.col-12
                             .form-group
-                                label #{translation.FORM.STATE}
+                                label #{translation.STATE}
                                 .controls
                                     select#statusEditar-tienda-admin.form-control
-                                        option(value="1") #{translation.FORM.ACTIVE}
-                                        option(value="0") #{translation.FORM.DEACTIVATED}
+                                        option(value="1") #{translation.ACTIVE}
+                                        option(value="0") #{translation.DEACTIVATED}
                         .col-md-4.col-12
                             .form-group
-                                label #{translation.FORM.ACTIVE}
+                                label #{translation.ACTIVE}
                                 .controls
                                     select#activadoEditar-tienda-admin.form-control
-                                        option(value="1") #{translation.FORM.YES}
-                                        option(value="0") #{translation.FORM.NO}
+                                        option(value="1") #{translation.YES}
+                                        option(value="0") #{translation.NO}
                         .col-md-4.col-12
                             .form-group
-                                label #{translation.FORM.SCHEDULE}
+                                label #{translation.SCHEDULE}
                                 .controls
                                     input#horarioEditar-tienda-admin.form-control(type="text")
                         .col-md-4.col-12
                             .form-group
-                                label #{translation.FORM.ADDRESS}
+                                label #{translation.ADDRESS}
                                 .controls
                                     input#direccionEditar-tienda-admin.form-control(type="text")
                         .col-md-4.col-12
                             .form-group
-                                label #{translation.FORM.COORDENATES}
+                                label #{translation.COORDENATES}
                                 .controls
                                     input#coordenadasEditar-tienda-admin.form-control(type="text")
                         .col-12 
                             .form-group
-                                label #{translation.FORM.DESCRIPTION}
+                                label #{translation.DESCRIPTION}
                                 textarea#ckeditorareaEditar(name="ckeditorareaEditar")
                 .modal-footer      
                     button.btn.btn-success.nuevo(type="button", style="margin-left:7px;margin-right:7px;",onClick="updateDataTienda()") #{translation.UPDATE}

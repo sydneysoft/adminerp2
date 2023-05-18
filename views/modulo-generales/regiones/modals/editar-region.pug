@@ -5,7 +5,7 @@
         .row(style="padding:10px;margin-bottom:8px;")
           .col-md-6.col-12
             .form-group
-              label Nombre:
+              label #{translation.NAME}:
               .controls
                 input#editar-id-region(type="hidden")
                 input#editar-nombre-regiones.form-control(type="text")
@@ -13,15 +13,15 @@
 
           .col-md-6.col-12
             .form-group
-              label Pais:
+              label #{translation.COUNTRY}:
               .controls
                 input#editar-pais-regiones.form-control(disabled)
 
           .col-md-12.col-12
-            label Ciudad:
+            label #{translation.CITY}:
             .controls
               select#editar-ciudad-regiones.form-control.seleccionar(type="text" name="states[]" multiple="multiple" disabled) 
 
       .modal-footer
-        button.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;",onClick=`UpdateRegionAdmin(${token})`) Actualizar
-        button.btn.btn-danger(type="buton" data-dismiss="modal") Cerrar
+        button.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;",onClick=`UpdateRegionAdmin(${token})`) #{translation.UPDATE}
+        button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}

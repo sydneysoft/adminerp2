@@ -133,13 +133,13 @@ script.
         }
       },
       error: function (error) {
-        toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+        toastSweet('Error', '#{translation.WRONG}', 'error');
       }
     })
   }
 
   function alertFechaInvalida () {
-    toastSweet('Error', '#{translation.ALERTS.APPOINTMENT_DATE_ERROR}', 'error');
+    toastSweet('Error', '#{translation.APPOINTMENT_DATE_ERROR}', 'error');
   }
 
   document.getElementById('addNewCita').addEventListener('click', (e) => {
@@ -162,20 +162,20 @@ script.
         data: auxData,
         success: function (data) {
           if (data.ok) {
-            toastSweet('Success', '#{translation.ALERTS.APPOINTMENT_SUCCESS}', 'success');
+            toastSweet('Success', '#{translation.APPOINTMENT_SUCCESS}', 'success');
             $('#nuevaCita').modal('hide');
             clearForm();
             getEvents();
           } else {
-            toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+            toastSweet('Error', '#{translation.WRONG}', 'error');
           }
         },
         error: function (err) {
-          toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+          toastSweet('Error', '#{translation.WRONG}', 'error');
         }
       })
     } else {
-      toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+      toastSweet('Error', '#{translation.WRONG}', 'error');
     }
   });
 
@@ -198,20 +198,20 @@ script.
         data: auxData,
         success: function (data) {
           if (data.ok) {
-            toastSweet('Success', '#{translation.ALERTS.APPOINTMENT_UPDATED}', 'success');
+            toastSweet('Success', '#{translation.APPOINTMENT_UPDATED}', 'success');
             $('#editarCita').modal('hide');
             getEvents();
             // location.reload();
           } else {
-            toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+            toastSweet('Error', '#{translation.WRONG}', 'error');
           }
         },
         error: function (err) {
-          toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+          toastSweet('Error', '#{translation.WRONG}', 'error');
         }
       })
     } else {
-      toastSweet('Error', '#{translation.FORM.REQUIRED_FIELDS}', 'error');
+      toastSweet('Error', '#{translation.REQUIRED_FIELDS}', 'error');
     }
   })
 
@@ -232,13 +232,13 @@ script.
         data: auxData,
         success: function (data) {
           if (data.ok) {
-            toastSweet('Success', '#{translation.ALERTS.APPOINTMENT_UPDATED}', 'success');
+            toastSweet('Success', '#{translation.APPOINTMENT_UPDATED}', 'success');
           } else {
-            toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+            toastSweet('Error', '#{translation.WRONG}', 'error');
           }
         },
         error: function (err) {
-          toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+          toastSweet('Error', '#{translation.WRONG}', 'error');
         }
       })
     }

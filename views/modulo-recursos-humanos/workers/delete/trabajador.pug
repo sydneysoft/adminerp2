@@ -7,7 +7,7 @@ script.
     console.log(currentTarget.parentElement.parentElement._DT_RowIndex)
     try {
       Swal.fire({
-        title: '#{translation.ALERTS.ARE_YOU_SURE_DELETE}',
+        title: '#{translation.ARE_YOU_SURE_DELETE}',
         showDenyButton: true,
         showCancelButton: false,
         confirmButtonText: '#{translation.YES}',
@@ -21,8 +21,8 @@ script.
             if (ok) {
               tablaTrabajadores.row($(':eq(' + rowIndex + ')')).remove().draw();
               Swal.fire({
-                title: '#{translation.ALERTS.SUCCESS}', 
-                html: '#{translation.ALERTS.REGISTER_DELETED_SUCCESS}', 
+                title: '#{translation.SUCCESS}', 
+                html: '#{translation.REGISTER_DELETED_SUCCESS}', 
                 icon: 'success'
               });
             }

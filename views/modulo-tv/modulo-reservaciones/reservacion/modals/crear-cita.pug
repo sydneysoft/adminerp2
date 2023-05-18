@@ -10,29 +10,29 @@
         .row 
           .col-12.col-md-6 
             .form-group
-              label(for="nombre") #{translation.FORM.FULLNAME}
-              input#nombre.form-control(type="text" name="nombre" placeholder=`${translation.FORM.FULLNAME}`) 
+              label(for="nombre") #{translation.FULLNAME}
+              input#nombre.form-control(type="text" name="nombre" placeholder=`${translation.FULLNAME}`) 
           .col-12.col-md-6 
             .form-group 
-              label(for="email") #{translation.FORM.EMAIL}
-              input#email.form-control(type="email" name="email" placeholder=`${translation.FORM.EMAIL}`)
+              label(for="email") #{translation.EMAIL}
+              input#email.form-control(type="email" name="email" placeholder=`${translation.EMAIL}`)
           .col-12.col-md-6 
             .form-group 
-              label(for="telefono") #{translation.FORM.CELULAR}
-              input#telefono.form-control(type="text" name="telefono" placeholder=`${translation.FORM.CELULAR}`)
+              label(for="telefono") #{translation.CELULAR}
+              input#telefono.form-control(type="text" name="telefono" placeholder=`${translation.CELULAR}`)
           .col-12.col-md-6
             .form-group 
               //- Crear checkbox para escoger color
-              label(for="color") #{translation.FORM.COLOR}
-              input#color.form-control(type="color" name="color" placeholder=`${translation.FORM.COLOR}` value="#007bff")
+              label(for="color") #{translation.COLOR}
+              input#color.form-control(type="color" name="color" placeholder=`${translation.COLOR}` value="#007bff")
         .row 
           .col-12.col-md-6
             .form-group 
-              label(form="start") #{translation.MODULOTV.STARTDATE} 
+              label(form="start") #{translation.STARTDATE} 
               input#start.form-control(type="datetime-local" name="start")
           .col-12.col-md-6
             .form-group 
-              label(form="end") #{translation.MODULOTV.ENDDATE}
+              label(form="end") #{translation.ENDDATE}
               input#end.form-control(type="datetime-local" name="end")
 
       .modal-footer(style="padding:8px;")

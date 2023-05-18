@@ -1,0 +1,53 @@
+extends ../layout.pug
+
+append contenido 
+  .border-bottom.border-left.border-right.rounded-bottom.p-3
+    if data  && data.length == 1
+      .container 
+        .row 
+          .col-6
+            .text-left 
+              button.btn.btn-info(role="button" onclick="window.history.back()") #{translation.BACK}
+          .col-6 
+            .text-right 
+              a.btn.btn-primary(role="button" href=`/admin-blog/paginas/editar/${data[0].id}`) #{translation.EDIT}
+        .row.mt-3
+          .col-12.col-md-8
+            .form-group 
+              label(for="titulo") #{translation.TITLE}
+              input#titulo.form-control(type="text" name="titulo" placeholder #{translation.TITLE} value=data[0].titulo readonly)
+            .form-group.mt-3 
+              label(for="subtitulo") #{translation.SUBTITLE} +" "+ #{translation.OPTIONAL}
+              input#subtitulo.form-control(type="text" name="subtitulo" placeholder #{translation.SUBTITLE} value=data[0].subtitulo readonly)
+            .form-group.mt-3
+              textarea#body(name="body") #{data[0].body}
+          .col-12.col-md-4
+            .form-group
+              span.form-text.mb-1 #{translation.ADD_IMAGE}
+                div#imageShow.d-flex.justify-content-center.align-items-center.p-3.rounded(style="border: 1px dashed gray; height: 250px")
+                  //- i.fas.fa-plus
+                  img.w-100(src=(data[0].imagen ? data[0].imagen : '/images/image-default.jpg') style="object-fit: cover" alt="Portada de pagina")
+              //- input#imagen(type="file" name="image" hidden)
+            .form-group.mt-3 
+              label(for="estado") #{translation.STATE} 
+              select#estado.form-control(disabled)
+                if data[0].estado == 'publish'
+                  option(value='publish' selected) #{translation.PUBLISHED}
+                else 
+                  option(value='publish') #{translation.PUBLISHED}
+                if data[0].estado == 'draft' || data[0].estado == 'nuevo'
+                  option(value='draft' selected) #{translation.DRAFT}
+                else 
+                  option(value='draft') #{translation.DRAFT}
+            .form-group.mt-3 
+              label(for="estracto") #{translation.EXTRACT} 
+              textarea#estracto.form-control(placeholder="Estracto" readonly) #{data[0].estracto}
+
+    else 
+      .alert.alert-info(role="alert")
+        | #{translation.NO_DATA}
+
+  script.
+    const editor = CKEDITOR.replace('body', {
+      readOnly: true
+    })

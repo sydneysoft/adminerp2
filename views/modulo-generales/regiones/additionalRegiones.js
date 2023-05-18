@@ -31,7 +31,7 @@ const seleccionPais = () => {
 
             } else {
                 $("#nuevo-ciudad-regiones").append(
-                    '<option value="">#{translation.FORM.CITIES_NOT_FOUND}</option>'
+                    '<option value="">#{translation.CITIES_NOT_FOUND}</option>'
                 );
 
                 $("#nuevo-ciudad-regiones").attr("disabled", true);
@@ -70,7 +70,7 @@ const AgregarRegionAdmin = (token) => {
                     Swal.fire({
                         position: "center",
                         icon: "error",
-                        title: "#{translation.ALERTS.WRONG}",
+                        title: "#{translation.WRONG}",
                         showConfirmButton: false,
                         timer: 2500,
                     });
@@ -81,7 +81,7 @@ const AgregarRegionAdmin = (token) => {
                 Swal.fire({
                     position: "center",
                     icon: "error",
-                    title: "#{translation.ALERTS.WRONG}",
+                    title: "#{translation.WRONG}",
                     showConfirmButton: false,
                     timer: 2500,
                 });
@@ -91,7 +91,7 @@ const AgregarRegionAdmin = (token) => {
         Swal.fire({
             position: "center",
             icon: "info",
-            html: "<b>#{translation.ALERTS.MUST_COMPLETE_DATA_REQUIRED_ADD_SERVICES}</b>", 
+            html: "<b>#{translation.MUST_COMPLETE_DATA_REQUIRED_ADD_SERVICES}</b>", 
             showConfirmButton: false,
             timer: 2500,
         });
@@ -146,7 +146,7 @@ const handleEditRegion = (id, nombre, pais, id_grupo) => {
 
                     } else {
                         $("#editar-ciudad-regiones").append(
-                            '<option value="">#{translation.FORM.CITIES_NOT_FOUND}</option>'  
+                            '<option value="">#{translation.CITIES_NOT_FOUND}</option>'  
                         );
 
                         $("#editar-ciudad-regiones").attr("disabled", true);
@@ -198,7 +198,7 @@ const UpdateRegionAdmin = (token) => {
                     Swal.fire({
                         position: "center",
                         icon: "error",
-                        title: "#{translation.ALERTS.WRONG}",
+                        title: "#{translation.WRONG}",
                         showConfirmButton: false,
                         timer: 2500,
                     });
@@ -209,7 +209,7 @@ const UpdateRegionAdmin = (token) => {
                 Swal.fire({
                     position: "center",
                     icon: "error",
-                    title: "#{translation.ALERTS.WRONG}",
+                    title: "#{translation.WRONG}",
                     showConfirmButton: false,
                     timer: 2500,
                 });
@@ -219,7 +219,7 @@ const UpdateRegionAdmin = (token) => {
         Swal.fire({
             position: "center",
             icon: "info",
-            html: "<b>#{translation.ALERTS.MUST_COMPLETE_DATA_REQUIRED_EDIT_SERVICES}</b>",
+            html: "<b>#{translation.MUST_COMPLETE_DATA_REQUIRED_EDIT_SERVICES}</b>",
             showConfirmButton: false,
             timer: 2500,
         });
@@ -235,7 +235,7 @@ const eliminarRegionAdmin = (val) => {
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "#{translation.ALERTS.YES_DELETE}",
+        confirmButtonText: "#{translation.YES_DELETE}",
     }).then((result) => {
         if (result.isConfirmed) {
             handleDeleteRegion(val);
@@ -259,7 +259,7 @@ const handleDeleteRegion = (val) => {
                 Swal.fire({
                     position: "center",
                     icon: "error",
-                    title: "#{translation.ALERTS.WRONG}",
+                    title: "#{translation.WRONG}",
                     showConfirmButton: false,
                     timer: 2500,
                 });
@@ -270,7 +270,7 @@ const handleDeleteRegion = (val) => {
             Swal.fire({
                 position: "center",
                 icon: "error",
-                title: "#{translation.ALERTS.WRONG}",
+                title: "#{translation.WRONG}",
                 showConfirmButton: false,
                 timer: 2500,
             });

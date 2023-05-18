@@ -8,7 +8,6 @@ const { UploadController, uploadImage, uploadVideo } = require('../modulo-tv/mod
 const { getDataSistema } = require("../../helpers/db");
 const PageController = require('../modulo-tv/modulo-tv/page.controller');
 const ServiceController = require('../modulo-tv/modulo-tv/servicio.controller');
-const FAQController = require('../modulo-tv/modulo-faqs/faqs/faqs.controller');
 const ContactoController = require('../modulo-tv/modulo-tv/contacto.controller');
 
 class VivaTvController {
@@ -82,6 +81,5 @@ module.exports = {
   ProgramaController,
   PageController,
   ServiceController,
-  FAQController,
   ContactoController
 }

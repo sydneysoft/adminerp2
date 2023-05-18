@@ -14,7 +14,7 @@ script.
       columns: [
         { data: 'id', name: 'id', title: 'ID', orderable: false, searchable: false, visible: false},
         { 
-          data: 'imagen', name: 'imagen', title: '#{translation.FORM.IMAGE}', orderable: false, searchable: false,
+          data: 'imagen', name: 'imagen', title: '#{translation.IMAGE}', orderable: false, searchable: false,
           render: function (data, type, row) {
             try {
               new URL(row.imagen)
@@ -24,24 +24,24 @@ script.
             }
           }
         },
-        { data: 'name', name: 'name', title: '#{translation.FORM.NAME}', orderable: true, searchable: true},
-        { data: 'description', name: 'description', title: "#{translation.FORM.DESCRIPTION}", orderable: true, searchable: true},
+        { data: 'name', name: 'name', title: '#{translation.NAME}', orderable: true, searchable: true},
+        { data: 'description', name: 'description', title: "#{translation.DESCRIPTION}", orderable: true, searchable: true},
         { 
-          data: 'destacado', name: 'destacado', title: '#{translation.FORM.HIGHLIGHT}', orderable: false, searchable: false,
+          data: 'destacado', name: 'destacado', title: '#{translation.HIGHLIGHT}', orderable: false, searchable: false,
           render: function (data, type, row) {
             return data == 1 ? '<i class="fas text-success fa-check"></i>' : '<i class="fas fa-times text-danger"></i>';
           },
         },
         { 
-          data: 'activado', name: 'activado', title: '#{translation.FORM.STATUS}', orderable: false, searchable: false,
+          data: 'activado', name: 'activado', title: '#{translation.STATUS}', orderable: false, searchable: false,
           render: function (data, type, row) {
             console.log(data);
             return data == 1 ? '<i class="fas text-success fa-check"></i>' : '<i class="fas fa-times text-danger"></i>';
           }
         },
-        { data: 'empresa_id', name: 'empresa_id', title: '#{translation.FORM.COMPANY}', orderable: true, searchable: true, visible: false},
+        { data: 'empresa_id', name: 'empresa_id', title: '#{translation.COMPANY}', orderable: true, searchable: true, visible: false},
         { 
-          data: 'acciones', name: 'acciones', title: '#{translation.FORM.ACTIONS}', orderable: false, searchable: false,
+          data: 'acciones', name: 'acciones', title: '#{translation.ACTIONS}', orderable: false, searchable: false,
           render: function (data, type, row) {
             let strRow = JSON.stringify(row);
             return `

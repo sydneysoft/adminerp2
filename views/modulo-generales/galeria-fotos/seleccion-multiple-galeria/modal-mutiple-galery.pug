@@ -4,15 +4,15 @@
                 .modal-body
                     ul#myTab2.nav.nav-tabs(role='tablist')
                         li.nav-item
-                            a#profile1-tab.nav-link.active(data-toggle='tab' href='#profile1' role='tab' aria-controls='profile' aria-selected='false') #{translation.FORM.PHOTO_GALLERY}
+                            a#profile1-tab.nav-link.active(data-toggle='tab' href='#profile1' role='tab' aria-controls='profile' aria-selected='false') #{translation.PHOTO_GALLERY}
                         li.nav-item
-                            a#home2-tab.nav-link(data-toggle='tab' href='#home2' role='tab' aria-controls='home' aria-selected='true') #{translation.FORM.UPLOAD_PHOTOS}
+                            a#home2-tab.nav-link(data-toggle='tab' href='#home2' role='tab' aria-controls='home' aria-selected='true') #{translation.UPLOAD_PHOTOS}
                     #myTabContent2.tab-content
                         #home2.tab-pane.fade(role='tabpanel' aria-labelledby='home-tab')
                             div(style="width:100%;padding:10px;margin-top:10px;")
                                 form.dropzone(action="/file-upload" id="my-awesome-dropzone" method="post" enctype="multipart/form-data")  
                             div(style="width:100%;display:flex;justify-content:center;align-items:center;margin-top:20px;")
-                                button#btn-upload-multiple.btn.btn-success(onClick=`uploadImagesMultiple()`,style="display:none;") #{translation.FORM.UPLOAD_PHOTOS}
+                                button#btn-upload-multiple.btn.btn-success(onClick=`uploadImagesMultiple()`,style="display:none;") #{translation.UPLOAD_PHOTOS}
                         #profile1.tab-pane.fade.show.active(role='tabpanel' aria-labelledby='profile-tab')
                             div(class='row',style='padding:8px;')
                                 div(class='col-md-12')
@@ -28,4 +28,4 @@
                                                     div(id="data-paginate-images-multiple"   data-total-count='100'  data-take='16')
                                     .modal-footer 
                                         button.btn.btn-success(disabled id="choice-image-banner" data-dismiss="modal")="Seleccionar Imágenes" 
-                                        button.btn.btn-danger(data-dismiss="modal") #{translation.FORM.CANCEL}
+                                        button.btn.btn-danger(data-dismiss="modal") #{translation.CANCEL}

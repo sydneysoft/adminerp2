@@ -11,14 +11,14 @@
                   img(id="imagen-data-banner-editar" src="https://www.cuba.travel/images/noimage.png" class="content-img-banner" onClick="handleModal()")
               .col-md-6.col-12
                 .form-group
-                  label #{translation.FORM.NAME}:
+                  label #{translation.NAME}:
                   .controls
-                    input#nombreEditar-tratamiento.form-control(type="text" placeholder=translation.FORM.NAME)
+                    input#nombreEditar-tratamiento.form-control(type="text" placeholder=translation.NAME)
               .col-md-6.col-12
                 .form-group
-                  label #{translation.FORM.DESCRIPTION}:
+                  label #{translation.DESCRIPTION}:
                   .controls
-                    input#descripcionCortaEditar-tratamiento.form-control(type="text" placeholder=translation.FORM.DESCRIPTION)
+                    input#descripcionCortaEditar-tratamiento.form-control(type="text" placeholder=translation.DESCRIPTION)
               .col-md-6.col-12
                 .form-group
                   label #{translation.ACTIVE}:
@@ -28,20 +28,20 @@
                       option(value="0") #{translation.DEACTIVATED}
               .col-md-6.col-12
                 .form-group
-                  label #{translation.FORM.STATUS}:
+                  label #{translation.STATUS}:
                   .controls
                     select#statusEditar-tratamiento.form-control
-                      option(value="1") #{translation.FORM.ACTIVE}
-                      option(value="0") #{translation.FORM.INACTIVE}
+                      option(value="1") #{translation.ACTIVE}
+                      option(value="0") #{translation.INACTIVE}
               .col-12
                 .form-group
-                  label #{translation.FORM.BRANCH}:
+                  label #{translation.BRANCH}:
                   .controls
                     select#lista-sedes-editar
           .col-12.col-md-6
             .form-group
-              label #{translation.FORM.DESCRIPTION}
-              textarea#ckeditorareaEditar(name="ckeditorareaEditar" placeholder=translation.FORM.DESCRIPTION)
+              label #{translation.DESCRIPTION}
+              textarea#ckeditorareaEditar(name="ckeditorareaEditar" placeholder=translation.DESCRIPTION)
 
       .modal-footer
         button.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;" onClick="editarTratamientoAdmin()") #{translation.SAVE}

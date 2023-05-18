@@ -14,40 +14,40 @@ append contenido
             div#edite_horarios_selected(data-target=data.horario_id)
             .col-12.col-md-8 
               .form-group
-                label(for='nombre') #{translation.FORM.NAME}
-                input#nombre.form-control(type='text' placeholder=translation.FORM.NAME name="nombre" required value=data.nombre)
+                label(for='nombre') #{translation.NAME}
+                input#nombre.form-control(type='text' placeholder=translation.NAME name="nombre" required value=data.nombre)
             .col-12.col-md-4 
               .form-group
-                label(for='direccion') #{translation.FORM.ADDRESS}
-                input#direccion.form-control(type='text' placeholder=translation.FORM.ADDRESS name="direccion" value=data.direccion)
+                label(for='direccion') #{translation.ADDRESS}
+                input#direccion.form-control(type='text' placeholder=translation.ADDRESS name="direccion" value=data.direccion)
           .row 
             .col-12.col-md-8
             
               .form-group   
-                label(for="descripcion") #{translation.FORM.DESCRIPTION} 
-                textarea#descripcion(placeholder=translation.FORM.DESCRIPTION) #{data.descripcion}
+                label(for="descripcion") #{translation.DESCRIPTION} 
+                textarea#descripcion(placeholder=translation.DESCRIPTION) #{data.descripcion}
             .col-12.col-md-4 
               .row.align-items-end
                 .col-8 
                   .form-group
-                    label(for='nombre') #{translation.FORM.SCHEDULE}
+                    label(for='nombre') #{translation.SCHEDULE}
                     select#horarios.form-control(name="nombre" data-selected="0")
-                      option(value="0") #{translation.FORM.NO_SCHEDULE}
-                      option(value="siempre_abierto") #{translation.FORM.ALWAYS_OPEN}
+                      option(value="0") #{translation.NO_SCHEDULE}
+                      option(value="siempre_abierto") #{translation.ALWAYS_OPEN}
                 .col-4 
                   .form-group 
                     button#insertar_horario(type="button" class="btn btn-primary btn-block") #{translation.INSERT}
               .row 
                 .col-12#horarios_insertados
               .form-group
-                label(for='ubicacion') #{translation.FORM.MAP_LINK}
-                input#ubicacion.form-control(type='text' placeholder=translation.FORM.MAP_LINK name="ubicacion" value=data.ubicacion)
+                label(for='ubicacion') #{translation.MAP_LINK}
+                input#ubicacion.form-control(type='text' placeholder=translation.MAP_LINK name="ubicacion" value=data.ubicacion)
               .form-group
-                label(for='correo') #{translation.FORM.EMAIL}
-                input#correo.form-control(type='email' placeholder=translation.FORM.EMAIL name="correo" value=data.correo)
+                label(for='correo') #{translation.EMAIL}
+                input#correo.form-control(type='email' placeholder=translation.EMAIL name="correo" value=data.correo)
               .form-group
-                label(for='telefono') #{translation.FORM.CELULAR}
-                input#telefono.form-control(type='text' placeholder=translation.FORM.CELULAR name="telefono" value=data.telefono)
+                label(for='telefono') #{translation.CELULAR}
+                input#telefono.form-control(type='text' placeholder=translation.CELULAR name="telefono" value=data.telefono)
               
   script.
     const editor = CKEDITOR.replace('descripcion');

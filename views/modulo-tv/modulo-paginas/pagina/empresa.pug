@@ -12,9 +12,9 @@ append contenido
           thead.thead-dark
             tr
               th(scope='col') ID
-              th(scope='col') #{translation.FORM.NAME}
-              th(scope='col') #{translation.FORM.EXCERPT}
-              th(scope='col') #{translation.FORM.ACTIONS}
+              th(scope='col') #{translation.NAME}
+              th(scope='col') #{translation.EXCERPT}
+              th(scope='col') #{translation.ACTIONS}
           tbody
             if Array.isArray(data) && data.length > 0
               each item in data 
@@ -41,10 +41,10 @@ append contenido
         },
         columns: [
           { data: 'ID' },
-          { data: 'nombre', name: 'nombre', title: '#{translation.FORM.NAME}' },
-          { data: 'estracto', name: 'estracto', title: '#{translation.FORM.EXCERPT}' },
+          { data: 'nombre', name: 'nombre', title: '#{translation.NAME}' },
+          { data: 'estracto', name: 'estracto', title: '#{translation.EXCERPT}' },
           { 
-            data: 'acciones', name: 'acciones', title: '#{translation.FORM.ACTIONS}
+            data: 'acciones', name: 'acciones', title: '#{translation.ACTIONS}
           }
         ]
       });

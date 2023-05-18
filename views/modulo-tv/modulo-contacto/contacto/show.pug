@@ -17,7 +17,7 @@ append contenido
             input.form-control(type='text' value=data.nombre readonly)
         .col-12.col-md-4
           .input-group
-            input.form-control(type='text' value #{translation.SCHEDULES} readonly)
+            input.form-control(type='text' value=translation.SCHEDULES readonly)
           .my-3 
             if typeof data.horario_id === 'string'
               .alert.alert-primary.mt-3 
@@ -34,24 +34,24 @@ append contenido
       .row 
         .col-12.col-md-8
           .form-group   
-            label(for="descripcion") #{translation.FORM.DESCRIPTION} 
+            label(for="descripcion") #{translation.DESCRIPTION} 
             div.form-control #{data.descripcion}
         .col-12.col-md-4 
           .form-group
-            label(for='direccion') #{translation.FORM.ADDRESS}
+            label(for='direccion') #{translation.ADDRESS}
             input#direccion.form-control(type='text' placeholder="Dirección" value=data.direccion name="direccion" readonly)
           .form-group
-            label(for='ubicacion') #{translation.FORM.LINK_MAP}
+            label(for='ubicacion') #{translation.LINK_MAP}
             input#ubicacion.form-control(type='text' placeholder="Enlace de mapa" value=data.ubicacion name="ubicacion" readonly)
           .form-group
-            label(for='correo') #{translation.FORM.EMAIL}
+            label(for='correo') #{translation.EMAIL}
             input#correo.form-control(type='email' placeholder="Correo electronico" value=data.correo name="correo" readonly)
           .form-group
-            label(for='telefono') #{translation.FORM.PHONE}
+            label(for='telefono') #{translation.PHONE}
             input#telefono.form-control(type='text' placeholder="Número de telefono" value=data.telefono name="telefono" readonly)
     else 
       .alert.alert-info.mt-3(role="alert")
-        | #{translation.ALERT.NO_DATA}
+        | #{translation.NO_DATA}
 
     script.
       const horario = document.getElementById('horario')

@@ -38,13 +38,13 @@ append contenido
                   .row
                     .col-12 
                       .form-group
-                        label(for="nombre")  #{translation.FORM.GENRE_NAME}
-                        input#nombre.form-control(type="text" placeholder=translation.FORM.GENRE_NAME required)
+                        label(for="nombre")  #{translation.GENRE_NAME}
+                        input#nombre.form-control(type="text" placeholder=translation.GENRE_NAME required)
                   .row.mt-3
                     .col-12
                       .form-group
-                        label(for="estracto") #{translation.FORM.EXCERPT}
-                        textarea#estracto.form-control(type="text" placeholder=translation.FORM.EXCERPT required)
+                        label(for="estracto") #{translation.EXCERPT}
+                        textarea#estracto.form-control(type="text" placeholder=translation.EXCERPT required)
 
             .modal-footer(style="padding:8px;")
                 .row(style="margin:0;")
@@ -68,13 +68,13 @@ append contenido
                   .row
                     .col-12 
                       .form-group
-                        label(for="nombre_editar")  #{translation.FORM.GENRE_NAME}
-                        input#nombre_editar.form-control(type="text" placeholder=translation.FORM.GENRE_NAME required)
+                        label(for="nombre_editar")  #{translation.GENRE_NAME}
+                        input#nombre_editar.form-control(type="text" placeholder=translation.GENRE_NAME required)
                   .row.mt-3
                     .col-12
                       .form-group
-                        label(for="estracto_editar") #{translation.FORM.EXCERPT}
-                        textarea#estracto_editar.form-control(type="text" placeholder #{translation.FORM.EXCERPT} required)
+                        label(for="estracto_editar") #{translation.EXCERPT}
+                        textarea#estracto_editar.form-control(type="text" placeholder=translation.EXCERPT required)
                   input#itemId(type="text" value="" hidden)
             .modal-footer(style="padding:8px;")
                 .row(style="margin:0;")
@@ -98,13 +98,13 @@ append contenido
                   .row
                     .col-12 
                       .form-group
-                        label(for="nombre_mostrar")  #{translation.FORM.GENRE_NAME}
-                        input#nombre_mostrar.form-control(type="text" placeholder=translation.FORM.GENRE_NAME required)
+                        label(for="nombre_mostrar")  #{translation.GENRE_NAME}
+                        input#nombre_mostrar.form-control(type="text" placeholder=translation.GENRE_NAME required)
                   .row.mt-3
                     .col-12
                       .form-group
-                        label(for="estracto_mostrar") #{translation.FORM.EXCERPT}
-                        textarea#estracto_mostrar.form-control(type="text" placeholder=translation.FORM.EXCERPT required)
+                        label(for="estracto_mostrar") #{translation.EXCERPT}
+                        textarea#estracto_mostrar.form-control(type="text" placeholder=translation.EXCERPT required)
 
             .modal-footer(style="padding:8px;")
                 .row(style="margin:0;")
@@ -148,17 +148,17 @@ append contenido
           { 
             data: 'nombre', 
             name: 'nombre',
-            title: '#{translation.FORM.NAME}'
+            title: '#{translation.NAME}'
           },
           { 
             data: 'estracto', 
             name: 'estracto',
-            title: #{translation.FORM.EXCERPT}
+            title: #{translation.EXCERPT}
           },
           { 
             data: 'acciones',
             name: 'acciones',
-            title: '#{translation.FORM.ACTIONS}',
+            title: '#{translation.ACTIONS}',
             render: function (data, type, row) {
               let strRow = JSON.stringify(row);
               return `
@@ -201,7 +201,7 @@ append contenido
           position: 'top-end',
           icon: 'error',
           title: 'Error',
-          text: #{translation.FORM.REQUIRED_FIELDS},
+          text: "#{translation.REQUIRED_FIELDS}",
           showConfirmButton: false,
           timer: 3000
         })
@@ -221,7 +221,7 @@ append contenido
           position: 'top-end',
           icon: 'error',
           title: 'Error',
-          text: #{translation.FORM.REQUIRED_FIELDS},
+          text: "#{translation.REQUIRED_FIELDS}",
           showConfirmButton: false,
           timer: 3000
         })

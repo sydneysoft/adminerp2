@@ -44,19 +44,19 @@ script.
               tablaPagoPersonal.ajax.reload();
             }
 
-            toastSweet('Success', '#{translation.ALERTS.CREATED}', 'success');
+            toastSweet('Success', '#{translation.CREATED}', 'success');
             $("#nuevo").modal('hide');
             
           } else {
-            toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+            toastSweet('Error', '#{translation.WRONG}', 'error');
           }
         })
 
         .catch(() => {
           Swal.close();
-          toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+          toastSweet('Error', '#{translation.WRONG}', 'error');
         });
     } else {
-      toastSweet('Error', '#{translation.ALERTS.REQUIRED_FIELDS}', 'error');
+      toastSweet('Error', '#{translation.REQUIRED_FIELDS}', 'error');
     }
   }

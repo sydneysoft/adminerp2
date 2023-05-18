@@ -36,7 +36,7 @@ script.
             $("#categoriaEditar-filtros").attr("disabled", false);
           } else {
             $("#categoriaEditar-filtros").append(
-              '<option value="">#{translation.FORM.CATEGORIES_NOT_FOUND}</option>'
+              '<option value="">#{translation.CATEGORIES_NOT_FOUND}</option>'
             );
             $("#categoriaEditar-filtros").attr("disabled", true);
           }
@@ -51,13 +51,13 @@ script.
         }
         else {
           Swal.close();
-          toastSweet('Error', '#{translation.ALERTS.WRONG_GET_DATA}', 'error');
+          toastSweet('Error', '#{translation.WRONG_GET_DATA}', 'error');
         }
       },
 
       error: function () {
         Swal.close();
-        toastSweet('Error', '#{translation.ALERTS.WRONG_GET_DATA}', 'error');
+        toastSweet('Error', '#{translation.WRONG_GET_DATA}', 'error');
       },
     });
   }

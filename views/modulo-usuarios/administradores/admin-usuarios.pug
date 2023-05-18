@@ -18,11 +18,11 @@ block contenido
                 table.table.table-bordered#tabla-categorias
                     thead.thead-dark
                         tr
-                            th.text-center #{translation.FORM.NAMES}
-                            th.text-center #{translation.FORM.SURNAMES}
-                            th.text-center #{translation.FORM.EMAIL}
-                            th.text-center #{translation.FORM.DOCUMENT_TYPE}
-                            th.text-center #{translation.FORM.ACTIONS}
+                            th.text-center #{translation.NAMES}
+                            th.text-center #{translation.SURNAMES}
+                            th.text-center #{translation.EMAIL}
+                            th.text-center #{translation.DOCUMENT_TYPE}
+                            th.text-center #{translation.ACTIONS}
                     tbody
                         if Array.isArray(items.usuarios)
                             each book in items.usuarios

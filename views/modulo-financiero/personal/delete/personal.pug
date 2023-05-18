@@ -22,13 +22,13 @@ script.
               if (typeof tablGestionarPersonal != 'undefined' && tablGestionarPersonal) {
                 tablGestionarPersonal.ajax.reload();
               }
-              toastSweet('Exito', '#{translation.ALERTS.DELETED}', 'success');
+              toastSweet('Exito', '#{translation.DELETED}', 'success');
             } else {
-              toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+              toastSweet('Error', '#{translation.WRONG}', 'error');
             }
           },
           error: function (data) {
-            toastSweet('Error', '#{translation.ALERTS.WRONG}', 'error');
+            toastSweet('Error', '#{translation.WRONG}', 'error');
           }
         });
       }

@@ -48,18 +48,18 @@ script.
         { 
           data: 'nombre',
           name: 'nombre',
-          title: "#{translation.FORM.NAME}"
+          title: "#{translation.NAME}"
         },
-        { data: 'descripcion', name: 'descripcion', title: "#{translation.FORM.DESCRIPTION}", orderable: false, searchable: true},
+        { data: 'descripcion', name: 'descripcion', title: "#{translation.DESCRIPTION}", orderable: false, searchable: true},
         { 
           data: 'precio',
           name: 'precio',
-          title: "#{translation.FORM.PRICE}",
+          title: "#{translation.PRICE}",
         },
         {
           data: 'acciones',
           name: 'acciones',
-          title: "#{translation.FORM.ACTIONS}",
+          title: "#{translation.ACTIONS}",
           render: function (data, type, row) {
             let strRow = JSON.stringify(row);
             return `

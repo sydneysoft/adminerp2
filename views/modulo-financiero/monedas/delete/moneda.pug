@@ -1,13 +1,13 @@
 script.
   const deleteMoneda = (id) => {
     Swal.fire({
-      title: "#{translation.ALERTS.ARE_YOU_SURE}",
-      text: "#{translation.ALERTS.YOU_CANT_REVERT_THIS_ACTION}", 
+      title: "#{translation.ARE_YOU_SURE}",
+      text: "#{translation.YOU_CANT_REVERT_THIS_ACTION}", 
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "#{translation.ALERTS.YES_DELETE}",
+      confirmButtonText: "#{translation.YES_DELETE}",
     }).then((result) => {
       if (result.isConfirmed) {
         Swal.showLoading();
@@ -20,12 +20,12 @@ script.
               if (typeof tablaMonedas !== 'undefined') {
                 tablaMonedas.ajax.reload();
               }
-              toastSweet('Success', '#{translation.ALERTS.DELETED}', 'success');
+              toastSweet('Success', '#{translation.DELETED}', 'success');
             } else {
               Swal.fire({
                 position: "center",
                 icon: "error",
-                title: "#{translation.ALERTS.WRONG}",
+                title: "#{translation.WRONG}",
                 showConfirmButton: false,
                 timer: 2500,
               });
@@ -36,7 +36,7 @@ script.
             Swal.fire({
               position: "center",
               icon: "error",
-              title: "#{translation.ALERTS.WRONG}",
+              title: "#{translation.WRONG}",
               showConfirmButton: false,
               timer: 2500,
             });
