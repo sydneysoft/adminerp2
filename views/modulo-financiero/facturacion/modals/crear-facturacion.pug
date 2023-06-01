@@ -5,28 +5,26 @@
         .row(style="padding:10px;margin-bottom:8px;")
           .col-md-4.col-12
             .form-group
-              label #{translation.RAZON_SOCIAL}
+              label #{translation.FULL_NAME}
               .controls
                 input#nombreNuevo-factura.form-control(type="text")
           .col-md-4.col-12
             .form-group
-              label #{translation.RAZON_SOCIAL}
+              label #{translation.TYPE_RECEIPT}
               .controls
                 select#tipoNuevo-factura.form-control
-                  option(value="1")="FACTURA"
-                  option(value="2")="BOLETA"
-                  option(value="3")="NOTA DE CRÉDITO"
-                  option(value="4")="NOTA DE DÉBITO"
+                  option(value="1")="PRINT RECEIPT"
+                  option(value="2")="NO PRINT"
           .col-md-4.col-12
             .form-group
               label #{translation.DOCUMENT_TYPE}
               .controls
                 select#tipodocumentoNuevo-factura.form-control
-                  option(value="1")="DNI"
-                  option(value="2")="RUC"
-                  option(value="3")="CARNET DE EXTRANJERÍA"
-                  option(value="4")="PASAPORTE"
-                  option(value="4")="CÉDULA DIPLOMÁTICA DE "
+                  option(value="1")="ABN"
+                  option(value="2")="ASC"
+                  option(value="3")="DRIVING LICENCE"
+                  option(value="4")="PASSPORT"
+                  option(value="4")="DRIVING LICENCE"
           .col-md-4.col-12
             .form-group
               label #{translation.DOCUMENT_NUMBER}

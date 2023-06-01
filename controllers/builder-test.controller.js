@@ -292,6 +292,11 @@ class RestBuilder {
     }
   }
 
+  getNamesOfDoctors= async (req, res, next)=>{
+
+    const { token, role } = await getAllDataSession(req);
+  }
+
   save = async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

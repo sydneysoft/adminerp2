@@ -85,6 +85,16 @@ class ServiceSQL {
       }
     }
   };
+  getValuesAll = async () => {
+    try {
+      const items = await knex.select().from(this.nombreColeccion)
+
+      return items;
+    } catch (error) {
+      logger.error("Error al obtener registros", error)
+    }
+  };
+
   getModulesAll = async () => {
     try {
       const items = await knex.select().from(this.nombreColeccion)
@@ -93,8 +103,18 @@ class ServiceSQL {
     } catch (error) {
       logger.error("Error al obtener modulos", error)
     }
-
   };
+
+  getDoctoresAll = async () => {
+    try {
+      const items = await knex.select().from(this.nombreColeccion)
+
+      return items;
+    } catch (error) {
+      logger.error("Error al obtener medicos", error)
+    }
+  };
+
   getAll = async () => {
     await this.checkExist();
     const items = await knex.select().from(this.nombreColeccion);

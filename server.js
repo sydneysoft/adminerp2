@@ -289,6 +289,7 @@ app.use('/admin-contactos', require('./routes/modulo-tv/modulo-contacto/contacto
 app.use('/admin-ceservicios', require('./routes/modulo-tv/modulo-ceservicio/servicios.routes'));
 app.use('/admin-redes-sociales', require('./routes/modulo-tv/modulo-redes-sociales/redes-sociales.routes'));
 
+app.use('/get-doctors-names-all', require('./routes/apis/clinicas-apis.routes'));
 // Modulo de barberia
 app.use("/admin-cortes", require("./routes/modulo-peluquerias/index.routes"));
 

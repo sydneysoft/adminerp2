@@ -27,6 +27,7 @@ router.get('/horarios/:id', HorarioController.show);
 
 router.put('/horarios/:id',
   body('nombre').optional().isString().withMessage('El nombre debe ser un texto'),
+  body('medico').optional().isString().withMessage('El nombre del medico debe ser un texto'),
   body('descripcion').optional().isString().withMessage('La descripcion debe ser un texto'),
   body('dia_de').not().isEmpty().escape().withMessage('El dia de inicio es requerido'),
   body('dia_a').not().isEmpty().escape().withMessage('El dia de fin es requerido'),

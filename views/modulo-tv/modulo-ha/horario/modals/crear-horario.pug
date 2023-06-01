@@ -8,7 +8,19 @@
             h3(style="margin:0px 0;") #{translation.ADD}
 
       .modal-body.borderBottom
-        .row 
+        .row
+          .col-12
+            .form-group
+              label.text-label(for='nombre') #{translation.SELECT_DOCTOR}
+              select#diaDe.form-control(name="diaDe")
+                option(value="1") #{translation.MONDAY}
+                option(value="2") #{translation.TUESDAY}
+                option(value="3") #{translation.WEDNESDAY}
+                option(value="4") #{translation.THURSDAY}
+                option(value="5") #{translation.FRIDAY}
+                option(value="6") #{translation.SATURDAY}
+                option(value="0") #{translation.SUNDAY}
+
           .col-12
             .form-group
               label.text-label(for='nombre') #{translation.NAME}
@@ -53,3 +65,11 @@
             button#saveItem.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;") #{translation.ADD}
               i.fas.fa-plus.ml-3
             button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}
+      script.
+        $.ajax({
+          url: 'http://localhost:3000/api/users/#{user.id}',
+          type: 'DELETE',
+          success: function () {
+            $('#user#{user.id}').remove();
+          }
+        });

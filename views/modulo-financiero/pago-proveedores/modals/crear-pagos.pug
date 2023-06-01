@@ -10,26 +10,15 @@
           if activo_marketplace===1
             .col-md-12.col-12
               .form-group
-                label #{translation.BUSINESS}:
-                  select#nuevaEmpresa.seleccionar(onChange="seleccionaInsumos()")
-                    option(disabled value=null) #{translation.SELECT}
-                    option(value=0) #{translation.UNASSIGNED}  
-                      //- each item in empresas
-                        option(value=item.empresa_id)= item.nombre
-
+                input#nuevaEmpresa.form-control(type="text" placeholder=translation.RAZON_SOCIAL)
           .col-md-6.col-12
             .form-group
-              label #{translation.CUIT}
-              .controls
-                input#cuitNuevo.form-control(type="text")
-          .col-md-6.col-12
-            .form-group
-              label #{translation.PROVIDER_NAME}
+              label #{translation.BUSINESS_NAME}
               .controls
                 input#nombreProveedor.form-control(type="text")
           .col-md-12.col-12
             .form-group
-              label #{translation.INGREDIENTS_SERVICE}:
+              label #{translation.PRODUCT_SERVICE}:
               .controls
                 select#lista-insumos
                 //- if activo_marketplace===1
@@ -58,5 +47,6 @@
                 input#agregar.form-control(type="text")
 
         .modal-footer      
-          button.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;" onClick=`agregarPago(${token})`) #{translation.SAVE}
+          button.btn.btn-success.nuevo(type="button" style="margin-left:7px;margin-right:7px;" 
+          onClick=`agregarPago(${token})`) #{translation.SAVE}
           button.btn.btn-danger(type="buton" data-dismiss="modal") #{translation.CLOSE}
