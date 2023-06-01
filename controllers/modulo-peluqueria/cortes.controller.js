@@ -1,9 +1,12 @@
+const ServiceSQL = require("../../services/services");
+const logger = require("../../helpers/logger");
+
 const RestBuilder = require('../builder-test.controller');
 
 class CorteController extends RestBuilder {
   constructor() {
     super();
-    this.setTable('barbershop_cortes').setName('Corte')
+    this.setTable('barbershop_cortes').setName('barbershop_cortes')
       .setPagination();
   }
 

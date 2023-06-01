@@ -20,6 +20,10 @@ class ServiceSQL {
           return this.crearTablaAlmacen(this.nombreColeccion);
           break;
 
+        case "barbershop_cortes":
+          return this.crearTablaBarbershop_cortes(this.nombreColeccion);
+          break;
+
         case "pago_personal":
           return this.crearTablaPersonal(this.nombreColeccion);
           break;
@@ -947,7 +951,21 @@ class ServiceSQL {
         .defaultTo(knex.raw("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"));
     });
   };
+  crearTablaBarbershop_cortes = async () => {
+    return knex.schema.createTable("barbershop_cortes", (table) => {
+      table.increments();
+      table.string("nombre");
+      table.string("descripcion");
+      table.string("precio");
+      table.string("empresa_id").defaultTo(0)
+      table.timestamp("created_at").defaultTo(knex.raw("CURRENT_TIMESTAMP"));
+      table.timestamp("updated_at").defaultTo(knex.raw("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"));
 
+      table
+        .timestamp("updated_at")
+        .defaultTo(knex.raw("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"));
+    });
+  };
   crearTablaPersonal = async (name) => {
     return knex.schema
       .createTable(name, (table) => {
